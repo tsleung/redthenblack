@@ -28,7 +28,11 @@
   </style>  
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.3/less.js"></script>
   <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.js"></script>
-  <meta http-equiv="refresh" content="5">
+  <script>
+    // <meta http-equiv="refresh" content="5">
+    ((host) => host === 'redthenblack.com' || setTimeout(() => window.document.location.reload(),5000) )(window.document.location.host)
+  </script>
+
 </head>
 <body>
     <div class="main">
