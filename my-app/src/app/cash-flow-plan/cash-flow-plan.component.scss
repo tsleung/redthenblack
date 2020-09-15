@@ -1,0 +1,58 @@
+header.intro {
+  // display: none;
+  // https://leaverou.github.io/css3patterns/#
+  background-color: #eeeee4;
+  background-image:
+    radial-gradient(white, rgba(255, 255, 255, .2) 0px, transparent 6em),
+    radial-gradient(white, rgba(255, 255, 255, .15) 0px, transparent 3em),
+    radial-gradient(white, rgba(255, 255, 255, .1) 0px, transparent 6em),
+    radial-gradient(rgba(255, 255, 255, .4), rgba(255, 255, 255, .1) 0px, transparent 2em);
+  background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
+  background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+}
+
+
+
+.profile {
+  font-size: 2em;
+  color: #999;
+  clear: both;
+  line-height: 1.625em;
+  padding: .25em;
+  letter-spacing: -.025em;
+  max-width: 25em;
+  margin: 0 auto;
+  margin: 2em auto;
+
+  span[contenteditable] {
+    min-width: 1em;
+    border-bottom: 1px solid #999;
+  }
+}
+
+main {
+
+  figure {
+    position: relative;
+  }
+
+  figure .placeholder {
+    display: block;
+    text-align: center;
+    padding: 8rem;
+    text-transform: uppercase;
+    background: #444;
+    color: white;
+    letter-spacing: .5em;
+    font-size: .75rem;
+  }
+
+  figure .placeholder:before {
+    font-size: 1rem;
+    display: block;
+    content: "placeholder";
+    font-weight: bold;
+    letter-spacing: .5em;
+  }
+
+}

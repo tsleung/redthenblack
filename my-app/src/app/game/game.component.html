@@ -1,0 +1,149 @@
+<main *ngIf="game | async as game">
+  <fieldset> {{numRed(game.history)}} red played. {{numBlack(game.history)}}
+    black played. {{game.cardsLeft}} cards left. <section class="deck">
+      <span class="unknown card"
+            *ngFor="let item of [].constructor(game.cardsLeft); let i = index"></span>
+      <ng-container *ngFor="let item of game.history; index as i">
+        <span [class]="[item.card, 'card']">
+          <!--
+          <span class="" *ngIf="item.bet.value == 0">
+            0
+          </span>
+          <span *ngIf="item.card == item.bet.card && item.bet.value > 0">
+            +{{item.bet.value}}
+          </span>
+          <span *ngIf="item.card != item.bet.card && item.bet.value > 0">
+            -{{item.bet.value}}
+          </span>
+          -->
+        </span>
+      </ng-container>
+    </section>
+    <div class="fair percentages"
+         *ngIf="game.cardsLeft > 0"> Fair deck percentages - Red
+      {{redPercentage(game.history)}} Black {{blackPercentage(game.history)}}
+    </div>
+    <div class="known percentages"
+         *ngIf="game.cardsLeft > 0"> Deck insight proportions - Red
+      {{game.percentRedRemaining()}} Black {{game.percentBlackRemaining()}}
+    </div>
+    <div class="feedback">
+      <ng-container *ngIf="game.history.length > 0">
+        <span class=""
+              *ngIf="game.history[0].bet.value == 0"> No bet on
+          {{game.history[0].bet.card}}. </span>
+        <span class="win"
+              *ngIf="game.history[0].card == game.history[0].bet.card && game.history[0].bet.value > 0">
+          +{{game.history[0].bet.value}} betting on
+          {{game.history[0].bet.card}}! </span>
+        <span class="loss"
+              *ngIf="game.history[0].card != game.history[0].bet.card && game.history[0].bet.value > 0">
+          -{{game.history[0].bet.value}} betting on
+          {{game.history[0].bet.card}}! </span>
+      </ng-container>
+    </div>
+    <button *ngIf="game.cardsLeft == 0"
+            mat-raised-button
+            (click)="game.newDeck()">New Deck</button>
+    <label>Bet on the next card being either red or black.</label>
+    <div class="actions"
+         *ngIf="game.cardsLeft > 0">
+      <button mat-raised-button
+              (click)="game.red(bet)">Red</button>
+      <button mat-raised-button
+              (click)="game.black(bet)">Black</button>
+    </div>
+    <div class="visual-bet"> Bet: {{accountStrainedBet(game.account)}}
+      <mat-slider [value]="bet / game.account * 100"
+                  (change)="updateBet($event.value * game.account / 100)"
+                  vertical
+                  min="0"
+                  max="100"
+                  thumbLabel
+                  [displayWith]="formatBetLabel"
+                  steps="5"
+                  tickInterval="25">
+      </mat-slider>
+      <div>Account: {{game.account - bet}} </div>
+    </div>
+    <h3 [hidden]="true">Account: {{game.account}}</h3>
+    <h2 *ngIf="game.account <= 0"> Account hit zero, thanks for playing!
+      <br /><button mat-raised-button
+              (click)="game.restart()">Try again?</button></h2>
+    <div [hidden]="game.history.length == 0"
+         id="{{chartId}}"
+         class="balance chart"></div>
+    <div class="decks-played"> Decks: {{game.decksPlayed}} </div>
+    <div class="currentBetSize">
+      <mat-form-field>
+        <mat-label>Bet {{currentBetSize(game.account)}}</mat-label>
+        <input matInput
+               (input)="updateBet($event.target.value)"
+               type="number"
+               [value]="bet" />
+      </mat-form-field>
+      <button mat-raised-button
+              (click)="updateBet(bet-1)">-</button>
+      <button mat-raised-button
+              (click)="updateBet(bet+1)">+</button>
+    </div>
+    <section class="quick-bets">
+      <button mat-raised-button
+              (click)="updateBet(0)">0</button>
+      <button mat-raised-button
+              (click)="updateBet(game.account * .15)">15%</button>
+      <button mat-raised-button
+              (click)="updateBet(game.account * .30)">30%</button>
+      <button mat-raised-button
+              (click)="updateBet(game.account * .45)">45%</button>
+      <br />
+      <button mat-raised-button
+              (click)="updateBet(game.account * .60)">60%</button>
+      <button mat-raised-button
+              (click)="updateBet(game.account * .75)">75%</button>
+      <button mat-raised-button
+              (click)="updateBet(game.account * .90)">90%</button>
+      <button mat-raised-button
+              (click)="updateBet(game.account)">All</button>
+    </section>
+  </fieldset>
+  <h2>{{deckSize}} cards drawn randomly from a deck.</h2>
+  <div>
+    <button mat-raised-button
+            (click)="game.shuffle()">Shuffle</button>
+    <button mat-raised-button
+            (click)="game.newDeck()">New Deck</button>
+  </div>
+  <br />
+  <input [checked]="consoleShow"
+         class="cardcounting"
+         (click)="consoleShow = !consoleShow"
+         type="checkbox" />
+  <fieldset *ngIf="game.history.length > 0 && consoleShow;"> Metrics
+    <ng-container *ngIf="game.cardsLeft > 0"> Fair deck percentages: Red
+      {{redPercentage(game.history)}} Black {{blackPercentage(game.history)}}
+      Known deck percentages: Red {{game.percentRedRemaining()}} Black
+      {{game.percentBlackRemaining()}} <br />
+      <button mat-raised-button
+              *ngIf="redPercentage(game.history) >=.5"
+              (click)="game.red(bet)">Red</button>
+      <button mat-raised-button
+              *ngIf="blackPercentage(game.history) >=.5"
+              (click)="game.black(bet)">Black</button>
+      <br>
+      <button mat-raised-button
+              (click)="updateBet(findEdge(game.history) * game.account)">{{prettyNumber(findEdge(game.history)*100)}}%
+        (1.0X EDGE)</button>
+      <br />
+      <button mat-raised-button
+              (click)="updateBet(findEdge(game.history) * game.account / 2)">{{prettyNumber(findEdge(game.history) * 100 / 2)}}%
+        (0.5X EDGE)</button>
+      <br />
+    </ng-container>
+    <br />
+    <ul>
+      <li *ngFor="let item of game.history; index as i"> {{item.bet.value}} bet
+        on {{item.bet.card}}. Actual result was {{item.card}}. </li>
+    </ul>
+  </fieldset>
+</main>

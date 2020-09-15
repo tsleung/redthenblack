@@ -3,9 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Red then Black</title>
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
-  <script type="text/css" src="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"></script>
   <style type="text/less">
     body {
       font-size:16px;
@@ -26,8 +23,10 @@
       text-align: center;
     }
   </style>  
+  <script> var exports = {}; </script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.3/less.js"></script>
-  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.js"></script>
+  <script type="module" src="./ts-built/index.js"></script>
+  <link rel="manifest" href="./manifest.json">
   <script>
     // <meta http-equiv="refresh" content="5">
     ((host) => host === 'redthenblack.com' || setTimeout(() => window.document.location.reload(),5000) )(window.document.location.host)
@@ -38,8 +37,11 @@
     <div class="main">
         <header>
             <h1>Red then Black</h1>
-        </header>        
-    </div>
+        </header>
+        <section>
 
+        </section>
+    </div>
 </body>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
 </html>

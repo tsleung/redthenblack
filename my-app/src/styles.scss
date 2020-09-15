@@ -1,0 +1,129 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$my-app-primary: mat-palette($mat-indigo);
+$my-app-accent: mat-palette($mat-amber, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$my-app-warn: mat-palette($mat-pink);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($my-app-theme);
+
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';
+
+$foreground: map-get($my-app-theme, foreground);
+$background: map-get($my-app-theme, background);
+
+// pastel black hex
+// https://www.google.com/search?q=pastel+black+hex&safe=off&rlz=1C5CHFA_enUS824US824&sxsrf=ALeKk01aDOvY-NdmQPE6XlvazPRg2v6frQ:1594848272189&tbm=isch&source=iu&ictx=1&fir=LLHjGNj_lWKDNM%252C7KBZqRGH6G1N4M%252C_&vet=1&usg=AI4_-kRqqONat7JFhPJNc81JGQ5mmOKEXQ&sa=X&ved=2ahUKEwjwze_lmNDqAhVFJzQIHaJPDbMQ9QEwA3oECAIQHg&biw=1398&bih=739#imgrc=7rXzfy_K6vTZ9M
+// https://www.google.com/search?q=pastel%20black%20hex&tbm=isch&safe=off&safe=off&tbs=rimg%3ACe61838vyur0YQADfKPAHgh1&rlz=1C5CHFA_enUS824US824&hl=en&ved=0CBsQuIIBahcKEwjAzsHpmNDqAhUAAAAAHQAAAAAQCw&biw=1383&bih=739
+$custom-typography: mat-typography-config($font-family: "'Work Sans','Montserrat','Raleway','Work Sans'",
+  $display-4: mat-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
+  $display-3: mat-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
+  $display-2: mat-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
+  $display-1: mat-typography-level(34px, 40px, 400),
+  $headline: mat-typography-level(26px, 32px, 300, $letter-spacing: 0.05em),
+  $title: mat-typography-level(24px, 32px, 300),
+  $subheading-2: mat-typography-level(20px, 32px, 100, $letter-spacing: 0.00em),
+  $subheading-1: mat-typography-level(16px, 28px, 400),
+  $body-2: mat-typography-level(14px, 26px, 500, $letter-spacing: 0.02em, $font-family: 'Raleway'),
+  $body-1: mat-typography-level(17px, 30px, 300, $letter-spacing: -0.02em, $font-family: 'Montserrat'),
+  $caption: mat-typography-level(12px, 20px, 400),
+  $button: mat-typography-level(14px, 14px, 500),
+  // Line-height must be unit-less fraction of the font-size.
+  $input: mat-typography-level(inherit, 1.125, 400),
+);
+@include mat-core($custom-typography);
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Work Sans', 'Raleway', 'Open Sans', Roboto, "Helvetica Neue", sans-serif;
+  overscroll-behavior: noneoa;
+}
+
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  flex: 1;
+  word-spacing: .125em;
+  flex-direction: column;
+  text-align: center;
+}
+
+*:target~header {
+  height: auto;
+
+}
+
+main {
+  padding: 1em;
+}
+
+.mat-typography {
+  article {
+    max-width: 40em;
+    margin: 4em auto;
+    white-space: pre-line;
+  }
+
+  p {
+    margin: 2em auto;
+  }
+}
+
+blockquote {
+  color: mat-color($foreground, hint-text);
+  border-left: 1px solid mat-color($background, disabled-button);
+  font-style: italic;
+  padding: 0 1em;
+  margin: .5em;
+  line-height: 2rem;
+
+  /*
+  &:before {
+    content: "\"";
+  }
+
+  &:after {
+    content: "\"";
+  }
+  */
+}
+
+aside {
+  float: right;
+}
+
+.c3 .domain,
+.c3 .tick line {
+  stroke: #aaa;
+}
+
+.c3-axis .tick text {
+  fill: #aaa;
+}
