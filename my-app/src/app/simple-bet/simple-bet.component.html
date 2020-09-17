@@ -23,7 +23,7 @@
         <span matBadgeColor="warn" *ngIf="lastBetResult < 0" matBadge="{{lastBetResult}}">Account: {{account}}</span>
     </div>
     <div>
-        Red: 
+        Bet on Red:<br/> 
         <button (click)="bet(0,true)" mat-button color="primary">Zero</button>
         <button (click)="bet(.25,true)" mat-button>25%</button>
         <button (click)="bet(.50,true)" mat-button>50%</button>
@@ -31,7 +31,7 @@
         <button (click)="bet(1.00,true)" mat-button color="warn">All</button>
         </div>
     <div>
-        Black: 
+        Bet on Black: <br/>
         <button (click)="bet(0,false)" mat-button color="primary">Zero</button>
         <button (click)="bet(.25,false)" mat-button>25%</button>
         <button (click)="bet(.50,false)" mat-button>50%</button>
@@ -48,7 +48,13 @@
         <div>
             Number of non-zero bets placed: {{numNonZeroBets}}
         </div>    
-        <div>History: {{history.slice(0,108).join()}}</div>
+
+        <details>
+            <summary>History</summary>
+            <p>
+                {{history.slice(0,108).join(', ')}}    
+            </p>
+        </details>
     </ng-container>
     <h4>Payout: After initial 100 buy-in, you can win another 100 (account value to 200). At least two full decks worth of non-zero bets (54*2 = 108) must be placed to collect. Custom bets are not eligible for payout.</h4>
     <h4>Hint: {{favorableCards}}/{{totalCards}} of the cards are in your favor. However, this game is not.</h4>
