@@ -1,0 +1,19 @@
+:host {
+    padding: 0;
+    text-align: left;
+}
+
+footer {
+    padding: 1rem;
+}
+
+main {
+    height: 100vh;
+}
+
+.mat-badge-medium.mat-badge-overlap.mat-badge-after .mat-badge-content {
+    width: auto;
+    right: -1rem;
+    top: -1rem;
+    border-radius: 0;
+}

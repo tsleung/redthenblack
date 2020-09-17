@@ -1,0 +1,58 @@
+<header class="intro">
+    <h1><span>Simple betting game</span></h1>
+    <h3>Make as much money as possible.</h3>
+    <a mat-button
+       href="#main"
+       mat-icon-button
+       aria-label=""
+       (click)="$event.preventDefault();main.scrollIntoView({behavior:'smooth'})">
+      <!-- keyboard_arrow_down -->
+      <!-- check -->
+      <mat-icon>check </mat-icon>
+    </a>
+</header>
+<main #main>
+    <h2>Directions: Bet an amount if the next card is either 
+        <br/>(A) a number card e.g. 2-9 or
+        <br/>(B) not a number card e.g. A,J,Q,K,W
+    </h2>
+    <h4>Setup: Standard deck of cards 52 cards with two additional wilds to total 54. After every bet the deck is shuffled.  Splitting pennies is not allowed, and will be rounded down.</h4>
+    <div>
+        <span *ngIf="lastBetResult == 0">Account: {{account}}</span>
+        <span matBadgeColor="primary" *ngIf="lastBetResult > 0" matBadge="+{{lastBetResult}}">Account: {{account}}</span>
+        <span matBadgeColor="warn" *ngIf="lastBetResult < 0" matBadge="{{lastBetResult}}">Account: {{account}}</span>
+    </div>
+    <div>
+        Bet on Number: 
+        <button (click)="bet(0,true)" mat-button color="primary">Nothing</button>
+        <button (click)="bet(.25,true)" mat-button>25%</button>
+        <button (click)="bet(.50,true)" mat-button>50%</button>
+        <button (click)="bet(.75,true)" mat-button>75%</button>
+        <button (click)="bet(1.00,true)" mat-button color="warn">All</button>
+        <button (click)="customBet(true)" mat-button>Custom</button>
+    </div>
+    <div>
+        Bet on not Number: 
+        <button (click)="bet(0,false)" mat-button color="primary">Nothing</button>
+        <button (click)="bet(.25,false)" mat-button>25%</button>
+        <button (click)="bet(.50,false)" mat-button>50%</button>
+        <button (click)="bet(.75,false)" mat-button>75%</button>
+        <button (click)="bet(1.00,false)" mat-button color="warn">All</button>
+        <button (click)="customBet(false)" mat-button>Custom</button>
+    </div>
+
+    <div>
+        Number of bets placed: {{numBets}}
+    </div>
+    <div>
+        Number of custom bets placed: {{numCustomBets}}
+    </div>
+    <h4>
+        Payout: Accounts over 100 will be paid out. At least two full decks worth of bets (54*2 = 108) must be placed to collect. Custom bets are not eligible for payout.
+    </h4>
+    <h4>Hint: 34/54 cards are number cards. 18/54 cards are not number cards.</h4>
+</main>
+<footer>
+    <a routerLink="/game">Another game</a>
+</footer>
+    

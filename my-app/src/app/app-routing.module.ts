@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GameComponent } from './game/game.component';
+import { SimpleBetComponent } from './simple-bet/simple-bet.component';
 import { CashFlowPlanComponent } from './cash-flow-plan/cash-flow-plan.component';
 
 const routes: Routes = [
@@ -15,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    component: GameComponent,
+    component: SimpleBetComponent,
   },
 
 ];

@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatCardModule } from '@angular/material/card';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -17,19 +19,23 @@ import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CashFlowPlanComponent } from './cash-flow-plan/cash-flow-plan.component';
 import { TimeseriesChartComponent } from './timeseries-chart/timeseries-chart.component';
+import { SimpleBetComponent } from './simple-bet/simple-bet.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GameComponent,
     CashFlowPlanComponent,
-    TimeseriesChartComponent
+    TimeseriesChartComponent,
+    SimpleBetComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     MatRadioModule,
+    MatBadgeModule,
+    MatCardModule,
     MatSliderModule,
     MatButtonModule,
     MatIconModule,

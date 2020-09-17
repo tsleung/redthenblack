@@ -32,6 +32,7 @@ class Titles {
 })
 export class CashFlowPlanComponent {
   showData = false;
+  outputData = '';
   backtester = BACKTESTER;
   name = pickRandom(names);
   worth = '$1M';
@@ -59,6 +60,16 @@ export class CashFlowPlanComponent {
     const symbol = window.prompt('Symbol');
     const data = window.prompt('Data');
     localStorage.setItem(symbol, data);
+  }
+
+
+  loadData() {
+    const symbol = window.prompt('Symbol', 'SPY');
+    this.outputData = localStorage.getItem(symbol);
+  }
+  
+  clearOutput() {
+    this.outputData = '';
   }
 
 }

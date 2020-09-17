@@ -14,9 +14,12 @@
 <main #main
       id="main">
   <!-- Bot should play RtB to start -->
-  <button mat-button
+  <button mat-raised-button
           (click)="showData = !showData">Show raw data</button>
-  <button (click)="saveData()">Load data</button>
+  <button mat-raised-button (click)="loadData()">Load data</button>
+  <button *ngIf="outputData" mat-raised-button (click)="clearOutput()">Clear data</button>
+  <button (click)="loadData()" mat-raised-button>Output data</button>
+  <textarea matInput *ngIf="outputData">{{outputData}}</textarea>
   <ng-container *ngIf="showData">
     <iframe width="100%"
             src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSpQkFE6dROgEP3_M3UnNPDxmq2IGJPxbYwUDEh7zqQpwI37X_KRx_KqOfZnpzr9Lml_K0oy2pmT9Q6/pubhtml?widget=true&amp;headers=false"></iframe>
