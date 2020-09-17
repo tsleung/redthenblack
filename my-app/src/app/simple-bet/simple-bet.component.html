@@ -23,22 +23,20 @@
         <span matBadgeColor="warn" *ngIf="lastBetResult < 0" matBadge="{{lastBetResult}}">Account: {{account}}</span>
     </div>
     <div>
-        Bet on Red: 
+        Red: 
         <button (click)="bet(0,true)" mat-button color="primary">Zero</button>
         <button (click)="bet(.25,true)" mat-button>25%</button>
         <button (click)="bet(.50,true)" mat-button>50%</button>
         <button (click)="bet(.75,true)" mat-button>75%</button>
         <button (click)="bet(1.00,true)" mat-button color="warn">All</button>
-        <button (click)="customBet(true)" mat-button>Custom</button>
-    </div>
+        </div>
     <div>
-        Bet on Black: 
+        Black: 
         <button (click)="bet(0,false)" mat-button color="primary">Zero</button>
         <button (click)="bet(.25,false)" mat-button>25%</button>
         <button (click)="bet(.50,false)" mat-button>50%</button>
         <button (click)="bet(.75,false)" mat-button>75%</button>
         <button (click)="bet(1.00,false)" mat-button color="warn">All</button>
-        <button (click)="customBet(false)" mat-button>Custom</button>
     </div>
     <ng-container *ngIf="history.length > 0">
         <div>
@@ -60,7 +58,9 @@
     function simpleBettingGame(size){return new Array(108).fill(0).map(() => Math.random() < (28/54) ? 1 : -1).reduce((account, outcome) => Math.floor((account * size * outcome)) + (account),100);}
     new Array(100).fill(0.25).map(simpleBettingGame).sort((a,b) => b-a)
     -->
+    Admin things:
     <button (click)="updateCards()" mat-button>Odds</button>
+    <button (click)="customBet(true)" mat-button>Custom Bet</button>
     <a routerLink="/game">Another game</a>
 </footer>
     
