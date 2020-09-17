@@ -9,27 +9,36 @@ export class SimpleBetComponent {
 
   lastBetResult = 0;
   numCustomBets = 0;
-  numBets = 0;
-  account = 50;
+  history:number[] = [];
+  numNonZeroBets = 0;
+  account = 100;
+  favorableCards = 28;
+  totalCards = 54;
 
   constructor() { }
 
   customBet(numberCard: boolean) {
-    let size = Number(prompt("What size to bet? (0-100)",'5'));
-    this.numCustomBets++;
-    size = isNaN(size) ? 0 : size;
-    this.bet(size, numberCard);
+    const size = Number(prompt("What size to bet? (0-100)",'2')) ?? 0;
+    const numTimes = Number(prompt("How many times",'108')) ?? 0;
+    new Array(numTimes).fill(0).forEach(() => {
+      this.numCustomBets++;
+      this.bet(size / 100, numberCard);
+    });
   }
+
   bet(size: number, numberCard: boolean) {
-    // 54 cards, 34/54 number, 18/54 non number
     size = Math.max(0,Math.min(size,1));
-    const isNumberCard = Math.random() > 34/54;
-    const correctBet = (numberCard && isNumberCard) || (!numberCard && !isNumberCard);
+    const correctBet = Math.random() < this.favorableCards/this.totalCards;
     const betChange = Math.floor(size * this.account);
 
     this.lastBetResult = correctBet ? betChange : -betChange;
+    this.history = [this.lastBetResult, ...this.history];
     this.account = this.account + this.lastBetResult;
-    this.numBets++;
+    this.numNonZeroBets = this.history.filter(v => v != 0).length;
+  }
 
+  updateCards() {
+    this.favorableCards = Number(window.prompt('Number of favorable cards', `${this.favorableCards}`)) ?? 0;
+    this.totalCards = Number(window.prompt('Number of cards', `${this.totalCards}`)) ?? 0;
   }
 }

@@ -12,19 +12,19 @@
     </a>
 </header>
 <main #main>
-    <h2>Directions: Bet an amount if the next card is either 
-        <br/>(A) a number card e.g. 2-9 or
-        <br/>(B) not a number card e.g. A,J,Q,K,W
+    <h2>Directions: Bet an amount on the next card being either 
+        <br/>(A) Red
+        <br/>(B) Black
     </h2>
-    <h4>Setup: Standard deck of cards 52 cards with two additional wilds to total 54. After every bet the deck is shuffled.  Splitting pennies is not allowed, and will be rounded down.</h4>
+    <h4>Setup: Standard deck of 52 cards with two additional wilds totaling 54. Wild cards are in the player's favor. After every bet the deck is shuffled. Bets will be rounded down to nearest whole number.</h4>
     <div>
         <span *ngIf="lastBetResult == 0">Account: {{account}}</span>
         <span matBadgeColor="primary" *ngIf="lastBetResult > 0" matBadge="+{{lastBetResult}}">Account: {{account}}</span>
         <span matBadgeColor="warn" *ngIf="lastBetResult < 0" matBadge="{{lastBetResult}}">Account: {{account}}</span>
     </div>
     <div>
-        Bet on Number: 
-        <button (click)="bet(0,true)" mat-button color="primary">Nothing</button>
+        Bet on Red: 
+        <button (click)="bet(0,true)" mat-button color="primary">Zero</button>
         <button (click)="bet(.25,true)" mat-button>25%</button>
         <button (click)="bet(.50,true)" mat-button>50%</button>
         <button (click)="bet(.75,true)" mat-button>75%</button>
@@ -32,27 +32,35 @@
         <button (click)="customBet(true)" mat-button>Custom</button>
     </div>
     <div>
-        Bet on not Number: 
-        <button (click)="bet(0,false)" mat-button color="primary">Nothing</button>
+        Bet on Black: 
+        <button (click)="bet(0,false)" mat-button color="primary">Zero</button>
         <button (click)="bet(.25,false)" mat-button>25%</button>
         <button (click)="bet(.50,false)" mat-button>50%</button>
         <button (click)="bet(.75,false)" mat-button>75%</button>
         <button (click)="bet(1.00,false)" mat-button color="warn">All</button>
         <button (click)="customBet(false)" mat-button>Custom</button>
     </div>
-
-    <div>
-        Number of bets placed: {{numBets}}
-    </div>
-    <div>
-        Number of custom bets placed: {{numCustomBets}}
-    </div>
-    <h4>
-        Payout: Accounts over 100 will be paid out. At least two full decks worth of bets (54*2 = 108) must be placed to collect. Custom bets are not eligible for payout.
-    </h4>
-    <h4>Hint: 34/54 cards are number cards. 18/54 cards are not number cards.</h4>
+    <ng-container *ngIf="history.length > 0">
+        <div>
+            Number of bets placed: {{history.length}}
+        </div>
+        <div>
+            Number of custom bets placed: {{numCustomBets}}
+        </div>
+        <div>
+            Number of non-zero bets placed: {{numNonZeroBets}}
+        </div>    
+        <div>History: {{history.slice(0,108).join()}}</div>
+    </ng-container>
+    <h4>Payout: After initial 100 buy-in, you can win another 100 (account value to 200). At least two full decks worth of non-zero bets (54*2 = 108) must be placed to collect. Custom bets are not eligible for payout.</h4>
+    <h4>Hint: {{favorableCards}}/{{totalCards}} of the cards are in your favor. However, this game is not.</h4>
 </main>
 <footer>
+    <!--
+    function simpleBettingGame(size){return new Array(108).fill(0).map(() => Math.random() < (28/54) ? 1 : -1).reduce((account, outcome) => Math.floor((account * size * outcome)) + (account),100);}
+    new Array(100).fill(0.25).map(simpleBettingGame).sort((a,b) => b-a)
+    -->
+    <button (click)="updateCards()" mat-button>Odds</button>
     <a routerLink="/game">Another game</a>
 </footer>
     
