@@ -43,7 +43,7 @@
             Number of bets placed: {{history.length}}
         </div>
         <div>
-            Number of custom bets placed: {{numCustomBets}}
+            Bet Accuracy: {{accuracy()}}%
         </div>
         <div>
             Number of non-zero bets placed: {{numNonZeroBets}}
@@ -56,7 +56,7 @@
             </p>
         </details>
     </ng-container>
-    <h4>Payout: After initial 100 buy-in, you can win another 100 (account value to 200). At least two full decks worth of non-zero bets (54*2 = 108) must be placed to collect. Custom bets are not eligible for payout.</h4>
+    <h4>Payout: After initial 100 buy-in, you can win another 100 (account value to 200). At least two full decks worth of non-zero bets (54*2 = 108) must be placed to collect.</h4>
     <h4>Hint: {{favorableCards}}/{{totalCards}} of the cards are in your favor. However, this game is not.</h4>
 </main>
 <footer>
@@ -65,8 +65,14 @@
     new Array(100).fill(0.25).map(simpleBettingGame).sort((a,b) => b-a)
     -->
     Admin things:
-    <button (click)="updateCards()" mat-button>Odds</button>
+    <br/>
+    <div *ngIf="numCustomBets > 0">
+        Number of custom bets placed: {{numCustomBets}}
+    <br/>
+    Custom bets are not eligible for payout.
+    </div>
     <button (click)="customBet(true)" mat-button>Custom Bet</button>
+    <button (click)="updateCards()" mat-button>Odds</button>
     <a routerLink="/game">Another game</a>
 </footer>
     

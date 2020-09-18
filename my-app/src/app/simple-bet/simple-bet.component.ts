@@ -13,12 +13,14 @@ export class SimpleBetComponent {
   numNonZeroBets = 0;
   account = 100;
   favorableCards = 28;
+  numCorrect = 0;
   totalCards = 54;
 
   constructor() { }
 
   customBet(numberCard: boolean) {
-    const size = Number(prompt("What size to bet? (0-100)",'2')) ?? 0;
+    const idealBet = Math.floor((2 * (this.favorableCards / this.totalCards) - 1)*100);
+    const size = Number(prompt("What size to bet? (0-100)",`${idealBet}`)) ?? 0;
     const numTimes = Number(prompt("How many times",'108')) ?? 0;
     new Array(numTimes).fill(0).forEach(() => {
       this.numCustomBets++;
@@ -31,10 +33,17 @@ export class SimpleBetComponent {
     const correctBet = Math.random() < this.favorableCards/this.totalCards;
     const betChange = Math.floor(size * this.account);
 
+    
+    this.numCorrect = correctBet ? this.numCorrect+1: this.numCorrect;
+    
     this.lastBetResult = correctBet ? betChange : -betChange;
     this.history = [this.lastBetResult, ...this.history];
     this.account = this.account + this.lastBetResult;
     this.numNonZeroBets = this.history.filter(v => v != 0).length;
+  }
+
+  accuracy() {
+    return Math.round(this.numCorrect / this.history.length * 100) ?? 0;
   }
 
   updateCards() {
