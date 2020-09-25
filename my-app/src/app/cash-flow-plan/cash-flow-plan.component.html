@@ -1,5 +1,5 @@
 <header class="intro">
-  <h1><span>Red then Black</span></h1>
+  <h1><span>Betting on Beta</span></h1>
   <h3>An amateur’s approach to retirement.</h3>
   <a mat-button
      href="#main"
@@ -11,166 +11,21 @@
     <mat-icon>check </mat-icon>
   </a>
 </header>
-<main #main
-      id="main">
-  <!-- Bot should play RtB to start -->
+<main #main>
   <button mat-raised-button
-          (click)="showData = !showData">Show raw data</button>
-  <button mat-raised-button (click)="loadData()">Load data</button>
+  (click)="showData = !showData">Show raw data</button>
+  <button mat-raised-button (click)="saveData()">Save data</button>
+
+  <br/>
   <button *ngIf="outputData" mat-raised-button (click)="clearOutput()">Clear data</button>
   <button (click)="loadData()" mat-raised-button>Output data</button>
   <textarea matInput *ngIf="outputData">{{outputData}}</textarea>
   <ng-container *ngIf="showData">
-    <iframe width="100%"
-            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSpQkFE6dROgEP3_M3UnNPDxmq2IGJPxbYwUDEh7zqQpwI37X_KRx_KqOfZnpzr9Lml_K0oy2pmT9Q6/pubhtml?widget=true&amp;headers=false"></iframe>
+  <iframe width="100%"
+    src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSpQkFE6dROgEP3_M3UnNPDxmq2IGJPxbYwUDEh7zqQpwI37X_KRx_KqOfZnpzr9Lml_K0oy2pmT9Q6/pubhtml?widget=true&amp;headers=false"></iframe>
   </ng-container>
-  <figure>
-    <div class="placeholder">Trajectory of outcomes</div>
-  </figure>
-  <form class="profile">
-    I've saved <span contenteditable
-          #tooltip="matTooltip"
-          matTooltip="What's your name?"
-          matTooltipPosition="above"
-          matTooltipShow
-          (keydown.enter)="onEnter($event)"
-          (input)="onNameChange($event.target.innerHTML)">
-      $50k</span> and have a <span contenteditable
-          (keydown.enter)="onEnter($event)"
-          (input)="onNameChange($event.target.innerHTML)">
-      95%</span> chance of achieving a net worth of <span [textContent]="worth"
-          contenteditable
-          (keydown.enter)="onEnter($event)"
-          (input)="onNameChange($event.target.innerHTML)"></span> after
-    <span [textContent]="timeline"
-          contenteditable
-          (keydown.enter)="onEnter($event)"
-          (input)="onNameChange($event.target.innerHTML)"></span>
-    years with <span [textContent]="policy"
-          contenteditable
-          (keydown.enter)="onEnter($event)"
-          (input)="onNameChange($event.target.innerHTML)"></span> in
-    <span [textContent]="sampleMarketData"
-          (keydown.enter)="onEnter($event)"
-          contenteditable
-          (input)="onNameChange($event.target.innerHTML)"></span>.
-  </form>
-  <figure>
-    <div class="placeholder">Additional statistics of outcome
-    </div>
-  </figure>
 
-  <article>
-    <h2>The math to a million</h2>
-    <p> I started working a little over ten years ago making $52.5k in NYC.
-      This
-      is how I should’ve approached it: [input for income, income for savings
-      (annual)] Create a figure that has collapsible years broken into 250
-      days
-      (50 weeks 5 days a week for pay savings and investment, label the
-      expansions from the inputs) </p>
-  </article>
-  <article>
-    <h2>The Goal</h2>
-    <h3>Creating Red then Black</h3>
-    <figure>
-      <figcaption>A standard deck has 52 cards. There are four suits,
-        diamonds,
-        clubs, hearts, spades. Diamonds and hearts are red cards, clubs and
-        spades are black cards, 26 red and 26 black. Each suit has 13 cards:
-        an
-        (A)ce, numbers (2-10) and face cards (J)ack, (Q)ueen and (K)ing.
-      </figcaption>
-    </figure>
-  </article>
-  <router-outlet name="game"></router-outlet>
-  <article>
-    <h2>Fair bets</h2>
-    <p>Given 100% of +50% of your wealth or 50% chance of +100% of your wealth
-    </p>
-    <h2> Making money is easy, keeping it is hard. </h2>
-    <p>Suppose you're given the following offer:</p>
-    <blockquote> Guess the color of the next card you draw, I'll give you what
-      you bet. Get it wrong, I'll take your bet. </blockquote>
-    <p> Example of loss Example of sample bets (cards) Through February 2019
-      and
-    </p>
-    <p> I'll do my best to explain with a deck of cards. </p>
-  </article>
-  <aside>
-    <router-outlet name="game2"></router-outlet>
-  </aside>
-  <article #beginning
-           id="beginning">
-    <h3>A personal story of financial planning expressed through a deck of
-      cards
-    </h3>
-    <p> The stock market in 2001, 2007, and 2020. Bet appropriately, please
-      Bet
-      small, please. There are a lot of unknowns where confidence isn't an
-      advantage - it's not more or less, it's precision and recall. ROC and
-      AUC
-    </p>
-  </article>
-  <article>
-    <h3>What are we achieving </h3>
-    <p>Why do we avoid losses. </p>
-    <p>What do we use with leverage. How about taxes </p>
-  </article>
-  <article>
-    <h3>Income, net worth, and the one percent</h3>
-    <blockquote>This is a blockquote</blockquote>
-    <h4>Rebalancing is hard</h4>
-    <p> There is a lot of money in the world chasing what to invest in - there
-      are plenty of resources out there to find. For this article I've created
-      a
-      new game that I hope will create simplifying model to demonstrate how I
-      look to optimize my own outcomes. To understand, you'll need a deck of
-      cards. How much money? People are happy at 75k. 95k is the most. YMMV
-      depending where you live. Wealth 2.3M To simplify, utility. A set of
-      cash
-      flows provided by how much income and wealth. 95% likely Compounding The
-      cost of coffee now, 5 years, 10 years Events happen and there are ways
-      of
-      The bag of outcomes Bets on outcomes What do we do? We are signalling -
-      we
-      determine the cards that are left based on (1) the cards we've seen (2)
-      the cards not in the deck Evaluating value on merit of the content
-      rather
-      than the source Investments The Mortgage The MBA Blackjack RtB The
-      Market
-      Increasing bet size increases probability and scale of negative outcomes
-      The number of bets you plan to make matter - from arithmetic to
-      geometric
-      outcomes 40/60 for red black, do you take the bet? (1 roll) Part 1 - RtB
-      and bet sizing Part 2 - Why markets are hard Unknown, unstationary data.
-      Imagine the dealer can shuffle n number of cards whenever they want to
-      and
-      they are pulling it from underneath the table Arbitrage Price of
-      commodity
-      + shipping cost to a buyer market, this can be gold stocks or crypto
-    </p>
-    <p> How much to save per day - smooth curve or not Forward Thinking in
-      periods, rebalancing is hard (literally time reversion) </p>
-  </article>
+
+
 </main>
-<footer>
-  <article> Why write?During COVID i watched a lot of friends make
-    speculative
-    investing decisions which in many cases didn't work out as intended. As
-    the
-    rise of retail traders occured, i can't help but sense the same fate
-    will
-    affect many more people. This is to raise awareness of the pitfalls of
-    investing and how to build confidence in the decisions you'll make, even
-    if
-    the outcome doesn't necessarily go your way 5000 dollars may make a
-    difference, but so can 5000 words. </article>
-
-  <article>
-    Red then Black is my views on making bets and how I plan for my financial
-    future. There is no guarantee the future will mirror the past and all the
-    skill in the world will never overcome luck. Bet with caution and never more
-    than you can manage, financially and emotionally.
-  </article>
-</footer>
+  

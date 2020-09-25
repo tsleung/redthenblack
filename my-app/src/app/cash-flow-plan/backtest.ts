@@ -1,19 +1,50 @@
 
 import { ɵsetCurrentInjector } from '@angular/core';
 
-interface Portfolio {
-
-  SPY?: number;
+export function arithMean(array: number[]) {
+  return array.reduce((a, b) => a + b) / array.length;
 }
 
-// can generate types of portfolios for actions the agent can take
-const portfolios_value_model: [number, Portfolio][] = [
-  [1, { SPY: 1.0, }],
-  // [1, { SPY: 0.5, }],
-];
+export function geoMean(array: number[]) {
+  return Math.pow(array.reduce((a, b) => a * b), 1 / array.length);
+}
 
-interface BacktestParams {
-  betSize: number;
+export function toHistoricalTimeSeries(raw: string): HistoricalTimeSeries {
+  return {
+    pctChange: toPctChange(raw),
+    dates: toDates(raw),
+    values: toValues(raw),
+  }
+}
+function toRows(raw: string) {
+  const rows = raw.split('\n').filter(Boolean);
+  rows.shift();
+  return rows;
+}
+function toDates (raw: string) {
+  return toRows(raw).map(row => new Date(row.split('\t')[0]));
+}
+function toPctChange (raw: string) {
+  const closes = toValues(raw);
+
+  return closes.map((val,i,arr) => {
+    return arr[i+1] 
+    ? (val - arr[i+1]) / arr[i+1]
+    : 1;
+  },[]);
+}
+
+function toValues(raw: string) {
+  return toRows(raw).map(row => Number(row.split('\t')[4]));
+}
+export interface HistoricalTimeSeries {
+  dates: Date[];
+  pctChange: number[];
+  values: number[];
+}
+
+export interface Portfolio {
+  SPY?: number;
 }
 
 function sampleFrom(dataset, numSamples: number, isValid = (i) => true): number[] {
@@ -29,27 +60,14 @@ function sampleFrom(dataset, numSamples: number, isValid = (i) => true): number[
   });
 }
 
-function determineAction(params: BacktestParams, index: number) {
-  return portfolios_value_model[Math.floor(Math.random() * portfolios_value_model.length)][1];
-}
-
-function createBacktest(params: BacktestParams) {
-  const SPY_RETURNS = [];
+function createBacktest(params: BacktestParams, portfolio: Portfolio):number[][] {
+  const SPY_RETURNS = params.series.SPY.pctChange;
   const results = [];
-  while (results.length < 100)
-  {
-    const backtest: number[] = sampleFrom(SPY_RETURNS, 20 * 3).reduce((backtest, index) => {
-      const change = SPY_RETURNS[index][1];
-      const current = backtest[0];
-      // const portfolio = determineAction(params, index);
+  while (results.length < params.maxRunsPerPortfolio) {
+    const backtest: number[] = sampleFrom(SPY_RETURNS, params.maxRunsPerBacktest).reduce((backtest, index) => {
+      portfolio.SPY = portfolio.SPY ?? 0;
 
-      const spyBet = current;
-      const cash = Math.max(0, current - spyBet);
-      const trade = spyBet * (((change - 1) * params.betSize) + 1);
-
-      //console.log('trade', params.betSize, change, cash, trade)
-
-      return [cash + trade, ...backtest];
+      return [backtest[0] * (1+(SPY_RETURNS[index]*portfolio.SPY)),...backtest];
     }, [1])
 
     results.push(backtest);
@@ -57,72 +75,43 @@ function createBacktest(params: BacktestParams) {
 
   return results;
 }
+
+export interface BacktestParams {
+  maxRunsPerPortfolio: number;
+  maxRunsPerBacktest: number;
+  portfolios: Portfolio[],
+  series: {
+    VIX: HistoricalTimeSeries;
+    SPY: HistoricalTimeSeries;
+  }
+}
+
+export interface PortfolioBacktestResult {
+  geoMean:number;
+  backtests: number[][];
+  geoMeans: number[];
+  portfolio: Portfolio;
+}
+export interface BacktestResults {
+  portfolios: PortfolioBacktestResult[]
+}
+
 export const BACKTESTER = {
-  doSomething: (() => {
-    return // blocking run
+  run: (params: BacktestParams):BacktestResults => {
 
-    new Array(30).fill(0)
-      .map((x, i) => {
-        const betSize = (i / 10) + 1;
-
-        const results = createBacktest({ betSize });
-        // console.log(betSize, 'results', results);
-        return results;
-      })
-      .map((results, i) => {
-        const betSize = i / 10 + 1;
-        const summary = results.map(result => result[0]).sort();
-
-        console.log(betSize, 'summary', geoMean(summary));
-        return summary;
+    const portfolios:PortfolioBacktestResult[] = params.portfolios.map(portfolio => {
+      console.log('running portfolio',portfolio);
+      const backtests:number[][] = createBacktest(params, portfolio).sort((a,b) => a[0]-b[0]);
+      
+      const geoMeans = backtests.map(backtest => {
+        return geoMean(backtest);
       });
 
-  })()
+      return {portfolio, geoMean:geoMean(geoMeans), geoMeans,backtests,};
+    });
+    
+    return {
+      portfolios,
+    };
+  }
 };
-
-function arithMean(array: number[]) {
-  return array.reduce((a, b) => a + b) / array.length;
-}
-
-function geoMean(array: number[]) {
-  return Math.pow(array.reduce((a, b) => a * b), 1 / array.length);
-}
-
-
-function pctChangeFromEntry(entry) {
-  return entry[1];
-}
-
-
-// select your goals, 2 of 3
-
-
-// select your outcomes
-const outcomes = [].map(pctChangeFromEntry);
-// find the free variable, the 1 of 3
-
-// create condition for backtest to continue
-const condition = (account, time) => {
-  return time > 250;
-};
-
-
-function createAgent() {
-
-
-}
-function observe() {
-
-}
-
-function act() {
-
-}
-/** How we choose an action */
-function policy() {
-
-}
-/** How good is an action */
-function value() {
-
-}

@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ContentChildren, Directive, ElementRef, Query
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import * as c3 from 'c3';
-import { BACKTESTER } from './backtest';
+import {Portfolio, HistoricalTimeSeries, BacktestParams,toHistoricalTimeSeries, BACKTESTER } from './backtest';
 
 const names = [
   // 'Amazing',
@@ -40,6 +40,25 @@ export class CashFlowPlanComponent {
   policy = 'fixed investing';
   sampleMarketData = 'markets similar to the past couple of decades'
 
+  constructor() {
+    // betting on beta
+    const portfolios:Portfolio[] = [
+      ...new Array(30).fill(0).map((v,i)=> ({SPY:(i*.1)+.8})),
+    ]
+    const params = {
+      maxRunsPerPortfolio: 200,
+      maxRunsPerBacktest: 60,
+      portfolios,
+      series: {
+        VIX: toHistoricalTimeSeries(localStorage.getItem('VIX')),
+        SPY: toHistoricalTimeSeries(localStorage.getItem('SPY'))
+      }
+    };
+    console.log('running backtester', params);
+    const results = BACKTESTER.run(params);
+    console.log('results', results);
+  }
+
   onEnter(e) {
     e.preventDefault();
   }
@@ -73,12 +92,3 @@ export class CashFlowPlanComponent {
   }
 
 }
-
-
-
-
-/** Using a list of outcomes, we randomly sample bet sizes to achieve a rate of return */
-function determineTimeFrom(worth: number, confidence: number, outcomes: number[]) {
-
-
-} 

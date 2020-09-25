@@ -7,11 +7,11 @@ import { CashFlowPlanComponent } from './cash-flow-plan/cash-flow-plan.component
 const routes: Routes = [
   { path: 'game', component: GameComponent },
   {
-    path: 'article',
+    path: 'beta',
     component: CashFlowPlanComponent,
     children: [
-      { path: '', outlet: 'game', component: GameComponent },
-      { path: '', outlet: 'game2', component: GameComponent },
+      // { path: '', outlet: 'game', component: GameComponent },
+      // { path: '', outlet: 'game2', component: GameComponent },
     ],
   },
   {
