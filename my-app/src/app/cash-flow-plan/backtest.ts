@@ -119,6 +119,7 @@ export interface BacktestParams {
 
 export interface PortfolioBacktestResult {
   geoMean:number;
+  arithGeoMean:number;
   backtests: number[][];
   geoMeans: number[];
   portfolio: Portfolio;
@@ -137,7 +138,7 @@ export const BACKTESTER = {
         return geoMean(backtest);
       });
 
-      const result = {portfolio, geoMean:geoMean(geoMeans), geoMeans,backtests,};
+      const result = {portfolio, arithGeoMean: arithMean(geoMeans),geoMean:geoMean(geoMeans), geoMeans,backtests,};
       console.log('ran portfolio',portfolio,result);
       return result;
     });
