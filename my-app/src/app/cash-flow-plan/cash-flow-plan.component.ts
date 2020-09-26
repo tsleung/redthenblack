@@ -39,15 +39,38 @@ export class CashFlowPlanComponent {
   timeline = '16';
   policy = 'fixed investing';
   sampleMarketData = 'markets similar to the past couple of decades'
+  runsPerPortfolio = 250;
+  periodsPerBacktest = 250;
 
   constructor() {
+  }
+  updateRunsPerPortfolio() {
+    this.runsPerPortfolio = Number(window.prompt('Runs per portfolio'));
+  }
+  updatePeriodsPerBacktest() {
+    this.periodsPerBacktest = Number(window.prompt('Periods per backtest'));
+  }
+
+  runBacktest() {
+
     // betting on beta
     const portfolios:Portfolio[] = [
-      ...new Array(30).fill(0).map((v,i)=> ({SPY:(i*.1)+.8})),
+      {SPY: 1.0},
+      {SPY: 1.2},
+      {SPY: 1.6},
+      {SPY: 2.0},
+      {SPY: 2.4},
+      {SPY: 2.8},
+      {SPY: 3.0},
+      {SPY: 3.4},
+      {SPY: 3.8},
+      {SPY: 4.2},
+      {SPY: 5.0},
+      {SPY: 6.0},
     ]
     const params = {
-      maxRunsPerPortfolio: 200,
-      maxRunsPerBacktest: 60,
+      maxRunsPerPortfolio: this.runsPerPortfolio,
+      maxRunsPerBacktest: this.periodsPerBacktest,
       portfolios,
       series: {
         VIX: toHistoricalTimeSeries(localStorage.getItem('VIX')),

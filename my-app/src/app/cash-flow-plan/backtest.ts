@@ -67,7 +67,9 @@ function createBacktest(params: BacktestParams, portfolio: Portfolio):number[][]
     const backtest: number[] = sampleFrom(SPY_RETURNS, params.maxRunsPerBacktest).reduce((backtest, index) => {
       portfolio.SPY = portfolio.SPY ?? 0;
 
-      return [backtest[0] * (1+(SPY_RETURNS[index]*portfolio.SPY)),...backtest];
+      return (params.series.VIX.values[index] > 35) ?
+        [backtest[0], ...backtest] :
+        [backtest[0] * (1+(SPY_RETURNS[index]*portfolio.SPY)),...backtest];
     }, [1])
 
     results.push(backtest);
@@ -100,14 +102,15 @@ export const BACKTESTER = {
   run: (params: BacktestParams):BacktestResults => {
 
     const portfolios:PortfolioBacktestResult[] = params.portfolios.map(portfolio => {
-      console.log('running portfolio',portfolio);
       const backtests:number[][] = createBacktest(params, portfolio).sort((a,b) => a[0]-b[0]);
       
       const geoMeans = backtests.map(backtest => {
         return geoMean(backtest);
       });
 
-      return {portfolio, geoMean:geoMean(geoMeans), geoMeans,backtests,};
+      const result = {portfolio, geoMean:geoMean(geoMeans), geoMeans,backtests,};
+      console.log('ran portfolio',portfolio,result);
+      return result;
     });
     
     return {
