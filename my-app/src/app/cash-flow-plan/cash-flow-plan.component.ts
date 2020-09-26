@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ContentChildren, Directive, ElementRef, Query
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import * as c3 from 'c3';
-import {Portfolio, indicesSortedByDistance,HistoricalTimeSeries, BacktestParams,toHistoricalTimeSeries, BACKTESTER } from './backtest';
+import {Portfolio, indicesSortedByDistance,indicesSortedByDistanceAbove,indicesSortedByDistanceBelow,HistoricalTimeSeries, BacktestParams,toHistoricalTimeSeries, BACKTESTER } from './backtest';
 
 const names = [
   // 'Amazing',
@@ -55,8 +55,12 @@ export class CashFlowPlanComponent {
 
     const targetVIX = Number(window.prompt('Target VIX', '35'));
     const percentage = Number(window.prompt('percentage','50')) / 100;
+    const balance = Boolean(Number(window.prompt('Balance aroudn VIX', '1')));
     // betting on beta
     const portfolios:Portfolio[] = [
+      {SPY: 0.4},
+      {SPY: 0.6},
+      {SPY: 0.8},
       {SPY: 1.0},
       {SPY: 1.2},
       {SPY: 1.4},
@@ -77,8 +81,15 @@ export class CashFlowPlanComponent {
       {SPY: 8.0},
       {SPY: 10.0},
     ];
+    const aboveIndices = indicesSortedByDistanceAbove(targetVIX, toHistoricalTimeSeries(localStorage.getItem('VIX')).values);
+    const belowIndices = indicesSortedByDistanceBelow(targetVIX, toHistoricalTimeSeries(localStorage.getItem('VIX')).values);
     const sortedIndices = indicesSortedByDistance(targetVIX, toHistoricalTimeSeries(localStorage.getItem('VIX')).values)
-    const indices = sortedIndices.slice(0,Math.round(sortedIndices.length * percentage)); 
+    // grab equal above and below if balanced, otherwise just grab closest
+    const indices = balance ? [
+      ...aboveIndices.slice(0,Math.round(sortedIndices.length * percentage / 2)),
+      ...belowIndices.slice(0,Math.round(sortedIndices.length * percentage / 2))
+    ] : sortedIndices.slice(0,Math.round(sortedIndices.length * percentage)); 
+
     const params = {
       maxRunsPerPortfolio: this.runsPerPortfolio,
       maxRunsPerBacktest: this.periodsPerBacktest,

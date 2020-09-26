@@ -9,6 +9,7 @@ export function geoMean(array: number[]) {
   return Math.pow(array.reduce((a, b) => a * b), 1 / array.length);
 }
 
+// create same but limited for above and below a value
 /** Convert a set of values into indices sorted by distance */
 export function indicesSortedByDistance(subject: number, dataset: number[]) {
   // [5,2,5,6,8,1,9,10,7,3,4].sort((a,b) => Math.abs(a-6) - Math.abs(b-6))
@@ -18,6 +19,26 @@ export function indicesSortedByDistance(subject: number, dataset: number[]) {
   }).sort((a,b) => a.distance - b.distance)
   return sorted.map(val => val.index);
 }
+
+
+/** Convert a set of values into indices sorted by distance */
+export function indicesSortedByDistanceAbove(subject: number, dataset: number[]) {
+  const sorted = dataset.map((val,index) => {
+    const distance = subject - val;
+    return {index,val,distance};
+  }).sort((a,b) => a.distance - b.distance)
+  return sorted.filter(val => val.distance <= 0).map(val => val.index);
+}
+
+/** Convert a set of values into indices sorted by distance */
+export function indicesSortedByDistanceBelow(subject: number, dataset: number[]) {
+  const sorted = dataset.map((val,index) => {
+    const distance = subject - val;
+    return {index,val,distance};
+  }).sort((a,b) => a.distance - b.distance)
+  return sorted.filter(val => val.distance > 0).map(val => val.index);
+}
+
 
 export function toHistoricalTimeSeries(raw: string): HistoricalTimeSeries {
   return {
