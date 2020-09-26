@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ContentChildren, Directive, ElementRef, Query
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import * as c3 from 'c3';
-import {Portfolio, HistoricalTimeSeries, BacktestParams,toHistoricalTimeSeries, BACKTESTER } from './backtest';
+import {Portfolio, indicesSortedByDistance,HistoricalTimeSeries, BacktestParams,toHistoricalTimeSeries, BACKTESTER } from './backtest';
 
 const names = [
   // 'Amazing',
@@ -53,25 +53,37 @@ export class CashFlowPlanComponent {
 
   runBacktest() {
 
+    const targetVIX = Number(window.prompt('Target VIX', '35'));
+    const percentage = Number(window.prompt('percentage','50')) / 100;
     // betting on beta
     const portfolios:Portfolio[] = [
       {SPY: 1.0},
       {SPY: 1.2},
+      {SPY: 1.4},
       {SPY: 1.6},
+      {SPY: 1.8},
       {SPY: 2.0},
+      {SPY: 2.2},
       {SPY: 2.4},
+      {SPY: 2.6},
       {SPY: 2.8},
       {SPY: 3.0},
+      {SPY: 3.2},
       {SPY: 3.4},
-      {SPY: 3.8},
-      {SPY: 4.2},
+      {SPY: 3.6},
+      {SPY: 4.0},
       {SPY: 5.0},
       {SPY: 6.0},
-    ]
+      {SPY: 8.0},
+      {SPY: 10.0},
+    ];
+    const sortedIndices = indicesSortedByDistance(targetVIX, toHistoricalTimeSeries(localStorage.getItem('VIX')).values)
+    const indices = sortedIndices.slice(0,Math.round(sortedIndices.length * percentage)); 
     const params = {
       maxRunsPerPortfolio: this.runsPerPortfolio,
       maxRunsPerBacktest: this.periodsPerBacktest,
       portfolios,
+      indices,
       series: {
         VIX: toHistoricalTimeSeries(localStorage.getItem('VIX')),
         SPY: toHistoricalTimeSeries(localStorage.getItem('SPY'))

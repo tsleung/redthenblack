@@ -9,6 +9,16 @@ export function geoMean(array: number[]) {
   return Math.pow(array.reduce((a, b) => a * b), 1 / array.length);
 }
 
+/** Convert a set of values into indices sorted by distance */
+export function indicesSortedByDistance(subject: number, dataset: number[]) {
+  // [5,2,5,6,8,1,9,10,7,3,4].sort((a,b) => Math.abs(a-6) - Math.abs(b-6))
+  const sorted = dataset.map((val,index) => {
+    const distance = Math.abs(subject - val)
+    return {index,val,distance};
+  }).sort((a,b) => a.distance - b.distance)
+  return sorted.map(val => val.index);
+}
+
 export function toHistoricalTimeSeries(raw: string): HistoricalTimeSeries {
   return {
     pctChange: toPctChange(raw),
@@ -61,15 +71,12 @@ function sampleFrom(dataset, numSamples: number, isValid = (i) => true): number[
 }
 
 function createBacktest(params: BacktestParams, portfolio: Portfolio):number[][] {
-  const SPY_RETURNS = params.series.SPY.pctChange;
   const results = [];
   while (results.length < params.maxRunsPerPortfolio) {
-    const backtest: number[] = sampleFrom(SPY_RETURNS, params.maxRunsPerBacktest).reduce((backtest, index) => {
+    const backtest: number[] = sampleFrom(params.indices, params.maxRunsPerBacktest).reduce((backtest, index) => {
       portfolio.SPY = portfolio.SPY ?? 0;
 
-      return (params.series.VIX.values[index] > 35) ?
-        [backtest[0], ...backtest] :
-        [backtest[0] * (1+(SPY_RETURNS[index]*portfolio.SPY)),...backtest];
+      return [backtest[0] * (1+(params.series.SPY.pctChange[index]*portfolio.SPY)),...backtest];
     }, [1])
 
     results.push(backtest);
@@ -82,6 +89,7 @@ export interface BacktestParams {
   maxRunsPerPortfolio: number;
   maxRunsPerBacktest: number;
   portfolios: Portfolio[],
+  indices: number[]
   series: {
     VIX: HistoricalTimeSeries;
     SPY: HistoricalTimeSeries;
