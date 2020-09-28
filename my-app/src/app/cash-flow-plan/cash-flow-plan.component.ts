@@ -43,10 +43,10 @@ export class CashFlowPlanComponent {
   periodsPerBacktest = 250;
 
 
-  chartData = {
-    columns: [
-      ['Series to track', 1,1,2,3,5,8,13,21],
-    ],
+  chartData:c3.Data = {
+  columns: [
+  ],
+  type: 'scatter'
   }
 
   constructor() {
@@ -65,6 +65,8 @@ export class CashFlowPlanComponent {
     const balance = Boolean(Number(window.prompt('Balance aroudn VIX', '1')));
     // betting on beta
     const portfolios:Portfolio[] = [
+      {SPY: 0.0},
+      {SPY: 0.2},
       {SPY: 0.4},
       {SPY: 0.6},
       {SPY: 0.8},
@@ -84,9 +86,6 @@ export class CashFlowPlanComponent {
       {SPY: 3.6},
       {SPY: 4.0},
       {SPY: 5.0},
-      {SPY: 6.0},
-      {SPY: 8.0},
-      {SPY: 10.0},
     ];
     const aboveIndices = indicesSortedByDistanceAbove(targetVIX, toHistoricalTimeSeries(localStorage.getItem('VIX')).values);
     const belowIndices = indicesSortedByDistanceBelow(targetVIX, toHistoricalTimeSeries(localStorage.getItem('VIX')).values);
@@ -110,6 +109,13 @@ export class CashFlowPlanComponent {
     console.log('running backtester', params);
     const results = BACKTESTER.run(params);
     console.log('results', results);
+
+    this.chartData = {
+      columns: [['Leverage',...results.portfolios.map(portfolio => {
+        return portfolio.geoMean;
+      })]],
+      
+    }
   }
 
   onEnter(e) {

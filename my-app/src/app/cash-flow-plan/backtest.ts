@@ -74,10 +74,6 @@ export interface HistoricalTimeSeries {
   values: number[];
 }
 
-export interface Portfolio {
-  SPY?: number;
-}
-
 function sampleFrom(dataset, numSamples: number, isValid = (i) => true): number[] {
   const samples: number[] = dataset.reduce((accum, val, i) => {
     return isValid(i) ?
@@ -86,7 +82,7 @@ function sampleFrom(dataset, numSamples: number, isValid = (i) => true): number[
   }, []);
 
   return new Array(numSamples).fill(0).map(() => {
-    const index = Math.floor(Math.random() * samples.length);
+    const index = Math.ceil(Math.random() * (samples.length-1));
     return samples[index];
   });
 }
@@ -97,13 +93,30 @@ function createBacktest(params: BacktestParams, portfolio: Portfolio):number[][]
     const backtest: number[] = sampleFrom(params.indices, params.maxRunsPerBacktest).reduce((backtest, index) => {
       portfolio.SPY = portfolio.SPY ?? 0;
 
-      return [backtest[0] * (1+(params.series.SPY.pctChange[index]*portfolio.SPY)),...backtest];
+      // run features on current period index
+      const currentPeriodIndex = index;
+      // run change in value on next period index
+      const nextPeriodIndex = index-1;
+
+
+
+      const nextBalance = backtest[0] * 
+        (1
+          + (params.series.SPY.pctChange[nextPeriodIndex]*portfolio.SPY) // SPY
+          //+ (params.series.SPY.pctChange[nextPeriodIndex]*portfolio.SPY) // SPY
+        );
+
+      return [nextBalance,...backtest];
     }, [1])
 
     results.push(backtest);
   }
 
   return results;
+}
+
+export interface Portfolio {
+  SPY?: number;
 }
 
 export interface BacktestParams {
