@@ -42,6 +42,13 @@ export class CashFlowPlanComponent {
   runsPerPortfolio = 250;
   periodsPerBacktest = 250;
 
+
+  chartData = {
+    columns: [
+      ['Series to track', 1,1,2,3,5,8,13,21],
+    ],
+  }
+
   constructor() {
   }
   updateRunsPerPortfolio() {

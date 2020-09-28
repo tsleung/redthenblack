@@ -6,7 +6,7 @@ export function arithMean(array: number[]) {
 }
 
 export function geoMean(array: number[]) {
-  return Math.pow(array.reduce((a, b) => a * b), 1 / array.length);
+  return array.reduce((a, b) => a * Math.pow(b, 1 / array.length),1);
 }
 
 // create same but limited for above and below a value

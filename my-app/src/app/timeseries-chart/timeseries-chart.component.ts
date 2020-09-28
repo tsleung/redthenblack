@@ -1,26 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
+//https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/c3/index.d.ts
 import * as c3 from 'c3';
 
-const DEFAULT_CHART_CONFIG = {
-  bindto: '#chart',
-  data: {
-    columns: [],
-    labels: false
-  },
-};
-
 @Component({
-  selector: 'app-timeseries-chart',
+  selector: 'timeseries-chart',
   templateUrl: './timeseries-chart.component.html',
   styleUrls: ['./timeseries-chart.component.scss']
 })
 export class TimeseriesChartComponent implements OnInit {
   accountChart: c3.ChartAPI;
-  chartId = 'chartId';
+  chartId;
+  @Input() chartData:c3.Data = {
+    columns: [],
+  }
 
   constructor() {
-    this.chartId = `chart-injected-${Date.now()}`;
-
+    this.chartId = `chart-injected-${Date.now()}-${Math.round(Math.random() * 100)}`;
   }
 
   ngOnInit(): void {
@@ -28,12 +23,15 @@ export class TimeseriesChartComponent implements OnInit {
 
 
   ngAfterViewInit() {
-    this.accountChart = c3.generate({ ...DEFAULT_CHART_CONFIG, bindto: `#${this.chartId}` });
-    this.accountChart.load({
-      columns: [
-        ['Series to track', 1],
-      ],
+    this.accountChart = c3.generate({ 
+      bindto: `#${this.chartId}`,
+      data: {
+        columns: [],
+        labels: false
+      }
     });
+  
+    this.accountChart.load({columns: this.chartData.columns});
   }
 
 }
