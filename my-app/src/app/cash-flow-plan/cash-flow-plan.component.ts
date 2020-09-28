@@ -108,9 +108,10 @@ export class CashFlowPlanComponent {
   }  
 
   createVixGraph() {
+    const percentage = Number(window.prompt('percentage','20')) / 100;
+    const balance = Boolean(Number(window.prompt('Balance around VIX', '0')));
+    
     const columns:[string, ...c3.PrimitiveArray][]= [10,15,20,25,30,35,40,50,60,70].map(targetVIX => {
-      const percentage = .1;
-      const balance = false;
       const params = this.createVixBacktestParams(targetVIX,percentage,balance);
 
       console.log('running backtester', params);
