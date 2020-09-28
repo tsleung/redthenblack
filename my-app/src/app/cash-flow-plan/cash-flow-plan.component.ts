@@ -3,7 +3,30 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import * as c3 from 'c3';
 import {Portfolio, indicesSortedByDistance,indicesSortedByDistanceAbove,indicesSortedByDistanceBelow,HistoricalTimeSeries, BacktestParams,toHistoricalTimeSeries, BACKTESTER } from './backtest';
-
+// betting on beta
+const portfolios:Portfolio[] = [
+  {SPY: 0.0},
+  {SPY: 0.2},
+  {SPY: 0.4},
+  {SPY: 0.6},
+  {SPY: 0.8},
+  {SPY: 1.0},
+  {SPY: 1.2},
+  {SPY: 1.4},
+  {SPY: 1.6},
+  {SPY: 1.8},
+  {SPY: 2.0},
+  {SPY: 2.2},
+  {SPY: 2.4},
+  {SPY: 2.6},
+  {SPY: 2.8},
+  {SPY: 3.0},
+  {SPY: 3.2},
+  {SPY: 3.4},
+  {SPY: 3.6},
+  {SPY: 4.0},
+  {SPY: 5.0},
+];
 const names = [
   // 'Amazing',
   'Intrigued',
@@ -44,13 +67,21 @@ export class CashFlowPlanComponent {
 
 
   chartData:c3.Data = {
-  columns: [
-  ],
-  type: 'scatter'
+    columns: [
+    ],
+    type: 'scatter'
+  }
+
+
+  vixChartData:c3.Data = {
+    columns: [
+    ],
   }
 
   constructor() {
+    this.vixChartData = this.loadVixGraph();
   }
+
   updateRunsPerPortfolio() {
     this.runsPerPortfolio = Number(window.prompt('Runs per portfolio'));
   }
@@ -59,42 +90,60 @@ export class CashFlowPlanComponent {
   }
 
   runBacktest() {
-
     const targetVIX = Number(window.prompt('Target VIX', '35'));
     const percentage = Number(window.prompt('percentage','50')) / 100;
-    const balance = Boolean(Number(window.prompt('Balance aroudn VIX', '1')));
-    // betting on beta
-    const portfolios:Portfolio[] = [
-      {SPY: 0.0},
-      {SPY: 0.2},
-      {SPY: 0.4},
-      {SPY: 0.6},
-      {SPY: 0.8},
-      {SPY: 1.0},
-      {SPY: 1.2},
-      {SPY: 1.4},
-      {SPY: 1.6},
-      {SPY: 1.8},
-      {SPY: 2.0},
-      {SPY: 2.2},
-      {SPY: 2.4},
-      {SPY: 2.6},
-      {SPY: 2.8},
-      {SPY: 3.0},
-      {SPY: 3.2},
-      {SPY: 3.4},
-      {SPY: 3.6},
-      {SPY: 4.0},
-      {SPY: 5.0},
-    ];
-    const aboveIndices = indicesSortedByDistanceAbove(targetVIX, toHistoricalTimeSeries(localStorage.getItem('VIX')).values);
-    const belowIndices = indicesSortedByDistanceBelow(targetVIX, toHistoricalTimeSeries(localStorage.getItem('VIX')).values);
-    const sortedIndices = indicesSortedByDistance(targetVIX, toHistoricalTimeSeries(localStorage.getItem('VIX')).values)
-    // grab equal above and below if balanced, otherwise just grab closest
-    const indices = balance ? [
-      ...aboveIndices.slice(0,Math.round(sortedIndices.length * percentage / 2)),
-      ...belowIndices.slice(0,Math.round(sortedIndices.length * percentage / 2))
-    ] : sortedIndices.slice(0,Math.round(sortedIndices.length * percentage)); 
+    const balance = Boolean(Number(window.prompt('Balance aroudn VIX', '0')));
+  
+    const params = this.createVixBacktestParams(targetVIX,percentage,balance);
+
+    console.log('running backtester', params);
+    const results = BACKTESTER.run(params);    
+    console.log('results', results);
+
+    this.chartData = {
+      columns: [['Leverage',...results.portfolios.map(portfolio => {
+        return portfolio.geoMean;
+      })]],
+    }
+  }  
+
+  createVixGraph() {
+    const columns:[string, ...c3.PrimitiveArray][]= [10,15,20,25,30,35,40,50,60,70].map(targetVIX => {
+      const percentage = .1;
+      const balance = false;
+      const params = this.createVixBacktestParams(targetVIX,percentage,balance);
+
+      console.log('running backtester', params);
+      const results = BACKTESTER.run(params);    
+      console.log('results', results);
+
+      return [`${targetVIX}`,...results.portfolios.map(portfolio => {
+        return portfolio.geoMean;
+      })];
+    });
+
+    console.log('columns', columns);
+    
+
+    this.vixChartData = {
+      columns: [...columns],
+    };
+    
+  }
+
+
+  loadVixGraph() {
+    return JSON.parse(localStorage.getItem('vixChartData')) ?? {
+      columns: [
+      ],
+    };
+  }
+  saveVixGraph() {
+    localStorage.setItem('vixChartData', JSON.stringify(this.vixChartData));
+  }
+
+  createVixBacktestParams(targetVIX: number, percentage:number, balance: boolean) {
+    const indices = this.selectVixIndices(targetVIX,percentage,balance);
 
     const params = {
       maxRunsPerPortfolio: this.runsPerPortfolio,
@@ -106,16 +155,24 @@ export class CashFlowPlanComponent {
         SPY: toHistoricalTimeSeries(localStorage.getItem('SPY'))
       }
     };
-    console.log('running backtester', params);
-    const results = BACKTESTER.run(params);
-    console.log('results', results);
+    return params;
+  }
 
-    this.chartData = {
-      columns: [['Leverage',...results.portfolios.map(portfolio => {
-        return portfolio.geoMean;
-      })]],
-      
-    }
+  selectVixIndices(targetVIX: number, percentage:number, balance: boolean) {
+
+    console.log('Inputs:', targetVIX, percentage, balance)
+    
+    const aboveIndices = indicesSortedByDistanceAbove(targetVIX, toHistoricalTimeSeries(localStorage.getItem('VIX')).values);
+    const belowIndices = indicesSortedByDistanceBelow(targetVIX, toHistoricalTimeSeries(localStorage.getItem('VIX')).values);
+    const sortedIndices = indicesSortedByDistance(targetVIX, toHistoricalTimeSeries(localStorage.getItem('VIX')).values)
+    // grab equal above and below if balanced, otherwise just grab closest
+    const indices = balance ? [
+      ...aboveIndices.slice(0,Math.round(sortedIndices.length * percentage / 2)),
+      ...belowIndices.slice(0,Math.round(sortedIndices.length * percentage / 2))
+    ] : sortedIndices.slice(0,Math.round(sortedIndices.length * percentage)); 
+
+
+    return indices;
   }
 
   onEnter(e) {

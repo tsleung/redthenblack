@@ -32,5 +32,11 @@
   <button (click)="updatePeriodsPerBacktest()" mat-raised-button>Number periods in lookback: {{periodsPerBacktest}}</button>
   
   <timeseries-chart [chartData]="chartData"></timeseries-chart>
+
+  <h2>SPY Allocation vs VIX</h2>
+  <timeseries-chart [chartData]="vixChartData"></timeseries-chart>
+  <button (click)="createVixGraph()" mat-raised-button>Generate</button>
+  <button *ngIf="vixChartData" (click)="saveVixGraph()" mat-raised-button>Save</button>
+  
 </main>
   
