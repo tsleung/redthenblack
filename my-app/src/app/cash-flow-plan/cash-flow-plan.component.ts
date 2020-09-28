@@ -3,6 +3,7 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import * as c3 from 'c3';
 import {Portfolio, indicesSortedByDistance,indicesSortedByDistanceAbove,indicesSortedByDistanceBelow,HistoricalTimeSeries, BacktestParams,toHistoricalTimeSeries, BACKTESTER } from './backtest';
+import {DEFAULT_VIX_CHART_DATA} from './vix-chart-data'
 // betting on beta
 const portfolios:Portfolio[] = [
   {SPY: 0.0},
@@ -73,7 +74,7 @@ export class CashFlowPlanComponent {
   }
 
 
-  vixChartData:c3.Data = {
+  vixChartData:c3.Data = DEFAULT_VIX_CHART_DATA ?? {
     columns: [
     ],
   }
