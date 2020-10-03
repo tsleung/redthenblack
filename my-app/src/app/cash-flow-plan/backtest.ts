@@ -86,11 +86,14 @@ function sampleFrom(dataset, numSamples: number, isValid = (i) => true): number[
     return samples[index];
   });
 }
-
-function createBacktest(params: BacktestParams, portfolio: Portfolio):number[][] {
+interface Backtest {
+  balances: number[];
+  changes: number[];
+}
+function createBacktest(params: BacktestParams, portfolio: Portfolio):Backtest[] {
   const results = [];
   while (results.length < params.maxRunsPerPortfolio) {
-    const backtest: number[] = sampleFrom(params.indices, params.maxRunsPerBacktest).reduce((backtest, index) => {
+    const backtest:Backtest = sampleFrom(params.indices, params.maxRunsPerBacktest).reduce((backtest, index) => {
       portfolio.SPY = portfolio.SPY ?? 0;
 
       // run features on current period index
@@ -99,15 +102,21 @@ function createBacktest(params: BacktestParams, portfolio: Portfolio):number[][]
       const nextPeriodIndex = index-1;
 
 
+      const change =         (1
+        + (params.series.SPY.pctChange[nextPeriodIndex]*portfolio.SPY) // SPY
+        //+ (params.series.SPY.pctChange[nextPeriodIndex]*portfolio.SPY) // SPY
+      );
 
-      const nextBalance = backtest[0] * 
-        (1
-          + (params.series.SPY.pctChange[nextPeriodIndex]*portfolio.SPY) // SPY
-          //+ (params.series.SPY.pctChange[nextPeriodIndex]*portfolio.SPY) // SPY
-        );
+      const nextBalance = backtest[0] * change;
 
-      return [nextBalance,...backtest];
-    }, [1])
+      return {
+        balances: [nextBalance,...backtest.balances],
+        changes: [change,...backtest.changes],
+      };
+    }, {
+      balances: [1],
+      changes: [1],
+    })
 
     results.push(backtest);
   }
@@ -133,7 +142,7 @@ export interface BacktestParams {
 export interface PortfolioBacktestResult {
   geoMean:number;
   arithGeoMean:number;
-  backtests: number[][];
+  backtests: Backtest[];
   geoMeans: number[];
   portfolio: Portfolio;
 }
@@ -145,13 +154,19 @@ export const BACKTESTER = {
   run: (params: BacktestParams):BacktestResults => {
 
     const portfolios:PortfolioBacktestResult[] = params.portfolios.map(portfolio => {
-      const backtests:number[][] = createBacktest(params, portfolio).sort((a,b) => a[0]-b[0]);
+      const backtests:Backtest[] = createBacktest(params, portfolio).sort((a,b) => a[0]-b[0]);
       
-      const geoMeans = backtests.map(backtest => {
-        return geoMean(backtest);
+      const geoMeans:number[] = backtests.map(backtest => {
+        return geoMean(backtest.changes);
       });
 
-      const result = {portfolio, arithGeoMean: arithMean(geoMeans),geoMean:geoMean(geoMeans), geoMeans,backtests,};
+      const result = {
+        portfolio, 
+        arithGeoMean: arithMean(geoMeans),
+        geoMean:geoMean(geoMeans), 
+        geoMeans,
+        backtests,
+      };
       console.log('ran portfolio',portfolio,result);
       return result;
     });

@@ -26,7 +26,6 @@ const portfolios:Portfolio[] = [
   {SPY: 3.4},
   {SPY: 3.6},
   {SPY: 4.0},
-  {SPY: 5.0},
 ];
 const names = [
   // 'Amazing',
