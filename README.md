@@ -20,3 +20,5 @@
 ### Upload
 ```./node_modules/@angular/cli/bin/ng build --prod```
 
+### Angular framework
+```ng generate component <name>```
