@@ -3,9 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { GameComponent } from './game/game.component';
 import { SimpleBetComponent } from './simple-bet/simple-bet.component';
 import { CashFlowPlanComponent } from './cash-flow-plan/cash-flow-plan.component';
+import { PosenetComponent } from './posenet/posenet.component';
 
 const routes: Routes = [
   { path: 'game', component: GameComponent },
+  { path: 'pose', component: PosenetComponent },
   {
     path: 'beta',
     component: CashFlowPlanComponent,

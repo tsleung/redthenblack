@@ -21,4 +21,9 @@
 ```./node_modules/@angular/cli/bin/ng build --prod```
 
 ### Angular framework
-```ng generate component <name>```
+```ng generate component <name>``
+
+### Bootstrap
+```./node_modules/@angular/cli/bin/ng add @ng-bootstrap/ng-bootstrap```
+
+

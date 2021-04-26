@@ -20,6 +20,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CashFlowPlanComponent } from './cash-flow-plan/cash-flow-plan.component';
 import { TimeseriesChartComponent } from './timeseries-chart/timeseries-chart.component';
 import { SimpleBetComponent } from './simple-bet/simple-bet.component';
+import { PosenetComponent } from './posenet/posenet.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { SimpleBetComponent } from './simple-bet/simple-bet.component';
     GameComponent,
     CashFlowPlanComponent,
     TimeseriesChartComponent,
-    SimpleBetComponent
+    SimpleBetComponent,
+    PosenetComponent
   ],
   imports: [
     BrowserModule,
@@ -42,6 +45,7 @@ import { SimpleBetComponent } from './simple-bet/simple-bet.component';
     MatTooltipModule,
     MatInputModule,
     BrowserAnimationsModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
