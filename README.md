@@ -26,4 +26,13 @@
 ### Bootstrap
 ```./node_modules/@angular/cli/bin/ng add @ng-bootstrap/ng-bootstrap```
 
+### Markdown
+https://www.npmjs.com/package/ngx-markdown
+```npm install ngx-markdown --save```
+In angular.json add
+```
+"scripts": [
+  "node_modules/marked/lib/marked.js"
+]
+```
 
