@@ -17,6 +17,7 @@ export class PosenetComponent implements OnInit {
     
     var imageElement = document.getElementById('cat');
     console.log('posenet')
+    const posenet = window['posenet'];
     posenet.load().then(function(net){
     return net.estimateMultiplePoses(imageElement, {
     flipHorizontal: false,

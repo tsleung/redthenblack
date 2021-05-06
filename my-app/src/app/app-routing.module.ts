@@ -4,8 +4,10 @@ import { GameComponent } from './game/game.component';
 import { SimpleBetComponent } from './simple-bet/simple-bet.component';
 import { CashFlowPlanComponent } from './cash-flow-plan/cash-flow-plan.component';
 import { PosenetComponent } from './posenet/posenet.component';
+import { ArticleComponent } from './article/article.component';
 
 const routes: Routes = [
+  { path: 'bet', component: SimpleBetComponent },
   { path: 'game', component: GameComponent },
   { path: 'pose', component: PosenetComponent },
   {
@@ -18,7 +20,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    component: SimpleBetComponent,
+    component: ArticleComponent,
   },
 
 ];

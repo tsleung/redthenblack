@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatCardModule } from '@angular/material/card';
@@ -22,6 +23,9 @@ import { TimeseriesChartComponent } from './timeseries-chart/timeseries-chart.co
 import { SimpleBetComponent } from './simple-bet/simple-bet.component';
 import { PosenetComponent } from './posenet/posenet.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MarkdownModule } from 'ngx-markdown';
+import { ArticleComponent } from './article/article.component';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CashFlowPlanComponent,
     TimeseriesChartComponent,
     SimpleBetComponent,
-    PosenetComponent
+    PosenetComponent,
+    ArticleComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +50,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatTooltipModule,
     MatInputModule,
     BrowserAnimationsModule,
+    MarkdownModule.forRoot(),
+    HttpClientModule,
     NgbModule,
   ],
   providers: [],
