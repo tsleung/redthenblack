@@ -21,6 +21,10 @@ const routes: Routes = [
   {
     path: '**',
     component: ArticleComponent,
+    data: {articles: [
+      '/assets/articles/intro.md',
+      '/assets/articles/resources.md',
+    ]}
   },
 
 ];

@@ -4,4 +4,9 @@
 # Markdown
 </div>
 -->
-<div markdown [src]="'/assets/articles/resources.md'" (load)="onLoad($event)" (error)="onError($event)"></div>
+<ng-container *ngIf="articles | async as articles">
+    <ng-container *ngFor="let article of articles;">
+        <div markdown [src]="article" (load)="onLoad()" (error)="onError()"></div>
+    </ng-container>    
+</ng-container>
+
