@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1620282914527,
+  "timestamp": 1620891481563,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -10,8 +10,8 @@
       "urls": [
         "/favicon.ico",
         "/index.html",
-        "/main-es2015.e5b358aaceedc5d202fb.js",
-        "/main-es5.e5b358aaceedc5d202fb.js",
+        "/main-es2015.130090fc4d5ea511ffc1.js",
+        "/main-es5.130090fc4d5ea511ffc1.js",
         "/manifest.webmanifest",
         "/polyfills-es2015.7f2be5c3211715ed096a.js",
         "/polyfills-es5.28f12a96904b8f2b6d42.js",
@@ -28,6 +28,7 @@
       "updateMode": "prefetch",
       "urls": [
         "/assets/ackermans.jpg",
+        "/assets/articles/intro.md",
         "/assets/articles/resources.md",
         "/assets/articles/trial.and.error.md",
         "/assets/icons/icon-128x128.png",
@@ -45,6 +46,7 @@
   "dataGroups": [],
   "hashTable": {
     "/assets/ackermans.jpg": "18d92c4f2fac0546bc91e36c8c88d8b979eb3728",
+    "/assets/articles/intro.md": "82c2679a8b3f00a33a502ec037c52c8d00de0c4e",
     "/assets/articles/resources.md": "5d19dccea271f617f1c0a1e8aa3a2878d3588c3b",
     "/assets/articles/trial.and.error.md": "832f41217dd8733d39b7fab384ee60df9d421b00",
     "/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
@@ -56,9 +58,9 @@
     "/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
     "/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
     "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/index.html": "d919ca8564c311884371a95a0a0222e2a98bfbcd",
-    "/main-es2015.e5b358aaceedc5d202fb.js": "1482701b8d0c26704b57b9b417424c7978e28228",
-    "/main-es5.e5b358aaceedc5d202fb.js": "8d0a9756721189b503db81b551d4d692e819c160",
+    "/index.html": "c4920928abdeb284013a7d78ba78b391023d5b4b",
+    "/main-es2015.130090fc4d5ea511ffc1.js": "ba4555c97440e77dfd4c4b53d0c2e008e4a29caa",
+    "/main-es5.130090fc4d5ea511ffc1.js": "05f271922b2be6158fbeb767725013ebed3c2141",
     "/manifest.webmanifest": "5a4b93555f11594f573e31e24a2935f8d721cb8c",
     "/polyfills-es2015.7f2be5c3211715ed096a.js": "90fb474e1a7d87bd57bc8a95fb3fd361b919d815",
     "/polyfills-es5.28f12a96904b8f2b6d42.js": "ccfff1a6bd0b9531245e25bf3c0c8cf948ced8c2",
