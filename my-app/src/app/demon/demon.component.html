@@ -1,0 +1,9 @@
+
+<label>Leverage </label>
+<span>{{leverage}}</span>
+<br/>
+<input (change)="updateLeverage($event.target.value)" 
+type="range" min="0" max="20" step=".1" [value]="leverage">
+
+
+<app-line-chart [chartData]="sample1"></app-line-chart>

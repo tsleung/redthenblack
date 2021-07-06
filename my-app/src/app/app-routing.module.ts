@@ -6,6 +6,8 @@ import { CashFlowPlanComponent } from './cash-flow-plan/cash-flow-plan.component
 import { PosenetComponent } from './posenet/posenet.component';
 import { ArticleComponent } from './article/article.component';
 
+import { DemonComponent } from './demon/demon.component';
+
 const routes: Routes = [
   { path: 'bet', component: SimpleBetComponent },
   { path: 'game', component: GameComponent },
@@ -19,12 +21,16 @@ const routes: Routes = [
     ],
   },
   {
-    path: '**',
+    path: 'articles',
     component: ArticleComponent,
     data: {articles: [
       '/assets/articles/intro.md',
       '/assets/articles/resources.md',
     ]}
+  },
+  {
+    path: '**',
+    component: DemonComponent,
   },
 
 ];

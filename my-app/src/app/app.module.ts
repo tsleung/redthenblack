@@ -25,6 +25,8 @@ import { PosenetComponent } from './posenet/posenet.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MarkdownModule } from 'ngx-markdown';
 import { ArticleComponent } from './article/article.component';
+import { DemonComponent } from './demon/demon.component';
+import { LineChartComponent } from './line-chart/line-chart.component';
 
 
 @NgModule({
@@ -35,7 +37,9 @@ import { ArticleComponent } from './article/article.component';
     TimeseriesChartComponent,
     SimpleBetComponent,
     PosenetComponent,
-    ArticleComponent
+    ArticleComponent,
+    DemonComponent,
+    LineChartComponent
   ],
   imports: [
     BrowserModule,
