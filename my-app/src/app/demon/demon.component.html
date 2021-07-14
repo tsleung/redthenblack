@@ -1,6 +1,7 @@
 
-<label>Leverage </label><button (click)="editLeverage()">Edit</button>
+<label>Leverage </label>
 <span>{{leverage}}</span>
+<a href="javascript:void(0)" (click)="editLeverage()">Edit</a>
 <br/>
 <input (change)="updateLeverage($event.target.value)" 
 type="range" min="0" max="3" step=".2" [value]="leverage">

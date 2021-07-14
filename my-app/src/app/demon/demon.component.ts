@@ -38,7 +38,7 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
   }
 
   editLeverage() {
-    const val = Number(window.prompt("Leverage", `${this.leverage}`)) ? this.leverage;
+    const val = Number(window.prompt("Leverage", `${this.leverage}`)) ?? this.leverage;
     this.updateLeverage(val);
   }
   updateLeverage(val) {
