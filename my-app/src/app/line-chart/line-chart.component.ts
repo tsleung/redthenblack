@@ -16,6 +16,9 @@ export class LineChartComponent implements OnInit, OnChanges{
     types:{},
   }
 
+  @Input() gridOptions:c3.GridOptions = {
+  }
+
   constructor() {
     this.chartId = `chart-injected-${Date.now()}-${Math.round(Math.random() * 100)}`;
   }
@@ -27,6 +30,7 @@ export class LineChartComponent implements OnInit, OnChanges{
     this.chart = this.chart ?? c3.generate({ 
       bindto: `#${this.chartId}`,
       data: {
+        x: 'x',
         columns: [],
         labels: false
       }
@@ -44,10 +48,12 @@ export class LineChartComponent implements OnInit, OnChanges{
     this.chart = c3.generate({ 
       bindto: `#${this.chartId}`,
       data: {
+        x: 'x',
         columns: [],
         labels: false
       },
-      point: {show: false}
+      point: {show: false},
+      grid: this.gridOptions,
     });
 
     this.updateChart();
