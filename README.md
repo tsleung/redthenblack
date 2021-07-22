@@ -36,3 +36,25 @@ In angular.json add
 ]
 ```
 
+### Firebase
+```
+npm install -g firebase-tools
+
+```
+
+In firebase folder, run
+```
+firebase init
+```
+Add cloud functions and use the red-then-black app
+
+Install node-fetch in firebase directory
+```
+npm install node-fetch
+```
+Deploy cloud functions
+```
+firebase deploy --only functions
+
+```
+
