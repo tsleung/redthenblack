@@ -35,7 +35,11 @@ In angular.json add
   "node_modules/marked/lib/marked.js"
 ]
 ```
-
+###
+Github pages
+```
+https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site
+```
 ### Firebase
 ```
 npm install -g firebase-tools
@@ -48,9 +52,17 @@ firebase init
 ```
 Add cloud functions and use the red-then-black app
 
-Install node-fetch in firebase directory
+Dev loop includes
 ```
-npm install node-fetch
+npm run build
+firebase emulators:start --only functions
+```
+
+Install npm dependencies in firebase directory
+```
+npm install node-fetch --save
+npm install express --save
+npm install cors --save
 ```
 Deploy cloud functions
 ```

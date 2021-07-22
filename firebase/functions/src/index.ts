@@ -13,6 +13,21 @@ exports.getSymbol = functions.https.onRequest(async (req:any, res:any) => {
   const start = new Date(req.query.start).getTime() / 1000;
   const end = new Date(req.query.end).getTime() / 1000;
 
+  // https://gist.github.com/balupton/3696140
+  res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Request-Method', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+	res.setHeader('Access-Control-Allow-Headers', 'authorization, content-type');
+
+
+  
+	if ( req.method === 'OPTIONS' ) {
+		res.writeHead(200);
+		res.end();
+		return;
+	}
+
+
   const options = {
     hostname: 'query1.finance.yahoo.com',
     // port: 80, // 443
