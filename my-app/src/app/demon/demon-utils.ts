@@ -53,22 +53,13 @@ function toHistoricalSeries(series: Promise<string>):Promise<Record[]> {
   });
 }
 
-function localCache() {
-  return {
-    getItem: (key: string) => {
-      return window.localStorage.getItem(key);
-    },
-    setItem: (key: string, value: string) => {
-      return window.localStorage.setItem(key, value);
-    }
-  }
-}
 
 export function fetchSymbol(query: HistoricalQuery = {symbol: 'SPY', start:new Date('2018-01-01'),end: new Date('2021-01-01')}):Promise<string> {
   return new Promise(resolve => {
     const cacheKey = JSON.stringify(query);
     const ret = localCache().getItem(cacheKey);
-    const resolveFromServer = () => fetch(`https://query1.finance.yahoo.com/v7/finance/download/${query.symbol}?period1=${query.start.getTime() / 1000}&period2=${query.end.getTime() / 1000}&interval=1d&events=history&includeAdjustedClose=true`)
+    
+    const resolveFromServer = () => fetch(`https://us-central1-red-then-black.cloudfunctions.net/getSymbol?symbol=${query.symbol}&start=${query.start.toLocaleDateString()}&end=${query.end.toLocaleDateString()}`)
     .then(resp => {
       return resp.text();
     })  
@@ -116,50 +107,105 @@ interface HistoricalQuery {
   symbol: string;
 }
 
-/** Retrieves an item from local storage based on key, or if not present, resolves the value and puts */
+
+function localCache() {
+  return {
+    getItem: (key: string) => {
+      return window.localStorage.getItem(key);
+    },
+    setItem: (key: string, value: string) => {
+      return window.localStorage.setItem(key, value);
+    }
+  }
+}
+
+// Create promise memoize, saves promise contents if successful and returns
+
+function memoizePromise<T>(key, resolver: () => Promise<T>) {
+  const localItem = localCache().getItem(key);
+  return (localItem != null) ?
+    Promise.resolve(JSON.parse(localItem) as T) :
+    resolver().then(ret => {
+      localCache().setItem(key, JSON.stringify(ret));
+      return ret;
+    });
+}
+
+/**
+ * Retrieves an item from local storage based on key, or if not present, resolves the value and puts
+ * 
+ * @param key 
+ * @param resolver 
+ * @returns 
+ */
 function memoizeLocalStorage<T>(key:string, resolver:() => T):T {
-  const ret = this.getItem(key) ?? resolver();
-  this.setItem(key, ret);
+  const localItem = localCache().getItem(key);
+  const ret:T =  localItem === null ? 
+    resolver() : 
+    JSON.parse(localCache().getItem(key)) as T;
+  
+  localCache().setItem(key, JSON.stringify(ret));
 
   return ret;
 }
+
 
 //const symbol ='DOGE-USD';
 // 2016 vs 1998
 export function createHistoricalLeverageRuns(leverage, query: HistoricalQuery = {symbol: 'SPY', start:new Date('2016-01-01'),end: new Date('2021-01-01')}):Promise<c3.Data> {
     
+  return memoizePromise(`createHistoricalLeverageRuns_1_1_${JSON.stringify(arguments)}`, () => {
     return toHistoricalSeries(fetchSymbol(query)).then(resp =>{
-        const spy = createRun(resp, leverage);
-
-        return {
-          columns: [
-            ['x', ...spy.map((v,i) => i)],
-            ['.5',...createRun(resp, .5)],
-            ['1',...createRun(resp, 1)],
-            ['1.5',...createRun(resp, 1.5)],
-            ['2',...createRun(resp, 2)],
-            ['2.5',...createRun(resp, 2.5)],
-            ['3.0',...createRun(resp, 3)],
-            ['4.0',...createRun(resp, 4)],
-            ['spy',...spy]
-          ]
-        }
-      });
-      /*
-    spy.then(resp => {
-      resp.reverse();
-      const printed = resp.map(row => ([row.date,row.change,row.abs_change, row.spread].join(',')));
-
-
-      console.log(JSON.stringify(printed.slice(0,10),null,4));
-    }); 
-    */
+      return memoizeLocalStorage(`createHistoricalLeverageRuns_1_$(JSON.stringify(arguments)}`, () => _createHistoricalLeverageRuns(resp, leverage, query));
+    });
+  })
 }
 
+
+function _createHistoricalLeverageRuns(resp, leverage, query: HistoricalQuery = {symbol: 'SPY', start:new Date('2016-01-01'),end: new Date('2021-01-01')}):c3.Data {
+  
+  const spy = createRun(resp, leverage);
+
+  return {
+    columns: [
+      ['x', ...spy.map((v,i) => i)],
+      ['.5',...createRun(resp, .5)],
+      ['1',...createRun(resp, 1)],
+      ['1.5',...createRun(resp, 1.5)],
+      ['2',...createRun(resp, 2)],
+      ['2.5',...createRun(resp, 2.5)],
+      ['3.0',...createRun(resp, 3)],
+      ['4.0',...createRun(resp, 4)],
+      ['spy',...spy]
+    ]
+  }
+}
+
+
+
+const NUM_SIMULATIONS = 200;
 const TRADING_DAYS_PER_YEAR = 250;
 const YEARS_OF_RETIREMENT = 60;
+
+
+export function createPolicyConfidenceCurve(leverage = .75, yearsOfRetirement = YEARS_OF_RETIREMENT, numSimulations = NUM_SIMULATIONS) {
+  return memoizePromise(`createPolicyConfidenceCurve_1_1_${JSON.stringify(arguments)}`, () => {
+    const query: HistoricalQuery = {symbol: 'SPY', start:new Date('1998-01-01'),end: new Date('2021-01-01')};
+
+    // roll forward 100(0) simulations of a 75% invested portfolio for 60 years with withdrawal 1-10%
+    const spy = toHistoricalSeries(fetchSymbol(query));
+    return spy.then(resp =>{
+  
+      return memoizeLocalStorage(`createPolicyConfidenceCurve_3_${JSON.stringify(arguments)}`, 
+      () => {
+        return _createPolicyConfidenceCurve(resp, ...arguments);
+      });
+    });
+  });
+}
+
 // time vs investment vs withdrawal vs confidence
-export function createPolicyConfidenceCurve(leverage = .75, yearsOfRetirement = YEARS_OF_RETIREMENT) {
+function _createPolicyConfidenceCurve(resp, leverage = .75, yearsOfRetirement = YEARS_OF_RETIREMENT, numSimulations = NUM_SIMULATIONS) {
   // default policy is a % allocation of stocks and % withdrawal rate
   // 45-60 years, 60 years for now
   // 50%-75%, 60% for now
@@ -168,17 +214,11 @@ export function createPolicyConfidenceCurve(leverage = .75, yearsOfRetirement = 
 
 
   // nest egg starting value is 1.
-const query: HistoricalQuery = {symbol: 'SPY', start:new Date('1998-01-01'),end: new Date('2021-01-01')};
-
-  // roll forward 100(0) simulations of a 75% invested portfolio for 60 years with withdrawal 1-10%
-  const spy = toHistoricalSeries(fetchSymbol(query));
-  return spy.then(resp =>{
 
     return new Array(9).fill(0).map((n,i) => {
       // convert to decimal
       return (i+1) / 100;
     }).map(withdrawal => {
-      const numSimulations = 100;
       const simulations = new Array(numSimulations).fill(0).map(() => {
         return createRun(sampleSeries(resp, yearsOfRetirement * TRADING_DAYS_PER_YEAR), leverage, withdrawal / TRADING_DAYS_PER_YEAR);
       });
@@ -190,12 +230,10 @@ const query: HistoricalQuery = {symbol: 'SPY', start:new Date('1998-01-01'),end:
       return {
         leverage,
         withdrawal,
-        //simulations,
+        // simulations,
         confidence,
       };
 
-    });
-    
   });
   // find the confidence of 95%, what did the nest egg need to be
 
