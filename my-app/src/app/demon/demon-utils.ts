@@ -267,22 +267,23 @@ function _createPolicyConfidenceCurve(resp, leverage = .75, yearsOfRetirement = 
 
 }
 
-
-
 export function createWorkingGraph(timeToWork: number, leverage:number, contribution: number = 0, initial: number = 0,numSimulations = NUM_SIMULATIONS) {
   const query: HistoricalQuery = {symbol: 'SPY', start:new Date('1998-01-01'),end: new Date('2021-01-01')};
 
-  const spy = toHistoricalSeries(fetchSymbol(query));
-  return spy.then(resp =>{
+  return memoizePromise(`createWorkingGraph_1_1_${JSON.stringify(arguments)}`, () => {
+    const spy = toHistoricalSeries(fetchSymbol(query));
+    return spy.then(resp =>{
 
-    const simulations = new Array(numSimulations).fill(0).map(() => {
-      return createWorkingRun(sampleSeries(resp, timeToWork * TRADING_DAYS_PER_YEAR), leverage, contribution / TRADING_DAYS_PER_YEAR,initial);
-    });
-    simulations.sort((a,b) => {
-      return a.slice(-1)[0] - b.slice(-1)[0];
-    });
-    return simulations;
-  }); 
+      const simulations = new Array(numSimulations).fill(0).map(() => {
+        return createWorkingRun(sampleSeries(resp, timeToWork * TRADING_DAYS_PER_YEAR), leverage, contribution / TRADING_DAYS_PER_YEAR,initial);
+      });
+      simulations.sort((a,b) => {
+        return a.slice(-1)[0] - b.slice(-1)[0];
+      });
+      return simulations;
+    }); 
+  });
+  
 } 
 
 

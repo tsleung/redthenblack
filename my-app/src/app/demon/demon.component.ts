@@ -173,7 +173,7 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
 
         const medianOutcome = simulations[Math.floor(simulations.length / 2)].slice(-1)[0];
         const successRate = successfulRuns / simulations.length;
-        this.workingMessage = `${successfulRuns} of ${simulations.length} simulations reach nest egg goal of ${this.calculateTargetNestEgg()}, ${successRate*100}% success. The medium outcome made it ${Math.round(medianOutcome * 100)}% to retirement.`;
+        this.workingMessage = `${successfulRuns} of ${simulations.length} simulations reach nest egg goal of ${this.calculateTargetNestEgg()}, ${successRate*100}% success. The median outcome made it ${Math.round(medianOutcome * 100)}% to retirement.`;
         this.working = {
           // sort and modulo to reduce
           x:'x',

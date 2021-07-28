@@ -61,6 +61,7 @@ export class LineChartComponent implements OnInit, OnChanges{
   
   updateChart() {  
     this.chart.load({
+      unload: true,
       columns: this.chartData.columns,
       types: this.chartData.types,
       type: this.chartData.type,
