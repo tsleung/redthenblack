@@ -1,4 +1,56 @@
 
+<button (click)="findMyRetirement()">Find my retirement</button>
+
+<div *ngIf="numUpdates>=2">
+    Target nest egg (retirement income / withdrawal rate): {{calculateTargetNestEgg()}}
+    <br/>
+    {{workingMessage}}
+    <fieldset>
+        <h2>Working</h2>
+        <div (click)="promptAfterTaxIncome()">
+            Income: {{retirementPreferences.annualAfterTaxIncome}} 
+        </div>
+        <div (click)="promptAmountSavedAfterTax()">
+            Saving: {{retirementPreferences.annualAmountSavedAfterTax}} 
+        </div>
+        <div (click)="promptInitialSavings()">
+            Initial savings: {{retirementPreferences.initialSavings}} 
+        </div>
+        <div (click)="promptInvestingLeverage()">
+            Stock allocation: {{retirementPreferences.investingLeverage}} 
+        </div>
+        <div (click)="promptTimeToWorkInYears()">
+            Years worked: {{retirementPreferences.timeToWorkInYears}} 
+        </div>
+        <div (click)="promptNumWorkingSimulations()">
+            Num simulations: {{numWorkingSimulations}} 
+        </div>
+        <label>Working</label>
+        <app-line-chart [chartData]="working" [gridOptions]="workingGridOptions"></app-line-chart>
+    </fieldset>
+    
+    <fieldset>
+        <h2>Retirement</h2>
+        <div (click)="promptRetirementIncome()">
+            Withdrawal: {{retirementPreferences.annualRetirementIncome}} 
+        </div>
+        <div (click)="promptTimeHorizon()">
+            Years retired: {{retirementPreferences.retirementTimeHorizonInYears}} 
+        </div>
+        <div (click)="promptRetirementInvestingLeverage()">
+            Stock allocation: {{retirementPreferences.retirementInvestingLeverage}} 
+        </div>
+
+        <label>Withdrawal rate vs Confidence over retirement</label>
+        <app-line-chart [chartData]="retirement" [gridOptions]="retirementGridOptions"></app-line-chart>
+    </fieldset>
+    
+
+</div>
+
+<div style="height: 200vh"></div>
+
+
 <label>Leverage </label>
 <span>{{leverage}}</span>
 <a href="javascript:void(0)" (click)="editLeverage()">Edit</a>
@@ -7,9 +59,6 @@
 type="range" min="0" max="3" step=".2" [value]="leverage">
 
 <app-line-chart [chartData]="marketLeverage"></app-line-chart>
-<!--
-<button (click)="findMyRetirement()">Find my retirement</button>
--->
 
 <label>Withdrawal rate vs Confidence over retirement</label>
 <app-line-chart [chartData]="withdrawalConfidence" [gridOptions]="withdrawalConfidenceGridOptions"></app-line-chart>

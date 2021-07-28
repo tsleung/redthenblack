@@ -101,6 +101,25 @@ export function createRun(resp:Record[], leverage:number, withdrawal: number = 0
 }
 
 
+// creates a run over a security with a consistently applied leverage
+// target nest egg is "1"
+  // starting balance is percentage of nest egg
+  // accumulation is percentage of nest egg
+  // start the account with an initial balance "1"
+  // target to exit is when account hits a mutiplier e.g. 2x/10x
+
+export function createWorkingRun(resp:Record[], leverage:number, contribution: number = 0, initial: number = 0):number[] {
+  return resp.reduce((accum, record:Record) => {
+      const previousBalance = accum[accum.length-1];
+      const previousBalanceAfterContribution = previousBalance + contribution;
+      const newBalance = previousBalanceAfterContribution < 1 ? 
+        previousBalanceAfterContribution * (((record.change-1) * leverage)+1): 
+        previousBalanceAfterContribution;
+      accum.push(previousBalanceAfterContribution > 0 ? newBalance : 0);
+      return accum;
+  },[initial]);
+}
+
 interface HistoricalQuery {
   start: Date;
   end: Date;
@@ -188,7 +207,7 @@ const TRADING_DAYS_PER_YEAR = 250;
 const YEARS_OF_RETIREMENT = 60;
 
 
-export function createPolicyConfidenceCurve(leverage = .75, yearsOfRetirement = YEARS_OF_RETIREMENT, numSimulations = NUM_SIMULATIONS) {
+export function createPolicyConfidenceCurve(leverage = .75, yearsOfRetirement = YEARS_OF_RETIREMENT, numSimulations = NUM_SIMULATIONS):Promise<LeveragedWithdrawalConfidence[]> {
   return memoizePromise(`createPolicyConfidenceCurve_1_1_${JSON.stringify(arguments)}`, () => {
     const query: HistoricalQuery = {symbol: 'SPY', start:new Date('1998-01-01'),end: new Date('2021-01-01')};
 
@@ -204,8 +223,14 @@ export function createPolicyConfidenceCurve(leverage = .75, yearsOfRetirement = 
   });
 }
 
+export interface LeveragedWithdrawalConfidence {
+  leverage: number;
+  withdrawal: number;
+  confidence: number;
+}
+
 // time vs investment vs withdrawal vs confidence
-function _createPolicyConfidenceCurve(resp, leverage = .75, yearsOfRetirement = YEARS_OF_RETIREMENT, numSimulations = NUM_SIMULATIONS) {
+function _createPolicyConfidenceCurve(resp, leverage = .75, yearsOfRetirement = YEARS_OF_RETIREMENT, numSimulations = NUM_SIMULATIONS):LeveragedWithdrawalConfidence[] {
   // default policy is a % allocation of stocks and % withdrawal rate
   // 45-60 years, 60 years for now
   // 50%-75%, 60% for now
@@ -242,7 +267,25 @@ function _createPolicyConfidenceCurve(resp, leverage = .75, yearsOfRetirement = 
 
 }
 
- 
+
+
+export function createWorkingGraph(timeToWork: number, leverage:number, contribution: number = 0, initial: number = 0,numSimulations = NUM_SIMULATIONS) {
+  const query: HistoricalQuery = {symbol: 'SPY', start:new Date('1998-01-01'),end: new Date('2021-01-01')};
+
+  const spy = toHistoricalSeries(fetchSymbol(query));
+  return spy.then(resp =>{
+
+    const simulations = new Array(numSimulations).fill(0).map(() => {
+      return createWorkingRun(sampleSeries(resp, timeToWork * TRADING_DAYS_PER_YEAR), leverage, contribution / TRADING_DAYS_PER_YEAR,initial);
+    });
+    simulations.sort((a,b) => {
+      return a.slice(-1)[0] - b.slice(-1)[0];
+    });
+    return simulations;
+  }); 
+} 
+
+
 
 // randomly samples values from a series
 function sampleSeries( series: Record[], periods: number = TRADING_DAYS_PER_YEAR * YEARS_OF_RETIREMENT) {
