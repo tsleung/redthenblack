@@ -133,7 +133,12 @@ function localCache() {
       return window.localStorage.getItem(key);
     },
     setItem: (key: string, value: string) => {
-      return window.localStorage.setItem(key, value);
+      try{ 
+        window.localStorage.setItem(key, value);
+      } catch (e) {
+        window.localStorage.clear();
+      }
+       
     }
   }
 }

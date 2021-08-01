@@ -27,6 +27,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { ArticleComponent } from './article/article.component';
 import { DemonComponent } from './demon/demon.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { LineChartComponent } from './line-chart/line-chart.component';
     PosenetComponent,
     ArticleComponent,
     DemonComponent,
-    LineChartComponent
+    LineChartComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,
