@@ -1,4 +1,4 @@
-import { HistoricalTimeSeries } from "../cash-flow-plan/backtest";
+import { HistoricalTimeSeries } from "./backtest";
 
 
 interface Record {

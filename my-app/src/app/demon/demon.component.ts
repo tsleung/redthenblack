@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {createHistoricalLeverageRuns,createPolicyConfidenceCurve, createWorkingGraph} from './demon-utils';
-import {findMyRetirement, promptString, promptNumber} from './find-my-retirement';
+import {createHistoricalLeverageRuns,createPolicyConfidenceCurve, createWorkingGraph} from '../utils/demon-utils';
+import {findMyRetirement, promptString, promptNumber} from '../utils/find-my-retirement';
 
 
 @Component({

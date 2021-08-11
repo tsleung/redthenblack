@@ -8,6 +8,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatDividerModule} from '@angular/material/divider';
 
 import { MatSliderModule } from '@angular/material/slider';
 
@@ -41,7 +44,8 @@ import { WelcomeComponent } from './welcome/welcome.component';
     ArticleComponent,
     DemonComponent,
     LineChartComponent,
-    WelcomeComponent
+    WelcomeComponent,
+   
   ],
   imports: [
     BrowserModule,
@@ -55,6 +59,9 @@ import { WelcomeComponent } from './welcome/welcome.component';
     MatIconModule,
     MatTooltipModule,
     MatInputModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatDividerModule,
     BrowserAnimationsModule,
     MarkdownModule.forRoot(),
     HttpClientModule,

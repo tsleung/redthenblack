@@ -5,6 +5,7 @@ import { SimpleBetComponent } from './simple-bet/simple-bet.component';
 import { CashFlowPlanComponent } from './cash-flow-plan/cash-flow-plan.component';
 import { PosenetComponent } from './posenet/posenet.component';
 import { ArticleComponent } from './article/article.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 import { DemonComponent } from './demon/demon.component';
 
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'bet', component: SimpleBetComponent },
   { path: 'game', component: GameComponent },
   { path: 'pose', component: PosenetComponent },
+  { path: 'editor', component: DemonComponent },
   {
     path: 'beta',
     component: CashFlowPlanComponent,
@@ -29,9 +31,10 @@ const routes: Routes = [
     ]}
   },
   {
-    path: '**',
-    component: DemonComponent,
+    path: '',
+    component: WelcomeComponent,
   },
+  { path: '**', redirectTo: '/' }
 
 ];
 
