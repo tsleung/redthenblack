@@ -1,0 +1,16 @@
+<section>
+
+    Running simulations!
+    <br/>...
+    <br/>...
+    <br/>...
+    <br/>...
+    <br/>
+    Go to Timebox
+</section>
+
+
+<div *ngIf="parameters | async as parameters">
+    <a [href]="parameters.href">Back to summary</a>
+</div>
+

@@ -1,0 +1,17 @@
+<div *ngIf="parameters | async as parameters">
+    {{parameters.title}}
+    <form [action]="parameters.href" method="GET">
+        <mat-form-field appearance="standard"
+            *ngFor="let input of parameters.inputs">
+          <mat-label *ngIf="input.label">{{input.label}}</mat-label>
+          <input matInput 
+          [name]="input.name" 
+          [placeholder]="input.placeholder"
+          [value]=input.value>
+          <mat-hint *ngIf="input.startHint" align="start"><strong>{{input.startHint}}</strong> </mat-hint>
+          <mat-hint *ngIf="input.endHint" align="end">{{input.endHint}}</mat-hint>
+        </mat-form-field>
+        <input type="submit" mat-button value="Submit" />
+      </form>
+      
+</div>

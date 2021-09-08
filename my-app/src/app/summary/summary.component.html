@@ -1,0 +1,73 @@
+<section>
+    <h1>
+        Retirement Summary
+    </h1>
+    <table>
+        <tbody>
+            <tr>
+                <td>Time</td>
+                <td>Confidence</td>
+                <td>Value</td>
+            </tr>
+            <tr>
+                <td>5 years</td>
+                <td>95% </td>
+                <td>$1.2M</td>
+            </tr>
+        </tbody>
+        
+    </table>    
+</section>
+<section>
+    <h2>
+        Recommendations
+    </h2>
+    <mat-tab-group>
+        <mat-tab label="Value"> 
+            <ng-container *ngIf="valueRecommendations | async as recommendations">
+                <mat-card *ngFor="let recommendation of recommendations">
+                    <mat-card-header>
+                        <mat-card-title>{{recommendation.text}}</mat-card-title>
+                        <mat-card-subtitle> </mat-card-subtitle>  
+                    </mat-card-header>
+                    <mat-card-content><p></p></mat-card-content>
+                    <mat-card-actions>
+                        <a [href]="recommendation.href" mat-flat-button><mat-icon>arrow_right_alt</mat-icon></a>
+                    </mat-card-actions>
+                </mat-card>
+                
+            </ng-container>
+        </mat-tab>
+        <mat-tab label="Time"> 
+            <ng-container *ngIf="timeRecommendations | async as recommendations">
+                <mat-card *ngFor="let recommendation of recommendations">
+                    <mat-card-header>
+                        <mat-card-title>{{recommendation.text}}</mat-card-title>
+                        <mat-card-subtitle> </mat-card-subtitle>  
+                    </mat-card-header>
+                    <mat-card-content><p></p></mat-card-content>
+                    <mat-card-actions>
+                        <a [href]="recommendation.href" mat-flat-button><mat-icon>arrow_right_alt</mat-icon></a>
+                    </mat-card-actions>
+                </mat-card>
+                
+            </ng-container>
+        </mat-tab>
+        <mat-tab label="Confidence"> 
+            <ng-container *ngIf="confidenceRecommendations | async as recommendations">
+                <mat-card *ngFor="let recommendation of recommendations">
+                    <mat-card-header>
+                        <mat-card-title>{{recommendation.text}}</mat-card-title>
+                        <mat-card-subtitle> </mat-card-subtitle>  
+                    </mat-card-header>
+                    <mat-card-content><p></p></mat-card-content>
+                    <mat-card-actions>
+                        <a [href]="recommendation.href" mat-flat-button><mat-icon>arrow_right_alt</mat-icon></a>
+                    </mat-card-actions>
+                </mat-card>
+            </ng-container>    
+        </mat-tab>
+      </mat-tab-group>
+</section>
+
+

@@ -8,6 +8,10 @@ import { ArticleComponent } from './article/article.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 
 import { DemonComponent } from './demon/demon.component';
+import { ParameterCollectionComponent,ParameterRouteData } from './parameter-collection/parameter-collection.component';
+import { SummaryComponent,SummaryRouteData} from './summary/summary.component';
+import { ResultsComponent,ResultsRouteData} from './results/results.component';
+
 
 const routes: Routes = [
   { path: 'bet', component: SimpleBetComponent },
@@ -31,11 +35,36 @@ const routes: Routes = [
     ]}
   },
   {
+    path: 'results',
+    component: ResultsComponent,
+    data: {
+      href: '/summary'
+    } as ResultsRouteData
+  },
+
+  {
+    path: 'summary',
+    component: SummaryComponent,
+    data: {
+    } as SummaryRouteData
+  },
+  {
+    path: 'parameters',
+    component: ParameterCollectionComponent,
+    data: {
+      title:'Parameters',
+      href: 'results',
+      inputs: [
+        {name:'income',value: ''},
+        {name:'another', value: ''},
+      ]
+    } as ParameterRouteData
+  },
+  {
     path: '',
     component: WelcomeComponent,
   },
   { path: '**', redirectTo: '/' }
-
 ];
 
 @NgModule({

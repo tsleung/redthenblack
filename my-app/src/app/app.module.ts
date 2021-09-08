@@ -4,10 +4,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatDividerModule} from '@angular/material/divider';
@@ -31,6 +34,15 @@ import { ArticleComponent } from './article/article.component';
 import { DemonComponent } from './demon/demon.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { ParameterCollectionComponent } from './parameter-collection/parameter-collection.component';
+import { SummaryComponent } from './summary/summary.component';
+import { ResultsComponent } from './results/results.component';
+import { TimeboxComponent } from './timebox/timebox.component';
+import { ParameterViewerComponent } from './parameter-viewer/parameter-viewer.component';
+import { ProfileService } from './services/profile.service';
+import { SummaryService } from './services/summary.service';
+import { RecommendationService } from './services/recommendation.service';
+import { PreferencesService} from './services/preferences.service';
 
 
 @NgModule({
@@ -45,6 +57,11 @@ import { WelcomeComponent } from './welcome/welcome.component';
     DemonComponent,
     LineChartComponent,
     WelcomeComponent,
+    ParameterCollectionComponent,
+    SummaryComponent,
+    ResultsComponent,
+    TimeboxComponent,
+    ParameterViewerComponent,
    
   ],
   imports: [
@@ -52,8 +69,10 @@ import { WelcomeComponent } from './welcome/welcome.component';
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     MatRadioModule,
+    MatTableModule,
     MatBadgeModule,
     MatCardModule,
+    MatTabsModule,
     MatSliderModule,
     MatButtonModule,
     MatIconModule,
@@ -67,7 +86,12 @@ import { WelcomeComponent } from './welcome/welcome.component';
     HttpClientModule,
     NgbModule,
   ],
-  providers: [],
+  providers: [
+    ProfileService,
+    PreferencesService,
+    RecommendationService,
+    SummaryService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

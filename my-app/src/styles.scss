@@ -141,6 +141,11 @@ app-article {
 
 @import 'app/welcome/welcome.component.scss';
 
+@import 'app/parameter-collection/parameter-collection.component.scss';
+
 app-welcome {
   @include welcome();
+}
+parameter-collection {
+  @include parameter-collection();
 }
