@@ -1,5 +1,22 @@
-<section>
+<section>    
 
+    <div *ngIf="parameters | async as parameters">
+        <a [routerLink]="parameters.href">
+            <mat-icon>arrow_right_alt</mat-icon> 
+        Back to summary</a>
+    </div>
+    
+    <ng-container *ngIf="working | async as working">
+        Working
+    <app-line-chart 
+        [chartData]="working" 
+        [gridOptions]="findMyRetirementService.workingGridOptions"></app-line-chart>
+    </ng-container>
+    <ng-container *ngIf="retirement | async as retirement">
+        Retirement
+    <app-line-chart [chartData]="retirement" 
+        [gridOptions]="findMyRetirementService.retirementGridOptions"></app-line-chart>
+    </ng-container>
     Running simulations!
     <br/>...
     <br/>...
@@ -8,9 +25,4 @@
     <br/>
     Go to Timebox
 </section>
-
-
-<div *ngIf="parameters | async as parameters">
-    <a [href]="parameters.href">Back to summary</a>
-</div>
 

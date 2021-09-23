@@ -56,6 +56,7 @@ export class LineChartComponent implements OnInit, OnChanges{
       grid: this.gridOptions,
     });
 
+    console.log('generating chart', this.chartData);
     this.updateChart();
   }
   

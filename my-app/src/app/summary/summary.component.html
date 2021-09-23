@@ -1,28 +1,43 @@
-<section>
+<section class="summary" *ngIf="summaryService.summary | async as summary">
     <h1>
-        Retirement Summary
+        Retirement Summary Metrics
     </h1>
-    <table>
-        <tbody>
-            <tr>
-                <td>Time</td>
-                <td>Confidence</td>
-                <td>Value</td>
-            </tr>
-            <tr>
-                <td>5 years</td>
-                <td>95% </td>
-                <td>$1.2M</td>
-            </tr>
-        </tbody>
-        
-    </table>    
+    <div class="metrics" *ngIf="findMyRetirementService.summary | async as summary">
+        <div>
+            <span>Time</span>
+            <span>{{summary.time}}</span>
+        </div>
+        <div>
+            <span>Confidence</span>
+            <span>{{summary.confidence}}</span>
+        </div>
+        <div>
+            <span>Value</span>
+            <span>{{summary.value}}</span>
+        </div>
+    </div>
 </section>
-<section>
-    <h2>
+<section class="recommendations">
+    <h3>
         Recommendations
-    </h2>
+    </h3>
+    <div>Ways to improve retirement summary metrics</div>
     <mat-tab-group>
+        <mat-tab label="All"> 
+            <ng-container *ngIf="recommendations | async as recommendations">
+                <mat-card *ngFor="let recommendation of recommendations">
+                    <mat-card-header>
+                        <mat-card-title>{{recommendation.text}}</mat-card-title>
+                        <mat-card-subtitle> </mat-card-subtitle>  
+                    </mat-card-header>
+                    <mat-card-content><p></p></mat-card-content>
+                    <mat-card-actions>
+                        <a [routerLink]="recommendation.href" mat-flat-button><mat-icon>arrow_right_alt</mat-icon></a>
+                    </mat-card-actions>
+                </mat-card>
+                
+            </ng-container>
+        </mat-tab>
         <mat-tab label="Value"> 
             <ng-container *ngIf="valueRecommendations | async as recommendations">
                 <mat-card *ngFor="let recommendation of recommendations">
@@ -32,7 +47,7 @@
                     </mat-card-header>
                     <mat-card-content><p></p></mat-card-content>
                     <mat-card-actions>
-                        <a [href]="recommendation.href" mat-flat-button><mat-icon>arrow_right_alt</mat-icon></a>
+                        <a [routerLink]="recommendation.href" mat-flat-button><mat-icon>arrow_right_alt</mat-icon></a>
                     </mat-card-actions>
                 </mat-card>
                 
@@ -47,7 +62,7 @@
                     </mat-card-header>
                     <mat-card-content><p></p></mat-card-content>
                     <mat-card-actions>
-                        <a [href]="recommendation.href" mat-flat-button><mat-icon>arrow_right_alt</mat-icon></a>
+                        <a [routerLink]="recommendation.href" mat-flat-button><mat-icon>arrow_right_alt</mat-icon></a>
                     </mat-card-actions>
                 </mat-card>
                 
@@ -62,7 +77,7 @@
                     </mat-card-header>
                     <mat-card-content><p></p></mat-card-content>
                     <mat-card-actions>
-                        <a [href]="recommendation.href" mat-flat-button><mat-icon>arrow_right_alt</mat-icon></a>
+                        <a [routerLink]="recommendation.href" mat-flat-button><mat-icon>arrow_right_alt</mat-icon></a>
                     </mat-card-actions>
                 </mat-card>
             </ng-container>    

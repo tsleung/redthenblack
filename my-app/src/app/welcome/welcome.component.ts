@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FindMyRetirementService } from '../services/find-my-retirement.service';
 import {Observable, of} from 'rxjs'
+import {createIncomeParameterCollectionRoute, createWorkingParameterCollectionRoute, createRetirementParameterCollectionRoute} from '../utils/route_mapper';
+
 
 interface Card {
   title: string;
@@ -16,7 +18,7 @@ interface Card {
 })
 export class WelcomeComponent implements OnInit {
 
-  parametersRoute = '/parameters';
+  parametersRoute = createIncomeParameterCollectionRoute();
 
   cards: Observable<Card[]> = of([
 

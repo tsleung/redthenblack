@@ -43,7 +43,8 @@ workingGridOptions:c3.GridOptions = {
       {value: 2500, text: '10 years'},
       {value: 3750, text: '15 years'},
       {value: 5000, text: '20 years'},
-      {value: 7500, text: '30 years'},
+      {value: 7500, text
+        : '30 years'},
     ]
   },
   y: {
@@ -148,11 +149,6 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     return this.retirementPreferences.annualRetirementIncome / this.retirementPreferences.withdrawalRate;
   }
 
-  promptNumWorkingSimulations() {
-    this.numWorkingSimulations = promptNumber("Number of working simulations", this.numWorkingSimulations);
-    this.updateRetirementPreferences({});
-  }
-
   updateRetirementPreferences(obj) {
     this.retirementPreferences = {...this.retirementPreferences,...obj};
     this.numUpdates++;
@@ -217,6 +213,10 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
   }
   // solicits
   
+  promptNumWorkingSimulations() {
+    this.numWorkingSimulations = promptNumber("Number of working simulations", this.numWorkingSimulations);
+    this.updateRetirementPreferences({});
+  }
   
   promptWithdrawalRate() {
     this.updateRetirementPreferences(

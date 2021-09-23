@@ -291,12 +291,59 @@ export function createWorkingGraph(timeToWork: number, leverage:number, contribu
   
 } 
 
-
-
 // randomly samples values from a series
-function sampleSeries( series: Record[], periods: number = TRADING_DAYS_PER_YEAR * YEARS_OF_RETIREMENT) {
+function sampleSeries<T>( series: T[], periods: number = TRADING_DAYS_PER_YEAR * YEARS_OF_RETIREMENT) {
   return new Array(periods).fill(0).map(() => {
     const sample = series[Math.floor(Math.random() * series.length)];
     return sample;
+  });
+}
+
+// leverage the run per day, then build 'periods', weekly, monthly, annually.
+
+// scale per period, the returns need to be scaled to the new period (is the only change)
+
+export function createRunPerPeriod(
+  periodsToInvest: number, 
+  leverageDaily:number, 
+  contributionPerPeriod: number = 0, 
+  initialBalance: number = 0,
+  numSimulations = NUM_SIMULATIONS) {
+  const query: HistoricalQuery = {symbol: 'SPY', start:new Date('1998-01-01'),end: new Date('2021-01-01')};
+  return toLeverageHistoricalSeries(query, leverageDaily).then(resp => {
+
+    const simulations = new Array(numSimulations).fill(0).map(() => {
+      return createLeveragedPeriodRun(sampleSeries(resp, periodsToInvest), contributionPerPeriod,initialBalance);
+    });
+    simulations.sort((a,b) => {
+      return a.slice(-1)[0] - b.slice(-1)[0];
+    });
+    return simulations;
+  });
+}
+
+function createLeveragedPeriodRun(
+  resp:LeveragedRecord[], 
+  contribution: number = 0, 
+  initial: number = 0):number[] {
+// TODO: make this similar to 'createWorkingRun'
+  return [];
+}
+
+
+interface LeveragedRecord {
+  date: Date;
+  change: number;
+  abs_change: number;
+}
+
+export function toLeverageHistoricalSeries(query, leverage):Promise<LeveragedRecord[]> {
+  return toHistoricalSeries(fetchSymbol(query)).then(records => {
+    return records.map((row, i, all) => {
+      const change = i === 0 ? 0 :(row.close - all[i-1].close)/all[i-1].close;
+      row.abs_change = Math.abs(change*leverage);
+      row.change =  (change*leverage)+1;
+      return row;
+    });
   });
 }

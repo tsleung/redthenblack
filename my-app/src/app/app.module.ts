@@ -43,6 +43,9 @@ import { ProfileService } from './services/profile.service';
 import { SummaryService } from './services/summary.service';
 import { RecommendationService } from './services/recommendation.service';
 import { PreferencesService} from './services/preferences.service';
+import { FindMyRetirementService} from './services/find-my-retirement.service';
+import { LayoutsComponent } from './layouts/layouts.component';
+import { SuitabilityService } from './services/suitability.service';
 
 
 @NgModule({
@@ -62,6 +65,7 @@ import { PreferencesService} from './services/preferences.service';
     ResultsComponent,
     TimeboxComponent,
     ParameterViewerComponent,
+    LayoutsComponent,
    
   ],
   imports: [
@@ -91,6 +95,8 @@ import { PreferencesService} from './services/preferences.service';
     PreferencesService,
     RecommendationService,
     SummaryService,
+    FindMyRetirementService,
+    SuitabilityService,
   ],
   bootstrap: [AppComponent]
 })

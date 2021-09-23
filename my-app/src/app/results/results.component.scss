@@ -1,0 +1,6 @@
+@mixin results() {
+  & {
+    padding: 1rem;
+    display: block;
+  }
+}

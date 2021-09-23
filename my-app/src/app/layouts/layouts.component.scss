@@ -1,0 +1,18 @@
+@mixin app-layouts () {
+  .logo {
+    color: white;
+  }
+
+
+  .term {
+    font-weight: 500;
+  }
+
+  .mat-card-header-text {
+      margin: 0;
+  }
+
+  .spacer {
+      flex-grow: 1;
+  }
+}

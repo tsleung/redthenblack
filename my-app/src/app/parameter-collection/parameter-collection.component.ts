@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
+import { FindMyRetirementService } from '../services/find-my-retirement.service';
 
 
 interface input {
@@ -25,8 +26,27 @@ export interface ParameterRouteData {
 })
 export class ParameterCollectionComponent {
   parameters = this.route.data as Observable<ParameterRouteData>;
+myModel = {};
+  constructor(private route: ActivatedRoute, private router: Router,
+    readonly findMyRetirementService:FindMyRetirementService) {
+  }
 
-  constructor(private route: ActivatedRoute) {
+  paramSubmit($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    const data =  new FormData ($event.target)
+    
+    const preferences = Array.from(data.entries()).reduce((accum,val) => {
+      accum[val[0]] = val[1];
+      console.log('accum', val,val[0],val[1])
+      return accum;
+    },{});
+    //console.log('param submit', $event,data, data.entries(), Array.from(data.entries()),preferences);
+    //console.log('preferences',preferences);
+    this.findMyRetirementService.updateRetirementPreferences(preferences);
+    this.router.navigate(['/results']);
+
+
   }
 
 }

@@ -1,0 +1,32 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <a class="logo" href="/">RtB</a>
+    <span class="spacer"></span>
+    
+    <button mat-icon-button aria-label="Example icon-button with heart icon">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon>share</mat-icon>
+    </button>
+  </mat-toolbar-row>
+
+  <!--
+  <mat-toolbar-row>
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+      </button>
+    <span>Second Line</span>
+    <span class="example-spacer"></span>
+  </mat-toolbar-row>
+  -->
+</mat-toolbar>
+
+<!-- Creates a layout with a left and right sidenav and implicit content. -->
+<mat-sidenav-container>
+  <mat-sidenav>Start</mat-sidenav>
+  <mat-sidenav position="end">End</mat-sidenav>
+  <section>
+    <router-outlet></router-outlet>
+  </section>
+</mat-sidenav-container>

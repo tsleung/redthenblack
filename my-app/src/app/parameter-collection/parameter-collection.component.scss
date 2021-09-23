@@ -1,5 +1,11 @@
 @mixin parameter-collection() {
+    & {
+        padding: 1rem;
+        display: block;
+    }
+
     .mat-form-field {
         display: block;
     }
+
 }
