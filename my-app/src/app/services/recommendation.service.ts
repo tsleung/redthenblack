@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {OptimizationObjective} from '../services/find-my-retirement.service';
-import {createLeverageParameterCollectionRoute, createWorkingParameterCollectionRoute, createRetirementParameterCollectionRoute} from '../utils/route_mapper';
+import {createNestEggParameterCollectionRoute,createMillionaireParameterCollectionRoute,createSimulationParameterCollectionRoute,createLeverageParameterCollectionRoute, createWorkingParameterCollectionRoute, createRetirementParameterCollectionRoute} from '../utils/route_mapper';
 
 // +/- X will +/- Y
 // should save the last value optimized for
@@ -11,7 +11,6 @@ export interface RecommendationSummary {
   time: string;
   value: string;
   confidence: string;
-
 }
 
 export interface Recommendation {
@@ -27,6 +26,10 @@ export class RecommendationService {
   constructor() { }
 
   recommendations:Observable<Recommendation[]> = of([
+    {text: 'Working parameters', 
+      href: createMillionaireParameterCollectionRoute(),},
+      {text: 'Nest egg parameters', 
+      href: createNestEggParameterCollectionRoute(),},
     {text: 'Increase income or savings leverage',
     href: createWorkingParameterCollectionRoute(),},
     {text: 'Increase time working', 
@@ -35,6 +38,9 @@ export class RecommendationService {
     href: createRetirementParameterCollectionRoute(),},
     {text: 'Optimal leverage to increase value', 
       href: createLeverageParameterCollectionRoute(),},
+      {text: 'Modify simulation parameters', 
+      href: createSimulationParameterCollectionRoute(),},
+      
   ]);
 
   valueRecommendations = this.recommendations.pipe(

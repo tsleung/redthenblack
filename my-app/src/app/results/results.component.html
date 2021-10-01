@@ -1,11 +1,34 @@
 <section>    
 
-    <div *ngIf="parameters | async as parameters">
+
+
+    <div class="back" *ngIf="parameters | async as parameters">
         <a [routerLink]="parameters.href">
-            <mat-icon>arrow_right_alt</mat-icon> 
+            <mat-icon>arrow_left_alt</mat-icon> 
         Back to summary</a>
     </div>
     
+<dl *ngIf="visiblePreferences | async as visiblePreferences">
+    
+    <ng-container *ngFor="let preference of visiblePreferences">
+        <dt>{{preference.key}}</dt><dd>{{preference.value}}</dd>
+    </ng-container>
+</dl>
+
+<div class="metrics" *ngIf="findMyRetirementService.summary | async as summary">
+    <div>
+        <span>Time</span>
+        <span>{{summary.time}}</span>
+    </div>
+    <div>
+        <span>Confidence</span>
+        <span>{{summary.confidence}}</span>
+    </div>
+    <div>
+        <span>Value</span>
+        <span>{{summary.value}}</span>
+    </div>
+</div>
     <ng-container *ngIf="working | async as working">
         Working
     <app-line-chart 

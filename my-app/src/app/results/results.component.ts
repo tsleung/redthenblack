@@ -2,6 +2,7 @@ import { Component ,AfterViewInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {combineLatest, Observable, Subject} from 'rxjs';
 import { FindMyRetirementService } from '../services/find-my-retirement.service';
+
 import { map } from 'rxjs/operators';
 export interface ResultsRouteData {
   href: string;
@@ -14,6 +15,19 @@ export interface ResultsRouteData {
 })
 export class ResultsComponent implements AfterViewInit{
 
+  visiblePreferences = this.route.queryParams.pipe(map(params => {
+    console.log('params',params)
+    return Object.keys(params).filter(key => {
+      console.log('pre check', key)
+      return this.findMyRetirementService.retirementPreferences[key];
+    }).map(key => {
+      console.log('visible pre',key)
+      return {
+        key:this.findMyRetirementService.toFriendlyName(key), 
+        value: this.findMyRetirementService.retirementPreferences[key]
+      };
+    });
+  }));
   parameters = this.route.data as Observable<ResultsRouteData>;
 
   ready = new Subject<void>();

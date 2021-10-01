@@ -37,14 +37,17 @@ myModel = {};
     const data =  new FormData ($event.target)
     
     const preferences = Array.from(data.entries()).reduce((accum,val) => {
-      accum[val[0]] = val[1];
+      accum[val[0]] = Number(val[1]);
       console.log('accum', val,val[0],val[1])
       return accum;
     },{});
+    console.log('data', data)
+    const redirectQueryParams =  preferences;
+    console.log('pref',redirectQueryParams);
     //console.log('param submit', $event,data, data.entries(), Array.from(data.entries()),preferences);
     //console.log('preferences',preferences);
     this.findMyRetirementService.updateRetirementPreferences(preferences);
-    this.router.navigate(['/results']);
+    this.router.navigate(['/results'],{queryParams:redirectQueryParams});
 
 
   }

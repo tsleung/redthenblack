@@ -45,7 +45,6 @@ const routes: Routes = [
           href: '/summary'
         } as ResultsRouteData
       },
-    
       {
         path: 'summary',
         component: SummaryComponent,
@@ -55,6 +54,39 @@ const routes: Routes = [
       {
         path: 'params',
         children:[
+          {
+            path: 'millionaire',
+            component: ParameterCollectionComponent,
+            data: {
+              title:'Math to a million',
+              href: 'results',
+              inputs: [
+                {label: 'Savings per year', name:'annualAmountSavedAfterTax', value: ''},
+                {label: 'Current savings', name:'initialSavings', value: ''},
+                {label:'Investing leverage while working', 
+                  name:'investingLeverage',},
+                {label:'Time to work', 
+                  name:'timeToWorkInYears',},
+                  {label:'Target nest egg', 
+                  name:'nestEgg',},
+              ]
+            } as ParameterRouteData
+          },
+          {
+            path: 'egg',
+            component: ParameterCollectionComponent,
+            data: {
+              title:'Nest egg',
+              href: 'results',
+              inputs: [
+                {label:'Time in retirement', 
+                  name:'retirementTimeHorizonInYears',},
+                  {label: 'Desired annual retirement income', 
+                  name:'annualRetirementIncome'},
+              ]
+            } as ParameterRouteData
+          },
+
           {
             path: 'leverage',
             component: ParameterCollectionComponent,
@@ -80,8 +112,8 @@ const routes: Routes = [
                   name:'retirementTimeHorizonInYears',},
                   {label: 'Desired annual retirement income', 
                   name:'annualRetirementIncome'},
-                  {label: 'Withdrawal Rate from Nest Egg', 
-                  name:'withdrawalRate'},
+                  {label: 'Nest Egg', 
+                  name:'nestEgg'},
               ]
             } as ParameterRouteData
           },
@@ -109,6 +141,18 @@ const routes: Routes = [
                 {label:'After tax income', 
                   name:'annualAfterTaxIncome',value: ''},
                 {label: 'After tax savings', name:'annualAmountSavedAfterTax', value: ''},
+              ]
+            } as ParameterRouteData
+          },
+          {
+            path: 'simulation',
+            component: ParameterCollectionComponent,
+            data: {
+              title:'Simulation',
+              href: 'results',
+              inputs: [
+                {label:'Number of simulations to run', 
+                  name:'numWorkingSimulations',value: ''},
               ]
             } as ParameterRouteData
           },

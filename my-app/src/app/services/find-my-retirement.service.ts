@@ -115,35 +115,41 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     });
   }
 
+  toFriendlyName(str) {
+    return str;
+    
+  }
   // personal config
   retirementPreferences = {
     annualAfterTaxIncome: 200000,
     annualAmountSavedAfterTax: 50000,
     timeToWorkInYears: 5,
-    initialSavings: 350000,
-    withdrawalRate: .02,
+    initialSavings: 250000,
     annualRetirementIncome: 150000,
-    investingLeverage: 1.6,
+    nestEgg: 1000000,
+    investingLeverage: 1.8,
     retirementInvestingLeverage: 0.8,
     retirementTimeHorizonInYears: 30,
     probabilityOfSuccess: .95,
     approximateCapitalGainsTax: .15,
+    numWorkingSimulations : 5,
   }
-  numWorkingSimulations = 5;
+  
   workingMessage = '';
 
   calculateTargetNestEgg() {
-    return this.retirementPreferences.annualRetirementIncome / this.retirementPreferences.withdrawalRate;
+    return this.retirementPreferences.nestEgg;
   }
 
   updateRetirementPreferences(obj) {
     this.retirementPreferences = {...this.retirementPreferences,...obj};
+    console.log('preferences',this.retirementPreferences)
     createWorkingGraph(
       this.retirementPreferences.timeToWorkInYears,
       this.retirementPreferences.investingLeverage,
       this.retirementPreferences.annualRetirementIncome / this.calculateTargetNestEgg(),
       this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(), 
-      this.numWorkingSimulations,
+      this.retirementPreferences.numWorkingSimulations,
     ).then(simulations => {
 
       // working results
@@ -198,3 +204,6 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
       // / (1-this.retirementPreferences.approximateCapitalGainsTax);
   }
 }
+
+// math to a million
+// timebox
