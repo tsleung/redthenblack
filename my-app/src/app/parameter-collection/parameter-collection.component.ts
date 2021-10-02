@@ -27,7 +27,8 @@ export interface ParameterRouteData {
 export class ParameterCollectionComponent {
   parameters = this.route.data as Observable<ParameterRouteData>;
 myModel = {};
-  constructor(private route: ActivatedRoute, private router: Router,
+  constructor(private route: ActivatedRoute, 
+    private router: Router,
     readonly findMyRetirementService:FindMyRetirementService) {
   }
 

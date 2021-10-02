@@ -63,12 +63,9 @@ const routes: Routes = [
               inputs: [
                 {label: 'Savings per year', name:'annualAmountSavedAfterTax', value: ''},
                 {label: 'Current savings', name:'initialSavings', value: ''},
-                {label:'Investing leverage while working', 
-                  name:'investingLeverage',},
-                {label:'Time to work', 
-                  name:'timeToWorkInYears',},
-                  {label:'Target nest egg', 
-                  name:'nestEgg',},
+                {label:'Investing leverage while working', name:'investingLeverage',},
+                {label:'Time to work', name:'timeToWorkInYears',},
+                {label:'Target nest egg', name:'nestEgg', value:'1000000'},
               ]
             } as ParameterRouteData
           },
@@ -124,10 +121,14 @@ const routes: Routes = [
               title:'Working',
               href: 'results',
               inputs: [
+                {label: 'Savings per year', name:'annualAmountSavedAfterTax', value: ''},
+                {label: 'Current savings', name:'initialSavings', value: ''},
+                {label:'Investing leverage while working', 
+                  name:'investingLeverage',},
                 {label:'Time to work', 
                   name:'timeToWorkInYears',},
-                {label: 'Investing leverage', 
-                name:'investingLeverage',},
+                  {label:'Target nest egg', 
+                  name:'nestEgg',},
               ]
             } as ParameterRouteData
           },

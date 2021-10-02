@@ -1,18 +1,22 @@
 <section class="summary" *ngIf="summaryService.summary | async as summary">
     <h1>
-        Retirement Summary Metrics
+        Retirement Metrics
     </h1>
     <div class="metrics" *ngIf="findMyRetirementService.summary | async as summary">
         <div>
-            <span>Time</span>
+            <span>Expected Value</span>
+            <span>{{summary.medianOutcome}}</span>
+        </div>
+        <div>
+            <span>Time in Years</span>
             <span>{{summary.time}}</span>
         </div>
         <div>
-            <span>Confidence</span>
+            <span>Confidence to Target</span>
             <span>{{summary.confidence}}</span>
         </div>
         <div>
-            <span>Value</span>
+            <span>Target Nest Egg</span>
             <span>{{summary.value}}</span>
         </div>
     </div>

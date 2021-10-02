@@ -1,7 +1,8 @@
 import { Component ,AfterViewInit} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {combineLatest, Observable, Subject} from 'rxjs';
 import { FindMyRetirementService } from '../services/find-my-retirement.service';
+import { Location } from '@angular/common'
 
 import { map } from 'rxjs/operators';
 export interface ResultsRouteData {
@@ -34,9 +35,25 @@ export class ResultsComponent implements AfterViewInit{
   retirement = combineLatest([this.ready,this.findMyRetirementService.retirement]).pipe(map(([ready,val]) => val));
   working = combineLatest([this.ready,this.findMyRetirementService.working]).pipe(map(([ready,val]) => val));
   constructor(private route: ActivatedRoute,
-    readonly findMyRetirementService:FindMyRetirementService) {
+    private router: Router,
+    readonly findMyRetirementService:FindMyRetirementService, 
+    private location: Location) {
   }
 
+  toFriendlyText(text: string) {
+    const result = text.replace(/([A-Z])/g, " $1");
+    const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
+    return finalResult;
+  }
+  navigateToParams() {
+    this.location.back()
+  }
+
+  navigateToSummary() {
+    this.parameters.subscribe((params) => {
+      this.router.navigate([params.href]);
+    }).unsubscribe();
+  }
 
   ngAfterViewInit(){
     this.ready.next();

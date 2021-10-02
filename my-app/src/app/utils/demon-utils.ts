@@ -126,8 +126,15 @@ interface HistoricalQuery {
   symbol: string;
 }
 
+enum CacheType {
+  SmallSizeHighLatencyOnline,
+  HighLatencyOffline
+}
+interface CacheEntry {
+  type: CacheType
+}
 
-function localCache() {
+export function localCache() {
   return {
     getItem: (key: string) => {
       return window.localStorage.getItem(key);
@@ -137,8 +144,7 @@ function localCache() {
         window.localStorage.setItem(key, value);
       } catch (e) {
         window.localStorage.clear();
-      }
-       
+      }  
     }
   }
 }
@@ -274,21 +280,17 @@ function _createPolicyConfidenceCurve(resp, leverage = .75, yearsOfRetirement = 
 
 export function createWorkingGraph(timeToWork: number, leverage:number, contribution: number = 0, initial: number = 0,numSimulations = NUM_SIMULATIONS) {
   const query: HistoricalQuery = {symbol: 'SPY', start:new Date('1998-01-01'),end: new Date('2021-01-01')};
+  const spy = toHistoricalSeries(fetchSymbol(query));
+  return spy.then(resp =>{
 
-  return memoizePromise(`createWorkingGraph_1_1_${JSON.stringify(arguments)}`, () => {
-    const spy = toHistoricalSeries(fetchSymbol(query));
-    return spy.then(resp =>{
-
-      const simulations = new Array(numSimulations).fill(0).map(() => {
-        return createWorkingRun(sampleSeries(resp, timeToWork * TRADING_DAYS_PER_YEAR), leverage, contribution / TRADING_DAYS_PER_YEAR,initial);
-      });
-      simulations.sort((a,b) => {
-        return a.slice(-1)[0] - b.slice(-1)[0];
-      });
-      return simulations;
-    }); 
-  });
-  
+    const simulations = new Array(numSimulations).fill(0).map(() => {
+      return createWorkingRun(sampleSeries(resp, timeToWork * TRADING_DAYS_PER_YEAR), leverage, contribution / TRADING_DAYS_PER_YEAR,initial);
+    });
+    simulations.sort((a,b) => {
+      return a.slice(-1)[0] - b.slice(-1)[0];
+    });
+    return simulations;
+  }); 
 } 
 
 // randomly samples values from a series
@@ -346,4 +348,22 @@ export function toLeverageHistoricalSeries(query, leverage):Promise<LeveragedRec
       return row;
     });
   });
+}
+
+// https://stackoverflow.com/questions/9461621/format-a-number-as-2-5k-if-a-thousand-or-more-otherwise-900
+export function friendlyMoney(num, digits) {
+  const lookup = [
+    { value: 1, symbol: "" },
+    { value: 1e3, symbol: "k" },
+    { value: 1e6, symbol: "M" },
+    { value: 1e9, symbol: "G" },
+    { value: 1e12, symbol: "T" },
+    { value: 1e15, symbol: "P" },
+    { value: 1e18, symbol: "E" }
+  ];
+  const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+  var item = lookup.slice().reverse().find(function(item) {
+    return num >= item.value;
+  });
+  return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : "0";
 }

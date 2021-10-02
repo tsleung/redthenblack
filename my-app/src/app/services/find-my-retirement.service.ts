@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SuitabilityService } from './suitability.service';
-import {createHistoricalLeverageRuns,createPolicyConfidenceCurve, createWorkingGraph} from '../utils/demon-utils';
+import {localCache,friendlyMoney,createHistoricalLeverageRuns,createPolicyConfidenceCurve, createWorkingGraph} from '../utils/demon-utils';
 import {findMyRetirement, promptString, promptNumber} from '../utils/find-my-retirement';
 
 import { of,Observable, Subject, ReplaySubject, BehaviorSubject } from 'rxjs';
@@ -142,7 +142,18 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
   }
 
   updateRetirementPreferences(obj) {
+    try {
+      const fromCache = localCache().getItem('retirementPreferences');
+      console.log('from cache',fromCache)
+      this.retirementPreferences = fromCache && fromCache.length > 50 ? JSON.parse(fromCache) : this.retirementPreferences;
+      this.retirementPreferences = {...this.retirementPreferences,...obj};
+      localCache().setItem('retirementPreferences', JSON.stringify(this.retirementPreferences));
+  
+    }catch(e) {
+
+    }
     this.retirementPreferences = {...this.retirementPreferences,...obj};
+    
     console.log('preferences',this.retirementPreferences)
     createWorkingGraph(
       this.retirementPreferences.timeToWorkInYears,
@@ -163,12 +174,12 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
 
       this.summary.next({
         successfulRuns,
-        nestEgg: this.calculateTargetNestEgg(),
+        nestEgg: friendlyMoney(this.calculateTargetNestEgg(),2),
         successRate,
-        medianOutcome,
-        time: this.retirementPreferences.timeToWorkInYears,
-        confidence: successRate,
-        value: this.calculateTargetNestEgg(),
+        medianOutcome: `${friendlyMoney(Math.round(medianOutcome* this.calculateTargetNestEgg()),2)}`,
+        time: `${this.retirementPreferences.timeToWorkInYears} years`,
+        confidence: `${successRate * 100}%`,
+        value: friendlyMoney(this.calculateTargetNestEgg(),2),
       })
       this.working.next({
         x: 'x',

@@ -1,31 +1,43 @@
-<section>    
+<section>
+    <nav>
+        <button mat-button 
+            (click)="navigateToParams()" 
+            aria-label="Back to parameters">
+            <mat-icon >chevron_left</mat-icon> 
+            Back to parameters
+        </button>
 
-
-
-    <div class="back" *ngIf="parameters | async as parameters">
-        <a [routerLink]="parameters.href">
-            <mat-icon>arrow_left_alt</mat-icon> 
-        Back to summary</a>
-    </div>
+        <button class="summary" 
+            *ngIf="parameters | async as parameters"
+            mat-button 
+            (click)="navigateToSummary()" 
+            aria-label="Go to summary">
+            Go to summary
+            <mat-icon >chevron_right</mat-icon> 
+        </button>
+    </nav>
     
 <dl *ngIf="visiblePreferences | async as visiblePreferences">
-    
     <ng-container *ngFor="let preference of visiblePreferences">
-        <dt>{{preference.key}}</dt><dd>{{preference.value}}</dd>
+        <dt>{{toFriendlyText(preference.key)}}</dt><dd>{{preference.value}}</dd>
     </ng-container>
 </dl>
 
 <div class="metrics" *ngIf="findMyRetirementService.summary | async as summary">
     <div>
-        <span>Time</span>
+        <span>Expected Value</span>
+        <span>{{summary.medianOutcome}}</span>
+    </div>
+    <div>
+        <span>Time in Years</span>
         <span>{{summary.time}}</span>
     </div>
     <div>
-        <span>Confidence</span>
+        <span>Confidence to Target</span>
         <span>{{summary.confidence}}</span>
     </div>
     <div>
-        <span>Value</span>
+        <span>Target Nest Egg</span>
         <span>{{summary.value}}</span>
     </div>
 </div>

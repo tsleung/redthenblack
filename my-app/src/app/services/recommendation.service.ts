@@ -26,14 +26,12 @@ export class RecommendationService {
   constructor() { }
 
   recommendations:Observable<Recommendation[]> = of([
-    {text: 'Working parameters', 
-      href: createMillionaireParameterCollectionRoute(),},
-      {text: 'Nest egg parameters', 
+    {text: 'Update parameters for reaching a nest egg', 
+      href: createWorkingParameterCollectionRoute(),},
+      {text: 'Update time and value in retirement', 
       href: createNestEggParameterCollectionRoute(),},
     {text: 'Increase income or savings leverage',
     href: createWorkingParameterCollectionRoute(),},
-    {text: 'Increase time working', 
-      href: createWorkingParameterCollectionRoute(),},
     {text: 'Decrease time in retirement',
     href: createRetirementParameterCollectionRoute(),},
     {text: 'Optimal leverage to increase value', 
