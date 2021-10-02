@@ -174,12 +174,12 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
 
       this.summary.next({
         successfulRuns,
-        nestEgg: friendlyMoney(this.calculateTargetNestEgg(),2),
+        nestEgg: friendlyMoney(this.calculateTargetNestEgg(),1),
         successRate,
-        medianOutcome: `${friendlyMoney(Math.round(medianOutcome* this.calculateTargetNestEgg()),2)}`,
+        medianOutcome: `${friendlyMoney(Math.round(medianOutcome* this.calculateTargetNestEgg()),1)}`,
         time: `${this.retirementPreferences.timeToWorkInYears} years`,
-        confidence: `${successRate * 100}%`,
-        value: friendlyMoney(this.calculateTargetNestEgg(),2),
+        confidence: `${Math.round(successRate * 100)}%`,
+        value: friendlyMoney(this.calculateTargetNestEgg(),1),
       })
       this.working.next({
         x: 'x',
