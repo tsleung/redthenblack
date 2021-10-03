@@ -278,7 +278,12 @@ function _createPolicyConfidenceCurve(resp, leverage = .75, yearsOfRetirement = 
 
 }
 
-export function createWorkingGraph(timeToWork: number, leverage:number, contribution: number = 0, initial: number = 0,numSimulations = NUM_SIMULATIONS) {
+export function createWorkingGraph(
+  timeToWork: number, 
+  leverage:number, 
+  contribution: number = 0, 
+  initial: number = 0,
+  numSimulations = NUM_SIMULATIONS) {
   const query: HistoricalQuery = {symbol: 'SPY', start:new Date('1998-01-01'),end: new Date('2021-01-01')};
   const spy = toHistoricalSeries(fetchSymbol(query));
   return spy.then(resp =>{

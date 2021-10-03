@@ -4,7 +4,7 @@
             (click)="navigateToParams()" 
             aria-label="Back to parameters">
             <mat-icon >chevron_left</mat-icon> 
-            Back to parameters
+            Edit inputs
         </button>
 
         <button class="summary" 
@@ -18,14 +18,18 @@
     </nav>
     
 <dl *ngIf="visiblePreferences | async as visiblePreferences">
-    <ng-container *ngFor="let preference of visiblePreferences">
-        <dt>{{toFriendlyText(preference.key)}}</dt><dd>{{preference.value}}</dd>
-    </ng-container>
+    <details open>
+        <summary>Model input parameters</summary>
+        <ng-container *ngFor="let preference of visiblePreferences">
+            <dt>{{toFriendlyText(preference.key)}}</dt><dd>{{preference.value}}</dd>
+        </ng-container>
+    </details>
+    
 </dl>
 
 <div class="metrics" *ngIf="findMyRetirementService.summary | async as summary">
     <div>
-        <span>Expected Value</span>
+        <span>Expected Outcome</span>
         <span>{{summary.medianOutcome}}</span>
     </div>
     <div>
@@ -47,17 +51,12 @@
         [chartData]="working" 
         [gridOptions]="findMyRetirementService.workingGridOptions"></app-line-chart>
     </ng-container>
+
+
     <ng-container *ngIf="retirement | async as retirement">
         Retirement
     <app-line-chart [chartData]="retirement" 
         [gridOptions]="findMyRetirementService.retirementGridOptions"></app-line-chart>
     </ng-container>
-    Running simulations!
-    <br/>...
-    <br/>...
-    <br/>...
-    <br/>...
-    <br/>
-    Go to Timebox
 </section>
 

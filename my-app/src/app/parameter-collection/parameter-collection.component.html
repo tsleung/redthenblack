@@ -6,6 +6,8 @@
           <mat-label *ngIf="input.label">{{input.label}}</mat-label>
           <input matInput 
           [name]="input.name" 
+          type="number"
+          step=".1"
           [placeholder]="input.placeholder"
           [value]="input.value || this.findMyRetirementService.retirementPreferences[input.name]">
           <mat-hint *ngIf="input.startHint" 

@@ -158,8 +158,8 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     createWorkingGraph(
       this.retirementPreferences.timeToWorkInYears,
       this.retirementPreferences.investingLeverage,
-      this.retirementPreferences.annualRetirementIncome / this.calculateTargetNestEgg(),
-      this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(), 
+      this.retirementPreferences.annualAmountSavedAfterTax,
+      this.retirementPreferences.initialSavings, 
       this.retirementPreferences.numWorkingSimulations,
     ).then(simulations => {
 
