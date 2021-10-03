@@ -108,7 +108,10 @@ export function createRun(resp:Record[], leverage:number, withdrawal: number = 0
   // start the account with an initial balance "1"
   // target to exit is when account hits a mutiplier e.g. 2x/10x
 
-export function createWorkingRun(resp:Record[], leverage:number, contribution: number = 0, initial: number = 0):number[] {
+export function createWorkingRun(resp:Record[], 
+  leverage:number, 
+  contribution: number = 0, 
+  initial: number = 0):number[] {
   return resp.reduce((accum, record:Record) => {
       const previousBalance = accum[accum.length-1];
       const previousBalanceAfterContribution = previousBalance + contribution;
@@ -289,7 +292,11 @@ export function createWorkingGraph(
   return spy.then(resp =>{
 
     const simulations = new Array(numSimulations).fill(0).map(() => {
-      return createWorkingRun(sampleSeries(resp, timeToWork * TRADING_DAYS_PER_YEAR), leverage, contribution / TRADING_DAYS_PER_YEAR,initial);
+      return createWorkingRun(sampleSeries(resp, 
+        timeToWork * TRADING_DAYS_PER_YEAR), 
+        leverage, 
+        contribution / TRADING_DAYS_PER_YEAR,
+      initial);
     });
     simulations.sort((a,b) => {
       return a.slice(-1)[0] - b.slice(-1)[0];
