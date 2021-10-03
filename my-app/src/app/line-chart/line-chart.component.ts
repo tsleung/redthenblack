@@ -19,6 +19,10 @@ export class LineChartComponent implements OnInit, OnChanges{
   @Input() gridOptions:c3.GridOptions = {
   }
 
+  @Input() legend:c3.LegendOptions = {   
+    show: true
+  }
+
   constructor() {
     this.chartId = `chart-injected-${Date.now()}-${Math.round(Math.random() * 100)}`;
   }
@@ -33,7 +37,8 @@ export class LineChartComponent implements OnInit, OnChanges{
         x: 'x',
         columns: [],
         labels: false
-      }
+      },
+      legend: this.legend,
     });
 
     return this.chart;
@@ -54,6 +59,7 @@ export class LineChartComponent implements OnInit, OnChanges{
       },
       point: {show: false},
       grid: this.gridOptions,
+      legend: this.legend,
     });
 
     console.log('generating chart', this.chartData);
@@ -67,7 +73,6 @@ export class LineChartComponent implements OnInit, OnChanges{
       types: this.chartData.types,
       type: this.chartData.type,
       xs: this.chartData.xs,
-
     });
     console.log('updating chart', this.chartData)
   }

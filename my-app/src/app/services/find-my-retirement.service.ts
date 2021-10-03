@@ -186,7 +186,7 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
         columns: [
           ['x',...new Array(this.retirementPreferences.timeToWorkInYears*250).fill(0).map((v,i) => i)],
           ...simulations.map((simulation,i):[string, ...number[]] => ([`${i}`, ...simulation]))
-        ]
+        ],
       });
       console.log('woring graph updated')
     });

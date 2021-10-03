@@ -1,31 +1,40 @@
 <section>
-    <nav>
-        <button mat-button 
-            (click)="navigateToParams()" 
-            aria-label="Back to parameters">
-            <mat-icon >chevron_left</mat-icon> 
-            Edit inputs
-        </button>
+<nav>
+    <button mat-button 
+        (click)="location.back()" 
+        aria-label="Back to previous">
+        <mat-icon >chevron_left</mat-icon> 
+        Back to previous
+    </button>
 
-        <button class="summary" 
-            *ngIf="parameters | async as parameters"
-            mat-button 
-            (click)="navigateToSummary()" 
-            aria-label="Go to summary">
-            Go to summary
-            <mat-icon >chevron_right</mat-icon> 
-        </button>
-    </nav>
-    
-<dl *ngIf="visiblePreferences | async as visiblePreferences">
-    <details open>
-        <summary>Model input parameters</summary>
-        <ng-container *ngFor="let preference of visiblePreferences">
-            <dt>{{toFriendlyText(preference.key)}}</dt><dd>{{preference.value}}</dd>
-        </ng-container>
-    </details>
-    
-</dl>
+    <button class="summary" 
+        *ngIf="parameters | async as parameters"
+        mat-button 
+        (click)="navigateToSummary()" 
+        aria-label="Go to summary">
+        Go to summary
+        <mat-icon >chevron_right</mat-icon> 
+    </button>
+</nav>
+
+<ng-container *ngIf="visiblePreferences | async as visiblePreferences">
+    <dl *ngIf="visiblePreferences.length > 0">
+        <details>
+            <summary>
+                Updated model parameters ({{visiblePreferences.length}})
+            </summary>
+            <ng-container *ngFor="let preference of visiblePreferences">
+                <dt>{{toFriendlyText(preference.key)}}</dt><dd>{{preference.value}}</dd>
+            </ng-container>
+
+            <div>
+                <a mat-stroked-button [routerLink]="routingService.mapper.createSimulationParameterCollectionRoute()">
+                    Modify number of simulations ({{findMyRetirementService.retirementPreferences.numWorkingSimulations}})
+                </a>
+            </div>
+        </details>
+    </dl>
+</ng-container>
 
 <div class="metrics" *ngIf="findMyRetirementService.summary | async as summary">
     <div>
@@ -49,14 +58,29 @@
         Working
     <app-line-chart 
         [chartData]="working" 
+        [legend]="{show:false}"
         [gridOptions]="findMyRetirementService.workingGridOptions"></app-line-chart>
     </ng-container>
 
-
+    
     <ng-container *ngIf="retirement | async as retirement">
         Retirement
     <app-line-chart [chartData]="retirement" 
         [gridOptions]="findMyRetirementService.retirementGridOptions"></app-line-chart>
     </ng-container>
+
+
+<div>
+    <button class="summary" 
+    color="primary"
+    *ngIf="parameters | async as parameters"
+    mat-flat-button 
+    (click)="navigateToSummary()" 
+    aria-label="Go to summary">
+    Go to summary
+<mat-icon >chevron_right</mat-icon> 
+</button>
+</div>
+
 </section>
 

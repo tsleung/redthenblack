@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {combineLatest, Observable, Subject} from 'rxjs';
 import { FindMyRetirementService } from '../services/find-my-retirement.service';
 import { Location } from '@angular/common'
-
+import { RoutingService } from '../services/routing.service';
 import { map } from 'rxjs/operators';
+
 export interface ResultsRouteData {
   href: string;
 }
@@ -15,7 +16,6 @@ export interface ResultsRouteData {
   styleUrls: ['./results.component.scss']
 })
 export class ResultsComponent implements AfterViewInit{
-
   visiblePreferences = this.route.queryParams.pipe(map(params => {
     console.log('params',params)
     return Object.keys(params).filter(key => {
@@ -37,16 +37,13 @@ export class ResultsComponent implements AfterViewInit{
   constructor(private route: ActivatedRoute,
     private router: Router,
     readonly findMyRetirementService:FindMyRetirementService, 
-    private location: Location) {
+    readonly routingService: RoutingService,
+    readonly location: Location) {
   }
-
   toFriendlyText(text: string) {
     const result = text.replace(/([A-Z])/g, " $1");
     const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
     return finalResult;
-  }
-  navigateToParams() {
-    this.location.back()
   }
 
   navigateToSummary() {

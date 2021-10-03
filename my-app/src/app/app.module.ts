@@ -46,7 +46,7 @@ import { PreferencesService} from './services/preferences.service';
 import { FindMyRetirementService} from './services/find-my-retirement.service';
 import { LayoutsComponent } from './layouts/layouts.component';
 import { SuitabilityService } from './services/suitability.service';
-
+import { RoutingService } from './services/routing.service';
 
 @NgModule({
   declarations: [
@@ -97,6 +97,7 @@ import { SuitabilityService } from './services/suitability.service';
     SummaryService,
     FindMyRetirementService,
     SuitabilityService,
+    RoutingService,
   ],
   bootstrap: [AppComponent]
 })

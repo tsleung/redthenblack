@@ -7,18 +7,23 @@
     font-size: 1rem;
     list-style: 1rem;
     justify-content: space-between;
-  }
-
-  nav {
     display: flex;
     flex-direction: row;
     flex: 1;
+    margin: 0 -1rem;
+  }
+
+  details {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin: 1rem auto;
   }
 
   .metrics {
     display: flex;
     flex: 1;
     flex-direction: row;
+    margin: 1rem auto;
 
     div {
       display: flex;
