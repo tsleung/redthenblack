@@ -26,7 +26,10 @@ export class SummaryComponent implements AfterViewInit {
     ) { }
 
     ngAfterViewInit() {
-      this.findMyRetirementService.updateRetirementPreferences({});
+      //this.findMyRetirementService.updateRetirementPreferences({});
+      setTimeout(() => {
+        this.findMyRetirementService.updateRetirementPreferences({});
+      }, 1);
     }
 
 }

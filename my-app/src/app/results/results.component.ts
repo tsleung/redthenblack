@@ -40,6 +40,7 @@ export class ResultsComponent implements AfterViewInit{
     readonly routingService: RoutingService,
     readonly location: Location) {
   }
+
   toFriendlyText(text: string) {
     const result = text.replace(/([A-Z])/g, " $1");
     const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
@@ -55,9 +56,12 @@ export class ResultsComponent implements AfterViewInit{
   ngAfterViewInit(){
     this.ready.next();
     
-    this.findMyRetirementService.updateMarketLeverage();
-    this.findMyRetirementService.createPolicyConfidenceCurve();
-    this.findMyRetirementService.updateRetirementPreferences({});
+    //this.findMyRetirementService.updateMarketLeverage();
+    //this.findMyRetirementService.createPolicyConfidenceCurve();
+    setTimeout(() => {
+      this.findMyRetirementService.updateRetirementPreferences({});
+    }, 1);
+    
   }
 
 

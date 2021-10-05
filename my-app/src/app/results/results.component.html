@@ -54,22 +54,34 @@
         <span>{{summary.value}}</span>
     </div>
 </div>
-    <ng-container *ngIf="working | async as working">
+    <ng-container *ngIf="working | async as working;else loading">
+    <div>
         Working
+        <a mat-stroked-button [routerLink]="routingService.mapper.createWorkingParameterCollectionRoute()">
+            Modify parameters
+        </a>
+    </div>
+        
     <app-line-chart 
         [chartData]="working" 
         [legend]="{show:false}"
         [gridOptions]="findMyRetirementService.workingGridOptions"></app-line-chart>
     </ng-container>
-
+    
     
     <ng-container *ngIf="retirement | async as retirement">
+        
+    <div>
         Retirement
+        <a mat-stroked-button [routerLink]="routingService.mapper.createRetirementParameterCollectionRoute()">
+            Modify parameters
+        </a>
+    </div>
     <app-line-chart [chartData]="retirement" 
         [gridOptions]="findMyRetirementService.retirementGridOptions"></app-line-chart>
     </ng-container>
-
-
+    
+<br/>
 <div>
     <button class="summary" 
     color="primary"
@@ -84,3 +96,5 @@
 
 </section>
 
+
+<ng-template #loading>Running simulations...</ng-template>

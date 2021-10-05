@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SuitabilityService } from './suitability.service';
-import {localCache,friendlyMoney,createHistoricalLeverageRuns,createPolicyConfidenceCurve, createWorkingGraph} from '../utils/demon-utils';
+import {localCache,friendlyMoney,createHistoricalLeverageRuns,createPolicyConfidenceCurve,createWorkingGraph} from '../utils/demon-utils';
 import {findMyRetirement, promptString, promptNumber} from '../utils/find-my-retirement';
 
 import { of,Observable, Subject, ReplaySubject, BehaviorSubject } from 'rxjs';
@@ -141,28 +141,9 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     return this.retirementPreferences.nestEgg;
   }
 
-  updateRetirementPreferences(obj) {
-    try {
-      const fromCache = localCache().getItem('retirementPreferences');
-      console.log('from cache',fromCache)
-      this.retirementPreferences = fromCache && fromCache.length > 50 ? JSON.parse(fromCache) : this.retirementPreferences;
-      this.retirementPreferences = {...this.retirementPreferences,...obj};
-      localCache().setItem('retirementPreferences', JSON.stringify(this.retirementPreferences));
-  
-    }catch(e) {
 
-    }
-    this.retirementPreferences = {...this.retirementPreferences,...obj};
+  updateWorkingGraph(simulations) {
     
-    console.log('preferences',this.retirementPreferences)
-    createWorkingGraph(
-      this.retirementPreferences.timeToWorkInYears,
-      this.retirementPreferences.investingLeverage,
-      this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
-      this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(), 
-      this.retirementPreferences.numWorkingSimulations,
-    ).then(simulations => {
-
       // working results
       const successfulRuns = simulations.filter(simulation => {
         return simulation.slice(-1)[0] > 1;
@@ -189,6 +170,36 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
         ],
       });
       console.log('woring graph updated')
+   
+  }
+
+  updateRetirementPreferences(obj) {
+    try {
+      const fromCache = localCache().getItem('retirementPreferences');
+      console.log('from cache',fromCache)
+      this.retirementPreferences = fromCache && fromCache.length > 50 ? JSON.parse(fromCache) : this.retirementPreferences;
+      this.retirementPreferences = {...this.retirementPreferences,...obj};
+      localCache().setItem('retirementPreferences', JSON.stringify(this.retirementPreferences));
+  
+    }catch(e) {
+
+    }
+    this.retirementPreferences = {...this.retirementPreferences,...obj};
+    
+    console.log('preferences',this.retirementPreferences)
+    
+    const allSimulations = [];
+
+
+    
+    createWorkingGraph(
+      this.retirementPreferences.timeToWorkInYears,
+      this.retirementPreferences.investingLeverage,
+      this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
+      this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(), 
+      this.retirementPreferences.numWorkingSimulations,
+    ).then(simulations => {
+      this.updateWorkingGraph(simulations);
     });
     
     createPolicyConfidenceCurve(

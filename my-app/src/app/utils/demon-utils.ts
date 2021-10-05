@@ -1,3 +1,4 @@
+import { Observable } from "rxjs";
 import { HistoricalTimeSeries } from "./backtest";
 
 
@@ -14,7 +15,7 @@ interface Record {
     abs_change: number;
 }
 
-function toHistoricalSeries(series: Promise<string>):Promise<Record[]> {
+export function toHistoricalSeries(series: Promise<string>):Promise<Record[]> {
   return series.then(resp => {
     return resp.split('\n');
   })
@@ -301,6 +302,7 @@ export function createWorkingGraph(
     simulations.sort((a,b) => {
       return a.slice(-1)[0] - b.slice(-1)[0];
     });
+    
     return simulations;
   }); 
 } 
