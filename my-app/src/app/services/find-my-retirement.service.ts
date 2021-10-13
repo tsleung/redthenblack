@@ -158,7 +158,7 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
         nestEgg: friendlyMoney(this.calculateTargetNestEgg(),1),
         successRate,
         medianOutcome: `${friendlyMoney(Math.round(medianOutcome* this.calculateTargetNestEgg()),1)}`,
-        time: `${this.retirementPreferences.timeToWorkInYears} y`,
+        time: `${this.retirementPreferences.timeToWorkInYears}y`,
         confidence: `${Math.round(successRate * 100)}%`,
         value: friendlyMoney(this.calculateTargetNestEgg(),1),
       })
@@ -180,7 +180,6 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
       this.retirementPreferences = fromCache && fromCache.length > 50 ? JSON.parse(fromCache) : this.retirementPreferences;
       this.retirementPreferences = {...this.retirementPreferences,...obj};
       localCache().setItem('retirementPreferences', JSON.stringify(this.retirementPreferences));
-  
     }catch(e) {
 
     }
@@ -189,7 +188,6 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     console.log('preferences',this.retirementPreferences)
     
     const allSimulations = [];
-
 
     /*
     createWorkingGraph(

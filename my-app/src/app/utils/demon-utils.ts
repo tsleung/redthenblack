@@ -341,7 +341,7 @@ export function createRunPerPeriod(
 
     const simulations = new Array(numSimulations).fill(0).map(() => {
 
-      const contributionPerPeriod = leveragedSeries.periodType === PeriodType.YEAR ? contribution / PeriodType.YEAR :
+      const contributionPerPeriod = leveragedSeries.periodType === PeriodType.YEAR ? contribution :
     leveragedSeries.periodType === PeriodType.MONTH ? contribution  / PeriodType.YEAR * PeriodType.MONTH :
     leveragedSeries.periodType === PeriodType.DAY ? contribution  / PeriodType.YEAR : 
     contribution  / PeriodType.YEAR;
