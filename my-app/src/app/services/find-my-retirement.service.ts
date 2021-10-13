@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SuitabilityService } from './suitability.service';
-import {localCache,friendlyMoney,createHistoricalLeverageRuns,createPolicyConfidenceCurve,createWorkingGraph} from '../utils/demon-utils';
+import {localCache,friendlyMoney,createHistoricalLeverageRuns,createPolicyConfidenceCurve,createWorkingGraph, createRunPerPeriod} from '../utils/demon-utils';
 import {findMyRetirement, promptString, promptNumber} from '../utils/find-my-retirement';
 
 import { of,Observable, Subject, ReplaySubject, BehaviorSubject } from 'rxjs';
@@ -158,7 +158,7 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
         nestEgg: friendlyMoney(this.calculateTargetNestEgg(),1),
         successRate,
         medianOutcome: `${friendlyMoney(Math.round(medianOutcome* this.calculateTargetNestEgg()),1)}`,
-        time: `${this.retirementPreferences.timeToWorkInYears} years`,
+        time: `${this.retirementPreferences.timeToWorkInYears} y`,
         confidence: `${Math.round(successRate * 100)}%`,
         value: friendlyMoney(this.calculateTargetNestEgg(),1),
       })
@@ -191,13 +191,23 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     const allSimulations = [];
 
 
-    
+    /*
     createWorkingGraph(
       this.retirementPreferences.timeToWorkInYears,
       this.retirementPreferences.investingLeverage,
       this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
       this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(), 
       this.retirementPreferences.numWorkingSimulations,
+    ).then(simulations => {
+      this.updateWorkingGraph(simulations);
+    });
+    */
+   createRunPerPeriod(
+    this.retirementPreferences.timeToWorkInYears,
+    this.retirementPreferences.investingLeverage,
+    this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
+    this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(),
+    this.retirementPreferences.numWorkingSimulations,
     ).then(simulations => {
       this.updateWorkingGraph(simulations);
     });

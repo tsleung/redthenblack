@@ -2,6 +2,12 @@ import { Observable } from "rxjs";
 import { HistoricalTimeSeries } from "./backtest";
 
 
+enum PeriodType {
+  DAY = 1,
+  MONTH = 21,
+  YEAR = 252,
+}
+
 interface Record {
     date: Date;
     open: number;
@@ -218,7 +224,7 @@ function _createHistoricalLeverageRuns(resp, leverage, query: HistoricalQuery = 
 
 
 const NUM_SIMULATIONS = 200;
-const TRADING_DAYS_PER_YEAR = 250;
+const TRADING_DAYS_PER_YEAR = PeriodType.YEAR;
 const YEARS_OF_RETIREMENT = 60;
 
 
@@ -308,7 +314,7 @@ export function createWorkingGraph(
 } 
 
 // randomly samples values from a series
-function sampleSeries<T>( series: T[], periods: number = TRADING_DAYS_PER_YEAR * YEARS_OF_RETIREMENT) {
+function sampleSeries<T>( series: T[], periods: number) {
   return new Array(periods).fill(0).map(() => {
     const sample = series[Math.floor(Math.random() * series.length)];
     return sample;
@@ -318,18 +324,41 @@ function sampleSeries<T>( series: T[], periods: number = TRADING_DAYS_PER_YEAR *
 // leverage the run per day, then build 'periods', weekly, monthly, annually.
 
 // scale per period, the returns need to be scaled to the new period (is the only change)
-
+/** Used for leveraged runs for DAY, MONTH, YEAR */
 export function createRunPerPeriod(
-  periodsToInvest: number, 
+  timeToWorkInYears: number, 
   leverageDaily:number, 
-  contributionPerPeriod: number = 0, 
+  contribution: number = 0, 
   initialBalance: number = 0,
   numSimulations = NUM_SIMULATIONS) {
   const query: HistoricalQuery = {symbol: 'SPY', start:new Date('1998-01-01'),end: new Date('2021-01-01')};
-  return toLeverageHistoricalSeries(query, leverageDaily).then(resp => {
+
+  const performantPeriodType = timeToWorkInYears < 2  ? PeriodType.DAY : 
+    timeToWorkInYears < 5  ? PeriodType.MONTH :  
+    PeriodType.YEAR;
+    
+  return toLeverageHistoricalSeries(query, leverageDaily, performantPeriodType).then(leveragedSeries => {
 
     const simulations = new Array(numSimulations).fill(0).map(() => {
-      return createLeveragedPeriodRun(sampleSeries(resp, periodsToInvest), contributionPerPeriod,initialBalance);
+
+      const contributionPerPeriod = leveragedSeries.periodType === PeriodType.YEAR ? contribution / PeriodType.YEAR :
+    leveragedSeries.periodType === PeriodType.MONTH ? contribution  / PeriodType.YEAR * PeriodType.MONTH :
+    leveragedSeries.periodType === PeriodType.DAY ? contribution  / PeriodType.YEAR : 
+    contribution  / PeriodType.YEAR;
+
+    const numPeriods = leveragedSeries.periodType === PeriodType.YEAR ? timeToWorkInYears :
+    leveragedSeries.periodType === PeriodType.MONTH ? 12 * timeToWorkInYears:
+    leveragedSeries.periodType === PeriodType.DAY ? PeriodType.YEAR * timeToWorkInYears : 
+      timeToWorkInYears;
+
+    // console.log('leveragedSeries', leveragedSeries, numPeriods, contributionPerPeriod);
+    
+      return createLeveragedPeriodRun(
+        leveragedSeries, 
+        numPeriods,
+        contributionPerPeriod,
+        initialBalance
+        );
     });
     simulations.sort((a,b) => {
       return a.slice(-1)[0] - b.slice(-1)[0];
@@ -339,29 +368,68 @@ export function createRunPerPeriod(
 }
 
 function createLeveragedPeriodRun(
-  resp:LeveragedRecord[], 
-  contribution: number = 0, 
+  leveragedSeries:LeveragedSeries, 
+  numPeriods: number,
+  contributionPerPeriod: number,
   initial: number = 0):number[] {
-// TODO: make this similar to 'createWorkingRun'
-  return [];
+    // converting contribution to period
+  
+  return sampleSeries(leveragedSeries.series, numPeriods).reduce((accum, record:LeveragedRecord) => {
+    const previousBalance = accum[accum.length-1];
+    const previousBalanceAfterContribution = previousBalance + contributionPerPeriod;
+    const newBalance = previousBalanceAfterContribution < 1 ? 
+      previousBalanceAfterContribution * (((record.change-1))+1): 
+      previousBalanceAfterContribution;
+    accum.push(previousBalanceAfterContribution > 0 ? newBalance : 0);
+    return accum;
+  },[initial]);
 }
-
 
 interface LeveragedRecord {
-  date: Date;
   change: number;
-  abs_change: number;
 }
 
-export function toLeverageHistoricalSeries(query, leverage):Promise<LeveragedRecord[]> {
+interface LeveragedSeries {
+  periodType: PeriodType;
+  series: LeveragedRecord[]
+}
+
+export function toLeverageHistoricalSeries(
+  query, 
+  leverage, 
+  periodType:PeriodType
+):Promise<LeveragedSeries> {
   return toHistoricalSeries(fetchSymbol(query)).then(records => {
-    return records.map((row, i, all) => {
+
+    const series = records.map((row, i, all) => {
       const change = i === 0 ? 0 :(row.close - all[i-1].close)/all[i-1].close;
       row.abs_change = Math.abs(change*leverage);
       row.change =  (change*leverage)+1;
       return row;
     });
+
+    return periodType === PeriodType.MONTH ? {series: multiplySeriesToPeriod(PeriodType.MONTH, series), periodType: PeriodType.MONTH} : 
+      periodType === PeriodType.YEAR ? {series: multiplySeriesToPeriod(PeriodType.YEAR, series), periodType: PeriodType.YEAR} :
+      {series: multiplySeriesToPeriod(PeriodType.DAY, series), periodType: PeriodType.DAY};
   });
+
+  function multiplySeriesToPeriod(
+    multipleToPeriod: number, 
+    series: LeveragedRecord[]
+  ):LeveragedRecord[] {
+    //  return new Array(series.length * multipleToPeriod).fill(0).map(() => {
+      return new Array(series.length).fill(0).map(() => {
+        // sample the series for the number of periods we are translating to, multiply to find the change over the period (e.g. month/year)
+        // and return the compounded return.
+        const change = sampleSeries(series, multipleToPeriod).reduce((change, sample) => {
+          return change * sample.change;
+        },1);
+
+        return {
+          change,
+        };
+      });
+  }
 }
 
 // https://stackoverflow.com/questions/9461621/format-a-number-as-2-5k-if-a-thousand-or-more-otherwise-900

@@ -9,7 +9,7 @@ export class SummaryService {
   summary;
   constructor() { 
     this.summary = of({
-      time: '5 years',
+      time: '5',
       confidence: '95%',
       value: '1.2M',
     });
