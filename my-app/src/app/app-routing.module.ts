@@ -61,11 +61,30 @@ const routes: Routes = [
               title:'Math to a million',
               href: 'results',
               inputs: [
-                {label: 'Savings per year', name:'annualAmountSavedAfterTax', value: ''},
-                {label: 'Current savings', name:'initialSavings', value: ''},
-                {label:'Investing leverage while working', name:'investingLeverage',},
-                {label:'Time to work', name:'timeToWorkInYears',},
+                {label: 'Savings per year', name:'annualAmountSavedAfterTax'},
+                {label: 'Current savings', name:'initialSavings'},
+                {label:'Investing leverage while working', name:'investingLeverage'},
+                {label:'Time to work', name:'timeToWorkInYears'},
                 {label:'Target nest egg', name:'nestEgg', value:'1000000'},
+                {label: 'Investing leverage in retirement', 
+                  name:'retirementInvestingLeverage'},
+              ]
+            } as ParameterRouteData
+          },
+          {
+            path: 'saver',
+            component: ParameterCollectionComponent,
+            data: {
+              title:'Saver',
+              href: 'results',
+              inputs: [
+                {label: 'Savings per year', name:'annualAmountSavedAfterTax'},
+                {label: 'Current savings', name:'initialSavings'},
+                {label:'Investing leverage while working', name:'investingLeverage',value:'0'},
+                {label:'Time to work', name:'timeToWorkInYears',},
+                {label:'Target nest egg', name:'nestEgg'},
+                {label: 'Investing leverage in retirement', 
+                  name:'retirementInvestingLeverage'},
               ]
             } as ParameterRouteData
           },
@@ -80,6 +99,8 @@ const routes: Routes = [
                   name:'retirementTimeHorizonInYears',},
                   {label: 'Desired annual retirement income', 
                   name:'annualRetirementIncome'},
+                {label: 'Investing leverage in retirement', 
+                  name:'retirementInvestingLeverage'},
               ]
             } as ParameterRouteData
           },
@@ -111,6 +132,8 @@ const routes: Routes = [
                   name:'annualRetirementIncome'},
                   {label: 'Nest Egg', 
                   name:'nestEgg'},
+                  {label: 'Investing leverage in retirement', 
+                  name:'retirementInvestingLeverage'},
               ]
             } as ParameterRouteData
           },

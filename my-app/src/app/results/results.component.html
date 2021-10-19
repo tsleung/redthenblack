@@ -54,20 +54,39 @@
         <span>{{summary.value}}</span>
     </div>
 </div>
+
+<div class="metrics" *ngIf="findMyRetirementService.metrics | async as metrics">
+    <tbody>
+        <tr *ngFor="let metric of metrics;let i = index">
+            <td>{{metric.title}}</td>
+            <td>{{metric.value}}</td>
+        </tr>
+    </tbody>
+</div>
+
     <ng-container *ngIf="working | async as working;else loading">
-    <div>
-        Working
-        <a mat-stroked-button [routerLink]="routingService.mapper.createWorkingParameterCollectionRoute()">
-            Modify parameters
-        </a>
-    </div>
+        <div>
+            Working
+            <a mat-stroked-button [routerLink]="routingService.mapper.createWorkingParameterCollectionRoute()">
+                Modify parameters
+            </a>
+        </div>
+            
+        <app-line-chart 
+            [chartData]="working" 
+            [legend]="{show:false}"
+            [gridOptions]="findMyRetirementService.workingGridOptions"></app-line-chart>
         
-    <app-line-chart 
-        [chartData]="working" 
-        [legend]="{show:false}"
-        [gridOptions]="findMyRetirementService.workingGridOptions"></app-line-chart>
     </ng-container>
-    
+    <table *ngIf="findMyRetirementService.simulations | async as simulations">
+        Representative sample
+        <tbody>
+            <tr *ngFor="let simulation of simulations;let i = index">
+                <td>{{i}}</td>
+                <td>{{simulation[simulation.length-1]}}</td>
+            </tr>
+        </tbody>
+    </table>
     
     <ng-container *ngIf="retirement | async as retirement">
         

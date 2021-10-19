@@ -330,11 +330,11 @@ export function createRunPerPeriod(
   leverageDaily:number, 
   contribution: number = 0, 
   initialBalance: number = 0,
-  numSimulations = NUM_SIMULATIONS) {
+  numSimulations = NUM_SIMULATIONS):Promise<number[][]> {
   const query: HistoricalQuery = {symbol: 'SPY', start:new Date('1998-01-01'),end: new Date('2021-01-01')};
 
   const performantPeriodType = timeToWorkInYears < 2  ? PeriodType.DAY : 
-    timeToWorkInYears < 5  ? PeriodType.MONTH :  
+    timeToWorkInYears < 10  ? PeriodType.MONTH :  
     PeriodType.YEAR;
     
   return toLeverageHistoricalSeries(query, leverageDaily, performantPeriodType).then(leveragedSeries => {
@@ -417,8 +417,9 @@ export function toLeverageHistoricalSeries(
     multipleToPeriod: number, 
     series: LeveragedRecord[]
   ):LeveragedRecord[] {
-    //  return new Array(series.length * multipleToPeriod).fill(0).map(() => {
-      return new Array(series.length).fill(0).map(() => {
+    // comment for performance, should mutiple length by period (capped at 100k)
+     return new Array(Math.min(series.length * multipleToPeriod,1e5)).fill(0).map(() => {
+      // return new Array(series.length).fill(0).map(() => {
         // sample the series for the number of periods we are translating to, multiply to find the change over the period (e.g. month/year)
         // and return the compounded return.
         const change = sampleSeries(series, multipleToPeriod).reduce((change, sample) => {

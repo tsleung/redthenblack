@@ -11,6 +11,13 @@ export enum OptimizationObjective {
   Confidence,
 }
 
+interface ResultMetric {
+  href: string;
+  value: string;
+  title: string;
+  hint?: string;
+}
+
 
 /** View model/composition of retirement product
  *  "Find my retirement" explores value/time/confidence for a user
@@ -24,6 +31,8 @@ export class FindMyRetirementService {
   marketLeverage:c3.Data = {columns:[]};
   withdrawalConfidence:c3.Data = {columns:[]};
   summary:Subject<object> = new Subject();
+  metrics:Subject<ResultMetric[]> = new Subject();
+  simulations:Subject<number[][]> = new Subject();
   working:Subject<c3.Data> = new Subject();
   retirement:Subject<c3.Data> = new Subject<c3.Data>();
 
@@ -141,9 +150,16 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     return this.retirementPreferences.nestEgg;
   }
 
+  selectRepresentativeSample<T>(numSamples: number, series:T[]):T[] {
+    return series.reduce((accum, val,i,arr) => {
+      const shouldInclude = i % Math.ceil(arr.length / numSamples) == 0;
 
-  updateWorkingGraph(simulations) {
-    
+      return shouldInclude ? accum.concat([val]) : accum;
+    },[series[0]]);
+  }
+
+
+  updateWorkingGraph(simulations:number[][]) {
       // working results
       const successfulRuns = simulations.filter(simulation => {
         return simulation.slice(-1)[0] > 1;
@@ -151,6 +167,10 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
 
       const medianOutcome = simulations[Math.floor(simulations.length / 2)].slice(-1)[0];
       const successRate = successfulRuns / simulations.length;
+      const representativeSampleSimulations = this.selectRepresentativeSample(
+        Math.min(this.retirementPreferences.numWorkingSimulations,50),
+        simulations
+      );
       this.workingMessage = `${successfulRuns} of ${simulations.length} simulations reach nest egg goal of ${this.calculateTargetNestEgg()}, ${successRate*100}% success. The median outcome made it ${Math.round(medianOutcome * 100)}% to retirement.`;
 
       this.summary.next({
@@ -161,12 +181,18 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
         time: `${this.retirementPreferences.timeToWorkInYears}y`,
         confidence: `${Math.round(successRate * 100)}%`,
         value: friendlyMoney(this.calculateTargetNestEgg(),1),
-      })
+      });
+
+      this.simulations.next(representativeSampleSimulations);
+      
+
+      this.metrics.next([]); 
+
       this.working.next({
         x: 'x',
         columns: [
           ['x',...new Array(this.retirementPreferences.timeToWorkInYears*250).fill(0).map((v,i) => i)],
-          ...simulations.map((simulation,i):[string, ...number[]] => ([`${i}`, ...simulation]))
+          ...representativeSampleSimulations.map((simulation,i):[string, ...number[]] => ([`${i}`, ...simulation]))
         ],
       });
       console.log('woring graph updated')
@@ -189,18 +215,7 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     
     const allSimulations = [];
 
-    /*
-    createWorkingGraph(
-      this.retirementPreferences.timeToWorkInYears,
-      this.retirementPreferences.investingLeverage,
-      this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
-      this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(), 
-      this.retirementPreferences.numWorkingSimulations,
-    ).then(simulations => {
-      this.updateWorkingGraph(simulations);
-    });
-    */
-   createRunPerPeriod(
+    createRunPerPeriod(
     this.retirementPreferences.timeToWorkInYears,
     this.retirementPreferences.investingLeverage,
     this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
