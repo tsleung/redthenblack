@@ -78,15 +78,20 @@
             [gridOptions]="findMyRetirementService.workingGridOptions"></app-line-chart>
         
     </ng-container>
-    <table *ngIf="findMyRetirementService.simulations | async as simulations">
-        Representative sample
-        <tbody>
-            <tr *ngFor="let simulation of simulations;let i = index">
-                <td>{{i}}</td>
-                <td>{{simulation[simulation.length-1]}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <details *ngIf="findMyRetirementService.simulations | async as simulations">
+        <summary>
+            Data table (Representative sample)
+        </summary>
+
+        <table>
+            <tbody>
+                <tr *ngFor="let simulation of simulations;let i = index">
+                    <td>{{i*5}} percentile</td>
+                    <td>{{simulation[simulation.length-1]}}</td>
+                </tr>
+            </tbody>
+        </table>    
+    </details>
     
     <ng-container *ngIf="retirement | async as retirement">
         

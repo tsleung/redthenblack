@@ -155,7 +155,7 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
       const shouldInclude = i % Math.ceil(arr.length / numSamples) == 0;
 
       return shouldInclude ? accum.concat([val]) : accum;
-    },[series[0]]);
+    },[]);
   }
 
 

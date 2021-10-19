@@ -32,12 +32,21 @@ const routes: Routes = [
     data: {articles: [
       '/assets/articles/intro.md',
       '/assets/articles/resources.md',
-    ]}
+    ]},
+    children: [
+      
+    ],
   },
   {
     path: '',
     component: LayoutsComponent,
     children: [
+      {path: 'pitch',
+      component: ArticleComponent,
+      data: {articles: [
+        '/assets/articles/rtb-pitch.md',
+      ]},
+      },
       {
         path: 'results',
         component: ResultsComponent,
