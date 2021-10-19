@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1634621647553,
+  "timestamp": 1634664479265,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -10,8 +10,8 @@
       "urls": [
         "/favicon.ico",
         "/index.html",
-        "/main-es2015.fd02feb3b2c97893c6e2.js",
-        "/main-es5.fd02feb3b2c97893c6e2.js",
+        "/main-es2015.65783baa75cba3386a12.js",
+        "/main-es5.65783baa75cba3386a12.js",
         "/manifest.webmanifest",
         "/polyfills-es2015.7f2be5c3211715ed096a.js",
         "/polyfills-es5.28f12a96904b8f2b6d42.js",
@@ -30,6 +30,7 @@
         "/assets/ackermans.jpg",
         "/assets/articles/intro.md",
         "/assets/articles/resources.md",
+        "/assets/articles/rtb-pitch.md",
         "/assets/articles/scratchpad.md",
         "/assets/articles/trial.and.error.md",
         "/assets/icons/icon-128x128.png",
@@ -49,6 +50,7 @@
     "/assets/ackermans.jpg": "18d92c4f2fac0546bc91e36c8c88d8b979eb3728",
     "/assets/articles/intro.md": "82c2679a8b3f00a33a502ec037c52c8d00de0c4e",
     "/assets/articles/resources.md": "5d19dccea271f617f1c0a1e8aa3a2878d3588c3b",
+    "/assets/articles/rtb-pitch.md": "8eb8f8693e919d2b4a3101f1d8607a594b73c72c",
     "/assets/articles/scratchpad.md": "047eb3da4518bdc72f2e9fb42df01fa2c0d93725",
     "/assets/articles/trial.and.error.md": "832f41217dd8733d39b7fab384ee60df9d421b00",
     "/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
@@ -60,9 +62,9 @@
     "/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
     "/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
     "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/index.html": "8e48ca80fdb4ac4249152dc8a1b8ae12f8184e93",
-    "/main-es2015.fd02feb3b2c97893c6e2.js": "0f63eb2ddb30c71820b62a81097232192f9944e3",
-    "/main-es5.fd02feb3b2c97893c6e2.js": "14f3ff5cf05feb846b1f7cfdd779c4f461341bba",
+    "/index.html": "e3076c7c992c527f8e92b32225140d5644b6fc9a",
+    "/main-es2015.65783baa75cba3386a12.js": "bb4717892d3668211dce7abe6dd42e028ceafad4",
+    "/main-es5.65783baa75cba3386a12.js": "4f27db07b9f965b3a365a9fbf4ef8bd66c98c987",
     "/manifest.webmanifest": "5a4b93555f11594f573e31e24a2935f8d721cb8c",
     "/polyfills-es2015.7f2be5c3211715ed096a.js": "90fb474e1a7d87bd57bc8a95fb3fd361b919d815",
     "/polyfills-es5.28f12a96904b8f2b6d42.js": "ccfff1a6bd0b9531245e25bf3c0c8cf948ced8c2",
