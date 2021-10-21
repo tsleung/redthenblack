@@ -33,6 +33,7 @@ export class FindMyRetirementService {
   summary:Subject<object> = new Subject();
   metrics:Subject<ResultMetric[]> = new Subject();
   simulations:Subject<number[][]> = new Subject();
+  simulationStats:Subject<object> = new Subject();
   working:Subject<c3.Data> = new Subject();
   retirement:Subject<c3.Data> = new Subject<c3.Data>();
 
@@ -152,7 +153,7 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
 
   selectRepresentativeSample<T>(numSamples: number, series:T[]):T[] {
     return series.reduce((accum, val,i,arr) => {
-      const shouldInclude = i % Math.ceil(arr.length / numSamples) == 0;
+      const shouldInclude = i % Math.ceil(arr.length / numSamples) == 0 || i === arr.length -1;
 
       return shouldInclude ? accum.concat([val]) : accum;
     },[]);
@@ -184,10 +185,21 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
       });
 
       this.simulations.next(representativeSampleSimulations);
-      
+      this.simulationStats.next(representativeSampleSimulations.map((simulation,index) => {
+        const result = simulation[simulation.length -1];
+        const start = simulation[0];
+        const maxDrawdown = Math.min(...simulation.map((balance, i, arr) => {
+          const maxDrawdownBeyond = (Math.min(...simulation.slice(i)) - balance) / balance;
+          return maxDrawdownBeyond;
+        }),0);
+        return {
+          label: index===0 ? 'min': 
+            index===representativeSampleSimulations.length -1 ?'max' : 
+            index*5,
+          result:`${result}`.slice(0,5),start,maxDrawdown: `${Math.round(maxDrawdown*100)}%`};
+      }));
 
       this.metrics.next([]); 
-
       this.working.next({
         x: 'x',
         columns: [

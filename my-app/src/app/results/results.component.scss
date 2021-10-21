@@ -43,4 +43,13 @@
     }
   }
 
+  table {
+    display: table;
+    width: 100%;
+  }
+  
+  td {
+    text-overflow: ellipsis;
+  }
+
 }

@@ -75,8 +75,6 @@ const routes: Routes = [
                 {label:'Investing leverage while working', name:'investingLeverage'},
                 {label:'Time to work', name:'timeToWorkInYears'},
                 {label:'Target nest egg', name:'nestEgg', value:'1000000'},
-                {label: 'Investing leverage in retirement', 
-                  name:'retirementInvestingLeverage'},
               ]
             } as ParameterRouteData
           },

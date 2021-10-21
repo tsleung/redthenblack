@@ -5,6 +5,7 @@ import { HistoricalTimeSeries } from "./backtest";
 enum PeriodType {
   DAY = 1,
   MONTH = 21,
+  QUARTER = 63,
   YEAR = 252,
 }
 
@@ -334,7 +335,8 @@ export function createRunPerPeriod(
   const query: HistoricalQuery = {symbol: 'SPY', start:new Date('1998-01-01'),end: new Date('2021-01-01')};
 
   const performantPeriodType = timeToWorkInYears < 2  ? PeriodType.DAY : 
-    timeToWorkInYears < 10  ? PeriodType.MONTH :  
+    timeToWorkInYears < 15  ? PeriodType.MONTH :  
+    timeToWorkInYears < 60  ? PeriodType.QUARTER :  
     PeriodType.YEAR;
     
   return toLeverageHistoricalSeries(query, leverageDaily, performantPeriodType).then(leveragedSeries => {
@@ -342,11 +344,13 @@ export function createRunPerPeriod(
     const simulations = new Array(numSimulations).fill(0).map(() => {
 
       const contributionPerPeriod = leveragedSeries.periodType === PeriodType.YEAR ? contribution :
-    leveragedSeries.periodType === PeriodType.MONTH ? contribution  / PeriodType.YEAR * PeriodType.MONTH :
+      leveragedSeries.periodType === PeriodType.QUARTER ? contribution  / PeriodType.YEAR * PeriodType.QUARTER :
+      leveragedSeries.periodType === PeriodType.MONTH ? contribution  / PeriodType.YEAR * PeriodType.MONTH :
     leveragedSeries.periodType === PeriodType.DAY ? contribution  / PeriodType.YEAR : 
     contribution  / PeriodType.YEAR;
 
     const numPeriods = leveragedSeries.periodType === PeriodType.YEAR ? timeToWorkInYears :
+    leveragedSeries.periodType === PeriodType.QUARTER ? 4 * timeToWorkInYears:
     leveragedSeries.periodType === PeriodType.MONTH ? 12 * timeToWorkInYears:
     leveragedSeries.periodType === PeriodType.DAY ? PeriodType.YEAR * timeToWorkInYears : 
       timeToWorkInYears;
@@ -409,6 +413,7 @@ export function toLeverageHistoricalSeries(
     });
 
     return periodType === PeriodType.MONTH ? {series: multiplySeriesToPeriod(PeriodType.MONTH, series), periodType: PeriodType.MONTH} : 
+    periodType === PeriodType.QUARTER ? {series: multiplySeriesToPeriod(PeriodType.QUARTER, series), periodType: PeriodType.QUARTER} :
       periodType === PeriodType.YEAR ? {series: multiplySeriesToPeriod(PeriodType.YEAR, series), periodType: PeriodType.YEAR} :
       {series: multiplySeriesToPeriod(PeriodType.DAY, series), periodType: PeriodType.DAY};
   });
