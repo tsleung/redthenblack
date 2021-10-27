@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {createHistoricalLeverageRuns,createPolicyConfidenceCurve, createWorkingGraph} from '../utils/demon-utils';
-import {findMyRetirement, promptString, promptNumber} from '../utils/find-my-retirement';
-
 
 @Component({
   selector: 'app-demon',
@@ -325,3 +323,15 @@ Solicit Leverage
  * 
  * 
  */
+
+
+export function promptNumber(message: string = "", val: number = 0):number {
+  const ret = promptString(message, `${val}`);
+  return (ret == null) ?
+      val :
+      (isNaN(Number(ret)) ? promptNumber(message, val) : Number(ret));
+}
+
+export function promptString(message: string = "", val: string = "") {
+  return window.prompt(message, val);
+}

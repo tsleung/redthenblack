@@ -1,7 +1,6 @@
-import { Observable } from "rxjs";
-import { HistoricalTimeSeries } from "./backtest";
 
-
+import {Record, HistoricalQuery, toHistoricalSeries, fetchSymbol} from './series';
+import { memoizeLocalStorage, memoizePromise } from './local_storage';
 enum PeriodType {
   DAY = 1,
   MONTH = 21,
@@ -9,83 +8,6 @@ enum PeriodType {
   YEAR = 252,
 }
 
-interface Record {
-    date: Date;
-    open: number;
-    high: number;
-    low: number;
-    close: number;
-    adj_close: number;
-    volume: number;
-    spread: number;
-    change: number;
-    abs_change: number;
-}
-
-export function toHistoricalSeries(series: Promise<string>):Promise<Record[]> {
-  return series.then(resp => {
-    return resp.split('\n');
-  })
-  .then(resp => {
-    console.log('header', resp[0])
-    const rows = resp.slice(1);
-
-    const records = rows.map(row => row.split(',')).map((row, i) => {
-      const open = Number(row[1]);
-      const high = Number(row[2]);
-      const low = Number(row[3]);
-
-      return {
-        date: new Date(row[0]),
-        open: Number(row[1]),
-        high: Number(row[2]),
-        low: Number(row[3]),
-        close: Number(row[4]),
-        adj_close: Number(row[5]),
-        volume: Number(row[6]),
-        // generated
-        spread: Math.abs((high - low) / open),
-        // populate later
-        change: 1,
-        abs_change: 0,
-        
-      }
-    });
-    
-    return records.map((row, i, all) => {
-      const change = i === 0 ? 0 :(row.close - all[i-1].close)/all[i-1].close;
-      row.abs_change = Math.abs(change);
-      row.change =  (change)+1;
-      return row;
-    });
-  });
-}
-
-
-export function fetchSymbol(query: HistoricalQuery = {symbol: 'SPY', start:new Date('2018-01-01'),end: new Date('2021-01-01')}):Promise<string> {
-  return new Promise(resolve => {
-    const cacheKey = JSON.stringify(query);
-    const ret = localCache().getItem(cacheKey);
-    
-    const resolveFromServer = () => fetch(`https://us-central1-red-then-black.cloudfunctions.net/getSymbol?symbol=${query.symbol}&start=${query.start.toLocaleDateString()}&end=${query.end.toLocaleDateString()}`)
-    .then(resp => {
-      return resp.text();
-    })  
-    .then(text=> {
-      console.log('server:', cacheKey);
-      localCache().setItem(cacheKey, text);
-      resolve(text);
-    });
-
-    const resolveFromCache = () => {
-      console.log('cache:', cacheKey);
-      resolve(ret);
-    };
-    const resolver = (ret) ? resolveFromCache : resolveFromServer;
-    resolver();
-  });
-
-}
   
 // creates a run over a security with a consistently applied leverage
 export function createSimpleRun(resp:Record[], leverage:number):number[] {
@@ -131,66 +53,6 @@ export function createWorkingRun(resp:Record[],
   },[initial]);
 }
 
-interface HistoricalQuery {
-  start: Date;
-  end: Date;
-  symbol: string;
-}
-
-enum CacheType {
-  SmallSizeHighLatencyOnline,
-  HighLatencyOffline
-}
-interface CacheEntry {
-  type: CacheType
-}
-
-export function localCache() {
-  return {
-    getItem: (key: string) => {
-      return window.localStorage.getItem(key);
-    },
-    setItem: (key: string, value: string) => {
-      try{ 
-        window.localStorage.setItem(key, value);
-      } catch (e) {
-        window.localStorage.clear();
-      }  
-    }
-  }
-}
-
-// Create promise memoize, saves promise contents if successful and returns
-
-function memoizePromise<T>(key, resolver: () => Promise<T>) {
-  const localItem = localCache().getItem(key);
-  return (localItem != null) ?
-    Promise.resolve(JSON.parse(localItem) as T) :
-    resolver().then(ret => {
-      localCache().setItem(key, JSON.stringify(ret));
-      return ret;
-    });
-}
-
-/**
- * Retrieves an item from local storage based on key, or if not present, resolves the value and puts
- * 
- * @param key 
- * @param resolver 
- * @returns 
- */
-function memoizeLocalStorage<T>(key:string, resolver:() => T):T {
-  const localItem = localCache().getItem(key);
-  const ret:T =  localItem === null ? 
-    resolver() : 
-    JSON.parse(localCache().getItem(key)) as T;
-  
-  localCache().setItem(key, JSON.stringify(ret));
-
-  return ret;
-}
-
-
 //const symbol ='DOGE-USD';
 // 2016 vs 1998
 export function createHistoricalLeverageRuns(leverage, query: HistoricalQuery = {symbol: 'SPY', start:new Date('2016-01-01'),end: new Date('2021-01-01')}):Promise<c3.Data> {
@@ -227,7 +89,6 @@ function _createHistoricalLeverageRuns(resp, leverage, query: HistoricalQuery = 
 const NUM_SIMULATIONS = 200;
 const TRADING_DAYS_PER_YEAR = PeriodType.YEAR;
 const YEARS_OF_RETIREMENT = 60;
-
 
 export function createPolicyConfidenceCurve(leverage = .75, yearsOfRetirement = YEARS_OF_RETIREMENT, numSimulations = NUM_SIMULATIONS):Promise<LeveragedWithdrawalConfidence[]> {
   return memoizePromise(`createPolicyConfidenceCurve_1_1_${JSON.stringify(arguments)}`, () => {
@@ -324,6 +185,28 @@ function sampleSeries<T>( series: T[], periods: number) {
 
 // leverage the run per day, then build 'periods', weekly, monthly, annually.
 
+export function createPeriodRunParameters(
+  timeToWorkInYears: number, 
+  leverageDaily:number, 
+  contribution: number = 0, 
+  initialBalance: number = 0,
+  numSimulations = 100 // 100 picked arbitrarily
+) {
+  return {
+    timeToWorkInYears,
+    leverageDaily,
+    contribution,
+    initialBalance,
+    numSimulations,
+  };
+}
+interface PeriodRunParameters {
+  timeToWorkInYears: number;
+  leverageDaily:number; 
+  contribution: number;
+  initialBalance: number;
+  numSimulations: number;
+}
 // scale per period, the returns need to be scaled to the new period (is the only change)
 /** Used for leveraged runs for DAY, MONTH, YEAR */
 export function createRunPerPeriod(
@@ -335,7 +218,7 @@ export function createRunPerPeriod(
   const query: HistoricalQuery = {symbol: 'SPY', start:new Date('1998-01-01'),end: new Date('2021-01-01')};
 
   const performantPeriodType = timeToWorkInYears < 2  ? PeriodType.DAY : 
-    timeToWorkInYears < 15  ? PeriodType.MONTH :  
+    timeToWorkInYears < 20  ? PeriodType.MONTH :  
     timeToWorkInYears < 60  ? PeriodType.QUARTER :  
     PeriodType.YEAR;
     
@@ -381,6 +264,7 @@ function createLeveragedPeriodRun(
   return sampleSeries(leveragedSeries.series, numPeriods).reduce((accum, record:LeveragedRecord) => {
     const previousBalance = accum[accum.length-1];
     const previousBalanceAfterContribution = previousBalance + contributionPerPeriod;
+    // change strategies here for after nest egg
     const newBalance = previousBalanceAfterContribution < 1 ? 
       previousBalanceAfterContribution * (((record.change-1))+1): 
       previousBalanceAfterContribution;

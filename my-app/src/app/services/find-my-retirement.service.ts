@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SuitabilityService } from './suitability.service';
-import {localCache,friendlyMoney,createHistoricalLeverageRuns,createPolicyConfidenceCurve,createWorkingGraph, createRunPerPeriod} from '../utils/demon-utils';
-import {findMyRetirement, promptString, promptNumber} from '../utils/find-my-retirement';
+import { localCache } from '../utils/local_storage';
+import {friendlyMoney,createHistoricalLeverageRuns,createPolicyConfidenceCurve,createWorkingGraph, createRunPerPeriod} from '../utils/demon-utils';
 
 import { of,Observable, Subject, ReplaySubject, BehaviorSubject } from 'rxjs';
 
@@ -17,7 +17,6 @@ interface ResultMetric {
   title: string;
   hint?: string;
 }
-
 
 /** View model/composition of retirement product
  *  "Find my retirement" explores value/time/confidence for a user
@@ -214,7 +213,6 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
   updateRetirementPreferences(obj) {
     try {
       const fromCache = localCache().getItem('retirementPreferences');
-      console.log('from cache',fromCache)
       this.retirementPreferences = fromCache && fromCache.length > 50 ? JSON.parse(fromCache) : this.retirementPreferences;
       this.retirementPreferences = {...this.retirementPreferences,...obj};
       localCache().setItem('retirementPreferences', JSON.stringify(this.retirementPreferences));
@@ -224,8 +222,6 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     this.retirementPreferences = {...this.retirementPreferences,...obj};
     
     console.log('preferences',this.retirementPreferences)
-    
-    const allSimulations = [];
 
     createRunPerPeriod(
     this.retirementPreferences.timeToWorkInYears,
@@ -247,6 +243,48 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
           ...results.map(result => result.confidence)],
         ]});
       });
+
+    return;
+    this.generateRecommendations(this.retirementPreferences.timeToWorkInYears,
+      this.retirementPreferences.investingLeverage,
+      this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
+      this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(),
+      20 //this.retirementPreferences.numWorkingSimulations,
+    );
+  }
+
+  /** To generate recommendations currently, let's perturb each of the preferences */
+  generateRecommendations(
+    timeToWorkInYears: number, 
+    leverageDaily:number, 
+    contribution: number = 0, 
+    initialBalance: number = 0,
+    numSimulations = 100 // 100 picked arbitrarily
+  ) {
+
+    const pertubationSimulations = [
+      ...perturbSingleParameter(1.1,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
+      ...perturbSingleParameter(.9,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
+    ].map(params => {
+      return createRunPerPeriod(
+        params[0],
+        params[1],
+        params[2],
+        params[3],
+        numSimulations,
+        );
+    });
+    Promise.all(pertubationSimulations).then(results => {
+      console.log('pertubationSimulations results', results);
+    })
+
+    function perturbSingleParameter(pertubation: number, params:number[]) {
+      return params.map((val,i,arr) => {
+        const copy = [...arr];
+        copy[i] = arr[i] * pertubation;
+        return copy;
+      });
+    }
   }
 
   findMyRetirement() {

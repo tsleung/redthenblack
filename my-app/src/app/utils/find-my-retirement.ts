@@ -14,17 +14,6 @@ import {createPolicyConfidenceCurve} from "./demon-utils";
  * 
  */
 
-export function promptString(message: string = "", val: string = "") {
-    return window.prompt(message, val);
-}
-
-export function promptNumber(message: string = "", val: number = 0):number {
-    const ret = promptString(message, `${val}`);
-    return (ret == null) ?
-        val :
-        (isNaN(Number(ret)) ? promptNumber(message, val) : Number(ret));
-}
-
 function createFlatten<T>() {
     return (accum:T[], val:T[]) =>  {
         accum = accum ?? [] as T[];
@@ -34,7 +23,8 @@ function createFlatten<T>() {
     };
 }
 
-export function findMyRetirement() {
+
+export function DEPRECATED_findMyRetirement() {
     /*
     const afterTaxSalary = Number(prompter("After Tax Salary", "50000"));
     const afterTaxSavings = Number(prompter(`How much do you save of ${afterTaxSalary}`,"0"));
@@ -46,23 +36,6 @@ export function findMyRetirement() {
 */
     // show the red then black retirement curve 
     // withdrawal + investment policy vs confidence
-
-    const afterTaxIncome = promptNumber('After tax income', 200000);
-    const amountSavedAfterTax = Math.max(0,Math.min(afterTaxIncome, promptNumber('Amount saved after tax', 50000)));
-    const assumedRetirementIncomeAfterTax = (afterTaxIncome - amountSavedAfterTax);
-    const capitalGainsTax = .15;
-    const assumedRetirementIncomePreCapitalGainsTax = assumedRetirementIncomeAfterTax / (1-capitalGainsTax);
-    const initialNestEgg = amountSavedAfterTax === 0 ? afterTaxIncome : assumedRetirementIncomeAfterTax;
-
-
-
-
-    [30,45,60].map(yearsOfRetirement => {
-        return new Array(15).fill(0).map((v,i) => i * .2).map(leverage => {
-            return createPolicyConfidenceCurve(leverage, yearsOfRetirement);
-        });
-    }).reduce(createFlatten());
-    
     
     // we can hone in on 95% confidence
     // create 100(0) runs of stocks over 60 yr timebox for retirement to demo the curve
