@@ -1,4 +1,14 @@
+export function createMillionaireArticleRoute() {
+    return createArticlesRoute() + '/millionaire';
+}
 
+export function createArticlesRoute () {
+    return '/articles';
+}
+
+export function createAboutRoute () {
+    return '/about';
+}
 
 export function createLeverageParameterCollectionRoute () {
     return createParameterCollectionRoute() + '/leverage';

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import { FindMyRetirementService } from '../services/find-my-retirement.service';
+import { Article } from '../utils/articles_mapper';
 
 
 interface input {
@@ -17,6 +18,7 @@ export interface ParameterRouteData {
   title: string;
   inputs: input[];
   href: string;
+  article: Article,
 }
 
 @Component({

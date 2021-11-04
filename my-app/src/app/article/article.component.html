@@ -4,9 +4,28 @@
 # Markdown
 </div>
 -->
+<section>
+<div>
+    <button mat-flat-button 
+        (click)="routingService.back()" 
+        aria-label="Back to previous">
+        <mat-icon >chevron_left</mat-icon> 
+        Back to previous
+    </button>
+</div>
 <ng-container *ngIf="articles | async as articles">
     <ng-container *ngFor="let article of articles;">
-        <div markdown [src]="article" (load)="onLoad()" (error)="onError()"></div>
+        <article markdown [src]="article" (load)="onLoad()" (error)="onError()"></article>
     </ng-container>    
 </ng-container>
 
+
+<div>
+    <button mat-flat-button 
+        (click)="routingService.back()" 
+        aria-label="Back to previous">
+        <mat-icon >chevron_left</mat-icon> 
+        Back to previous
+    </button>
+</div>
+</section>

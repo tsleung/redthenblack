@@ -11,14 +11,14 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$my-app-primary: mat-palette($mat-indigo);
-$my-app-accent: mat-palette($mat-amber, A200, A100, A400);
+$my-app-primary: mat-palette($mat-pink);
+$my-app-accent: mat-palette($mat-blue-grey, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$my-app-warn: mat-palette($mat-pink);
+$my-app-warn: mat-palette($mat-amber);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
+$my-app-theme: mat-dark-theme($my-app-primary, $my-app-accent, $my-app-warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -85,7 +85,7 @@ main {
 }
 
 .mat-typography {
-  article {
+  home-article {
     max-width: 40em;
     margin: 4em auto;
     white-space: pre-line;
@@ -121,11 +121,11 @@ aside {
 
 .c3 .domain,
 .c3 .tick line {
-  stroke: #aaa;
+  stroke: #888;
 }
 
 .c3-axis .tick text {
-  fill: #aaa;
+  fill: #888;
 }
 
 
@@ -140,12 +140,28 @@ app-article {
 @import '~bootstrap/scss/bootstrap';
 
 @import 'app/welcome/welcome.component.scss';
+@import 'app/summary/summary.component.scss';
+@import 'app/layouts/layouts.component.scss';
+@import 'app/results/results.component.scss';
+@import 'app/article/article.component.scss';
 
 @import 'app/parameter-collection/parameter-collection.component.scss';
 
 app-welcome {
   @include welcome();
 }
+app-summary {
+  @include summary();
+}
+app-results {
+  @include results();
+}
 parameter-collection {
   @include parameter-collection();
+}
+app-layouts {
+  @include app-layouts();
+}
+app-article {
+  @include article();
 }

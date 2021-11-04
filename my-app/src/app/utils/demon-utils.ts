@@ -1,6 +1,7 @@
 
 import {Record, HistoricalQuery, toHistoricalSeries, fetchSymbol} from './series';
 import { memoizeLocalStorage, memoizePromise } from './local_storage';
+
 enum PeriodType {
   DAY = 1,
   MONTH = 21,
@@ -185,7 +186,7 @@ function sampleSeries<T>( series: T[], periods: number) {
 
 // leverage the run per day, then build 'periods', weekly, monthly, annually.
 
-export function createPeriodRunParameters(
+function createPeriodRunParameters(
   timeToWorkInYears: number, 
   leverageDaily:number, 
   contribution: number = 0, 
@@ -222,7 +223,8 @@ export function createRunPerPeriod(
     timeToWorkInYears < 60  ? PeriodType.QUARTER :  
     PeriodType.YEAR;
     
-  return toLeverageHistoricalSeries(query, leverageDaily, performantPeriodType).then(leveragedSeries => {
+  return toLeverageHistoricalSeries(query, leverageDaily, performantPeriodType)
+    .then(leveragedSeries => {
 
     const simulations = new Array(numSimulations).fill(0).map(() => {
 
@@ -239,7 +241,6 @@ export function createRunPerPeriod(
       timeToWorkInYears;
 
     // console.log('leveragedSeries', leveragedSeries, numPeriods, contributionPerPeriod);
-    
       return createLeveragedPeriodRun(
         leveragedSeries, 
         numPeriods,
@@ -338,4 +339,125 @@ export function friendlyMoney(num, digits) {
     return num >= item.value;
   });
   return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : "0";
+}
+
+export function calculateMedianOutcome(simulations:number[][]) {
+  return simulations[Math.floor(simulations.length / 2)].slice(-1)[0];
+}
+export function createSummary(
+  timeToWorkInYears: number,
+  targetNestEgg: number,
+  simulations: number[][]) {
+
+  // working results
+  const successfulRuns = simulations.filter(simulation => {
+    return simulation.slice(-1)[0] > 1;
+  }).length;
+  const medianOutcome = calculateMedianOutcome(simulations);
+  const successRate = successfulRuns / simulations.length;
+
+  return {
+    successfulRuns,
+    nestEgg: friendlyMoney(targetNestEgg,1),
+    successRate,
+    medianOutcome: `${friendlyMoney(Math.round(medianOutcome* targetNestEgg),1)}`,
+    time: `${timeToWorkInYears}y`,
+    confidence: `${Math.round(successRate * 100)}%`,
+    value: friendlyMoney(targetNestEgg,1),
+  };
+}
+
+export function selectRepresentativeSample<T>(numSamples: number, series:T[]):T[] {
+  return series.reduce((accum, val,i,arr) => {
+    const shouldInclude = i % Math.ceil(arr.length / numSamples) == 0 || i === arr.length -1;
+
+    return shouldInclude ? accum.concat([val]) : accum;
+  },[]);
+}
+
+export function createNestEggAchievedMessage(
+  targetNestEgg: number,
+  simulations: number[][]) {
+  const medianOutcome = simulations[Math.floor(simulations.length / 2)].slice(-1)[0];
+  
+  // working results
+  const successfulRuns = simulations.filter(simulation => {
+    return simulation.slice(-1)[0] > 1;
+  }).length;
+
+  const successRate = successfulRuns / simulations.length;
+  
+  return `${successfulRuns} of ${simulations.length} simulations reach nest egg goal of ${targetNestEgg}, ${successRate*100}% success. The median outcome made it ${Math.round(medianOutcome * 100)}% to retirement.`;
+}
+
+export interface SimulationResult {
+  params: number[];
+  results: number[][];
+}
+
+export interface Recommendation {
+  message: string;
+  action: () => void;
+}
+export function createRecommendationsFromPertubations(
+  timeToWorkInYears: number,
+  targetNestEgg: number,
+  baseline:SimulationResult, 
+  pertubations:SimulationResult[])
+:Recommendation[] {
+
+  return [
+    ...createLeverageRecommendations(
+      timeToWorkInYears, targetNestEgg,
+      baseline, pertubations),
+  ];
+}
+
+
+export function createLeverageRecommendations(
+  timeToWorkInYears: number,
+  targetNestEgg: number,
+  baseline:SimulationResult, 
+  pertubations:SimulationResult[])
+:Recommendation[] {
+  // where baseline != pertubation, filter for a better median outcome
+  return pertubations.filter(pertubation => {
+    return leverageFromSimulationResult(pertubation) != leverageFromSimulationResult(baseline);
+  }).filter(pertubation => {
+    return hasHigherMedianOutcome(baseline, pertubation);
+  }).map(pertubation => {
+    const pertubationSummary = createSummary(timeToWorkInYears, targetNestEgg, pertubation.results);
+    const current = leverageFromSimulationResult(baseline);
+    const improvement = leverageFromSimulationResult(pertubation);
+    const mediumOutcome = pertubationSummary.medianOutcome;
+    const action = () => {
+      console.log('implement noop action');
+
+    }; // noop for now, should open params
+    const message = `Modifying leverage to ${improvement} from ${current} should improve medium outcome to ${mediumOutcome}`;
+    return {
+      message,
+      action,
+    };
+  });
+
+}
+
+function hasHigherMedianOutcome(
+  baseline:SimulationResult, 
+  pertubation:SimulationResult): boolean{
+    return calculateMedianOutcome(pertubation.results) > 
+    calculateMedianOutcome(baseline.results) * 1.05
+  
+}
+
+function hasHigherNestEggAchievement(timeToWorkInYears: number,
+  targetNestEgg: number,baseline:SimulationResult, 
+  pertubation:SimulationResult) {
+
+}
+
+
+function leverageFromSimulationResult(simulationResult: SimulationResult) {
+  return simulationResult.params[1];
 }

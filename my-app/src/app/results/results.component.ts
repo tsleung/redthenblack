@@ -2,7 +2,7 @@ import { Component ,AfterViewInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {combineLatest, Observable, Subject} from 'rxjs';
 import { FindMyRetirementService } from '../services/find-my-retirement.service';
-import { Location } from '@angular/common'
+
 import { RoutingService } from '../services/routing.service';
 import { map } from 'rxjs/operators';
 
@@ -37,8 +37,7 @@ export class ResultsComponent implements AfterViewInit{
   constructor(private route: ActivatedRoute,
     private router: Router,
     readonly findMyRetirementService:FindMyRetirementService, 
-    readonly routingService: RoutingService,
-    readonly location: Location) {
+    readonly routingService: RoutingService) {
   }
 
   toFriendlyText(text: string) {

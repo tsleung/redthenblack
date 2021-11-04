@@ -1,7 +1,7 @@
 <section>
 <nav>
     <button mat-button 
-        (click)="location.back()" 
+        (click)="routingService.back()" 
         aria-label="Back to previous">
         <mat-icon >chevron_left</mat-icon> 
         Back to previous
@@ -64,6 +64,20 @@
     </tbody>
 </div>
 
+<details open *ngIf="findMyRetirementService.recommendations| async as recommendations">
+    <summary>
+        Recommendations ({{recommendations.length}})
+    </summary>
+
+    <mat-card *ngFor="let recommendation of recommendations;let i = index">
+        <mat-card-content (click)="recommendation.action()">
+            {{recommendation.message}}
+        </mat-card-content>
+    </mat-card>
+
+</details>
+
+
     <ng-container *ngIf="working | async as working;else loading">
         <div>
             Working
@@ -78,6 +92,8 @@
             [gridOptions]="findMyRetirementService.workingGridOptions"></app-line-chart>
         
     </ng-container>
+
+
     <details *ngIf="findMyRetirementService.simulationStats | async as simulations">
         <summary>
             Data table (Representative sample)

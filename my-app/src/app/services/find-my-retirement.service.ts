@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SuitabilityService } from './suitability.service';
 import { localCache } from '../utils/local_storage';
-import {friendlyMoney,createHistoricalLeverageRuns,createPolicyConfidenceCurve,createWorkingGraph, createRunPerPeriod} from '../utils/demon-utils';
+import {friendlyMoney,createHistoricalLeverageRuns,createPolicyConfidenceCurve,createWorkingGraph, createRunPerPeriod, createSummary, selectRepresentativeSample, createRecommendationsFromPertubations, SimulationResult} from '../utils/demon-utils';
 
 import { of,Observable, Subject, ReplaySubject, BehaviorSubject } from 'rxjs';
 
@@ -33,6 +33,7 @@ export class FindMyRetirementService {
   metrics:Subject<ResultMetric[]> = new Subject();
   simulations:Subject<number[][]> = new Subject();
   simulationStats:Subject<object> = new Subject();
+  recommendations:Subject<object> = new Subject();
   working:Subject<c3.Data> = new Subject();
   retirement:Subject<c3.Data> = new Subject<c3.Data>();
 
@@ -144,69 +145,44 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     numWorkingSimulations : 5,
   }
   
-  workingMessage = '';
+  
 
   calculateTargetNestEgg() {
     return this.retirementPreferences.nestEgg;
   }
 
-  selectRepresentativeSample<T>(numSamples: number, series:T[]):T[] {
-    return series.reduce((accum, val,i,arr) => {
-      const shouldInclude = i % Math.ceil(arr.length / numSamples) == 0 || i === arr.length -1;
-
-      return shouldInclude ? accum.concat([val]) : accum;
-    },[]);
-  }
 
 
   updateWorkingGraph(simulations:number[][]) {
-      // working results
-      const successfulRuns = simulations.filter(simulation => {
-        return simulation.slice(-1)[0] > 1;
-      }).length;
+    const representativeSampleSimulations = selectRepresentativeSample(Math.min(this.retirementPreferences.numWorkingSimulations, 20),
+    simulations
+    );
+  
+    this.summary.next(createSummary(this.retirementPreferences.timeToWorkInYears,this.calculateTargetNestEgg(),simulations));
+    this.simulations.next(representativeSampleSimulations);
+    this.simulationStats.next(representativeSampleSimulations.map((simulation,index) => {
+      const result = simulation[simulation.length -1];
+      const start = simulation[0];
+      const maxDrawdown = Math.min(...simulation.map((balance, i, arr) => {
+        const maxDrawdownBeyond = (Math.min(...simulation.slice(i)) - balance) / balance;
+        return maxDrawdownBeyond;
+      }),0);
+      return {
+        label: index===0 ? 'min': 
+          index===representativeSampleSimulations.length -1 ?'max' : 
+          index*5,
+        result:`${result}`.slice(0,5),start,maxDrawdown: `${Math.round(maxDrawdown*100)}%`};
+    }));
 
-      const medianOutcome = simulations[Math.floor(simulations.length / 2)].slice(-1)[0];
-      const successRate = successfulRuns / simulations.length;
-      const representativeSampleSimulations = this.selectRepresentativeSample(
-        Math.min(this.retirementPreferences.numWorkingSimulations, 20),
-        simulations
-      );
-      this.workingMessage = `${successfulRuns} of ${simulations.length} simulations reach nest egg goal of ${this.calculateTargetNestEgg()}, ${successRate*100}% success. The median outcome made it ${Math.round(medianOutcome * 100)}% to retirement.`;
-
-      this.summary.next({
-        successfulRuns,
-        nestEgg: friendlyMoney(this.calculateTargetNestEgg(),1),
-        successRate,
-        medianOutcome: `${friendlyMoney(Math.round(medianOutcome* this.calculateTargetNestEgg()),1)}`,
-        time: `${this.retirementPreferences.timeToWorkInYears}y`,
-        confidence: `${Math.round(successRate * 100)}%`,
-        value: friendlyMoney(this.calculateTargetNestEgg(),1),
-      });
-
-      this.simulations.next(representativeSampleSimulations);
-      this.simulationStats.next(representativeSampleSimulations.map((simulation,index) => {
-        const result = simulation[simulation.length -1];
-        const start = simulation[0];
-        const maxDrawdown = Math.min(...simulation.map((balance, i, arr) => {
-          const maxDrawdownBeyond = (Math.min(...simulation.slice(i)) - balance) / balance;
-          return maxDrawdownBeyond;
-        }),0);
-        return {
-          label: index===0 ? 'min': 
-            index===representativeSampleSimulations.length -1 ?'max' : 
-            index*5,
-          result:`${result}`.slice(0,5),start,maxDrawdown: `${Math.round(maxDrawdown*100)}%`};
-      }));
-
-      this.metrics.next([]); 
-      this.working.next({
-        x: 'x',
-        columns: [
-          ['x',...new Array(this.retirementPreferences.timeToWorkInYears*250).fill(0).map((v,i) => i)],
-          ...representativeSampleSimulations.map((simulation,i):[string, ...number[]] => ([`${i}`, ...simulation]))
-        ],
-      });
-      console.log('woring graph updated')
+    this.metrics.next([]); 
+    this.working.next({
+      x: 'x',
+      columns: [
+        ['x',...new Array(this.retirementPreferences.timeToWorkInYears*250).fill(0).map((v,i) => i)],
+        ...representativeSampleSimulations.map((simulation,i):[string, ...number[]] => ([`${i}`, ...simulation]))
+      ],
+    });
+    console.log('woring graph updated')
    
   }
 
@@ -223,15 +199,43 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     
     console.log('preferences',this.retirementPreferences)
 
-    createRunPerPeriod(
-    this.retirementPreferences.timeToWorkInYears,
-    this.retirementPreferences.investingLeverage,
-    this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
-    this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(),
-    this.retirementPreferences.numWorkingSimulations,
+    const params = [this.retirementPreferences.timeToWorkInYears,
+      this.retirementPreferences.investingLeverage,
+      this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
+      this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(),
+      
+    ];
+    const simulations = createRunPerPeriod(
+      Math.round(params[0]), // time to work in years
+      params[1],
+      params[2],
+      params[3],
+      this.retirementPreferences.numWorkingSimulations,
     ).then(simulations => {
       this.updateWorkingGraph(simulations);
+      return simulations;
     });
+    
+    const perturbedSimulations = this.generateRecommendations(
+      this.retirementPreferences.timeToWorkInYears,
+      this.retirementPreferences.investingLeverage,
+      this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
+      this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(),
+      this.retirementPreferences.numWorkingSimulations,
+    );
+    
+    Promise.all([simulations, perturbedSimulations]).then(([results, pertubations]) => {
+      return createRecommendationsFromPertubations(
+        this.retirementPreferences.timeToWorkInYears,
+        this.calculateTargetNestEgg(),
+        {params,results},
+        pertubations
+        )
+    }).then(recommendations => {
+      console.log('recommendations',recommendations);
+      this.recommendations.next(recommendations);
+    });
+
     
     createPolicyConfidenceCurve(
       this.retirementPreferences.retirementInvestingLeverage, 
@@ -244,13 +248,6 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
         ]});
       });
 
-    return;
-    this.generateRecommendations(this.retirementPreferences.timeToWorkInYears,
-      this.retirementPreferences.investingLeverage,
-      this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
-      this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(),
-      20 //this.retirementPreferences.numWorkingSimulations,
-    );
   }
 
   /** To generate recommendations currently, let's perturb each of the preferences */
@@ -260,23 +257,31 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     contribution: number = 0, 
     initialBalance: number = 0,
     numSimulations = 100 // 100 picked arbitrarily
-  ) {
+  ):Promise<SimulationResult[]> {
 
-    const pertubationSimulations = [
-      ...perturbSingleParameter(1.1,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
-      ...perturbSingleParameter(.9,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
-    ].map(params => {
+
+    const perturbedParameters = [
+      ...perturbSingleParameter(1.2,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
+      ...perturbSingleParameter(.8,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
+    ];
+    const pertubationSimulations = perturbedParameters.map(params => {
       return createRunPerPeriod(
-        params[0],
+        Math.round(params[0]), // time to work in years
         params[1],
         params[2],
         params[3],
         numSimulations,
         );
     });
-    Promise.all(pertubationSimulations).then(results => {
-      console.log('pertubationSimulations results', results);
-    })
+    
+
+    return  Promise.all(pertubationSimulations).then((allPertubationResults) => {
+      // zip the params with the result
+      return allPertubationResults.map((results, i) => ({
+        params: perturbedParameters[i], results
+      }));
+    });
+    
 
     function perturbSingleParameter(pertubation: number, params:number[]) {
       return params.map((val,i,arr) => {

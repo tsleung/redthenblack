@@ -12,6 +12,7 @@ import { ParameterCollectionComponent,ParameterRouteData } from './parameter-col
 import { SummaryComponent,SummaryRouteData} from './summary/summary.component';
 import { ResultsComponent,ResultsRouteData} from './results/results.component';
 import { LayoutsComponent } from './layouts/layouts.component';
+import { ABOUT_RTB } from './utils/articles_mapper';
 
 const routes: Routes = [
   { path: 'bet', component: SimpleBetComponent },
@@ -68,6 +69,7 @@ const routes: Routes = [
             component: ParameterCollectionComponent,
             data: {
               title:'Math to a million',
+              article: ABOUT_RTB,
               href: 'results',
               inputs: [
                 {label: 'Savings per year', name:'annualAmountSavedAfterTax'},
