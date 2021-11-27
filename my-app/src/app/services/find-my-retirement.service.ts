@@ -178,8 +178,9 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     this.working.next({
       x: 'x',
       columns: [
-        ['x',...new Array(this.retirementPreferences.timeToWorkInYears*250).fill(0).map((v,i) => i)],
-        ...representativeSampleSimulations.map((simulation,i):[string, ...number[]] => ([`${i}`, ...simulation]))
+        ['x',
+        ...new Array(this.retirementPreferences.timeToWorkInYears*250).fill(0).map((v,i) => i)],
+        ...representativeSampleSimulations.map((simulation,i):[string, ...number[]] => ([`${i}`, ...simulation])).slice(1,-1)
       ],
     });
     console.log('woring graph updated')
@@ -256,13 +257,13 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     leverageDaily:number, 
     contribution: number = 0, 
     initialBalance: number = 0,
-    numSimulations = 100 // 100 picked arbitrarily
+    numSimulations: number
   ):Promise<SimulationResult[]> {
 
 
     const perturbedParameters = [
-      ...perturbSingleParameter(1.2,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
-      ...perturbSingleParameter(.8,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
+      ...perturbSingleParameter(1.1,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
+      ...perturbSingleParameter(.9,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
     ];
     const pertubationSimulations = perturbedParameters.map(params => {
       return createRunPerPeriod(
@@ -286,7 +287,7 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     function perturbSingleParameter(pertubation: number, params:number[]) {
       return params.map((val,i,arr) => {
         const copy = [...arr];
-        copy[i] = arr[i] * pertubation;
+        copy[i] = parseFloat((arr[i] * pertubation).toFixed(2));
         return copy;
       });
     }

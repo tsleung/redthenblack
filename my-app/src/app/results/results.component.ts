@@ -17,12 +17,9 @@ export interface ResultsRouteData {
 })
 export class ResultsComponent implements AfterViewInit{
   visiblePreferences = this.route.queryParams.pipe(map(params => {
-    console.log('params',params)
     return Object.keys(params).filter(key => {
-      console.log('pre check', key)
       return this.findMyRetirementService.retirementPreferences[key];
     }).map(key => {
-      console.log('visible pre',key)
       return {
         key:this.findMyRetirementService.toFriendlyName(key), 
         value: this.findMyRetirementService.retirementPreferences[key]
@@ -54,15 +51,10 @@ export class ResultsComponent implements AfterViewInit{
 
   ngAfterViewInit(){
     this.ready.next();
-    
     //this.findMyRetirementService.updateMarketLeverage();
     //this.findMyRetirementService.createPolicyConfidenceCurve();
     setTimeout(() => {
       this.findMyRetirementService.updateRetirementPreferences({});
-    }, 1);
-    
-  }
-
-
-  
+    }, 1); 
+  }  
 }

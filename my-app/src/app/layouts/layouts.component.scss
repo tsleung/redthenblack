@@ -1,6 +1,9 @@
-@mixin app-layouts () {
+@mixin app-layouts ($theme) {
+  $foreground: map-get($my-app-theme, foreground);
+  $background: map-get($my-app-theme, background);
+
   .logo {
-    color: white;
+    color: mat-color($foreground, hint-text);
   }
 
 

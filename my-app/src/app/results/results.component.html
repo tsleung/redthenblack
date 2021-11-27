@@ -69,11 +69,11 @@
         Recommendations ({{recommendations.length}})
     </summary>
 
-    <mat-card *ngFor="let recommendation of recommendations;let i = index">
-        <mat-card-content (click)="recommendation.action()">
+    <div *ngFor="let recommendation of recommendations;let i = index">
+        <div (click)="recommendation.action()">
             {{recommendation.message}}
-        </mat-card-content>
-    </mat-card>
+        </div>
+    </div>
 
 </details>
 
