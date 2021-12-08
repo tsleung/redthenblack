@@ -16,6 +16,7 @@ interface input {
 
 export interface ParameterRouteData {
   title: string;
+  description?: string;
   inputs: input[];
   href: string;
   article: Article,
@@ -34,7 +35,7 @@ myModel = {};
     readonly findMyRetirementService:FindMyRetirementService) {
   }
 
-  paramSubmit($event) {
+  paramSubmit(parameters: ParameterRouteData, $event) {
     $event.preventDefault();
     $event.stopPropagation();
     const data =  new FormData ($event.target)
@@ -50,7 +51,7 @@ myModel = {};
     //console.log('param submit', $event,data, data.entries(), Array.from(data.entries()),preferences);
     //console.log('preferences',preferences);
     this.findMyRetirementService.updateRetirementPreferences(preferences);
-    this.router.navigate(['/results'],{queryParams:redirectQueryParams});
+    this.router.navigate([parameters.href],{queryParams:redirectQueryParams});
 
 
   }

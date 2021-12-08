@@ -18,7 +18,7 @@ $my-app-accent: mat-palette($mat-blue-grey, A200, A100, A400);
 $my-app-warn: mat-palette($mat-amber);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$my-app-theme: mat-dark-theme($my-app-primary, $my-app-accent, $my-app-warn);
+$my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -62,7 +62,7 @@ body {
   font-family: 'Work Sans', 'Raleway', 'Open Sans', Roboto, "Helvetica Neue", sans-serif;
   overscroll-behavior: noneoa;
 }
-
+/**
 
 header {
   display: flex;
@@ -104,7 +104,7 @@ blockquote {
   margin: .5em;
   line-height: 2rem;
 
-  /*
+  
   &:before {
     content: "\"";
   }
@@ -112,13 +112,13 @@ blockquote {
   &:after {
     content: "\"";
   }
-  */
+  
 }
 
 aside {
   float: right;
 }
-
+*/
 .c3 .domain,
 .c3 .tick line {
   stroke: #888;
@@ -160,7 +160,7 @@ parameter-collection {
   @include parameter-collection();
 }
 app-layouts {
-  @include app-layouts();
+  @include app-layouts($my-app-theme);
 }
 app-article {
   @include article();

@@ -1,6 +1,11 @@
 <div *ngIf="parameters | async as parameters">
-    {{parameters.title}}
-    <form ngForm (submit)="paramSubmit($event)" [action]="parameters.href" method="GET">
+    <div class="title">
+      {{parameters.title}}
+    </div>
+    <p class="description">
+      {{parameters.description}}
+    </p>
+    <form ngForm (submit)="paramSubmit(parameters, $event)" [action]="parameters.href" method="GET">
         <mat-form-field appearance="standard"
             *ngFor="let input of parameters.inputs">
           <mat-label *ngIf="input.label">{{input.label}}</mat-label>

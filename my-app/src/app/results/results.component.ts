@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 
 export interface ResultsRouteData {
   href: string;
+  showNavigation: boolean;
 }
 
 @Component({
@@ -29,8 +30,9 @@ export class ResultsComponent implements AfterViewInit{
   parameters = this.route.data as Observable<ResultsRouteData>;
 
   ready = new Subject<void>();
-  retirement = combineLatest([this.ready,this.findMyRetirementService.retirement]).pipe(map(([ready,val]) => val));
-  working = combineLatest([this.ready,this.findMyRetirementService.working]).pipe(map(([ready,val]) => val));
+  showNavigation:Observable<boolean> = this.parameters.pipe(map(parameters => parameters.showNavigation ?? true));
+  retirement = combineLatest([this.ready,this.showNavigation,this.findMyRetirementService.retirement]).pipe(map(([ready,showNavigation, val]) => ({...val, showNavigation})));
+  working = combineLatest([this.ready,this.showNavigation,this.findMyRetirementService.working]).pipe(map(([ready,showNavigation, val]) => ({...val, showNavigation})));
   constructor(private route: ActivatedRoute,
     private router: Router,
     readonly findMyRetirementService:FindMyRetirementService, 
@@ -58,3 +60,5 @@ export class ResultsComponent implements AfterViewInit{
     }, 1); 
   }  
 }
+
+

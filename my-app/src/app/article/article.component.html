@@ -5,7 +5,7 @@
 </div>
 -->
 <section>
-<div>
+<div *ngIf="showNavigation | async">
     <button mat-flat-button 
         (click)="routingService.back()" 
         aria-label="Back to previous">
@@ -20,7 +20,7 @@
 </ng-container>
 
 
-<div>
+<div *ngIf="showNavigation | async">
     <button mat-flat-button 
         (click)="routingService.back()" 
         aria-label="Back to previous">

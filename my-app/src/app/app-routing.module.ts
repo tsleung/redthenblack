@@ -12,6 +12,7 @@ import { ParameterCollectionComponent,ParameterRouteData } from './parameter-col
 import { SummaryComponent,SummaryRouteData} from './summary/summary.component';
 import { ResultsComponent,ResultsRouteData} from './results/results.component';
 import { LayoutsComponent } from './layouts/layouts.component';
+import { RetirementArticleComponent } from './retirement-article/retirement-article.component';
 import { ABOUT_RTB } from './utils/articles_mapper';
 
 const routes: Routes = [
@@ -48,11 +49,126 @@ const routes: Routes = [
         '/assets/articles/rtb-pitch.md',
       ]},
       },
+      {path: 'retirement',
+      component: RetirementArticleComponent,
+      children: [
+        {
+          path: '',
+          outlet: 'saving',
+          component: ParameterCollectionComponent,
+          data: {
+            title:'Income and savings',
+            description: 'A fundamental part of starting any retirement plan is generating income and putting aside a portion of that income into savings. Starting to save earlier will allow more time to accumulate.',
+            href: '/retirement',
+            inputs: [
+              {label: `Savings per year.`, name:'annualAmountSavedAfterTax', value: '',
+              placeholder: 'How much are you putting away every year?',
+              startHint: ``,
+              endHint: ''
+            },
+              {label: 'Current savings', name:'initialSavings', value: ''},
+            ]
+          } as ParameterRouteData
+        },
+        {
+          path: '',
+          component: ParameterCollectionComponent,
+          outlet: 'retirement',
+          data: {
+            title:'Retirement horizon',
+            description: `The duration of retirement drastically affects the size of nest egg that needs to be accumulated while working. As a rule of thumb annual withdrawal over a 30 year retirement could use a 4% withdrawal rate while annual withdrawal over a 60 year retirement would use a 2% withdrawal rate.`,
+            href: 'results',
+            inputs: [
+              {label:'Time in retirement', 
+                name:'retirementTimeHorizonInYears',},
+                {label: 'Nest Egg', 
+                name:'nestEgg'},
+            ]
+          } as ParameterRouteData
+        },
+        {
+          path: '',
+          outlet: 'investing',
+          component: ParameterCollectionComponent,
+          data: {
+            title:'Investing in the stock market',
+            description: 'A fundamental part of executing any retirement strategy is generating additional income through investing. Investments assumed is 20 years of an S&P 500 ETF with leverage compounded daily. When to rebalance is an incredibly challenging problem, thus is done naively depending on time scale (observable by number of periods in working chart within the results).',
+            href: '/retirement',
+            inputs: [
+              {label:'Investing leverage while working', 
+                name:'investingLeverage',},
+              {label:'Time to work', 
+                name:'timeToWorkInYears',},
+                {label:'Target nest egg', 
+                name:'nestEgg',},
+            ]
+          } as ParameterRouteData
+        },
+       {
+          path: '',
+          component: ParameterCollectionComponent,
+          outlet: 'retirement-income',
+          data: {
+            title:'Additional returns during Retirement',
+            description: 'The burden of working can be reduced by continuing to invest while in retirement. Additionally modifying the amount of nest egg consumed each year will affect confidence of retirement.',
+            href: 'results',
+            inputs: [
+                {label: 'Desired annual retirement income', 
+                name:'annualRetirementIncome'},
+                {label: 'Investing leverage in retirement', 
+                name:'retirementInvestingLeverage'},
+            ]
+          } as ParameterRouteData
+        },
+        {
+          path: '',
+          outlet: 'simulation',
+          component: ParameterCollectionComponent,
+          data: {
+            title:'Simulation',
+            description: 'Multiple simulations are run under the given assumptions in order to determine the confidence in the results.',
+            href: '/retirement',
+            inputs: [
+              {label:'Number of simulations to run', 
+              name:'numWorkingSimulations',value: ''},
+            ]
+          } as ParameterRouteData
+        },
+        {
+          path: '',
+          outlet: 'results',
+          component: ResultsComponent,
+          data: {
+            href: '/retirement',
+            showNavigation: false,
+          } as ResultsRouteData
+        },
+        {path: '',
+        outlet: 'introduction',
+        component: ArticleComponent,
+        data: {
+          showNavigation: false,
+          articles: [
+          '/assets/articles/retirement-introduction.md',
+        ]},
+        },
+        /*
+        {
+          path: '',
+          component: SummaryComponent,
+          outlet: 'summary',
+          data: {
+          } as SummaryRouteData
+        },
+        */
+      ],
+      },
       {
         path: 'results',
         component: ResultsComponent,
         data: {
-          href: '/summary'
+          href: '/summary',
+          showNavigation: true,
         } as ResultsRouteData
       },
       {

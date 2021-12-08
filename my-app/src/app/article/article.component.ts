@@ -12,10 +12,16 @@ import { RoutingService } from '../services/routing.service';
 export class ArticleComponent implements OnInit {
 
   articles: Observable<string[]>;
+  showNavigation: Observable<boolean>;
 
   constructor(
     readonly routingService: RoutingService,
     route: ActivatedRoute) {
+      this.showNavigation = route
+      .data.pipe(map(data => {
+        return data.showNavigation ?? true;
+      }));
+    
     this.articles = route
       .data.pipe(map(data => {
         return data.articles;

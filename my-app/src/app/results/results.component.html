@@ -1,5 +1,5 @@
 <section>
-<nav>
+<nav *ngIf="showNavigation | async">
     <button mat-button 
         (click)="routingService.back()" 
         aria-label="Back to previous">
@@ -28,7 +28,7 @@
             </ng-container>
 
             <div>
-                <a mat-stroked-button [routerLink]="routingService.mapper.createSimulationParameterCollectionRoute()">
+                <a *ngIf="showNavigation|async" mat-stroked-button [routerLink]="routingService.mapper.createSimulationParameterCollectionRoute()">
                     Modify number of simulations ({{findMyRetirementService.retirementPreferences.numWorkingSimulations}})
                 </a>
             </div>
@@ -77,11 +77,10 @@
 
 </details>
 
-
     <ng-container *ngIf="working | async as working;else loading">
         <div>
             Working
-            <a mat-stroked-button [routerLink]="routingService.mapper.createWorkingParameterCollectionRoute()">
+            <a *ngIf="working.showNavigation" mat-stroked-button [routerLink]="routingService.mapper.createWorkingParameterCollectionRoute()">
                 Modify parameters
             </a>
         </div>
@@ -127,7 +126,7 @@
         
     <div>
         Retirement
-        <a mat-stroked-button [routerLink]="routingService.mapper.createRetirementParameterCollectionRoute()">
+        <a *ngIf="retirement.showNavigation" mat-stroked-button [routerLink]="routingService.mapper.createRetirementParameterCollectionRoute()">
             Modify parameters
         </a>
     </div>
@@ -136,7 +135,7 @@
     </ng-container>
     
 <br/>
-<div>
+<div *ngIf="showNavigation | async">
     <button class="summary" 
     color="primary"
     *ngIf="parameters | async as parameters"

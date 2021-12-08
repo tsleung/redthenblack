@@ -4,6 +4,13 @@
 
   .logo {
     color: mat-color($foreground, hint-text);
+    margin: 0 auto;
+
+  }
+
+  .spacer {
+    flex-grow: 1;
+    display: none;
   }
 
 
@@ -19,7 +26,9 @@
     min-height: 100%;
   }
 
-  .spacer {
-      flex-grow: 1;
+  .byline {
+    background: #f5f5f5;
+    padding: 2rem;
+    text-align: center;
   }
 }

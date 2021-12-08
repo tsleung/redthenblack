@@ -47,6 +47,7 @@ import { FindMyRetirementService} from './services/find-my-retirement.service';
 import { LayoutsComponent } from './layouts/layouts.component';
 import { SuitabilityService } from './services/suitability.service';
 import { RoutingService } from './services/routing.service';
+import { RetirementArticleComponent } from './retirement-article/retirement-article.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { RoutingService } from './services/routing.service';
     TimeboxComponent,
     ParameterViewerComponent,
     LayoutsComponent,
+    RetirementArticleComponent,
    
   ],
   imports: [
