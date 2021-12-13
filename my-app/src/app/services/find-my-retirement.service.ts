@@ -199,7 +199,7 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
   updateRetirementPreferences(obj) {
     try {
       const fromCache = localCache().getItem('retirementPreferences');
-      this.retirementPreferences = fromCache && fromCache.length > 50 ? JSON.parse(fromCache) : this.retirementPreferences;
+      this.retirementPreferences = fromCache && fromCache.length > 50 ? {...this.retirementPreferences, ...JSON.parse(fromCache)} : this.retirementPreferences;
       this.retirementPreferences = {...this.retirementPreferences,...obj};
       localCache().setItem('retirementPreferences', JSON.stringify(this.retirementPreferences));
     }catch(e) {
