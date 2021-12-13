@@ -17,7 +17,7 @@
     </button>
 </nav>
 
-<div class="highlights" *ngIf="findMyRetirementService.summary | async as summary">
+<div class="highlights" *ngIf="findMyRetirementService.summary | async as summary;else loading">
     <div>
         <span>Target Nest Egg</span>
         <span>{{summary.value}}</span>
@@ -89,7 +89,7 @@
 
 </details>
 
-    <ng-container *ngIf="working | async as working;else loading">
+    <ng-container *ngIf="working | async as working">
         <div>
             Working
             <a *ngIf="working.showNavigation" mat-stroked-button [routerLink]="routingService.mapper.createWorkingParameterCollectionRoute()">

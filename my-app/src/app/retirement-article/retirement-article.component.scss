@@ -52,10 +52,10 @@ main {
 
   .toggle {
     position:fixed;
-    top: 90vh;
+    bottom: 4.75rem;
     right: 1rem;
     display: none;
-    transition: top 200ms ease;
+    transition: bottom 200ms ease;
   }
 
   @media (max-width:480px)  {
@@ -73,19 +73,18 @@ main {
       transition: height 200ms ease;
       
       &.open {
-        height: 90vh;
+        height: 50vh;
         overflow: scroll;  
       }
     }
 
     .toggle {
-      top: 90vh;
-      transform: translateY(-3rem);
+      
       display: block;
     }
     .open + .toggle { 
-      top: 10vh;
-      transform: translateY(-1.25rem);
+      bottom: 50vh;
+      transform: translateY(1.25rem);
     }
   }
 }

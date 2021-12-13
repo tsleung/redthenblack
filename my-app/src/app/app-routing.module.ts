@@ -108,18 +108,21 @@ const routes: Routes = [
         },
         {
           path: '',
-          outlet: 'suitability',
+          outlet: 'thresholds',
           component: ParameterCollectionComponent,
           data: {
-            title:'Personalization',
+            title:'Thresholds',
             description: 'Personal finance is inherently... personal. Suitability factors in appetite and risk tolerance. One expression is defining thresholds for (1) target (2) safety (3) reach outcomes.',
             href: '/retirement',
             inputs: [
               {label:'Target', 
+              startHint:'Default is .5, where 50% of outcomes are better', 
               name:'targetThreshold',},
-              {label:'Safety', 
+              {label:'Safety',
+              startHint:'Default is .05, where 95% of outcomes are better', 
               name:'safetyThreshold',},
-              {label:'Reach', 
+              {label:'Reach',
+              startHint:'Default is .65, where 35% of outcomes are better',  
               name:'reachThreshold',},
               
             ]
