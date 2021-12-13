@@ -73,7 +73,7 @@ main {
       transition: height 200ms ease;
       
       &.open {
-        height: 50vh;
+        height: 45vh;
         overflow: scroll;  
       }
     }
@@ -83,7 +83,7 @@ main {
       display: block;
     }
     .open + .toggle { 
-      bottom: 50vh;
+      bottom: 40vh;
       transform: translateY(1.25rem);
     }
   }

@@ -68,8 +68,24 @@ const routes: Routes = [
             },
             {label:'After tax income', 
                   name:'annualAfterTaxIncome',value: ''},
-                  {label: 'Current savings', name:'initialSavings', value: ''},
-              {label:'Time to work', 
+              
+            ]
+          } as ParameterRouteData
+        },
+        
+        {
+          path: '',
+          outlet: 'investing',
+          component: ParameterCollectionComponent,
+          data: {
+            title:'Investing in the stock market',
+            description: 'A fundamental part of executing any retirement strategy is generating additional income through investing. Investments assumed is 20 years of an S&P 500 ETF with leverage compounded daily. When to rebalance is an incredibly challenging problem, thus is done naively depending on time scale (observable by number of periods in working chart within the results).',
+            href: '/retirement',
+            inputs: [
+              {label:'Investing leverage while working', 
+                name:'investingLeverage',},
+                {label: 'Current savings', name:'initialSavings', value: ''},
+                {label:'Time to work', 
                 name:'timeToWorkInYears',},
             ]
           } as ParameterRouteData
@@ -90,19 +106,23 @@ const routes: Routes = [
             ]
           } as ParameterRouteData
         },
-        {
+        
+       {
           path: '',
-          outlet: 'investing',
           component: ParameterCollectionComponent,
+          outlet: 'retirement-income',
           data: {
-            title:'Investing in the stock market',
-            description: 'A fundamental part of executing any retirement strategy is generating additional income through investing. Investments assumed is 20 years of an S&P 500 ETF with leverage compounded daily. When to rebalance is an incredibly challenging problem, thus is done naively depending on time scale (observable by number of periods in working chart within the results).',
+            title:'Additional returns during Retirement',
+            description: 'The burden of working can be reduced by continuing to invest while in retirement. Additionally modifying the amount of nest egg consumed each year will affect confidence of retirement.',
             href: '/retirement',
             inputs: [
-              {label:'Investing leverage while working', 
-                name:'investingLeverage',},
-                {label:'Target nest egg', 
-                name:'nestEgg',},
+              {label:'Target nest egg', 
+                name:'nestEgg',},  
+              {label: 'Desired annual retirement income', 
+                name:'annualRetirementIncome'},
+                {label: 'Investing leverage in retirement', 
+                name:'retirementInvestingLeverage'},
+
             ]
           } as ParameterRouteData
         },
@@ -125,22 +145,6 @@ const routes: Routes = [
               startHint:'Default is .65, where 35% of outcomes are better',  
               name:'reachThreshold',},
               
-            ]
-          } as ParameterRouteData
-        },
-       {
-          path: '',
-          component: ParameterCollectionComponent,
-          outlet: 'retirement-income',
-          data: {
-            title:'Additional returns during Retirement',
-            description: 'The burden of working can be reduced by continuing to invest while in retirement. Additionally modifying the amount of nest egg consumed each year will affect confidence of retirement.',
-            href: '/retirement',
-            inputs: [
-                {label: 'Desired annual retirement income', 
-                name:'annualRetirementIncome'},
-                {label: 'Investing leverage in retirement', 
-                name:'retirementInvestingLeverage'},
             ]
           } as ParameterRouteData
         },
