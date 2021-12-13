@@ -66,7 +66,11 @@ const routes: Routes = [
               startHint: ``,
               endHint: ''
             },
-              {label: 'Current savings', name:'initialSavings', value: ''},
+            {label:'After tax income', 
+                  name:'annualAfterTaxIncome',value: ''},
+                  {label: 'Current savings', name:'initialSavings', value: ''},
+              {label:'Time to work', 
+                name:'timeToWorkInYears',},
             ]
           } as ParameterRouteData
         },
@@ -77,7 +81,7 @@ const routes: Routes = [
           data: {
             title:'Retirement horizon',
             description: `The duration of retirement drastically affects the size of nest egg that needs to be accumulated while working. As a rule of thumb annual withdrawal over a 30 year retirement could use a 4% withdrawal rate while annual withdrawal over a 60 year retirement would use a 2% withdrawal rate.`,
-            href: 'results',
+            href: '/retirement',
             inputs: [
               {label:'Time in retirement', 
                 name:'retirementTimeHorizonInYears',},
@@ -97,10 +101,27 @@ const routes: Routes = [
             inputs: [
               {label:'Investing leverage while working', 
                 name:'investingLeverage',},
-              {label:'Time to work', 
-                name:'timeToWorkInYears',},
                 {label:'Target nest egg', 
                 name:'nestEgg',},
+            ]
+          } as ParameterRouteData
+        },
+        {
+          path: '',
+          outlet: 'suitability',
+          component: ParameterCollectionComponent,
+          data: {
+            title:'Personalization',
+            description: 'Personal finance is inherently... personal. Suitability factors in appetite and risk tolerance. One expression is defining thresholds for (1) target (2) safety (3) reach outcomes.',
+            href: '/retirement',
+            inputs: [
+              {label:'Target', 
+              name:'targetThreshold',},
+              {label:'Safety', 
+              name:'safetyThreshold',},
+              {label:'Reach', 
+              name:'reachThreshold',},
+              
             ]
           } as ParameterRouteData
         },
@@ -111,7 +132,7 @@ const routes: Routes = [
           data: {
             title:'Additional returns during Retirement',
             description: 'The burden of working can be reduced by continuing to invest while in retirement. Additionally modifying the amount of nest egg consumed each year will affect confidence of retirement.',
-            href: 'results',
+            href: '/retirement',
             inputs: [
                 {label: 'Desired annual retirement income', 
                 name:'annualRetirementIncome'},
@@ -309,9 +330,12 @@ const routes: Routes = [
 
         
       },
+
       {
         path: '',
-        component: WelcomeComponent,
+        //component: WelcomeComponent,
+        pathMatch: 'full',
+        redirectTo: 'retirement',
       },
 
     ],

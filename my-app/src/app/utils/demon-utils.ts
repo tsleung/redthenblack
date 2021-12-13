@@ -341,19 +341,32 @@ export function friendlyMoney(num, digits) {
   return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : "0";
 }
 
-export function calculateMedianOutcome(simulations:number[][]) {
-  return simulations[Math.floor(simulations.length / 2)].slice(-1)[0];
+function calculatePercentileOutcome(percentile: number, simulations:number[][]) {
+  return simulations[Math.floor(simulations.length * percentile)].slice(-1)[0];
+}
+
+function calculateMedianOutcome(simulations:number[][]) {
+  return calculatePercentileOutcome(.5, simulations);
+}
+export interface Threshold {
+  target: number;
+  safety: number;
+  reach: number;
 }
 export function createSummary(
+  threshold: Threshold,
   timeToWorkInYears: number,
   targetNestEgg: number,
   simulations: number[][]) {
-
+    
   // working results
   const successfulRuns = simulations.filter(simulation => {
     return simulation.slice(-1)[0] > 1;
   }).length;
-  const medianOutcome = calculateMedianOutcome(simulations);
+  const medianOutcome = calculatePercentileOutcome(.5, simulations);
+  const safetyOutcome = calculatePercentileOutcome(threshold.safety, simulations);
+  const reachOutcome = calculatePercentileOutcome(threshold.reach, simulations);
+  const targetOutcome = calculatePercentileOutcome(threshold.target, simulations);
   const successRate = successfulRuns / simulations.length;
 
   return {
@@ -361,6 +374,9 @@ export function createSummary(
     nestEgg: friendlyMoney(targetNestEgg,1),
     successRate,
     medianOutcome: `${friendlyMoney(Math.round(medianOutcome* targetNestEgg),1)}`,
+    reachOutcome: `${friendlyMoney(Math.round(reachOutcome* targetNestEgg),1)}`,
+    safetyOutcome: `${friendlyMoney(Math.round(safetyOutcome* targetNestEgg),1)}`,
+    targetOutcome: `${friendlyMoney(Math.round(targetOutcome* targetNestEgg),1)}`,
     time: `${timeToWorkInYears}y`,
     confidence: `${Math.round(successRate * 100)}%`,
     value: friendlyMoney(targetNestEgg,1),
@@ -400,6 +416,7 @@ export interface Recommendation {
   action: () => void;
 }
 export function createRecommendationsFromPertubations(
+  threshold: Threshold,
   timeToWorkInYears: number,
   targetNestEgg: number,
   baseline:SimulationResult, 
@@ -408,6 +425,7 @@ export function createRecommendationsFromPertubations(
 
   return [
     ...createLeverageRecommendations(
+      threshold, 
       timeToWorkInYears, targetNestEgg,
       baseline, pertubations),
   ];
@@ -415,6 +433,7 @@ export function createRecommendationsFromPertubations(
 
 
 export function createLeverageRecommendations(
+  threshold: Threshold,
   timeToWorkInYears: number,
   targetNestEgg: number,
   baseline:SimulationResult, 
@@ -426,7 +445,7 @@ export function createLeverageRecommendations(
   }).filter(pertubation => {
     return hasHigherMedianOutcome(baseline, pertubation);
   }).map(pertubation => {
-    const pertubationSummary = createSummary(timeToWorkInYears, targetNestEgg, pertubation.results);
+    const pertubationSummary = createSummary(threshold, timeToWorkInYears, targetNestEgg, pertubation.results);
     const current = leverageFromSimulationResult(baseline);
     const improvement = leverageFromSimulationResult(pertubation);
     const mediumOutcome = pertubationSummary.medianOutcome;

@@ -143,22 +143,31 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     probabilityOfSuccess: .95,
     approximateCapitalGainsTax: .15,
     numWorkingSimulations : 5,
+    safetyThreshold : .05,
+    targetThreshold : .5,
+    reachThreshold : .65,
   }
   
-  
-
   calculateTargetNestEgg() {
     return this.retirementPreferences.nestEgg;
   }
-
-
 
   updateWorkingGraph(simulations:number[][]) {
     const representativeSampleSimulations = selectRepresentativeSample(Math.min(this.retirementPreferences.numWorkingSimulations, 20),
     simulations
     );
-  
-    this.summary.next(createSummary(this.retirementPreferences.timeToWorkInYears,this.calculateTargetNestEgg(),simulations));
+
+    const threshold = {
+      target: this.retirementPreferences.targetThreshold,
+      safety: this.retirementPreferences.safetyThreshold,
+      reach: this.retirementPreferences.reachThreshold,
+    };
+    
+    this.summary.next(createSummary(
+      threshold,
+      this.retirementPreferences.timeToWorkInYears,
+      this.calculateTargetNestEgg(),
+      simulations));
     this.simulations.next(representativeSampleSimulations);
     this.simulationStats.next(representativeSampleSimulations.map((simulation,index) => {
       const result = simulation[simulation.length -1];
@@ -226,7 +235,14 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     );
     
     Promise.all([simulations, perturbedSimulations]).then(([results, pertubations]) => {
+
+    const threshold = {
+      target: this.retirementPreferences.targetThreshold,
+      safety: this.retirementPreferences.safetyThreshold,
+      reach: this.retirementPreferences.reachThreshold,
+    };
       return createRecommendationsFromPertubations(
+        threshold,
         this.retirementPreferences.timeToWorkInYears,
         this.calculateTargetNestEgg(),
         {params,results},
@@ -282,7 +298,6 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
         params: perturbedParameters[i], results
       }));
     });
-    
 
     function perturbSingleParameter(pertubation: number, params:number[]) {
       return params.map((val,i,arr) => {

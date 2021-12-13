@@ -17,6 +17,21 @@
     </button>
 </nav>
 
+<div class="highlights" *ngIf="findMyRetirementService.summary | async as summary">
+    <div>
+        <span>Target Nest Egg</span>
+        <span>{{summary.value}}</span>
+    </div>
+    <div>
+        <span>Confidence to Target</span>
+        <span>{{summary.confidence}}</span>
+    </div>
+    <div>
+        <span>Time in Years</span>
+        <span>{{summary.time}}</span>
+    </div>
+</div>
+
 <ng-container *ngIf="visiblePreferences | async as visiblePreferences">
     <dl *ngIf="visiblePreferences.length > 0">
         <details>
@@ -36,22 +51,19 @@
     </dl>
 </ng-container>
 
+
 <div class="metrics" *ngIf="findMyRetirementService.summary | async as summary">
     <div>
-        <span>Expected Outcome</span>
-        <span>{{summary.medianOutcome}}</span>
+        <span>Target Outcome</span>
+        <span>{{summary.targetOutcome}}</span>
     </div>
     <div>
-        <span>Time in Years</span>
-        <span>{{summary.time}}</span>
+        <span>Safety Outcome</span>
+        <span>{{summary.safetyOutcome}}</span>
     </div>
     <div>
-        <span>Confidence to Target</span>
-        <span>{{summary.confidence}}</span>
-    </div>
-    <div>
-        <span>Target Nest Egg</span>
-        <span>{{summary.value}}</span>
+        <span>Reach Outcome</span>
+        <span>{{summary.reachOutcome}}</span>
     </div>
 </div>
 

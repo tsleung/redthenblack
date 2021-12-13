@@ -10,10 +10,20 @@
     <router-outlet name="retirement-income"></router-outlet>
     <router-outlet name="simulation"></router-outlet>
   </article>
-  <aside>
+  
+  <aside [ngClass]="{open:opened}">
     <router-outlet name="results"></router-outlet>
   </aside>
-  
+  <button (click)="opened = !opened"
+    class="toggle"
+    mat-mini-fab aria-label="Toggle results">
+      <ng-container *ngIf="!opened">
+        <mat-icon>unfold_more</mat-icon>
+      </ng-container>  
+      <ng-container *ngIf="opened">
+        <mat-icon >unfold_less</mat-icon>
+      </ng-container>
+    </button>
 </main>
 <footer>
   <router-outlet class="summary" name="summary"></router-outlet>

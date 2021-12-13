@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RetirementArticleComponent implements OnInit {
 
+  opened = false;
   constructor() { }
 
   ngOnInit(): void {
