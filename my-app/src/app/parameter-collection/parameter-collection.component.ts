@@ -12,6 +12,9 @@ interface input {
   placeholder?: string;
   startHint?: string;
   endHint?: string;
+  tooltip? : string;
+  max?: number;
+  step? : number; 
 }
 
 export interface ParameterRouteData {

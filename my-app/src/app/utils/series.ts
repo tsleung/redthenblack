@@ -60,7 +60,7 @@ return series.then(resp => {
 }
 
 
-export function fetchSymbol(query: HistoricalQuery = {symbol: 'SPY', start:new Date('2018-01-01'),end: new Date('2021-01-01')}):Promise<string> {
+export function fetchSymbol(query: HistoricalQuery = {symbol: 'SPY', start:new Date('1998-01-01'),end: new Date('2021-01-01')}):Promise<string> {
 return new Promise(resolve => {
   const cacheKey = JSON.stringify(query);
   const ret = localCache().getItem(cacheKey);

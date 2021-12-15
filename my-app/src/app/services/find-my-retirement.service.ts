@@ -143,9 +143,9 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     probabilityOfSuccess: .95,
     approximateCapitalGainsTax: .15,
     numWorkingSimulations : 5,
-    safetyThreshold : .05,
-    targetThreshold : .5,
-    reachThreshold : .65,
+    safetyThreshold : .1,
+    targetThreshold : .4,
+    reachThreshold : .6,
   }
   
   calculateTargetNestEgg() {
@@ -192,7 +192,6 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
         ...representativeSampleSimulations.map((simulation,i):[string, ...number[]] => ([`${i}`, ...simulation])).slice(1,-1)
       ],
     });
-    console.log('woring graph updated')
    
   }
 
@@ -207,7 +206,7 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     }
     this.retirementPreferences = {...this.retirementPreferences,...obj};
     
-    console.log('preferences',this.retirementPreferences)
+    console.log('preferences',this.retirementPreferences, JSON.stringify(this.retirementPreferences, null, 4))
 
     const params = [this.retirementPreferences.timeToWorkInYears,
       this.retirementPreferences.investingLeverage,

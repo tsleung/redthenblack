@@ -10,6 +10,14 @@ export function createAboutRoute () {
     return '/about';
 }
 
+export function createDatasetRoute () {
+    return '/datasets';
+}
+
+export function createSP500DatasetRoute () {
+    return createDatasetRoute() + 'sp500';
+}
+
 export function createLeverageParameterCollectionRoute () {
     return createParameterCollectionRoute() + '/leverage';
 }

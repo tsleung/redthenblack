@@ -48,6 +48,7 @@ import { LayoutsComponent } from './layouts/layouts.component';
 import { SuitabilityService } from './services/suitability.service';
 import { RoutingService } from './services/routing.service';
 import { RetirementArticleComponent } from './retirement-article/retirement-article.component';
+import { DatasetViewerComponent } from './dataset-viewer/dataset-viewer.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { RetirementArticleComponent } from './retirement-article/retirement-arti
     ParameterViewerComponent,
     LayoutsComponent,
     RetirementArticleComponent,
+    DatasetViewerComponent,
    
   ],
   imports: [

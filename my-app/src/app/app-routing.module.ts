@@ -14,12 +14,16 @@ import { ResultsComponent,ResultsRouteData} from './results/results.component';
 import { LayoutsComponent } from './layouts/layouts.component';
 import { RetirementArticleComponent } from './retirement-article/retirement-article.component';
 import { ABOUT_RTB } from './utils/articles_mapper';
+import { DatasetRouteData, DatasetViewerComponent } from './dataset-viewer/dataset-viewer.component';
+import { sp500DatasetResolver } from './services/dataset.service';
+import {of, Observable} from 'rxjs';
 
 const routes: Routes = [
   { path: 'bet', component: SimpleBetComponent },
   { path: 'game', component: GameComponent },
   { path: 'pose', component: PosenetComponent },
   { path: 'editor', component: DemonComponent },
+  
   {
     path: 'beta',
     component: CashFlowPlanComponent,
@@ -43,6 +47,12 @@ const routes: Routes = [
     path: '',
     component: LayoutsComponent,
     children: [
+      {path: 'datasets', children: [
+        {
+          path:'sp500',
+          component:DatasetViewerComponent, 
+          data: {title: 'SP500', resolver: sp500DatasetResolver} as DatasetRouteData,},
+      ]},
       {path: 'pitch',
       component: ArticleComponent,
       data: {articles: [
@@ -135,14 +145,18 @@ const routes: Routes = [
             description: 'Personal finance is inherently... personal. Suitability factors in appetite and risk tolerance. One expression is defining thresholds for (1) target (2) safety (3) reach outcomes.',
             href: '/retirement',
             inputs: [
-              {label:'Target', 
-              startHint:'Default is .5, where 50% of outcomes are better', 
-              name:'targetThreshold',},
+              {label:'Target',
+              tooltip:'Default is .4, where 60% of outcomes are better', 
+              name:'targetThreshold',
+              max: 1,
+            },
               {label:'Safety',
-              startHint:'Default is .05, where 95% of outcomes are better', 
+              tooltip:'Default is .1, where 90% of outcomes are better', 
+              max: 1,
               name:'safetyThreshold',},
               {label:'Reach',
-              startHint:'Default is .65, where 35% of outcomes are better',  
+              tooltip:'Default is .6, where 40% of outcomes are better',  
+              max: 1,
               name:'reachThreshold',},
               
             ]
