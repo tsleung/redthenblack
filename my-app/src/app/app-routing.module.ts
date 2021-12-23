@@ -6,7 +6,7 @@ import { CashFlowPlanComponent } from './cash-flow-plan/cash-flow-plan.component
 import { PosenetComponent } from './posenet/posenet.component';
 import { ArticleComponent } from './article/article.component';
 import { WelcomeComponent } from './welcome/welcome.component';
-
+import { PokerComponent } from './poker/poker.component';
 import { DemonComponent } from './demon/demon.component';
 import { ParameterCollectionComponent,ParameterRouteData } from './parameter-collection/parameter-collection.component';
 import { SummaryComponent,SummaryRouteData} from './summary/summary.component';
@@ -218,6 +218,12 @@ const routes: Routes = [
         component: SummaryComponent,
         data: {
         } as SummaryRouteData
+      },
+      {
+        path: 'poker',
+        component: PokerComponent,
+        data: {
+        }
       },
       {
         path: 'params',

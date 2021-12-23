@@ -277,8 +277,8 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
 
 
     const perturbedParameters = [
-      ...perturbSingleParameter(1.1,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
-      ...perturbSingleParameter(.9,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
+      ...perturbSingleParameter(1.2,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
+      ...perturbSingleParameter(.8,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
     ];
     const pertubationSimulations = perturbedParameters.map(params => {
       return createRunPerPeriod(

@@ -6,25 +6,32 @@
       {{parameters.description}}
     </p>
     <form ngForm (submit)="paramSubmit(parameters, $event)" [action]="parameters.href" method="GET">
-        <mat-form-field appearance="standard"
-            *ngFor="let input of parameters.inputs">
-          <mat-label *ngIf="input.label">
-            {{input.label}} 
-            <span *ngIf="input.tooltip" [title]="input.tooltip"><mat-icon>info</mat-icon> ({{input.tooltip}})</span>
-          </mat-label>
-
+      <ng-container *ngFor="let input of parameters.inputs">
+        <mat-form-field appearance="standard">
+            <mat-label *ngIf="input.label">
+              {{input.label}} 
+            </mat-label>
           <input matInput 
           [name]="input.name" 
           type="number"
           [step]="input.step ? input.step : .1"
           [placeholder]="input.placeholder"
           [value]="input.value || this.findMyRetirementService.retirementPreferences[input.name]">
+          <ng-container *ngIf="input.tooltip && false">
+            <mat-icon [matTooltip]="input.tooltip"
+              matSuffix>help</mat-icon>
+          </ng-container>
+          
           <mat-hint *ngIf="input.startHint" 
-            align="start"><strong>{{input.startHint}}</strong> </mat-hint>
+            align="start">{{input.startHint}}
+          </mat-hint>
           <mat-hint *ngIf="input.endHint" 
-            align="end">{{input.endHint}}</mat-hint>
+            align="end">
+            <strong>{{input.endHint}}</strong>
+            </mat-hint>
+            
         </mat-form-field>
-        
+      </ng-container>
         <button class="save" mat-flat-button 
         type="submit" 
         color="primary">Submit</button>
