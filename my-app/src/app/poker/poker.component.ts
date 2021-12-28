@@ -43,10 +43,31 @@ function game() {
 }
 
 function flop(round: Round) {
+  round.communityCards.push(
+    round.deck.pop(),
+    round.deck.pop(),
+    round.deck.pop()
+  );
+
+  solicitBids(round);
 }
 function turn(round: Round) {
+  round.communityCards.push(
+    round.deck.pop()
+  );
+
+  solicitBids(round);
 }
 function river(round: Round) {
+  round.communityCards.push(
+    round.deck.pop()
+  );
+
+  solicitBids(round);
+}
+
+function solicitBids(round: Round) {
+
 }
 
 function openingBids(round: Round) {

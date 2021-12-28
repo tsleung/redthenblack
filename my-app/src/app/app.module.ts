@@ -50,6 +50,7 @@ import { RoutingService } from './services/routing.service';
 import { RetirementArticleComponent } from './retirement-article/retirement-article.component';
 import { DatasetViewerComponent } from './dataset-viewer/dataset-viewer.component';
 import { PokerComponent } from './poker/poker.component';
+import { PinEditorComponent } from './pin-editor/pin-editor.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { PokerComponent } from './poker/poker.component';
     RetirementArticleComponent,
     DatasetViewerComponent,
     PokerComponent,
+    PinEditorComponent,
    
   ],
   imports: [
