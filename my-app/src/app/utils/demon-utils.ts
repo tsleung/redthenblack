@@ -453,7 +453,7 @@ export function createLeverageRecommendations(
       console.log('implement noop action');
 
     }; // noop for now, should open params
-    const message = `Modifying leverage to ${improvement} from ${current} should improve medium outcome to ${mediumOutcome}`;
+    const message = `Modifying leverage to ${improvement} from ${current} should improve median outcome to ${mediumOutcome}`;
     return {
       message,
       action,
