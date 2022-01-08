@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1641627072620,
+  "timestamp": 1641627884833,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -10,8 +10,8 @@
       "urls": [
         "/favicon.ico",
         "/index.html",
-        "/main-es2015.9060b74b77bf15bcc35b.js",
-        "/main-es5.9060b74b77bf15bcc35b.js",
+        "/main-es2015.1b480ead1257a3d0bebd.js",
+        "/main-es5.1b480ead1257a3d0bebd.js",
         "/manifest.webmanifest",
         "/polyfills-es2015.7f2be5c3211715ed096a.js",
         "/polyfills-es5.28f12a96904b8f2b6d42.js",
@@ -52,7 +52,7 @@
     "/assets/articles/intro.md": "82c2679a8b3f00a33a502ec037c52c8d00de0c4e",
     "/assets/articles/resources.md": "5d19dccea271f617f1c0a1e8aa3a2878d3588c3b",
     "/assets/articles/retirement-introduction.md": "f016b4263e62f2362e6a06b4cfa301bd5fde5b8e",
-    "/assets/articles/rtb-pitch.md": "8eb8f8693e919d2b4a3101f1d8607a594b73c72c",
+    "/assets/articles/rtb-pitch.md": "c3aa2b50544a78e02a22fc02108ca6b1c2f7a1b5",
     "/assets/articles/scratchpad.md": "047eb3da4518bdc72f2e9fb42df01fa2c0d93725",
     "/assets/articles/trial.and.error.md": "832f41217dd8733d39b7fab384ee60df9d421b00",
     "/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
@@ -64,9 +64,9 @@
     "/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
     "/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
     "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/index.html": "7f3ff0b85530c11ec10863fa75d098424c99bcb3",
-    "/main-es2015.9060b74b77bf15bcc35b.js": "5feac27ba227ba2329fde8580c72cb4c1463db64",
-    "/main-es5.9060b74b77bf15bcc35b.js": "df2c021783c35f9be9e6cfcf8461c2f3f766f3c2",
+    "/index.html": "63d46108b800050f239d33f2d967c1bcaf44f05f",
+    "/main-es2015.1b480ead1257a3d0bebd.js": "1b43cf4d5988e31b59f5d87f154ac2284a5bdba7",
+    "/main-es5.1b480ead1257a3d0bebd.js": "902974dc6f2260490515eb3592606c5398b85c6c",
     "/manifest.webmanifest": "9fe1b45747ec3f41850a9c3bfc03d4fbc5737614",
     "/polyfills-es2015.7f2be5c3211715ed096a.js": "90fb474e1a7d87bd57bc8a95fb3fd361b919d815",
     "/polyfills-es5.28f12a96904b8f2b6d42.js": "ccfff1a6bd0b9531245e25bf3c0c8cf948ced8c2",
