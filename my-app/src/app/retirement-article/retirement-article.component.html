@@ -31,10 +31,10 @@
 
   <button (click)="opened = !opened" class="toggle" mat-mini-fab aria-label="Toggle results">
     <ng-container *ngIf="!opened">
-      <mat-icon>expand_more</mat-icon>
+      <mat-icon>expand_less</mat-icon>
     </ng-container>
     <ng-container *ngIf="opened">
-      <mat-icon>expand_less</mat-icon>
+      <mat-icon>expand_more</mat-icon>
     </ng-container>
   </button>
 </main>
