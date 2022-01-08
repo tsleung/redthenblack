@@ -59,7 +59,7 @@ main {
     bottom: 4.75rem;
     right: 1rem;
     display: none;
-    transition: bottom 200ms ease;
+    transition: bottom 100ms ease;
   }
 
   @media (max-width:480px)  {
@@ -78,7 +78,7 @@ main {
       background: white;
       left: 0;
       right: 0;
-      transition: height 200ms ease;
+      transition: height 100ms ease;
       
       &.open {
         height: 45vh;
