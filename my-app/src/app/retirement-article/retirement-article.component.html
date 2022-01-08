@@ -25,17 +25,16 @@
     <mat-card>
       <mat-card-content>
         <router-outlet name="results"></router-outlet>
-
       </mat-card-content>
     </mat-card>
   </aside>
 
   <button (click)="opened = !opened" class="toggle" mat-mini-fab aria-label="Toggle results">
     <ng-container *ngIf="!opened">
-      <mat-icon>unfold_more</mat-icon>
+      <mat-icon>expand_more</mat-icon>
     </ng-container>
     <ng-container *ngIf="opened">
-      <mat-icon>unfold_less</mat-icon>
+      <mat-icon>expand_less</mat-icon>
     </ng-container>
   </button>
 </main>

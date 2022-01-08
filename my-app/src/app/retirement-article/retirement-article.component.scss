@@ -63,6 +63,10 @@ main {
   }
 
   @media (max-width:480px)  {
+    mat-card { // overwriting from layout mat-card
+      margin: 0;
+      padding: 0;
+    }
 
     aside {
       // taken from mini fab button
@@ -80,6 +84,8 @@ main {
         height: 45vh;
         overflow: scroll;  
       }
+
+      
     }
 
     .toggle {

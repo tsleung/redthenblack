@@ -1,6 +1,7 @@
 @mixin results() {
   & {
     margin: 1rem;
+    min-height: 10rem;
     display: block;
   }
   nav {
