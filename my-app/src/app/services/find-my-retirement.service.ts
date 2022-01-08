@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { SuitabilityService } from './suitability.service';
 import { localCache } from '../utils/local_storage';
-import {friendlyMoney,createHistoricalLeverageRuns,createPolicyConfidenceCurve,createWorkingGraph, createRunPerPeriod, createSummary, selectRepresentativeSample, createRecommendationsFromPertubations, SimulationResult} from '../utils/demon-utils';
+import { friendlyMoney, createHistoricalLeverageRuns, createPolicyConfidenceCurve, createWorkingGraph, createRunPerPeriod, createSummary, selectRepresentativeSample, createRecommendationsFromPertubations, SimulationResult } from '../utils/demon-utils';
 
-import { of,Observable, Subject, ReplaySubject, BehaviorSubject } from 'rxjs';
+import { of, Observable, Subject, ReplaySubject, BehaviorSubject } from 'rxjs';
 
 export enum OptimizationObjective {
   Value,
@@ -25,63 +25,63 @@ interface ResultMetric {
   providedIn: 'root'
 })
 export class FindMyRetirementService {
-  
-  leverage = .8;
-  marketLeverage:c3.Data = {columns:[]};
-  withdrawalConfidence:c3.Data = {columns:[]};
-  summary:Subject<object> = new Subject();
-  metrics:Subject<ResultMetric[]> = new Subject();
-  simulations:Subject<number[][]> = new Subject();
-  simulationStats:Subject<object> = new Subject();
-  recommendations:Subject<object> = new Subject();
-  working:Subject<c3.Data> = new Subject();
-  retirement:Subject<c3.Data> = new Subject<c3.Data>();
 
-  workingGridOptions:c3.GridOptions = {
+  leverage = .8;
+  marketLeverage: c3.Data = { columns: [] };
+  withdrawalConfidence: c3.Data = { columns: [] };
+  summary: Subject<object> = new Subject();
+  metrics: Subject<ResultMetric[]> = new Subject();
+  simulations: Subject<number[][]> = new Subject();
+  simulationStats: Subject<object> = new Subject();
+  recommendations: Subject<object> = new Subject();
+  working: Subject<c3.Data> = new Subject();
+  retirement: Subject<c3.Data> = new Subject<c3.Data>();
+
+  workingGridOptions: c3.GridOptions = {
     x: {
       lines: [
-        {value: 250, text: '1 year'},
-        {value: 750, text: '3 year'},
-        {value: 1250, text: '5 years'},
-        {value: 2500, text: '10 years'},
-        {value: 3750, text: '15 years'},
-        {value: 5000, text: '20 years'},
-        {value: 7500, text: '30 years'},
+        { value: 250, text: '1 year' },
+        { value: 750, text: '3 year' },
+        { value: 1250, text: '5 years' },
+        { value: 2500, text: '10 years' },
+        { value: 3750, text: '15 years' },
+        { value: 5000, text: '20 years' },
+        { value: 7500, text: '30 years' },
       ]
     },
     y: {
       lines: [
-          {value: .25, text: '25% to retirement'},
-          {value: .5, text: '50% to retirement'},
-          {value: .75, text: '75% to retirement'},
-          {value: 1, text: 'Retirement achieved!'},
+        { value: .25, text: '25% to retirement' },
+        { value: .5, text: '50% to retirement' },
+        { value: .75, text: '75% to retirement' },
+        { value: 1, text: 'Retirement achieved!' },
       ]
     }
   }
-  
-  retirementGridOptions:c3.GridOptions = {
+
+  retirementGridOptions: c3.GridOptions = {
     y: {
       lines: [
-          {value: .95, text: '95% confidence'},
-          {value: .85, text: '80% confidence'},
-          {value: .5, text: '50% confidence'},
+        { value: .95, text: '95% confidence' },
+        { value: .85, text: '80% confidence' },
+        { value: .5, text: '50% confidence' },
       ]
     }
   }
 
 
-withdrawalConfidenceGridOptions:c3.GridOptions = {
-  y: {
-    lines: [
-        {value: .95, text: '95% confidence'},
-        {value: .85, text: '80% confidence'},
-        {value: .5, text: '50% confidence'},
-    ]
+  withdrawalConfidenceGridOptions: c3.GridOptions = {
+    y: {
+      lines: [
+        { value: .95, text: '95% confidence' },
+        { value: .85, text: '80% confidence' },
+        { value: .5, text: '50% confidence' },
+      ]
+    }
   }
-}
 
   constructor(
-    suitabilityService : SuitabilityService
+    suitabilityService: SuitabilityService
   ) {
     this.updateMarketLeverage();
     this.createPolicyConfidenceCurve();
@@ -93,11 +93,11 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     this.updateLeverage(val);
   }
   updateLeverage(val) {
-    console.log('lev',val);
+    console.log('lev', val);
     this.leverage = val;
     this.updateMarketLeverage();
     this.createPolicyConfidenceCurve();
-  
+
   }
 
   updateMarketLeverage() {
@@ -114,7 +114,7 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     ]).then(([short, medium, long]) => {
       console.log('mediumm retirement', medium);
       this.withdrawalConfidence = {
-        x:'x',
+        x: 'x',
         columns: [
           ['x', ...short.map(result => result.withdrawal)],
           ['30 years', ...short.map(result => result.confidence)],
@@ -127,7 +127,7 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
 
   toFriendlyName(str) {
     return str;
-    
+
   }
   // personal config
   retirementPreferences = {
@@ -142,19 +142,19 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     retirementTimeHorizonInYears: 30,
     probabilityOfSuccess: .95,
     approximateCapitalGainsTax: .15,
-    numWorkingSimulations : 5,
-    safetyThreshold : .1,
-    targetThreshold : .4,
-    reachThreshold : .6,
+    numWorkingSimulations: 5,
+    safetyThreshold: .1,
+    targetThreshold: .4,
+    reachThreshold: .6,
   }
-  
+
   calculateTargetNestEgg() {
     return this.retirementPreferences.nestEgg;
   }
 
-  updateWorkingGraph(simulations:number[][]) {
+  updateWorkingGraph(simulations: number[][]) {
     const representativeSampleSimulations = selectRepresentativeSample(Math.min(this.retirementPreferences.numWorkingSimulations, 20),
-    simulations
+      simulations
     );
 
     const threshold = {
@@ -162,57 +162,58 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
       safety: this.retirementPreferences.safetyThreshold,
       reach: this.retirementPreferences.reachThreshold,
     };
-    
+
     this.summary.next(createSummary(
       threshold,
       this.retirementPreferences.timeToWorkInYears,
       this.calculateTargetNestEgg(),
       simulations));
     this.simulations.next(representativeSampleSimulations);
-    this.simulationStats.next(representativeSampleSimulations.map((simulation,index) => {
-      const result = simulation[simulation.length -1];
+    this.simulationStats.next(representativeSampleSimulations.map((simulation, index) => {
+      const result = simulation[simulation.length - 1];
       const start = simulation[0];
       const maxDrawdown = Math.min(...simulation.map((balance, i, arr) => {
         const maxDrawdownBeyond = (Math.min(...simulation.slice(i)) - balance) / balance;
         return maxDrawdownBeyond;
-      }),0);
+      }), 0);
       return {
-        label: index===0 ? 'min': 
-          index===representativeSampleSimulations.length -1 ?'max' : 
-          index*5,
-        result:`${result}`.slice(0,5),start,maxDrawdown: `${Math.round(maxDrawdown*100)}%`};
+        label: index === 0 ? 'min' :
+          index === representativeSampleSimulations.length - 1 ? 'max' :
+            index * 5,
+        result: `${result}`.slice(0, 5), start, maxDrawdown: `${Math.round(maxDrawdown * 100)}%`
+      };
     }));
 
-    this.metrics.next([]); 
+    this.metrics.next([]);
     this.working.next({
       x: 'x',
       columns: [
         ['x',
-        ...new Array(this.retirementPreferences.timeToWorkInYears*250).fill(0).map((v,i) => i)],
-        ...representativeSampleSimulations.map((simulation,i):[string, ...number[]] => ([`${i}`, ...simulation])).slice(1,-1)
+          ...new Array(this.retirementPreferences.timeToWorkInYears * 250).fill(0).map((v, i) => i)],
+        ...representativeSampleSimulations.map((simulation, i): [string, ...number[]] => ([`${i}`, ...simulation])).slice(1, -1)
       ],
     });
-   
+
   }
 
   updateRetirementPreferences(obj) {
     try {
       const fromCache = localCache().getItem('retirementPreferences');
-      this.retirementPreferences = fromCache && fromCache.length > 50 ? {...this.retirementPreferences, ...JSON.parse(fromCache)} : this.retirementPreferences;
-      this.retirementPreferences = {...this.retirementPreferences,...obj};
+      this.retirementPreferences = fromCache && fromCache.length > 50 ? { ...this.retirementPreferences, ...JSON.parse(fromCache) } : this.retirementPreferences;
+      this.retirementPreferences = { ...this.retirementPreferences, ...obj };
       localCache().setItem('retirementPreferences', JSON.stringify(this.retirementPreferences));
-    }catch(e) {
+    } catch (e) {
 
     }
-    this.retirementPreferences = {...this.retirementPreferences,...obj};
-    
-    console.log('preferences',this.retirementPreferences, JSON.stringify(this.retirementPreferences, null, 4))
+    this.retirementPreferences = { ...this.retirementPreferences, ...obj };
+
+    console.log('preferences', this.retirementPreferences, JSON.stringify(this.retirementPreferences, null, 4))
 
     const params = [this.retirementPreferences.timeToWorkInYears,
-      this.retirementPreferences.investingLeverage,
-      this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
-      this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(),
-      
+    this.retirementPreferences.investingLeverage,
+    this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
+    this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(),
+
     ];
     const simulations = createRunPerPeriod(
       Math.round(params[0]), // time to work in years
@@ -224,7 +225,7 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
       this.updateWorkingGraph(simulations);
       return simulations;
     });
-    
+
     const perturbedSimulations = this.generateRecommendations(
       this.retirementPreferences.timeToWorkInYears,
       this.retirementPreferences.investingLeverage,
@@ -232,53 +233,55 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
       this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(),
       this.retirementPreferences.numWorkingSimulations,
     );
-    
+
     Promise.all([simulations, perturbedSimulations]).then(([results, pertubations]) => {
 
-    const threshold = {
-      target: this.retirementPreferences.targetThreshold,
-      safety: this.retirementPreferences.safetyThreshold,
-      reach: this.retirementPreferences.reachThreshold,
-    };
+      const threshold = {
+        target: this.retirementPreferences.targetThreshold,
+        safety: this.retirementPreferences.safetyThreshold,
+        reach: this.retirementPreferences.reachThreshold,
+      };
       return createRecommendationsFromPertubations(
         threshold,
         this.retirementPreferences.timeToWorkInYears,
         this.calculateTargetNestEgg(),
-        {params,results},
+        { params, results },
         pertubations
-        )
+      )
     }).then(recommendations => {
-      console.log('recommendations',recommendations);
+      console.log('recommendations', recommendations);
       this.recommendations.next(recommendations);
     });
 
-    
+
     createPolicyConfidenceCurve(
-      this.retirementPreferences.retirementInvestingLeverage, 
-      this.retirementPreferences.retirementTimeHorizonInYears).then(results =>{
-        this.retirement.next({x: 'x',
-        columns : [
-          ['x', ...results.map(result => result.withdrawal)],
-          [`${this.retirementPreferences.retirementTimeHorizonInYears} years at ${this.retirementPreferences.retirementInvestingLeverage}`, 
-          ...results.map(result => result.confidence)],
-        ]});
+      this.retirementPreferences.retirementInvestingLeverage,
+      this.retirementPreferences.retirementTimeHorizonInYears).then(results => {
+        this.retirement.next({
+          x: 'x',
+          columns: [
+            ['x', ...results.map(result => result.withdrawal)],
+            [`${this.retirementPreferences.retirementTimeHorizonInYears} years at ${this.retirementPreferences.retirementInvestingLeverage}`,
+            ...results.map(result => result.confidence)],
+          ]
+        });
       });
 
   }
 
   /** To generate recommendations currently, let's perturb each of the preferences */
   generateRecommendations(
-    timeToWorkInYears: number, 
-    leverageDaily:number, 
-    contribution: number = 0, 
+    timeToWorkInYears: number,
+    leverageDaily: number,
+    contribution: number = 0,
     initialBalance: number = 0,
     numSimulations: number
-  ):Promise<SimulationResult[]> {
+  ): Promise<SimulationResult[]> {
 
 
     const perturbedParameters = [
-      ...perturbSingleParameter(1.2,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
-      ...perturbSingleParameter(.8,[timeToWorkInYears, leverageDaily, contribution, initialBalance]),
+      ...perturbSingleParameter(1.2, [timeToWorkInYears, leverageDaily, contribution, initialBalance]),
+      ...perturbSingleParameter(.8, [timeToWorkInYears, leverageDaily, contribution, initialBalance]),
     ];
     const pertubationSimulations = perturbedParameters.map(params => {
       return createRunPerPeriod(
@@ -287,19 +290,19 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
         params[2],
         params[3],
         numSimulations,
-        );
+      );
     });
-    
 
-    return  Promise.all(pertubationSimulations).then((allPertubationResults) => {
+
+    return Promise.all(pertubationSimulations).then((allPertubationResults) => {
       // zip the params with the result
       return allPertubationResults.map((results, i) => ({
         params: perturbedParameters[i], results
       }));
     });
 
-    function perturbSingleParameter(pertubation: number, params:number[]) {
-      return params.map((val,i,arr) => {
+    function perturbSingleParameter(pertubation: number, params: number[]) {
+      return params.map((val, i, arr) => {
         const copy = [...arr];
         copy[i] = parseFloat((arr[i] * pertubation).toFixed(2));
         return copy;
@@ -312,11 +315,11 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
   }
 
   updateAnnualRetirementIncome() {
-    this.retirementPreferences.annualRetirementIncome = 
-      (this.retirementPreferences.annualAfterTaxIncome - 
-      this.retirementPreferences.annualAmountSavedAfterTax);
-      // include taxes later
-      // / (1-this.retirementPreferences.approximateCapitalGainsTax);
+    this.retirementPreferences.annualRetirementIncome =
+      (this.retirementPreferences.annualAfterTaxIncome -
+        this.retirementPreferences.annualAmountSavedAfterTax);
+    // include taxes later
+    // / (1-this.retirementPreferences.approximateCapitalGainsTax);
   }
 }
 

@@ -1,0 +1,25 @@
+:host {
+  padding: 1rem;
+  display: block;
+
+
+  .pin {
+    display: block;
+  }
+
+  .mat-form-field {
+    // display: block;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .description {
+    font-size: 1rem;
+  }
+
+  .save {
+    margin: .5rem 0;
+  }
+}

@@ -1,30 +1,48 @@
 <header>
-  <router-outlet name="introduction"></router-outlet>
+
+  <mat-card>
+    <mat-card-content>
+      <router-outlet name="introduction"></router-outlet>
+    </mat-card-content>
+  </mat-card>
+
 </header>
 <main>
+
   <article>
-    <router-outlet name="saving"></router-outlet>
-    <router-outlet name="investing"></router-outlet>
-    <router-outlet name="retirement"></router-outlet>
-    <router-outlet name="retirement-income"></router-outlet>
-    <router-outlet name="real-estate"></router-outlet>
-    <router-outlet name="thresholds"></router-outlet>
-    <router-outlet name="simulation"></router-outlet>
+
+    <mat-card>
+      <mat-card-content>
+        <router-outlet name="saving"></router-outlet>
+        <router-outlet name="pins"></router-outlet>
+        <router-outlet name="investing"></router-outlet>
+        <router-outlet name="retirement"></router-outlet>
+        <router-outlet name="retirement-income"></router-outlet>
+        <router-outlet name="real-estate"></router-outlet>
+        <router-outlet name="thresholds"></router-outlet>
+        <router-outlet name="simulation"></router-outlet>
+
+      </mat-card-content>
+    </mat-card>
   </article>
-  
+
   <aside [ngClass]="{open:opened}">
-    <router-outlet name="results"></router-outlet>
+    <mat-card>
+      <mat-card-content>
+        <router-outlet name="results"></router-outlet>
+
+      </mat-card-content>
+    </mat-card>
   </aside>
-  <button (click)="opened = !opened"
-    class="toggle"
-    mat-mini-fab aria-label="Toggle results">
-      <ng-container *ngIf="!opened">
-        <mat-icon>unfold_more</mat-icon>
-      </ng-container>  
-      <ng-container *ngIf="opened">
-        <mat-icon >unfold_less</mat-icon>
-      </ng-container>
-    </button>
+
+  <button (click)="opened = !opened" class="toggle" mat-mini-fab aria-label="Toggle results">
+    <ng-container *ngIf="!opened">
+      <mat-icon>unfold_more</mat-icon>
+    </ng-container>
+    <ng-container *ngIf="opened">
+      <mat-icon>unfold_less</mat-icon>
+    </ng-container>
+  </button>
 </main>
 <footer>
   <router-outlet class="summary" name="summary"></router-outlet>

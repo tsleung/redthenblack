@@ -1,1 +1,36 @@
-<p>pin-editor works!</p>
+<div *ngIf="parameters | async as parameters">
+  <div class="title">
+    {{parameters.title}}
+  </div>
+  <p class="description">
+    {{parameters.description}}
+  </p>
+  <form ngForm (submit)="paramSubmit(parameters, $event)" [action]="parameters.href" method="GET">
+    <div class="pin" *ngFor="let input of parameters.inputs">
+
+    </div>
+
+    <mat-form-field appearance="standard">
+      <mat-label>
+        Years from now
+      </mat-label>
+      <input matInput name="years" type="number" value="5">
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>
+        Amount
+      </mat-label>
+      <input matInput name="amount" type="number" value="50000">
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>
+        Pin name
+      </mat-label>
+      <input matInput name="name" type="text" placeholder="Down payment for home" value="">
+    </mat-form-field>
+    <button class="save" mat-flat-button type="submit" color="primary">Submit</button>
+  </form>
+
+</div>
