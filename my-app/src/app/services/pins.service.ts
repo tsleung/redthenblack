@@ -23,7 +23,7 @@ export class PinsService {
   ] as Pin[]);
 
   allPins() {
-    return memoizeLocalStorage(PINS_CACHE_KEY, () => this.pins);
+    return this.pins;
   }
 
   removePin(pin: Pin) {

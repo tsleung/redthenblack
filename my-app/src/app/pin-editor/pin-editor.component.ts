@@ -29,4 +29,8 @@ export class PinEditorComponent {
     readonly pinsService: PinsService) {
   }
 
+  dothing(input, another, third) {
+    console.log(input, another, third)
+  }
+
 }
