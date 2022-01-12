@@ -5,30 +5,38 @@
   <p class="description">
     {{parameters.description}}
   </p>
-  <form ngForm (submit)="paramSubmit(parameters, $event)" [action]="parameters.href" method="GET">
-    <div class="pin" *ngFor="let input of parameters.inputs">
+  
+    
+    <div *ngFor="let pin of pinsService.allPins()">
 
+      <button class="remove" mat-flat-button (click)="pinsService.removePin(pin);findMyRetirementService.updateRetirementPreferences({})"><mat-icon>close</mat-icon></button>
+      
+      <div> <b>[{{pin.years}}y] {{pin.id}}</b></div>
+      <div class="amount"> {{pin.amount}} </div>
     </div>
+  
+   
+  <form ngForm (submit)="pinsService.addPin({id: name.value, years:years.value, amount: amount.value});$event.preventDefault();findMyRetirementService.updateRetirementPreferences({})" [action]="parameters.href" method="GET">
 
     <mat-form-field appearance="standard">
       <mat-label>
         Years ahead
       </mat-label>
-      <input matInput name="years" type="number" value="5">
+      <input #years matInput name="years" type="number" placeholder="5">
     </mat-form-field>
 
     <mat-form-field appearance="standard">
       <mat-label>
         Amount required
       </mat-label>
-      <input matInput name="amount" type="number" value="50000">
+      <input matInput #amount name="amount" type="number" placeholder="200000">
     </mat-form-field>
 
     <mat-form-field appearance="standard">
       <mat-label>
         Event name
       </mat-label>
-      <input matInput name="name" type="text" placeholder="Down payment for home" value="">
+      <input matInput #name name="name" type="text" placeholder="Down payment">
     </mat-form-field>
     
     <button class="save" mat-flat-button type="submit" color="primary">Pin event</button>

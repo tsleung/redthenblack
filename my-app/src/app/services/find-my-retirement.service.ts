@@ -4,6 +4,7 @@ import { localCache } from '../utils/local_storage';
 import { friendlyMoney, createHistoricalLeverageRuns, createPolicyConfidenceCurve, createWorkingGraph, createRunPerPeriod, createSummary, selectRepresentativeSample, createRecommendationsFromPertubations, SimulationResult } from '../utils/demon-utils';
 
 import { of, Observable, Subject, ReplaySubject, BehaviorSubject } from 'rxjs';
+import { PinsService } from './pins.service';
 
 export enum OptimizationObjective {
   Value,
@@ -81,7 +82,8 @@ export class FindMyRetirementService {
   }
 
   constructor(
-    suitabilityService: SuitabilityService
+    suitabilityService: SuitabilityService,
+    private pinsService: PinsService,
   ) {
     this.updateMarketLeverage();
     this.createPolicyConfidenceCurve();
@@ -221,6 +223,7 @@ export class FindMyRetirementService {
       params[2],
       params[3],
       this.retirementPreferences.numWorkingSimulations,
+      this.pinsService.allPins().map(pin => ({...pin, amount: pin.amount / this.calculateTargetNestEgg()})),
     ).then(simulations => {
       this.updateWorkingGraph(simulations);
       return simulations;
