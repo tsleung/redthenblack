@@ -217,7 +217,7 @@ export class FindMyRetirementService {
     this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(),
 
     ];
-    setTimeout(() =>{
+
     const simulations = createRunPerPeriod(
       Math.round(params[0]), // time to work in years
       params[1],
@@ -270,8 +270,7 @@ export class FindMyRetirementService {
           ]
         });
       });
-      
-    },50);
+
   }
 
   /** To generate recommendations currently, let's perturb each of the preferences */

@@ -25,7 +25,7 @@ return series.then(resp => {
   return resp.split('\n');
 })
 .then(resp => {
-  console.log('header', resp[0])
+  // console.log('header', resp[0])
   const rows = resp.slice(1);
 
   const records = rows.map(row => row.split(',')).map((row, i) => {
@@ -70,13 +70,13 @@ return new Promise(resolve => {
     return resp.text();
   })  
   .then(text=> {
-    console.log('server:', cacheKey);
+    // console.log('server:', cacheKey);
     localCache().setItem(cacheKey, text);
     resolve(text);
   });
 
   const resolveFromCache = () => {
-    console.log('cache:', cacheKey);
+    // console.log('cache:', cacheKey);
     resolve(ret);
   };
   const resolver = (ret) ? resolveFromCache : resolveFromServer;

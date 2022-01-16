@@ -185,6 +185,17 @@ function sampleSeries<T>(series: T[], periods: number) {
   });
 }
 
+// randomly samples values from a series
+function createSampleIndexesFrom<T>(series: T[], periods: number) {
+  return new Array(periods).fill(0).map(() => {
+    const sample = Math.floor(Math.random() * series.length);
+    return sample;
+  });
+}
+
+
+
+
 // leverage the run per day, then build 'periods', weekly, monthly, annually.
 
 function createPeriodRunParameters(
@@ -281,7 +292,11 @@ function createLeveragedPeriodRun(
   cashFlowEvents: CashFlowEvent[] = []): number[] {
   // converting contribution to period
 
-  return sampleSeries(leveragedSeries.series, numPeriods).reduce((accum, record: LeveragedRecord, periodIndex) => {
+  return createSampleIndexesFrom(leveragedSeries.series, numPeriods).reduce((accum, sampleIndex, periodIndex) => {
+    const record = leveragedSeries.series[sampleIndex];
+    const retiredRecord = retirementSeries.series[sampleIndex];
+    // console.log('record',record, retiredRecord, sampleIndex, leveragedSeries, retirementSeries)
+
     const previousBalance = accum[accum.length - 1];
     const previousBalanceAfterContribution = previousBalance + contributionPerPeriod;
 
@@ -295,8 +310,8 @@ function createLeveragedPeriodRun(
     // Only invest if < 1 OR Keep investing regardless
     const KEEP_INVESTING_REGARDLESS = false; // remove this when sensical 
     const newBalance = previousBalanceAfterCashFlowEvents < 1 || KEEP_INVESTING_REGARDLESS ?
-    previousBalanceAfterCashFlowEvents * (((record.change - 1)) + 1) :
-    previousBalanceAfterCashFlowEvents * (((retirementSeries.series[periodIndex].change - 1)) + 1);
+      previousBalanceAfterCashFlowEvents * (((record.change - 1)) + 1) :
+      previousBalanceAfterCashFlowEvents * (((retiredRecord.change - 1)) + 1);
 
     accum.push(previousBalanceAfterCashFlowEvents > 0 ? newBalance : 0);
 
