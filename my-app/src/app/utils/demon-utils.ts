@@ -489,7 +489,7 @@ export function createLeverageRecommendations(
   return pertubations.filter(pertubation => {
     return leverageFromSimulationResult(pertubation) != leverageFromSimulationResult(baseline);
   }).filter(pertubation => {
-    return hasHigherMedianOutcome(baseline, pertubation);
+    return hasHigherTargetOutcome(baseline, pertubation,threshold);
   }).map(pertubation => {
     const pertubationSummary = createSummary(threshold, timeToWorkInYears, targetNestEgg, pertubation.results);
     const current = leverageFromSimulationResult(baseline);
@@ -508,12 +508,19 @@ export function createLeverageRecommendations(
 
 }
 
+function hasHigherTargetOutcome(
+  baseline: SimulationResult,
+  pertubation: SimulationResult,
+  threshold: Threshold): boolean {
+  return calculatePercentileOutcome(threshold.target, pertubation.results) >
+  calculatePercentileOutcome(threshold.target, baseline.results) * 1.1;
+}
+
 function hasHigherMedianOutcome(
   baseline: SimulationResult,
   pertubation: SimulationResult): boolean {
   return calculateMedianOutcome(pertubation.results) >
-    calculateMedianOutcome(baseline.results) * 1.05
-
+    calculateMedianOutcome(baseline.results) * 1.05;
 }
 
 function hasHigherNestEggAchievement(timeToWorkInYears: number,
