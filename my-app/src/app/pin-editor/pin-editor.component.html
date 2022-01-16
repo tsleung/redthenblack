@@ -6,22 +6,41 @@
     {{parameters.description}}
   </p>
 
-  <div *ngFor="let pin of pinsService.allPins()">
+  <div *ngFor="let pin of pinsService.allPinsByYears()">
 
     <div class="actions">
-      <button class="remove" mat-flat-button
+
+
+      <button *ngIf="pin.active" class="visibility hide" mat-icon-button
+        (click)="pin.active = false;findMyRetirementService.updateRetirementPreferences({});">
+        <mat-icon>visibility</mat-icon>
+      </button>
+      <button *ngIf="!pin.active" class="visibility select" mat-icon-button
+        (click)="pin.active = true;findMyRetirementService.updateRetirementPreferences({});">
+        <mat-icon>visibility_off</mat-icon>
+      </button>
+
+      <button class="remove" mat-icon-button
         (click)="pinsService.removePin(pin);findMyRetirementService.updateRetirementPreferences({})">
         <mat-icon>close</mat-icon>
       </button>
 
     </div>
 
-    <div> <b>[{{pin.years}}y] {{pin.id}}</b></div>
-    <div class="amount"> {{pin.amount}} </div>
+
+    <div class="details"> <b>[{{pin.years}}y] {{pin.id}}</b>
+      <button class="edit" mat-icon-button
+        (click)="name.value = pin.id;years.value = pin.years; amount.value = pin.amount;">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <br />
+      <div class="amount"> {{pin.amount}} </div>
+    </div>
+
   </div>
 
   <form ngForm
-    (submit)="pinsService.addPin({id: name.value, years:years.value, amount: amount.value});$event.preventDefault();findMyRetirementService.updateRetirementPreferences({})"
+    (submit)="pinsService.addPin({active: true, id: name.value, years:years.value, amount: amount.value});$event.preventDefault();findMyRetirementService.updateRetirementPreferences({})"
     [action]="parameters.href" method="GET">
 
     <mat-form-field appearance="standard">
@@ -45,6 +64,7 @@
       <input matInput #name name="name" type="text" placeholder="Down payment">
     </mat-form-field>
 
+    <br />
     <button class="save" mat-flat-button type="submit" color="primary">Pin event</button>
   </form>
 

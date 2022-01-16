@@ -4,7 +4,7 @@ import { localCache } from '../utils/local_storage';
 import { friendlyMoney, createHistoricalLeverageRuns, createPolicyConfidenceCurve, createWorkingGraph, createRunPerPeriod, createSummary, selectRepresentativeSample, createRecommendationsFromPertubations, SimulationResult } from '../utils/demon-utils';
 
 import { of, Observable, Subject, ReplaySubject, BehaviorSubject } from 'rxjs';
-import { PinsService } from './pins.service';
+import { Pin, PinsService } from './pins.service';
 
 export enum OptimizationObjective {
   Value,
@@ -217,13 +217,14 @@ export class FindMyRetirementService {
     this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(),
 
     ];
+    setTimeout(() =>{
     const simulations = createRunPerPeriod(
       Math.round(params[0]), // time to work in years
       params[1],
       params[2],
       params[3],
       this.retirementPreferences.numWorkingSimulations,
-      this.pinsService.allPins().map(pin => ({...pin, amount: pin.amount / this.calculateTargetNestEgg()})),
+      this.pinsService.allPins().filter(pin => pin.active).map(pin => ({ ...pin, amount: pin.amount / this.calculateTargetNestEgg() })),
     ).then(simulations => {
       this.updateWorkingGraph(simulations);
       return simulations;
@@ -235,6 +236,7 @@ export class FindMyRetirementService {
       this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
       this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(),
       this.retirementPreferences.numWorkingSimulations,
+      this.pinsService.allPins().filter(pin => pin.active).map(pin => ({ ...pin, amount: pin.amount / this.calculateTargetNestEgg() })),
     );
 
     Promise.all([simulations, perturbedSimulations]).then(([results, pertubations]) => {
@@ -256,7 +258,6 @@ export class FindMyRetirementService {
       this.recommendations.next(recommendations);
     });
 
-
     createPolicyConfidenceCurve(
       this.retirementPreferences.retirementInvestingLeverage,
       this.retirementPreferences.retirementTimeHorizonInYears).then(results => {
@@ -269,7 +270,8 @@ export class FindMyRetirementService {
           ]
         });
       });
-
+      
+    },50);
   }
 
   /** To generate recommendations currently, let's perturb each of the preferences */
@@ -278,7 +280,8 @@ export class FindMyRetirementService {
     leverageDaily: number,
     contribution: number = 0,
     initialBalance: number = 0,
-    numSimulations: number
+    numSimulations: number,
+    pins: Pin[],
   ): Promise<SimulationResult[]> {
 
 
@@ -293,6 +296,7 @@ export class FindMyRetirementService {
         params[2],
         params[3],
         numSimulations,
+        pins,
       );
     });
 

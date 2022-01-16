@@ -229,8 +229,10 @@ export function createRunPerPeriod(
       timeToWorkInYears < 60 ? PeriodType.QUARTER :
         PeriodType.YEAR;
 
-  return toLeverageHistoricalSeries(query, leverageDaily, performantPeriodType)
-    .then(leveragedSeries => {
+  return Promise.all([
+    toLeverageHistoricalSeries(query, leverageDaily, performantPeriodType),
+    toLeverageHistoricalSeries(query, leverageDaily, performantPeriodType)
+  ]).then(([leveragedSeries,retiredSeries]) => {
 
       const simulations = new Array(numSimulations).fill(0).map(() => {
 
@@ -256,6 +258,7 @@ export function createRunPerPeriod(
         // console.log('leveragedSeries', leveragedSeries, numPeriods, contributionPerPeriod);
         return createLeveragedPeriodRun(
           leveragedSeries,
+          retiredSeries,
           numPeriods,
           contributionPerPeriod,
           initialBalance,
@@ -271,6 +274,7 @@ export function createRunPerPeriod(
 
 function createLeveragedPeriodRun(
   leveragedSeries: LeveragedSeries,
+  retirementSeries: LeveragedSeries,
   numPeriods: number,
   contributionPerPeriod: number,
   initial: number = 0,
@@ -289,10 +293,10 @@ function createLeveragedPeriodRun(
     // change strategies here for after nest egg
     
     // Only invest if < 1 OR Keep investing regardless
-    const KEEP_INVESTING_REGARDLESS = true; // remove this when sensical 
+    const KEEP_INVESTING_REGARDLESS = false; // remove this when sensical 
     const newBalance = previousBalanceAfterCashFlowEvents < 1 || KEEP_INVESTING_REGARDLESS ?
     previousBalanceAfterCashFlowEvents * (((record.change - 1)) + 1) :
-    previousBalanceAfterCashFlowEvents;
+    previousBalanceAfterCashFlowEvents * (((retirementSeries.series[periodIndex].change - 1)) + 1);
 
     accum.push(previousBalanceAfterCashFlowEvents > 0 ? newBalance : 0);
 

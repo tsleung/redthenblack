@@ -7,8 +7,22 @@
     display: block;
   }
 
-  .remove {
+  .actions {
     float: right;
+  }
+
+  .visibility {
+    float: left;
+
+  }
+
+  .details {
+    // margin-left: 2.5rem;
+  }
+
+  .edit mat-icon {
+    font-size: .75rem;
+    line-height: 1.25rem;
   }
 
   .mat-form-field {
