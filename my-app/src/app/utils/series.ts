@@ -1,6 +1,12 @@
 
 import {localCache} from './local_storage';
 
+export enum PeriodType {
+  DAY = 1,
+  MONTH = 21,
+  QUARTER = 63,
+  YEAR = 252,
+}
 export interface HistoricalQuery {
   start: Date;
   end: Date;
@@ -83,4 +89,20 @@ return new Promise(resolve => {
   resolver();
 });
 
+}
+
+// randomly samples values from a series
+export function sampleSeries<T>(series: T[], periods: number) {
+  return new Array(periods).fill(0).map(() => {
+    const sample = series[Math.floor(Math.random() * series.length)];
+    return sample;
+  });
+}
+
+// randomly samples values from a series
+export function createSampleIndexesFrom<T>(series: T[], periods: number) {
+  return new Array(periods).fill(0).map(() => {
+    const sample = Math.floor(Math.random() * series.length);
+    return sample;
+  });
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {createHistoricalLeverageRuns,createPolicyConfidenceCurve, createWorkingGraph} from '../utils/demon-utils';
+import {createHistoricalLeverageRuns} from '../utils/demon-utils';
+import {createPolicyConfidenceCurve, createWorkingGraph} from '../utils/graph_mapper';
 
 @Component({
   selector: 'app-demon',

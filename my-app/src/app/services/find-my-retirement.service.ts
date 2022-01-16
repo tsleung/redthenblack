@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SuitabilityService } from './suitability.service';
 import { localCache } from '../utils/local_storage';
-import { friendlyMoney, createHistoricalLeverageRuns, createPolicyConfidenceCurve, createWorkingGraph, createRunPerPeriod, createSummary, selectRepresentativeSample, createRecommendationsFromPertubations, SimulationResult } from '../utils/demon-utils';
+import { createPolicyConfidenceCurve, createWorkingGraph } from '../utils/graph_mapper';
+import { friendlyMoney, createHistoricalLeverageRuns, createRunPerPeriod, createSummary, selectRepresentativeSample, createRecommendationsFromPertubations, SimulationResult } from '../utils/demon-utils';
 
 import { of, Observable, Subject, ReplaySubject, BehaviorSubject } from 'rxjs';
 import { Pin, PinsService } from './pins.service';
