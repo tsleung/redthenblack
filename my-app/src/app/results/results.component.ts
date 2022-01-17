@@ -17,8 +17,13 @@ export interface ResultsRouteData {
   styleUrls: ['./results.component.scss']
 })
 export class ResultsComponent implements AfterViewInit{
-  visiblePreferences = this.route.queryParams.pipe(map(params => {
-    return Object.keys(params).filter(key => {
+  
+  parameters = this.route.data as Observable<ResultsRouteData>;
+
+  ready = new Subject<void>();
+  showNavigation:Observable<boolean> = this.parameters.pipe(map(parameters => parameters.showNavigation ?? true));
+  visiblePreferences = combineLatest([this.showNavigation, this.route.queryParams]).pipe(map(([showNav,params]) => {
+    return showNav && Object.keys(params).filter(key => {
       return this.findMyRetirementService.retirementPreferences[key];
     }).map(key => {
       return {
@@ -27,10 +32,7 @@ export class ResultsComponent implements AfterViewInit{
       };
     });
   }));
-  parameters = this.route.data as Observable<ResultsRouteData>;
 
-  ready = new Subject<void>();
-  showNavigation:Observable<boolean> = this.parameters.pipe(map(parameters => parameters.showNavigation ?? true));
   retirement = combineLatest([this.ready,this.showNavigation,this.findMyRetirementService.retirement]).pipe(map(([ready,showNavigation, val]) => ({...val, showNavigation})));
   working = combineLatest([this.ready,this.showNavigation,this.findMyRetirementService.working]).pipe(map(([ready,showNavigation, val]) => ({...val, showNavigation})));
   constructor(private route: ActivatedRoute,

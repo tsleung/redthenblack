@@ -180,10 +180,23 @@ interface LeveragedSeries {
   series: LeveragedRecord[]
 }
 
+
 export function toLeverageHistoricalSeries(
   query,
   leverage,
   periodType: PeriodType
+): Promise<LeveragedSeries> {
+  const maxSamples = 1e5;
+  return memoizePromise(JSON.stringify({query,leverage,periodType,maxSamples}), () => {
+    return _toLeverageHistoricalSeries(query,leverage,periodType, maxSamples);
+  });
+}
+
+function _toLeverageHistoricalSeries(
+  query,
+  leverage,
+  periodType: PeriodType,
+  maxSamples: number = 1e5,
 ): Promise<LeveragedSeries> {
   return toHistoricalSeries(fetchSymbol(query)).then(records => {
 
@@ -204,8 +217,8 @@ export function toLeverageHistoricalSeries(
     multipleToPeriod: number,
     series: LeveragedRecord[]
   ): LeveragedRecord[] {
-    // comment for performance, should mutiple length by period (capped at 100k)
-    return new Array(Math.min(series.length * multipleToPeriod, 1e5)).fill(0).map(() => {
+    // comment for performance, should mutiple length by period (capped at 100k, max samples)
+    return new Array(Math.min(series.length * multipleToPeriod, maxSamples)).fill(0).map(() => {
       // return new Array(series.length).fill(0).map(() => {
       // sample the series for the number of periods we are translating to, multiply to find the change over the period (e.g. month/year)
       // and return the compounded return.

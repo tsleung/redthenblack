@@ -39,6 +39,7 @@ export class LineChartComponent implements OnInit, OnChanges{
         labels: false
       },
       legend: this.legend,
+      tooltip: {grouped: false},
     });
 
     return this.chart;
@@ -60,9 +61,10 @@ export class LineChartComponent implements OnInit, OnChanges{
       point: {show: false},
       grid: this.gridOptions,
       legend: this.legend,
+      tooltip: {grouped: false},
     });
 
-    console.log('generating chart', this.chartData);
+    // console.log('generating chart', this.chartData);
     this.updateChart();
   }
   
@@ -74,7 +76,7 @@ export class LineChartComponent implements OnInit, OnChanges{
       type: this.chartData.type,
       xs: this.chartData.xs,
     });
-    console.log('updating chart', this.chartData)
+    // console.log('updating chart', this.chartData)
   }
 
 }

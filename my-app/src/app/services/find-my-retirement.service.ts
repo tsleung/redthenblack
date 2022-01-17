@@ -20,6 +20,24 @@ interface ResultMetric {
   hint?: string;
 }
 
+const DEFAULT_RETIREMENT_PREFERENCES = {
+  annualAfterTaxIncome: 300000,
+  annualAmountSavedAfterTax: 50000,
+  timeToWorkInYears: 30,
+  initialSavings: 250000,
+  annualRetirementIncome: 250000,
+  nestEgg: 12500000,
+  investingLeverage: 1.2,
+  retirementInvestingLeverage: 0.8,
+  retirementTimeHorizonInYears: 30,
+  probabilityOfSuccess: .95,
+  approximateCapitalGainsTax: .15,
+  numWorkingSimulations: 5,
+  safetyThreshold: .1,
+  targetThreshold: .4,
+  reachThreshold: .6,
+};
+
 /** View model/composition of retirement product
  *  "Find my retirement" explores value/time/confidence for a user
  */
@@ -133,23 +151,7 @@ export class FindMyRetirementService {
 
   }
   // personal config
-  retirementPreferences = {
-    annualAfterTaxIncome: 200000,
-    annualAmountSavedAfterTax: 50000,
-    timeToWorkInYears: 5,
-    initialSavings: 250000,
-    annualRetirementIncome: 150000,
-    nestEgg: 1000000,
-    investingLeverage: 1.8,
-    retirementInvestingLeverage: 0.8,
-    retirementTimeHorizonInYears: 30,
-    probabilityOfSuccess: .95,
-    approximateCapitalGainsTax: .15,
-    numWorkingSimulations: 5,
-    safetyThreshold: .1,
-    targetThreshold: .4,
-    reachThreshold: .6,
-  }
+  retirementPreferences = DEFAULT_RETIREMENT_PREFERENCES
 
   calculateTargetNestEgg() {
     return this.retirementPreferences.nestEgg;
