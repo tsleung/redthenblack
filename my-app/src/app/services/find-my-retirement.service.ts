@@ -54,6 +54,7 @@ export class FindMyRetirementService {
   simulationStats: Subject<object> = new Subject();
   recommendations: Subject<object> = new Subject();
   working: Subject<c3.Data> = new Subject();
+  workingSummary: Subject<c3.Data> = new Subject();
   retirement: Subject<c3.Data> = new Subject<c3.Data>();
 
   workingGridOptions: c3.GridOptions = {
@@ -195,6 +196,23 @@ export class FindMyRetirementService {
         ['x',
           ...new Array(this.retirementPreferences.timeToWorkInYears * 250).fill(0).map((v, i) => i)],
         ...representativeSampleSimulations.map((simulation, i): [string, ...number[]] => ([`${i}`, ...simulation])).slice(1, -1)
+      ],
+    });
+
+    const targetSimulation = simulations[Math.floor(simulations.length * this.  retirementPreferences.targetThreshold)];
+    const reachSimulation = simulations[Math.floor(simulations.length * this.retirementPreferences.reachThreshold)];
+    const safetySimulation = simulations[Math.floor(simulations.length * this.retirementPreferences.safetyThreshold)];
+    
+    this.workingSummary.next({
+      x: 'x',
+      // type:'stanford',
+      columns: [
+        ['x',
+          ...new Array(this.retirementPreferences.timeToWorkInYears * 250).fill(0).map((v, i) => i)],
+        
+          ['Target',...targetSimulation],
+          ['Safety',...safetySimulation],
+          ['Reach',...reachSimulation],
       ],
     });
 

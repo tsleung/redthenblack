@@ -74,40 +74,38 @@
         </tbody>
     </div>
 
-    <details open *ngIf="findMyRetirementService.recommendations| async as recommendations">
-        <summary>
-            Recommendations ({{recommendations.length}})
-        </summary>
-
-        <div *ngFor="let recommendation of recommendations;let i = index">
-            <div (click)="recommendation.action()">
-                {{recommendation.message}}
-            </div>
-        </div>
-
-    </details>
-
-    <ng-container *ngIf="working | async as working">
-        <div>
-            Working
+    <ng-container *ngIf="workingSummary | async as working">
+        <div class="chart title working">
+           Sample "Target", "Safety", and "Reach" by
+            simulating the next {{findMyRetirementService.retirementPreferences.timeToWorkInYears}} years
+            {{findMyRetirementService.retirementPreferences.numWorkingSimulations}} times
             <a *ngIf="working.showNavigation" mat-stroked-button
                 [routerLink]="routingService.mapper.createWorkingParameterCollectionRoute()">
                 Modify parameters
             </a>
         </div>
-
-        <app-line-chart [chartData]="working" [legend]="{show:false}"
-            [gridOptions]="findMyRetirementService.workingGridOptions"></app-line-chart>
-
+        <app-line-chart [chartData]="working" [legend]="{show:true}"
+        [gridOptions]="findMyRetirementService.workingGridOptions"></app-line-chart>
     </ng-container>
 
-
-    <details *ngIf="findMyRetirementService.simulationStats | async as simulations">
+    <details>
         <summary>
-            Data table (Representative sample)
+            Simulation details
         </summary>
-
-        <table>
+        <div class="chart title percentiles">
+            Sample simulations representative of the broader distribution of outcomes, including drawdowns and cumulative net worth over time.
+        </div>
+        
+        <ng-container *ngIf="working | async as working">
+            <a *ngIf="working.showNavigation" mat-stroked-button
+                [routerLink]="routingService.mapper.createWorkingParameterCollectionRoute()">
+                Modify parameters
+            </a>
+            <app-line-chart [chartData]="working" [legend]="{show:false}"
+            [gridOptions]="findMyRetirementService.workingGridOptions"></app-line-chart>
+        </ng-container>
+      
+        <table *ngIf="findMyRetirementService.simulationStats | async as simulations">
             <thead>
                 <tr>
                     <th>
@@ -134,7 +132,11 @@
     <ng-container *ngIf="retirement | async as retirement">
 
         <div>
-            Retirement
+            <div class="chart title retirement">
+                Confidence of a successful retirement by withdrawal rate given {{findMyRetirementService.retirementPreferences.retirementInvestingLeverage}} investment leverage over 
+                {{findMyRetirementService.retirementPreferences.retirementTimeHorizonInYears}} years of retirement.
+            </div>
+            
             <a *ngIf="retirement.showNavigation" mat-stroked-button
                 [routerLink]="routingService.mapper.createRetirementParameterCollectionRoute()">
                 Modify parameters
@@ -144,6 +146,18 @@
         </app-line-chart>
     </ng-container>
 
+    <details open *ngIf="findMyRetirementService.recommendations| async as recommendations">
+        <summary>
+            Recommendations ({{recommendations.length}})
+        </summary>
+
+        <div *ngFor="let recommendation of recommendations;let i = index">
+            <div (click)="recommendation.action()">
+                {{recommendation.message}}
+            </div>
+        </div>
+
+    </details>
     <br />
     <div *ngIf="showNavigation | async">
         <button class="summary" color="primary" *ngIf="parameters | async as parameters" mat-flat-button

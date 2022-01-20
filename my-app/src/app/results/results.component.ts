@@ -34,7 +34,12 @@ export class ResultsComponent implements AfterViewInit{
   }));
 
   retirement = combineLatest([this.ready,this.showNavigation,this.findMyRetirementService.retirement]).pipe(map(([ready,showNavigation, val]) => ({...val, showNavigation})));
+
   working = combineLatest([this.ready,this.showNavigation,this.findMyRetirementService.working]).pipe(map(([ready,showNavigation, val]) => ({...val, showNavigation})));
+  
+  workingSummary = combineLatest([this.ready,this.showNavigation,this.findMyRetirementService.workingSummary]).pipe(map(([ready,showNavigation, val]) => ({...val, showNavigation})));
+  
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     readonly findMyRetirementService:FindMyRetirementService, 
