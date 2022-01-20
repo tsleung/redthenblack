@@ -24,12 +24,24 @@ export function localCache() {
 
 // Create promise memoize, saves promise contents if successful and returns
 
-export function memoizePromise<T>(key, resolver: () => Promise<T>) {
+export function memoizePromiseLocalStorage<T>(key, resolver: () => Promise<T>) {
   const localItem = localCache().getItem(key);
   return (localItem != null) ?
     Promise.resolve(JSON.parse(localItem) as T) :
     resolver().then(ret => {
       localCache().setItem(key, JSON.stringify(ret));
+      return ret;
+    });
+}
+
+
+const IN_MEMORY_CACHE = {};
+export function memoizePromiseInMemory<T>(key, resolver: () => Promise<T>) {
+  const localItem = IN_MEMORY_CACHE[key];
+  return (localItem != null) ?
+    Promise.resolve(JSON.parse(localItem) as T) :
+    resolver().then(ret => {
+      IN_MEMORY_CACHE[key] = JSON.stringify(ret);
       return ret;
     });
 }

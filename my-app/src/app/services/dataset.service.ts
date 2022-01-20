@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {Record, HistoricalQuery, toHistoricalSeries, fetchSymbol} from '../utils/series';
-import { memoizeLocalStorage, memoizePromise } from '../utils/local_storage';
 import {Observable} from 'rxjs';
 
 @Injectable({

@@ -1,5 +1,4 @@
 import { Record, HistoricalQuery, toHistoricalSeries, fetchSymbol, PeriodType } from './series';
-import { memoizeLocalStorage, memoizePromise } from './local_storage';
 
 // creates a run over a security with a consistently applied leverage
 export function createRun(resp: Record[], leverage: number, withdrawal: number = 0): number[] {

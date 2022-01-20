@@ -1,6 +1,6 @@
 
 import { Record, HistoricalQuery, toHistoricalSeries, fetchSymbol, PeriodType } from './series';
-import { memoizeLocalStorage, memoizePromise } from './local_storage';
+import { memoizeLocalStorage, memoizePromiseLocalStorage, memoizePromiseInMemory} from './local_storage';
 import { Pin } from '../services/pins.service';
 import { createRun } from './run_mapper';
 import { sampleSeries, createSampleIndexesFrom } from './series';
@@ -20,7 +20,7 @@ export function createSimpleRun(resp: Record[], leverage: number): number[] {
 // 2016 vs 1998
 export function createHistoricalLeverageRuns(leverage, query: HistoricalQuery = { symbol: 'SPY', start: new Date('2016-01-01'), end: new Date('2021-01-01') }): Promise<c3.Data> {
 
-  return memoizePromise(`createHistoricalLeverageRuns_1_1_${JSON.stringify(arguments)}`, () => {
+  return memoizePromiseLocalStorage(`createHistoricalLeverageRuns_1_1_${JSON.stringify(arguments)}`, () => {
     return toHistoricalSeries(fetchSymbol(query)).then(resp => {
       return memoizeLocalStorage(`createHistoricalLeverageRuns_1_$(JSON.stringify(arguments)}`, () => _createHistoricalLeverageRuns(resp, leverage, query));
     });
@@ -187,7 +187,7 @@ export function toLeverageHistoricalSeries(
   periodType: PeriodType
 ): Promise<LeveragedSeries> {
   const maxSamples = 1e5;
-  return memoizePromise(JSON.stringify({query,leverage,periodType,maxSamples}), () => {
+  return memoizePromiseInMemory(JSON.stringify({query,leverage,periodType,maxSamples}), () => {
     return _toLeverageHistoricalSeries(query,leverage,periodType, maxSamples);
   });
 }
@@ -196,7 +196,7 @@ function _toLeverageHistoricalSeries(
   query,
   leverage,
   periodType: PeriodType,
-  maxSamples: number = 1e5,
+  maxSamples: number,
 ): Promise<LeveragedSeries> {
   return toHistoricalSeries(fetchSymbol(query)).then(records => {
 
@@ -217,7 +217,7 @@ function _toLeverageHistoricalSeries(
     multipleToPeriod: number,
     series: LeveragedRecord[]
   ): LeveragedRecord[] {
-    // comment for performance, should mutiple length by period (capped at 100k, max samples)
+    // comment for performance, should mutiple length by period (capped at 100k / 1e5, max samples)
     return new Array(Math.min(series.length * multipleToPeriod, maxSamples)).fill(0).map(() => {
       // return new Array(series.length).fill(0).map(() => {
       // sample the series for the number of periods we are translating to, multiply to find the change over the period (e.g. month/year)

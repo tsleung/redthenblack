@@ -254,6 +254,10 @@ const routes: Routes = [
       },
 
       {
+        path: 'welcome',
+        component: WelcomeComponent,
+      },
+      {
         path: '',
         //component: WelcomeComponent,
         pathMatch: 'full',

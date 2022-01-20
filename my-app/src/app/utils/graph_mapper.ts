@@ -1,5 +1,5 @@
 import { Record, HistoricalQuery, toHistoricalSeries, fetchSymbol, PeriodType } from './series';
-import { memoizeLocalStorage, memoizePromise } from './local_storage';
+import { memoizeLocalStorage, memoizePromiseLocalStorage } from './local_storage';
 import { createWorkingRun, createRun } from './run_mapper';
 import { sampleSeries } from './series';
 
@@ -8,7 +8,7 @@ const TRADING_DAYS_PER_YEAR = PeriodType.YEAR;
 const YEARS_OF_RETIREMENT = 60;
 
 export function createPolicyConfidenceCurve(leverage = .75, yearsOfRetirement = YEARS_OF_RETIREMENT, numSimulations = NUM_SIMULATIONS): Promise<LeveragedWithdrawalConfidence[]> {
-  return memoizePromise(`createPolicyConfidenceCurve_1_1_${JSON.stringify(arguments)}`, () => {
+  return memoizePromiseLocalStorage(`createPolicyConfidenceCurve_1_1_${JSON.stringify(arguments)}`, () => {
     const query: HistoricalQuery = { symbol: 'SPY', start: new Date('1998-01-01'), end: new Date('2021-01-01') };
 
     // roll forward 100(0) simulations of a 75% invested portfolio for 60 years with withdrawal 1-10%
