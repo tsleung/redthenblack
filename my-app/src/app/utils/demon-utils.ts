@@ -83,8 +83,13 @@ export function createRunPerPeriod(
   contribution: number = 0,
   initialBalance: number = 0,
   numSimulations,
-  pins: Pin[] = [],): Promise<number[][]> {
-  const query: HistoricalQuery = { symbol: 'SPY', start: new Date('1998-01-01'), end: new Date('2021-01-01') };
+  pins: Pin[] = [],
+  yearsIncludingHistoricalData:number,
+  historicalEndDate: Date,
+  ): Promise<number[][]> {
+
+    historicalEndDate = historicalEndDate instanceof Date && !isNaN(historicalEndDate.valueOf()) ? historicalEndDate : new Date ('2021-01-01');
+  const query: HistoricalQuery = { symbol: 'SPY', start: new Date('1998-01-01'), end: historicalEndDate };
 
   const performantPeriodType = timeToWorkInYears < 2 ? PeriodType.DAY :
     timeToWorkInYears < 20 ? PeriodType.MONTH :
@@ -117,6 +122,8 @@ export function createRunPerPeriod(
               leveragedSeries.periodType === PeriodType.DAY ? PeriodType.YEAR * timeToWorkInYears :
                 timeToWorkInYears;
 
+          const numHistoricalPeriods = Math.max(0,Math.min(numPeriods,Math.floor(yearsIncludingHistoricalData / timeToWorkInYears * numPeriods)));
+
         // console.log('leveragedSeries', leveragedSeries, numPeriods, contributionPerPeriod);
         return createLeveragedPeriodRun(
           leveragedSeries,
@@ -125,6 +132,7 @@ export function createRunPerPeriod(
           contributionPerPeriod,
           initialBalance,
           cashFlowEvents,
+          numHistoricalPeriods,
         );
       });
       simulations.sort((a, b) => {
@@ -140,10 +148,17 @@ function createLeveragedPeriodRun(
   numPeriods: number,
   contributionPerPeriod: number,
   initial: number = 0,
-  cashFlowEvents: CashFlowEvent[] = []): number[] {
+  cashFlowEvents: CashFlowEvent[] = [],
+  numberOfHistoricalPeriods: number): number[] {
   // converting contribution to period
 
-  return createSampleIndexesFrom(leveragedSeries.series, numPeriods).reduce((accum, sampleIndex, periodIndex) => {
+  const mergedHistoricalAndSampledSeries:number[] = [
+    ...new Array(Math.max(0,numberOfHistoricalPeriods)).fill(0).map((v, i) => i + leveragedSeries.series.length - numberOfHistoricalPeriods),
+    ...createSampleIndexesFrom(leveragedSeries.series, Math.max(0,numPeriods - numberOfHistoricalPeriods)),
+  ];
+  // console.log(mergedHistoricalAndSampledSeries, leveragedSeries);
+  
+  return mergedHistoricalAndSampledSeries.reduce((accum, sampleIndex, periodIndex) => {
     const record = leveragedSeries.series[sampleIndex];
     const retiredRecord = retirementSeries.series[sampleIndex];
     // console.log('record',record, retiredRecord, sampleIndex, leveragedSeries, retirementSeries)
@@ -340,7 +355,6 @@ export function createRecommendationsFromPertubations(
       baseline, pertubations),
   ];
 }
-
 
 export function createLeverageRecommendations(
   threshold: Threshold,

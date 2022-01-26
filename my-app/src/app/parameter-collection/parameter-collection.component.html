@@ -13,7 +13,7 @@
             </mat-label>
           <input matInput 
           [name]="input.name" 
-          type="number"
+          [type]="input.type || 'number'"
           [step]="input.step ? input.step : .1"
           [placeholder]="input.placeholder"
           [value]="input.value || this.findMyRetirementService.retirementPreferences[input.name]">

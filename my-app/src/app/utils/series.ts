@@ -100,7 +100,7 @@ export function sampleSeries<T>(series: T[], periods: number) {
 }
 
 // randomly samples values from a series
-export function createSampleIndexesFrom<T>(series: T[], periods: number) {
+export function createSampleIndexesFrom<T>(series: T[], periods: number):number[] {
   return new Array(periods).fill(0).map(() => {
     const sample = Math.floor(Math.random() * series.length);
     return sample;

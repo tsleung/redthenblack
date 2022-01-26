@@ -36,9 +36,10 @@ export const PINS =
       startHint: ``,
       endHint: ''
     },
+    /*
     {label:'After tax income', 
           name:'annualAfterTaxIncome',value: ''},
-      
+      */
     ]
   } as ParameterRouteData
 };
@@ -52,11 +53,15 @@ export const SAVING = {
     description: 'A fundamental part of starting any retirement plan is generating income and putting aside a portion of that income into savings. Starting to save earlier will allow more time to accumulate.',
     href: '/retirement',
     inputs: [
+      {label:'Time to work', 
+        name:'timeToWorkInYears',},
       {label: `Savings per year.`, name:'annualAmountSavedAfterTax', value: '',
       placeholder: 'How much are you putting away every year?',
       startHint: ``,
       endHint: ''
     },
+
+    
     {label:'After tax income', 
           name:'annualAfterTaxIncome',value: ''},
       
@@ -70,14 +75,28 @@ export const INVESTING = {
   component: ParameterCollectionComponent,
   data: {
     title:'Investing in the stock market',
-    description: 'A fundamental part of executing any retirement strategy is generating additional income through investing. Investments assumed is 20 years of an S&P 500 ETF with leverage compounded daily. When to rebalance is an incredibly challenging problem, thus is done naively depending on time scale (observable by number of periods in working chart within the results).',
+    description: 'A fundamental part of executing any retirement strategy is generating additional income through investing. Investments assumed is 20 years of an S&P 500 ETF with leverage compounded daily. When to rebalance is an incredibly challenging problem, thus is done naively correlated to the length of investment duration.',
     href: '/retirement',
     inputs: [
       {label:'Investing leverage while working', 
         name:'investingLeverage',},
         {label: 'Current savings', name:'initialSavings', value: ''},
-        {label:'Time to work', 
-        name:'timeToWorkInYears',},
+        
+    ]
+  } as ParameterRouteData
+};
+
+export const HISTORICAL_INVESTING = {
+  path: '',
+  outlet: 'historical',
+  component: ParameterCollectionComponent,
+  data: {
+    title:'Simulating historical market returns',
+    description: 'Historical market returns may reveal insights from past decisions made by comparing simulation with reality. It is worth keeping in mind that past performance is not indicative of future returns, and a core component of a confidence model is accounting for variance.',
+    href: '/retirement',
+    inputs: [
+        {label: 'Historical years to include', name:'yearsIncludingHistoricalData'},
+        {label: 'Latest trading date', name:'historicalEndDate', type:'date'},
     ]
   } as ParameterRouteData
 };
@@ -107,8 +126,6 @@ export const RETIREMENT_INCOME =
     description: 'The burden of working can be reduced by continuing to invest while in retirement. Additionally modifying the amount of nest egg consumed each year will affect confidence of retirement.',
     href: '/retirement',
     inputs: [
-      {label:'Target nest egg', 
-        name:'nestEgg',},  
       {label: 'Desired annual retirement income', 
         name:'annualRetirementIncome'},
         {label: 'Investing leverage in retirement', 

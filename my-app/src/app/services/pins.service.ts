@@ -27,6 +27,18 @@ export class PinsService {
     return this.pins;
   }
 
+  allPastPins() {
+    return this.pins;
+  }
+
+  allExpensePins() {
+    return this.pins;
+  }
+
+  allGainPins() {
+    return this.pins;
+  }
+
   allPinsByYears() {
     return this.pins.sort((a,b) => a.years - b.years);
   }

@@ -35,6 +35,8 @@ const DEFAULT_RETIREMENT_PREFERENCES = {
   safetyThreshold: .1,
   targetThreshold: .5,
   reachThreshold: .6,
+  yearsIncludingHistoricalData: 0,
+  historicalEndDate: new Date().toISOString().slice(0,10),
 };
 
 /** View model/composition of retirement product
@@ -245,6 +247,8 @@ export class FindMyRetirementService {
       params[3],
       this.retirementPreferences.numWorkingSimulations,
       this.pinsService.allPins().filter(pin => pin.active).map(pin => ({ ...pin, amount: pin.amount / this.calculateTargetNestEgg() })),
+  this.retirementPreferences.yearsIncludingHistoricalData,
+      new Date(this.retirementPreferences.historicalEndDate),
     ).then(simulations => {
       this.updateWorkingGraph(simulations);
       return simulations;
@@ -316,6 +320,8 @@ export class FindMyRetirementService {
         params[3],
         numSimulations,
         pins,
+        this.retirementPreferences.yearsIncludingHistoricalData,
+        new Date(this.retirementPreferences.historicalEndDate),
       );
     });
 

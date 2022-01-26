@@ -15,6 +15,7 @@ interface input {
   tooltip? : string;
   max?: number;
   step? : number; 
+  type?: string;
 }
 
 export interface ParameterRouteData {
@@ -44,7 +45,7 @@ myModel = {};
     const data =  new FormData ($event.target)
     
     const preferences = Array.from(data.entries()).reduce((accum,val) => {
-      accum[val[0]] = Number(val[1]);
+      accum[val[0]] = isNaN(Number(val[1])) ? val[1] : Number(val[1]);
       console.log('accum', val,val[0],val[1])
       return accum;
     },{});
