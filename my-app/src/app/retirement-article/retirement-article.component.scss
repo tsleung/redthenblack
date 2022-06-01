@@ -1,6 +1,9 @@
 
-h1 {
+@mixin app-retirement-article ($theme) {
+  $foreground: map-get($my-app-theme, foreground);
+  $background: map-get($my-app-theme, background);
 
+h1 {
   font-size: 38px;
   line-height: 42px;
   font-weight: 300;
@@ -16,7 +19,7 @@ p {
   line-height: 24px;
   font-size: 16px;
 }
-section {
+main section {
   h3 {
     color: #333;
     font-weight: 500;
@@ -36,7 +39,19 @@ mat-card{
 
 header {
   height: auto;
+
+  h3 {
+    font-weight: bold;
+  }
 }
+
+// used to cap width so reading is easier
+header,
+main article {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
 main {
   display: flex;
   flex: 1;
@@ -62,7 +77,7 @@ main {
     transition: bottom 100ms ease;
   }
 
-  @media (max-width:480px)  {
+  @media (max-width:4080px)  {
     mat-card { // overwriting from layout mat-card
       margin: 0;
       padding: 0;
@@ -70,8 +85,9 @@ main {
 
     aside {
       // taken from mini fab button
-      box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 6px 10px 0px rgb(0 0 0 / 14%), 0px 1px 18px 0px rgb(0 0 0 / 12%);
+      box-shadow: 0px 5px 5px -1px rgb(0 0 0 / 20%), 0px 6px 10px 0px rgb(0 0 0 / 14%), 0px 1px 18px 0px rgb(0 0 0 / 12%);
 
+      border-top: 1px solid rgb(0 0 0 / 12%);
       position: fixed;
       bottom: 0;
       height: 6rem;
@@ -97,4 +113,5 @@ main {
       transform: translateY(1.25rem);
     }
   }
+}
 }

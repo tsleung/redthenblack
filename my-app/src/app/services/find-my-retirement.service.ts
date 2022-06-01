@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SuitabilityService } from './suitability.service';
 import { localCache } from '../utils/local_storage';
 import { createPolicyConfidenceCurve, createWorkingGraph } from '../utils/graph_mapper';
-import { friendlyMoney, createHistoricalLeverageRuns, createRunPerPeriod, createSummary, selectRepresentativeSample, createRecommendationsFromPertubations, SimulationResult } from '../utils/demon-utils';
+import { friendlyMoney, createHistoricalLeverageRuns, createRunPerPeriod, createSummary, selectRepresentativeSample, createRecommendationsFromPertubations, SimulationResult, createAssetTradingRunPerPeriod } from '../utils/demon-utils';
 
 import { of, Observable, Subject, ReplaySubject, BehaviorSubject } from 'rxjs';
 import { Pin, PinsService } from './pins.service';
@@ -233,14 +233,14 @@ export class FindMyRetirementService {
 
     console.log('preferences', this.retirementPreferences, JSON.stringify(this.retirementPreferences, null, 4))
 
-    const params = [this.retirementPreferences.timeToWorkInYears,
-    this.retirementPreferences.investingLeverage,
-    this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
-    this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(),
-
+    const params = [
+      this.retirementPreferences.timeToWorkInYears,
+      this.retirementPreferences.investingLeverage,
+      this.retirementPreferences.annualAmountSavedAfterTax / this.calculateTargetNestEgg(),
+      this.retirementPreferences.initialSavings / this.calculateTargetNestEgg(),
     ];
 
-    const simulations = createRunPerPeriod(
+    const simulations = createAssetTradingRunPerPeriod(
       Math.round(params[0]), // time to work in years
       params[1],
       params[2],
@@ -313,7 +313,7 @@ export class FindMyRetirementService {
       ...perturbSingleParameter(.8, [timeToWorkInYears, leverageDaily, contribution, initialBalance]),
     ];
     const pertubationSimulations = perturbedParameters.map(params => {
-      return createRunPerPeriod(
+      return createAssetTradingRunPerPeriod(
         Math.round(params[0]), // time to work in years
         params[1],
         params[2],

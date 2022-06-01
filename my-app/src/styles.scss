@@ -1,3 +1,5 @@
+
+
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @import '~@angular/material/theming';
@@ -139,11 +141,13 @@ app-article {
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 
+
 @import 'app/welcome/welcome.component.scss';
 @import 'app/summary/summary.component.scss';
 @import 'app/layouts/layouts.component.scss';
 @import 'app/results/results.component.scss';
 @import 'app/article/article.component.scss';
+@import 'app/retirement-article/retirement-article.component.scss';
 
 @import 'app/parameter-collection/parameter-collection.component.scss';
 
@@ -164,4 +168,7 @@ app-layouts {
 }
 app-article {
   @include article();
+}
+app-retirement-article {
+  @include app-retirement-article($my-app-theme);
 }

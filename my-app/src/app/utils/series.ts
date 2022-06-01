@@ -7,13 +7,20 @@ export enum PeriodType {
   QUARTER = 63,
   YEAR = 252,
 }
+
 export interface HistoricalQuery {
   start: Date;
   end: Date;
   symbol: string;
 }
 
-export interface Record {
+export interface ChangeRecord {
+  change: number;
+  abs_change: number;
+  x_label: string;
+}
+
+export interface Record extends ChangeRecord{
   date: Date;
   open: number;
   high: number;
@@ -22,8 +29,6 @@ export interface Record {
   adj_close: number;
   volume: number;
   spread: number;
-  change: number;
-  abs_change: number;
 }
 
 export function toHistoricalSeries(series: Promise<string>):Promise<Record[]> {
@@ -52,6 +57,7 @@ return series.then(resp => {
       // populate later
       change: 1,
       abs_change: 0,
+      x_label: new Date().toLocaleDateString(),
       
     }
   });
