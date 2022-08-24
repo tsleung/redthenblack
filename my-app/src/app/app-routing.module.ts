@@ -19,6 +19,8 @@ import { sp500DatasetResolver } from './services/dataset.service';
 import {of, Observable} from 'rxjs';
 import { PinEditorComponent } from './pin-editor/pin-editor.component';
 import * as ROUTE_COMPONENTS from './route-components';
+import { CashFlowDiagramComponent } from './cash-flow-diagram/cash-flow-diagram.component';
+import { BeginnerTalkComponent } from './beginner-talk/beginner-talk.component';
 
 const routes: Routes = [
   { path: 'bet', component: SimpleBetComponent },
@@ -61,7 +63,7 @@ const routes: Routes = [
         '/assets/articles/rtb-pitch.md',
       ]},
       },
-      {path: 'retirement',
+      {path: 'retire',
       component: RetirementArticleComponent,
       children: [
         ROUTE_COMPONENTS.SAVING,
@@ -262,9 +264,16 @@ const routes: Routes = [
         path: '',
         //component: WelcomeComponent,
         pathMatch: 'full',
-        redirectTo: 'retirement',
+        redirectTo: 'retire',
       },
-
+      {
+        path: 'learn',
+        component: BeginnerTalkComponent,
+      },
+      {
+        path: 'debug/component',
+        component: BeginnerTalkComponent,
+      },
     ],
   },
   

@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Input, OnChanges} from '@angular/core';
+import {AfterViewInit, Component, OnInit, Input, OnChanges} from '@angular/core';
 //https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/c3/index.d.ts
 import * as c3 from 'c3';
 
@@ -8,9 +8,10 @@ import * as c3 from 'c3';
   templateUrl: './line-chart.component.html',
   styleUrls: ['./line-chart.component.scss']
 })
-export class LineChartComponent implements OnInit, OnChanges{
+export class LineChartComponent implements OnInit, OnChanges,AfterViewInit{
   chart: c3.ChartAPI;
   chartId;
+  @Input() type:c3.ChartType = 'line';
   @Input() chartData:c3.Data = {
     columns: [],
     types:{},
@@ -30,7 +31,31 @@ export class LineChartComponent implements OnInit, OnChanges{
   ngOnInit(): void {
   }
 
-  bindChart() {
+  ngOnChanges() {
+    this.chart = this.bindChart();
+    this.updateChart();
+  }
+  
+  ngAfterViewInit() {
+    this.chart = c3.generate({ 
+      bindto: `#${this.chartId}`,
+      data: {
+        x: 'x',
+        columns: [],
+        type:this.type,
+        labels: false
+      },
+      point: {show: false},
+      grid: this.gridOptions,
+      legend: this.legend,
+      tooltip: {grouped: false},
+    });
+
+    // console.log('generating chart', this.chartData);
+    this.updateChart();
+  }
+  
+  private bindChart() {
     this.chart = this.chart ?? c3.generate({ 
       bindto: `#${this.chartId}`,
       data: {
@@ -45,30 +70,7 @@ export class LineChartComponent implements OnInit, OnChanges{
     return this.chart;
   }
 
-  ngOnChanges() {
-    this.chart = this.bindChart();
-    this.updateChart();
-  }
-  
-  ngAfterViewInit() {
-    this.chart = c3.generate({ 
-      bindto: `#${this.chartId}`,
-      data: {
-        x: 'x',
-        columns: [],
-        labels: false
-      },
-      point: {show: false},
-      grid: this.gridOptions,
-      legend: this.legend,
-      tooltip: {grouped: false},
-    });
-
-    // console.log('generating chart', this.chartData);
-    this.updateChart();
-  }
-  
-  updateChart() {  
+  private updateChart() {  
     this.chart.load({
       unload: true,
       columns: this.chartData.columns,

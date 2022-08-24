@@ -27,11 +27,34 @@
   }
 
   .byline {
-    background: #f5f5f5;
+    // background: #f5f5f5;
     padding: 2rem 1rem 50vh;
     text-align: center;
     margin-top: 1rem;
   }
 
 
+  mat-toolbar-row {
+    display: flex;
+    flex: 1; 
+    flex-direction: row;
+    text-align: center;
+
+    &:first-child {
+      padding: .75rem;
+      background: mat-color($foreground, text);
+
+      a {
+        color: mat-color($background, app-bar);
+      }
+    }
+
+    span {
+      margin: .5rem;
+      display: flex;
+      flex: 1;
+      justify-content: space-around;
+
+    }
+  }
 }

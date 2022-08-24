@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -51,6 +53,10 @@ import { RetirementArticleComponent } from './retirement-article/retirement-arti
 import { DatasetViewerComponent } from './dataset-viewer/dataset-viewer.component';
 import { PokerComponent } from './poker/poker.component';
 import { PinEditorComponent } from './pin-editor/pin-editor.component';
+import { CashFlowDiagramComponent } from './cash-flow-diagram/cash-flow-diagram.component';
+import { BeginnerTalkComponent } from './beginner-talk/beginner-talk.component';
+import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { MultipleLineChartComponent } from './multiple-line-chart/multiple-line-chart.component';
 
 @NgModule({
   declarations: [
@@ -74,12 +80,17 @@ import { PinEditorComponent } from './pin-editor/pin-editor.component';
     DatasetViewerComponent,
     PokerComponent,
     PinEditorComponent,
+    CashFlowDiagramComponent,
+    BeginnerTalkComponent,
+    BarChartComponent,
+    MultipleLineChartComponent,
    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    FormsModule,
     MatRadioModule,
     MatTableModule,
     MatBadgeModule,

@@ -1,0 +1,239 @@
+
+<h2>Objective</h2>
+<p>
+  A lot of the ideas used in the "retire" tool are from different hobbies I've had over time. This "learn" tool is dedicated to demonstrating why those ideas matter at all. I will be trying my best to explain here, but will also include a list of books / videos / and other source material where I learned. None of the ideas presented here are original.
+</p>
+<p>
+  My hope is that by going through the following exercises, you'll be able to play with a few of the concepts I found helpful for planning my own future; I further hope this tool will help you plan for your future too. 
+</p>
+
+<h2>Suitability</h2>
+
+<blockquote>
+  When your broker recommends that you buy or sell a particular security, your broker must have a reasonable basis for believing that the recommendation is suitable for you.  In making this assessment, your broker must consider your income and net worth, investment objectives, risk tolerance, and other security holdings.
+  <br/>
+  <cite>
+    <a href="https://www.sec.gov/fast-answers/answerssuitability" target="_">Excerpt from the SEC</a>
+  </cite>
+  
+</blockquote>
+<p>
+  Everyone's past, present, and future is unique to themself; it's personal! Great advice to one person may be not-so-great advice to someone else. I'm attempting to be mindful that many of the decisions that have worked for me will not be helpful for you. Take everything you read here (and elsewhere) with a grain of salt and perform your own due diligence. 
+</p>
+
+<h2>Cash Flow Diagram</h2>
+<p>
+  In nearly all of the following sections, we'll be showing multiple types of interactive charts. One of these charts will track the amount of value within your account, your balance. The other demonstrates the flow of cash, the addition or removal of assets from your balance. 
+</p>
+<p>
+  Financial products can be confusing. Reducing any financial product to an expected series of cash flows improves the explainability of the investment. If for some reason you can't explain the product, you probably shouldn't use it. 
+</p>
+
+<h2>Saving</h2>
+<p>
+  I think the place where most people start is learning how to save. We put a predictable amount into an account and watch the balance grow. Depending on how long you save, the number of periods, and the amount you save per period, you can expect to have a certain amount at the end.
+</p>
+<label>Number of periods</label>
+<input type="number" [(ngModel)]="preferences.numPeriods" (change)="refreshOutputs()"><br/>
+
+<label>Savings per period</label>
+<input type="number" [(ngModel)]="preferences.savingsPerPeriod" (change)="refreshOutputs()" [step]="steps.savingsPerPeriod"><br/>
+
+
+<app-cash-flow-diagram [cashFlow]="savingsCashFlow"></app-cash-flow-diagram>
+<p>
+  The "Cash Flow" is level because {{preferences.savingsPerPeriod}} is consistently added each period. We can see over the {{preferences.numPeriods}} periods the "Balance" continues to increase.
+</p>
+
+
+
+<h2>Bonds</h2>
+<p>
+Bonds are a different kind of a product which you would typically buy up front for a "price", get a number of payments over the "duration" of the bondin the form of "coupons", then get a lump sum at the end when the bond matures which is the "face value" of the bond. In this example I have the final coupon and face value being paid at the end together, but this may vary (and some bonds may even have no coupons!).
+</p>
+
+<br>
+<label>Bond Price</label>
+<input type="number" [(ngModel)]="preferences.bondPrice" min="0" (change)="refreshOutputs()"><br/>
+<label>Bond Coupon</label>
+<input type="number" [(ngModel)]="preferences.bondCoupon" min="0" (change)="refreshOutputs()"><br/>
+<label>Bond Face Value</label>
+<input type="number" [(ngModel)]="preferences.bondFaceValue" min="0" (change)="refreshOutputs()"><br/>
+<label>Bond Duration</label>
+<input type="number" [(ngModel)]="preferences.bondDuration" min="0" (change)="refreshOutputs()"><br/>
+
+<app-cash-flow-diagram [cashFlow]="bondCashFlow"></app-cash-flow-diagram>
+<p>
+  Here we start with a negative cash flow of {{preferences.bondPrice}}, the price of the bond. We continue to get a coupon payment of {{preferences.bondCoupon}} over the duration of {{preferences.bondDuration}} periods. Finally when the bond matures we get a final payment for the face value of {{preferences.bondFaceValue}}.
+</p>
+
+<p>One thing we've ignored here intentionally is that this bond will always get paid. Depending what happens to the issuer of the bond, the bond may not be paid. We'll explore more how to deal with this uncertainty later.</p>
+
+<h2>Naive Stocks</h2>
+<p>Speaking of uncertainty - full disclaimer time! I add the word "naive" to the title here, since an expected growth of 10% in the stock market is misleading and actually a dangerous assumption to your financial future. This assumption is one of the leading reasons why I started RtB (more in the about section in the footer). To actually model uncertainty in the stock market, do not use this demonstration, but use the retire tool instead.</p>
+<p>
+  This section is better expressing the power of reliable compounding. Compounding is the idea that as you have positive cash flow and add value to your balance, you continue to reinvest. The reinvested balance, being larger, generates a larger positive cash flow, and you repeat the cycle of reinvesting and benefiting from larger and larger cash flows.
+</p>
+<p>
+  Since compounding benefits over time, increasing the number of periods, starting balance, and rate of growth per period all have positive effects. 
+</p>
+<label>Number of periods</label>
+<input type="number" [(ngModel)]="preferences.numPeriods" (change)="refreshOutputs()"><br/>
+
+<label>Starting balance</label>
+<input type="number" [(ngModel)]="preferences.startingBalance" (change)="refreshOutputs()" [step]="steps.startingBalance"><br/>
+
+<label>Naive stock growth per period</label>
+<input type="number" [(ngModel)]="preferences.naiveStockGrowthRate" [step]="steps.growthRate" (change)="refreshOutputs()"><br/>
+
+<app-cash-flow-diagram [cashFlow]="naiveStocksCashFlow"></app-cash-flow-diagram>
+<p>
+  Investing {{preferences.startingBalance}} over {{preferences.numPeriods}} periods with an expected growth rate of {{preferences.naiveStockGrowthRate}} per period would lead to a final balance of <em>{{prettyRoundNumber(lastValueOf(naiveStocksBalance))}}</em>.
+</p>
+
+<h2>Optimal Bet Sizing</h2>
+<p>
+  I would be remiss if I didn't help solve for uncertainty! For the next few sections we'll use a deck of cards to model uncertain outcomes - drawing from a face down shuffled deck, you don't know which card you'll pick next.
+</p>
+<p>
+  A standard deck has two colors, red and black. In this section you can modify how many red and black cards will be drawn. By default we will always bet on red, so increasing the number of red cards proportional to the number of black cards will improve your odds.
+</p>
+<p>
+  We will also be defaulting to a proportional betting system. There are many other betting systems like fixed or martingale, but both of those betting systems have probability of ruin. A proportional betting system, so long as you continue to split your balance and bet below 100%, until your last penny you will never be at risk of losing it all.
+</p>
+
+<p>
+  This game will, on a red card ({{preferences.numRedCards}} / {{preferences.numRedCards + preferences.numBlackCards}}), give you the amount you risked. On a black card ({{preferences.numBlackCards}} / {{preferences.numRedCards + preferences.numBlackCards}}), the amount you risked is taken. The amount risked is the bet size ({{preferences.cardBetSize}}) multiplied by the current balance. 
+</p>
+<label>Number of Red Cards</label>
+<input type="number" [(ngModel)]="preferences.numRedCards" (change)="refreshOutputs();resetGeometric()" min="0" ><br/>
+<label>Number of Black Cards</label>
+<input type="number" [(ngModel)]="preferences.numBlackCards" (change)="refreshOutputs();resetGeometric()" min="0" ><br/>
+<br/>
+<label>Proportional bet size to wealth (0-1)</label>
+<input type="number" [(ngModel)]="preferences.cardBetSize" [step]="steps.cardBetSize" min="0" max="1" (change)="refreshOutputs();resetGeometric()"><br/>
+<p>
+  <button mat-stroked-button (click)="refreshOptimalBetSizing(1)">Shuffle Deck</button>
+</p>
+<app-cash-flow-diagram [cashFlow]="optimalBetSizingCashFlow"></app-cash-flow-diagram>
+<p>
+  Where there are {{preferences.numRedCards}} positive cash flow events, represented by the number of red cards. There are additionally {{preferences.numBlackCards}} negative cash flow events, represented by the number of black cards. The final account balance ends up at <em> {{prettyRoundNumber(finalAccountValue)}}</em>.
+</p>
+<p>
+  A funny thing happens though, no matter how many times you shuffle the deck, the final balance is always the same. Even as independent cash flows change, the end result will always be the same. This is because the amount bet each time is multiplied, as a proportional change. Multiplied numbers, no matter which way you order them, the product is the same e.g. 4 * 8 vs 8 * 4. 
+</p>
+<p>
+  The final and most important thing for optimal bet sizing is the notion that there is one. The book that got me interested in investing was "Fortune's Formula", which is effectively optimal bet sizing and the kelly criterion. Increasing bet size past the optimal will only decrease your expected outcomes over the long run, allowing compounding.
+</p>
+<p>
+  There is a lot more math involved here but a simpler way to think about it is if you had 51 cards red and 1 card black. If you bet 100% of your balance, potentially you'd land 51 wins in a row! Unfortunately, the 1 black card would result in ruin, everything you've gained, and what you've started with, would be gone. 
+</p>
+<p>
+  The section below stores multiple runs so the variance can be observed, leading to a final outcome. I'd encourage playing with odds and bet sizes that are high and seeing how bet size has a sweet spot. Below the optimal position will have lower variance given lower return. Above the optimal will have higher variance and lower given return, until returns converge to zero.
+</p>
+<p>
+  <button mat-stroked-button (click)="refreshOptimalBetSizing(25)">Run 25 times</button>
+</p>
+<app-multiple-line-chart [chartData]="geometric"></app-multiple-line-chart>
+
+
+<!--
+
+
+<h2>Bias vs variance</h2>
+
+Bias vs Variance, picking the ideal allocation.
+
+Bias - how much are we going to pay attention to training data e.g. signals
+Variance - how much attention are we going to pay to training data and vary our output
+
+<ul>
+  <li>You can look at the past (or not)</li>
+  <li>You can perform your own underwriting</li>
+  <li>All models are wrong, some are useful (no exceptions are made here)</li>
+  <li>This talk doesn't do valuation / prediction, focused on execution given assumption</li>
+  
+</ul>
+
+<h2>Diversification and Correlation</h2>
+<ul>
+  <li>Correlation between -1 and 1, where 0 is perfectly uncorrelated, -1 is perfectly inversely correlated, and 1 is perfectly correlated</li>
+  <li>Highly correlated / uncorrelated</li>
+  <li>Trading against yourself</li>
+  <li>Blackjack teams</li>
+</ul>
+
+
+<h2>Portfolio Construction</h2>
+
+
+<h2>Rebalancing</h2>
+
+
+<h2>Backtesting Assumptions</h2>
+
+<h2>Loss Aversion, psychological and in practice</h2>
+
+<h1>Personal Finance</h1>
+Not a hedge fund, time bound
+It's okay to be average
+
+
+Personal liquidity, money not when you need it
+
+<h2>Time diversification</h2>
+120 - age
+
+ saving + investing, change in leverage over time
+<h2>Rent vs Buy</h2>
+
+<h2>School or Work</h2>
+
+<h2>Gas or Electric Car</h2>
+
+<h1>
+  Retirement
+</h1>
+
+<h1>Active trading</h1>
+Trading extends beyond stock picking.
+There are lots of different products to trade.
+
+<h2>Put and Call options</h2>
+<h2>Financial leverage</h2> 
+
+<h2>Debt</h2>Mortgages Inflation hedge
+<h2>Inflation</h2>Exchange rate of money to goods
+<h2>Volatility</h2>Premiums
+<h2>Lending</h2>Earn interest e.g. to a bank, stocks to short sellers
+
+<h2>Things to look out for</h2>
+Asymmetric payoffs, feeling like a winner
+
+Median vs Mean outcomes
+
+Risk isn't your friend.
+
+There aren't lucky or unlucky people, just people who bet more or less than they should've. Not being in a crash, or winning the lottery.
+
+Fixed bet. Martingale. Bernoulli's SPB paradox (median outcomes).
+
+Selling on the way down. 
+
+https://mea.pimco.com/en-mea/book-biases/
+
+https://global.pimco.com/en-gbl/insights/economic-and-market-commentary/behavioral-insights/look-left-recognizing-and-managing-loss-aversion-bias
+
+Risk management, walls everywhere vs positions of traders
+
+<h1>Additional resources</h1>
+<h2>Youtube</h2>
+<h2>Books</h2>
+
+
+<h2>Quotes</h2>
+Don't lose money. Don't forget step 1.
+
+<button (click)="shuffle()">Shuffle</button>
+<app-cash-flow-diagram [cashFlow]="chartData"></app-cash-flow-diagram>
+-->

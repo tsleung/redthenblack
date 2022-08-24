@@ -5,8 +5,6 @@ import { Pin } from '../services/pins.service';
 import { createRun } from './run_mapper';
 import { sampleSeries, createSampleIndexesFrom } from './series';
 import { Factor, Asset, clonePortfolio, onlyCash, Portfolio, toBalance, addAssetTo, Change, hasFactor, applyChangeTo, runTimestep, tradeValueForAssets } from './asset-trading-mapper';
-import { rentVsBuy } from './rent-vs-buy';
-import { gasOrElectric } from './gas-vs-electric-car';
 
 // creates a run over a security with a consistently applied leverage
 export function createSimpleRun(resp: Record[], leverage: number): number[] {
@@ -680,6 +678,3 @@ function hasHigherNestEggAchievement(timeToWorkInYears: number,
 function leverageFromSimulationResult(simulationResult: SimulationResult) {
   return simulationResult.params[1];
 }
-
-rentVsBuy();
-gasOrElectric();
