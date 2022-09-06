@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import * as c3 from 'c3';
 import { gasOrElectric } from '../utils/gas-vs-electric-car';
+import { balanceToCashFlow, calculateOptimalBetSizing, createBondCashFlow, createNaiveStocksCashFlow, createRandomDataSeries, createSavingsSeries, firstValueOf, lastValueOf, randomWalk } from '../utils/learn_utils';
 import { rentVsBuy } from '../utils/rent-vs-buy';
-
-
 
 @Component({
   selector: 'app-beginner-talk',
@@ -12,8 +10,11 @@ import { rentVsBuy } from '../utils/rent-vs-buy';
 })
 export class BeginnerTalkComponent implements OnInit {
 
+  firstValueOf<T>(val: T[]):T {
+    return firstValueOf(val);
+  }
   lastValueOf<T>(val: T[]):T {
-    return val[val.length - 1];
+    return lastValueOf(val);
   }
   prettyRoundNumber(val: number) {
     const rounded = Math.round(val);
@@ -64,6 +65,25 @@ preferences = {
   winOnCloverCard: 0,
   winOnSpadeCard: 0,
   winOnHeartCard: 0,
+
+  /** Changing payoffs for cards */
+  goodEvenReturn: 1.25,
+  badEvenReturn: .8,
+
+  /** Rebalancing amount */
+  randomWalkReturnLeverage: 1,
+
+  desiredReturn: 1,
+  desiredReturnleverage: 1,
+  
+
+  /** 50/50 probability, good vs bad return */
+  goodPositiveReturn: 1.25,
+  badPositiveReturn: .88,
+
+  /** Time diversification */
+  linearDecayFactor: 1,
+  quadraticDecayFactor: 1,
   
   
 }
@@ -106,13 +126,13 @@ finalBalanceOf(series: number[]) {
   return series[series.length - 1];
 }
 
-  /** Savings */
-  savingsCashFlow = createSavingsSeries(this.preferences.numPeriods,this.preferences.savingsPerPeriod);
-  refreshSavings() {
-    this.savingsCashFlow = createSavingsSeries(
-      this.preferences.numPeriods, this.preferences.savingsPerPeriod
-    );
-  }
+/** Savings */
+savingsCashFlow = createSavingsSeries(this.preferences.numPeriods,this.preferences.savingsPerPeriod);
+refreshSavings() {
+  this.savingsCashFlow = createSavingsSeries(
+    this.preferences.numPeriods, this.preferences.savingsPerPeriod
+  );
+}
 
 /** Bond */
 bondCashFlow = createBondCashFlow(
@@ -189,6 +209,95 @@ refreshOptimalBetSizing(timesToRun = 1) {
   }
 }
 
+/** Random walk */
+randomWalkBalance = randomWalk(
+  this.preferences.numPeriods,
+  this.preferences.goodEvenReturn,
+  this.preferences.badEvenReturn,
+  this.preferences.startingBalance,
+);
+randomWalkCashFlow = balanceToCashFlow(this.randomWalkBalance);
+refreshRandomWalk() {
+  const balance = randomWalk(
+    this.preferences.numPeriods,
+    this.preferences.goodEvenReturn,
+    this.preferences.badEvenReturn,
+    this.preferences.startingBalance,
+  );
+
+  this.randomWalkBalance = balance;
+  this.randomWalkCashFlow = balanceToCashFlow(this.randomWalkBalance);
+}
+
+/** Rebalancing */
+rebalancingCashFlow = [];
+rebalancingBalance = [];
+refreshRebalancing() {
+  // 50/50 chance, you will get either a good or bad event
+  
+  // random walk
+
+}
+
+/** Diversification */
+
+
+/** Calculate nest egg for retirement */
+
+
+/** Time diversification */
+timeDiversificationCashFlow = [];
+timeDiversificationBalance = [];
+refreshTimeDiversification() {
+  // assumption, 1.1 every year, (1.25*.88)
+
+
+  // nominal value of money, aside compounding, does matter. losing 50% today on 100k is a 50k lost, which is not trivial. however if you're looking to retire with 5M, a 50% lost is 2.5M. This is an almost unacceptable loss, and can completely eliminate a chance at a carefree retirement.
+
+  // therefore leverage should become a function as to the proportion of your current balance vs a confident value of retirement. we'll assume 95% confidence in retirement and the idea of 60 years between the start of investment and end of required retirement benefits. 
+
+
+  // exponential vs linear, chaos early in life and lower risk later
+  // ax^2 + bx + c
+  // balance decay factor
+  // except the balance need you need to retire is constantly changing based on how much retirement you have
+
+  // depending how much time you have left, changes the amount you need in retirement because the withdrawal rate and volatility
+
+  // rather than think about retirement alone, think about a midpoint between when you feel comfortable to retire, and how long you should maintain working
+
+  function calculateQuadraticDecay (
+    progressToRetirement: number,
+    a: number, 
+    b: number, 
+    c: number, 
+    ) {
+
+      const leverage = 
+        a * Math.pow(progressToRetirement, 2) +
+        b * progressToRetirement + 
+        c;
+
+      return leverage;
+  }
+
+  function calculateLinearDecay(
+    progressToRetirement: number,
+    a: number, 
+    b: number,
+  ) {
+      const leverage = 
+        a * progressToRetirement + 
+        b;
+        
+      return leverage;
+  }
+}
+
+/** confidence in retirement */
+
+/** utility of money */
+
 /** Construct component */
 chartData = createRandomDataSeries();
 constructor() {
@@ -208,83 +317,3 @@ console.log('shuffling');
 
 
 }
-
-/** Utility Functions below */
-
-function createRandomDataSeries(): c3.Primitive[] {
-  return new Array(50).fill(0).map(() => Math.random()*200-100);
-}
-
-function createSavingsSeries(numPeriods: number, amount: number):number[] {
-  return [0,...new Array(numPeriods).fill(amount)];
-}
-
-function createBondCashFlow(numPeriods: number, coupon:number,faceValue: number, price: number) {
-
-const cashFlow = new Array(numPeriods+1).fill(coupon);
-cashFlow[0] = -1*price;
-cashFlow[cashFlow.length - 1] = cashFlow[cashFlow.length - 1] + faceValue;
-
-return cashFlow;
-
-}
-
-interface CashFlowAccount {
-  cashFlow: number[];
-  account: number[];
-}
-function calculateOptimalBetSizing(numRedCards: number, numBlackCards: number, betSize: number, startingBalance = 1):CashFlowAccount {
-
-  const redCards = new Array(numRedCards).fill('red');
-  const blackCards = new Array(numBlackCards).fill('black');
-  const unshuffledDeck = ([...blackCards,...redCards]);
-  const shuffledDeck = shuffleDeck(unshuffledDeck);
-  
-  return shuffledDeck.reduce((accum, card) => {
-    const previousBalance = accum.account[accum.account.length - 1];
-
-    const absoluteCashFlow = previousBalance * betSize;
-    const cashFlow = card === 'red' ?  absoluteCashFlow : -1 * absoluteCashFlow;
-    
-    accum.account.push(cashFlow + previousBalance);
-    accum.cashFlow.push(cashFlow);
-
-    return accum;
-
-  }, {cashFlow:[startingBalance], account:[startingBalance]});
-
-  function shuffleDeck(deck) {
-    const shuffledDeck = [];
-    while(deck.length > 0) {
-      const index = Math.floor(Math.random() * deck.length);
-      const card = deck.splice(index,1);
-      shuffledDeck.push(card[0]);
-    }
-    return shuffledDeck;
-  }
-
-}
-// create functions which convert:
-// (1) balances to cash flow
-// (2) cash flows to balances
-
-function  createNaiveStocksCashFlow(numPeriods: number, growthRate, startingBalance:number) {
-  return new Array(numPeriods).fill(0).reduce((accum) => {
-    accum.push(accum[accum.length - 1] * growthRate);
-    return accum;
-  },[startingBalance]);
-}
-
-function balanceToCashFlow(balances:number[]) {
-  const initialBalance = balances[0] ?? 0;
-  return balances.reduce((accum, val, i) => {
-    const cashFlow = i === 0 ? 
-      initialBalance : // first cash flow is initial investment
-      val - balances[i-1] // normal cash flow determination
-      
-    accum.push(cashFlow);
-    return accum;
-  },[]);
-}
-
-// sort by cash flow - back to original

@@ -1,37 +1,74 @@
-
+<mat-card>
+<mat-card-content>
+    
 <h2>Objective</h2>
+<p>
+  Getting to retirement is hard! I created Red then Black (RtB) as a holistic tool highlighting the broad strokes to personal finance, allowing people to think about the "strategic" decisions to get them to retirement.
+</p>
 <p>
   A lot of the ideas used in the "retire" tool are from different hobbies I've had over time. This "learn" tool is dedicated to demonstrating why those ideas matter at all. I will be trying my best to explain here, but will also include a list of books / videos / and other source material where I learned. None of the ideas presented here are original.
 </p>
 <p>
-  My hope is that by going through the following exercises, you'll be able to play with a few of the concepts I found helpful for planning my own future; I further hope this tool will help you plan for your future too. 
+  My hope is that by going through the following sections, you'll be able to play with a few of the concepts I found helpful for planning my own future; I further hope the time you spend with this tool will help you plan for your future too. 
 </p>
 
 <h2>Suitability</h2>
 
 <blockquote>
-  When your broker recommends that you buy or sell a particular security, your broker must have a reasonable basis for believing that the recommendation is suitable for you.  In making this assessment, your broker must consider your income and net worth, investment objectives, risk tolerance, and other security holdings.
+  Personal finance is the financial management which an individual or a family unit performs to budget, save, and spend monetary resources over time, taking into account various financial risks and future life events.
+  <br/>
+  When planning personal finances, the individual would consider the suitability to his or her needs of a range of banking products (checking, savings accounts, credit cards and consumer loans) or investment in private equity, (companies' shares, bonds, mutual funds) and insurance (life insurance, health insurance, disability insurance) products or participation and monitoring of and- or employer-sponsored retirement plans, social security benefits, and income tax management.
   <br/>
   <cite>
-    <a href="https://www.sec.gov/fast-answers/answerssuitability" target="_">Excerpt from the SEC</a>
+    <a href="https://en.wikipedia.org/wiki/Personal_finance" target="_">Wikipedia</a>
   </cite>
   
 </blockquote>
 <p>
-  Everyone's past, present, and future is unique to themself; it's personal! Great advice to one person may be not-so-great advice to someone else. I'm attempting to be mindful that many of the decisions that have worked for me will not be helpful for you. Take everything you read here (and elsewhere) with a grain of salt and perform your own due diligence. 
+  Everyone's past, present, and future is unique to themself; it's personal! Great advice to one person may be not-so-great advice to someone else. Be careful when considering a new investment.
 </p>
 
 <h2>Cash Flow Diagram</h2>
+<blockquote>
+  A cash flow is a real or virtual movement of money:
+  <ul>
+  <li>
+    a cash flow in its narrow sense is a payment (in a currency), especially from one central bank account to another; the term 'cash flow' is mostly used to describe payments that are expected to happen in the future, are thus uncertain and therefore need to be forecast with cash flows;
+    
+  </li>
+  <li>
+    a cash flow is determined by its time t, nominal amount N, currency CCY and account A; symbolically CF = CF(t,N,CCY,A).
+  </li>
+  <li>
+    it is however popular to use cash flow in a less specified sense describing (symbolic) payments into or out of a business, project, or financial product.
+  </li>
+  </ul>
+  Cash flows are narrowly interconnected with the concepts of value, interest rate and liquidity. A cash flow that shall happen on a future day tN can be transformed into a cash flow of the same value in t0.
+  <br/>
+  <cite>
+    <a href="https://en.wikipedia.org/wiki/Cash_flow" target="_">Wikipedia</a>
+  </cite>
+</blockquote>
+<p>
+  Your net worth can be used interchangably within this article as balance. Cash flows are differences on that balance.
+</p>
 <p>
   In nearly all of the following sections, we'll be showing multiple types of interactive charts. One of these charts will track the amount of value within your account, your balance. The other demonstrates the flow of cash, the addition or removal of assets from your balance. 
 </p>
 <p>
-  Financial products can be confusing. Reducing any financial product to an expected series of cash flows improves the explainability of the investment. If for some reason you can't explain the product, you probably shouldn't use it. 
+  Financial products can be confusing. Reducing any financial product to an expected series of cash flows improves the explainability of the investment. If for some reason you can't explain the product, you probably shouldn't use the product. 
 </p>
 
 <h2>Saving</h2>
+<blockquote>
+  Saving is income not spent, or deferred consumption. Methods of saving include putting money aside in, for example, a deposit account, a pension account, an investment fund, or as cash. Saving also involves reducing expenditures, such as recurring costs. In terms of personal finance, saving generally specifies low-risk preservation of money, as in a deposit account, versus investment, wherein risk is a lot higher; in economics more broadly, it refers to any income not used for immediate consumption. Saving does not automatically include interest.
+  <br/>
+  <cite>
+    <a href="https://en.wikipedia.org/wiki/Saving" target="_">Wikipedia</a>
+  </cite>
+</blockquote>
 <p>
-  I think the place where most people start is learning how to save. We put a predictable amount into an account and watch the balance grow. Depending on how long you save, the number of periods, and the amount you save per period, you can expect to have a certain amount at the end.
+  I think learning how to save is where most people start. We put a predictable amount into an account and watch the balance grow. Depending on how long you save, the number of periods, and the amount you save per period, you can expect to have a certain amount at the end. A period can be any arbitrary unit of time you'd prefer to use! A common period used is years, but can be as short as days or weeks.  
 </p>
 <label>Number of periods</label>
 <input type="number" [(ngModel)]="preferences.numPeriods" (change)="refreshOutputs()"><br/>
@@ -42,14 +79,19 @@
 
 <app-cash-flow-diagram [cashFlow]="savingsCashFlow"></app-cash-flow-diagram>
 <p>
-  The "Cash Flow" is level because {{preferences.savingsPerPeriod}} is consistently added each period. We can see over the {{preferences.numPeriods}} periods the "Balance" continues to increase.
+  The "Cash Flow" diagram here has each entry level because {{preferences.savingsPerPeriod}} is added consistently in each period. We can see over the {{preferences.numPeriods}} periods the "Balance" continues to increase.
 </p>
 
-
-
 <h2>Bonds</h2>
+<blockquote>
+  A bond is a type of security under which the issuer (debtor) owes the holder (creditor) a debt, and is obliged - depending on the terms - to repay the principal (i.e. amount borrowed) of the bond at the maturity date as well as interest (called the coupon) over a specified amount of time. The interest is usually payable at fixed intervals: semiannual, annual, and less often at other periods. 
+  <br/>
+  <cite>
+    <a href="https://en.wikipedia.org/wiki/Bond_(finance)" target="_">Wikipedia</a>
+  </cite>
+</blockquote>
 <p>
-Bonds are a different kind of a product which you would typically buy up front for a "price", get a number of payments over the "duration" of the bondin the form of "coupons", then get a lump sum at the end when the bond matures which is the "face value" of the bond. In this example I have the final coupon and face value being paid at the end together, but this may vary (and some bonds may even have no coupons!).
+To look at a slightly more complicated cash flow, let's look at bonds. Bonds are a different kind of a product which you would typically buy up front for a "price", get a number of payments over the "duration" of the bond in the form of "coupons", then get a lump sum at the end when the bond matures which is the "face value" of the bond. In this example, I have the final coupon and face value being paid at the end together, but this may vary (and some bonds may even have no coupons!).
 </p>
 
 <br>
@@ -64,18 +106,18 @@ Bonds are a different kind of a product which you would typically buy up front f
 
 <app-cash-flow-diagram [cashFlow]="bondCashFlow"></app-cash-flow-diagram>
 <p>
-  Here we start with a negative cash flow of {{preferences.bondPrice}}, the price of the bond. We continue to get a coupon payment of {{preferences.bondCoupon}} over the duration of {{preferences.bondDuration}} periods. Finally when the bond matures we get a final payment for the face value of {{preferences.bondFaceValue}}.
+  Here we start with a negative cash flow of {{preferences.bondPrice}}, the price of the bond. We continue to get a coupon payment of {{preferences.bondCoupon}} over the duration of {{preferences.bondDuration}} periods. Finally when the bond matures, we get a final payment for the face value of {{preferences.bondFaceValue}}.
 </p>
 
 <p>One thing we've ignored here intentionally is that this bond will always get paid. Depending what happens to the issuer of the bond, the bond may not be paid. We'll explore more how to deal with this uncertainty later.</p>
 
 <h2>Naive Stocks</h2>
-<p>Speaking of uncertainty - full disclaimer time! I add the word "naive" to the title here, since an expected growth of 10% in the stock market is misleading and actually a dangerous assumption to your financial future. This assumption is one of the leading reasons why I started RtB (more in the about section in the footer). To actually model uncertainty in the stock market, do not use this demonstration, but use the retire tool instead.</p>
+<p>I add the word "naive" to the section title here since an expected growth of 10% (or multiplying by 1.1, used as inputs here) in the stock market is a misleading and harmful assumption which may lead to financial ruin. To actually model uncertainty in the stock market, do not use this section, but use the retire tool instead.</p>
 <p>
-  This section is better expressing the power of reliable compounding. Compounding is the idea that as you have positive cash flow and add value to your balance, you continue to reinvest. The reinvested balance, being larger, generates a larger positive cash flow, and you repeat the cycle of reinvesting and benefiting from larger and larger cash flows.
+  Naive stock assumption are better suited for expressing the power of reliable compounding. Compounding is the idea that as you have positive cash flow and add value to your balance, you continue to reinvest. The reinvested balance, being larger, generates a larger positive cash flow, and you repeat the cycle of reinvesting and benefiting from larger and larger cash flows.
 </p>
 <p>
-  Since compounding benefits over time, increasing the number of periods, starting balance, and rate of growth per period all have positive effects. 
+  Since compounding will benefit you over time, increasing the number of periods, starting balance, and rate of growth per period all have positive effects. 
 </p>
 <label>Number of periods</label>
 <input type="number" [(ngModel)]="preferences.numPeriods" (change)="refreshOutputs()"><br/>
@@ -88,23 +130,38 @@ Bonds are a different kind of a product which you would typically buy up front f
 
 <app-cash-flow-diagram [cashFlow]="naiveStocksCashFlow"></app-cash-flow-diagram>
 <p>
-  Investing {{preferences.startingBalance}} over {{preferences.numPeriods}} periods with an expected growth rate of {{preferences.naiveStockGrowthRate}} per period would lead to a final balance of <em>{{prettyRoundNumber(lastValueOf(naiveStocksBalance))}}</em>.
+  Investing {{prettyRoundNumber(preferences.startingBalance)}} only at the start and allowing to compound over {{preferences.numPeriods}} periods with an expected growth rate of {{preferences.naiveStockGrowthRate}} per period would lead to a final balance of <em>{{prettyRoundNumber(lastValueOf(naiveStocksBalance))}}</em>.
 </p>
 
 <h2>Optimal Bet Sizing</h2>
+<blockquote>
+  Kelly betting or proportional betting is an application of information theory to investing and gambling. Its discoverer was John Larry Kelly, Jr.
+
+  <br/>
+  Part of Kelly's insight was to have the gambler maximize the expectation of the logarithm of his capital, rather than the expected profit from each bet. This is important, since in the latter case, one would be led to gamble all he had when presented with a favorable bet, and if he lost, would have no capital with which to place subsequent bets. Kelly realized that it was the logarithm of the gambler's capital which is additive in sequential bets, and "to which the law of large numbers applies."
+
+  <br/>
+  <cite>
+    <a href="https://en.wikipedia.org/wiki/Gambling_and_information_theory" target="_">Wikipedia</a>
+  </cite>
+</blockquote>
 <p>
-  I would be remiss if I didn't help solve for uncertainty! For the next few sections we'll use a deck of cards to model uncertain outcomes - drawing from a face down shuffled deck, you don't know which card you'll pick next.
+  I would be remiss if I didn't help solve for uncertainty! For the next few sections, we'll use a deck of cards to model uncertain outcomes - drawing from a face down shuffled deck, you don't know which card you'll pick next.
 </p>
 <p>
-  A standard deck has two colors, red and black. In this section you can modify how many red and black cards will be drawn. By default we will always bet on red, so increasing the number of red cards proportional to the number of black cards will improve your odds.
+  A standard deck has two colors, red and black. In this section, you can modify how many red and black cards will be drawn. By default we will always bet on red, so increasing the number of red cards proportional to the number of black cards will improve your odds.
 </p>
 <p>
-  We will also be defaulting to a proportional betting system. There are many other betting systems like fixed or martingale, but both of those betting systems have probability of ruin. A proportional betting system, so long as you continue to split your balance and bet below 100%, until your last penny you will never be at risk of losing it all.
+  We will also be defaulting to a proportional betting system. There are many other betting systems like fixed or martingale, but both of those betting systems have probability of ruin, risk of your balance reaching zero. Proportional betting systems have better guarantees to avoiding ruin. 
 </p>
 
 <p>
   This game will, on a red card ({{preferences.numRedCards}} / {{preferences.numRedCards + preferences.numBlackCards}}), give you the amount you risked. On a black card ({{preferences.numBlackCards}} / {{preferences.numRedCards + preferences.numBlackCards}}), the amount you risked is taken. The amount risked is the bet size ({{preferences.cardBetSize}}) multiplied by the current balance. 
 </p>
+
+<label>Starting balance</label>
+<input type="number" [(ngModel)]="preferences.startingBalance" (change)="refreshOutputs()" [step]="steps.startingBalance"><br/>
+
 <label>Number of Red Cards</label>
 <input type="number" [(ngModel)]="preferences.numRedCards" (change)="refreshOutputs();resetGeometric()" min="0" ><br/>
 <label>Number of Black Cards</label>
@@ -117,25 +174,87 @@ Bonds are a different kind of a product which you would typically buy up front f
 </p>
 <app-cash-flow-diagram [cashFlow]="optimalBetSizingCashFlow"></app-cash-flow-diagram>
 <p>
-  Where there are {{preferences.numRedCards}} positive cash flow events, represented by the number of red cards. There are additionally {{preferences.numBlackCards}} negative cash flow events, represented by the number of black cards. The final account balance ends up at <em> {{prettyRoundNumber(finalAccountValue)}}</em>.
+  There are {{preferences.numRedCards}} positive cash flow events, represented by the number of red cards. There are additionally {{preferences.numBlackCards}} negative cash flow events, represented by the number of black cards. While starting at {{prettyRoundNumber(preferences.startingBalance)}} final account balance ends up at <em> {{prettyRoundNumber(finalAccountValue)}}</em>.
 </p>
 <p>
-  A funny thing happens though, no matter how many times you shuffle the deck, the final balance is always the same. Even as independent cash flows change, the end result will always be the same. This is because the amount bet each time is multiplied, as a proportional change. Multiplied numbers, no matter which way you order them, the product is the same e.g. 4 * 8 vs 8 * 4. 
+  No matter how many times you shuffle the deck, the final balance is always the same. Even as independent cash flows change, the end result will always be the same. This is because the amount bet each time is multiplied, as a proportional change. Multiplied numbers, no matter which way you order them, the product is the same (e.g. 1 * .5 * 2 = 1 * 2 * .5, a recession in year 1 is the same as in year 10). 
 </p>
 <p>
-  The final and most important thing for optimal bet sizing is the notion that there is one. The book that got me interested in investing was "Fortune's Formula", which is effectively optimal bet sizing and the kelly criterion. Increasing bet size past the optimal will only decrease your expected outcomes over the long run, allowing compounding.
+  The final and most important thing for optimal bet sizing is the notion that there is one. The book that got me interested in investing was "Fortune's Formula", which is effectively optimal bet sizing and the kelly criterion. Increasing bet size past the optimal will only decrease your expected outcomes over the long run. Excessive risk with continually consistent compounding leads to no reward.
 </p>
 <p>
-  There is a lot more math involved here but a simpler way to think about it is if you had 51 cards red and 1 card black. If you bet 100% of your balance, potentially you'd land 51 wins in a row! Unfortunately, the 1 black card would result in ruin, everything you've gained, and what you've started with, would be gone. 
+  There is a lot more math involved here but a simpler way to think about excessive risk with even great odds is if you had 51 cards red and 1 card black. If you bet 100% of your balance, potentially you'd land 51 wins in a row! Unfortunately, the 1 black card would result in ruin, everything you've gained, and what you've started with, would be gone. 
 </p>
 <p>
-  The section below stores multiple runs so the variance can be observed, leading to a final outcome. I'd encourage playing with odds and bet sizes that are high and seeing how bet size has a sweet spot. Below the optimal position will have lower variance given lower return. Above the optimal will have higher variance and lower given return, until returns converge to zero.
+  The section below stores multiple runs so the variance can be observed, leading to a final outcome. I'd encourage playing with odds and bet sizes and finding the sweet spot in the relationship. Better odds leads to a higher optimal bet size. Below the optimal position will have lower variance given lower return. Above the optimal position will have higher variance and lower given return, until returns converge to zero.
 </p>
+
+<label>Starting balance</label>
+<input type="number" [(ngModel)]="preferences.startingBalance" (change)="refreshOutputs()" [step]="steps.startingBalance"><br/>
+
+<label>Number of Red Cards</label>
+<input type="number" [(ngModel)]="preferences.numRedCards" (change)="refreshOutputs();resetGeometric()" min="0" ><br/>
+<label>Number of Black Cards</label>
+<input type="number" [(ngModel)]="preferences.numBlackCards" (change)="refreshOutputs();resetGeometric()" min="0" ><br/>
+<br/>
+<label>Proportional bet size to wealth (0-1)</label>
+<input type="number" [(ngModel)]="preferences.cardBetSize" [step]="steps.cardBetSize" min="0" max="1" (change)="refreshOutputs();resetGeometric()"><br/>
+
 <p>
   <button mat-stroked-button (click)="refreshOptimalBetSizing(25)">Run 25 times</button>
 </p>
 <app-multiple-line-chart [chartData]="geometric"></app-multiple-line-chart>
 
+<p>
+  There are {{preferences.numRedCards}} positive cash flow events, represented by the number of red cards. There are additionally {{preferences.numBlackCards}} negative cash flow events, represented by the number of black cards. While starting at {{prettyRoundNumber(preferences.startingBalance)}}, final account balance ends up at <em> {{prettyRoundNumber(finalAccountValue)}}</em>.
+</p>
+
+<h2>Random walk</h2>
+<blockquote>
+  A random walk is a random process that describes a path that consists of a succession of random steps on some mathematical space
+  <br/>
+  <cite>
+    <a href="https://en.wikipedia.org/wiki/Random_walk" target="_">Wikipedia</a>
+  </cite>
+</blockquote>
+<p>
+  This is an interesting investment which overtime will wander in price but the expected payoff is even. We will assume for this example that you've leveraged 1.0, or all your assets into this trade. On a positive events you'll receive {{preferences.goodEvenReturn}} and on negative events you'll receive {{preferences.badEvenReturn}}. The product of {{preferences.goodEvenReturn}} multiplied by {{preferences.badEvenReturn}} is {{preferences.goodEvenReturn * preferences.badEvenReturn}}.
+
+  If there are an even number of red and black cards and the full deck is drawn, inevitably your final balance will be the same as that you've started.
+</p>
+
+<label>Starting balance</label>
+<input type="number" [(ngModel)]="preferences.startingBalance" (change)="refreshOutputs()" [step]="steps.startingBalance"><br/>
+<label>Number of Periods</label>
+<input type="number" [(ngModel)]="preferences.numPeriods" (change)="refreshOutputs();" min="0" ><br/>
+<label>Returns in a positive event</label>
+<input type="number" [(ngModel)]="preferences.goodEvenReturn" (change)="refreshOutputs();" min="0" ><br/>
+<label>Returns in a negative event</label>
+<input type="number" [(ngModel)]="preferences.badEvenReturn" (change)="refreshOutputs();" min="0" ><br/>
+
+<p>
+  <button mat-stroked-button (click)="refreshRandomWalk()">Reshuffle</button>
+</p>
+<app-cash-flow-diagram [cashFlow]="randomWalkCashFlow"></app-cash-flow-diagram>
+
+<p>
+  A starting investment of {{prettyRoundNumber(firstValueOf(randomWalkBalance))}} after {{preferences.numPeriods}} periods results in <em>{{prettyRoundNumber(lastValueOf(randomWalkBalance))}}</em>.
+</p>
+<p>
+  In the case of a random walk with 100% of your assets invested, your funds will wander but fundamentally will not 
+</p>
+
+<h2>Random walk with Rebalancing</h2>
+<blockquote>
+  Rebalancing of investments (or constant mix) is a strategy of bringing a portfolio that has deviated away from one's target asset allocation back into line. This can be implemented by transferring assets, that is, selling investments of an asset class that is overweight and using the money to buy investments in a class that is underweight, but it also applies to adding or removing money from a portfolio, that is, putting new money into an underweight class, or making withdrawals from an overweight class.
+  <br/>
+  <cite>
+    <a href="https://en.wikipedia.org/wiki/Rebalancing_investments" target="_">Wikipedia</a>
+  </cite>
+</blockquote>
+<p>
+
+</p>
 
 <!--
 
@@ -237,3 +356,6 @@ Don't lose money. Don't forget step 1.
 <button (click)="shuffle()">Shuffle</button>
 <app-cash-flow-diagram [cashFlow]="chartData"></app-cash-flow-diagram>
 -->
+
+</mat-card-content>
+</mat-card>

@@ -1,9 +1,12 @@
 :host {
   display: block;
-  padding: 1rem;
-  background:white;
 }
 
+mat-card {
+  margin: 2rem auto;
+  padding: 1rem;
+  max-width: 640px;
+}
 h2,h3 {
   margin: 2rem auto;
 }
@@ -43,9 +46,11 @@ em {
 }
 p {
   clear:both;
+  font-size: .875rem;
+  line-height: 1.5em;
 }
 blockquote {
-  font-size: 18px;
+  font-size: 1rem;
   font-style: italic;
   margin: 0.25em 0;
   padding: 0.35em 40px;

@@ -48,6 +48,13 @@ const routes: Routes = [
     ],
   },
   {
+    path: 'pitch',
+    component: ArticleComponent,
+    data: {articles: [
+      '/assets/articles/rtb-pitch.md',
+    ]},
+  },
+  {
     path: '',
     component: LayoutsComponent,
     children: [
@@ -57,13 +64,8 @@ const routes: Routes = [
           component:DatasetViewerComponent, 
           data: {title: 'SP500', resolver: sp500DatasetResolver} as DatasetRouteData,},
       ]},
-      {path: 'pitch',
-      component: ArticleComponent,
-      data: {articles: [
-        '/assets/articles/rtb-pitch.md',
-      ]},
-      },
-      {path: 'retire',
+      
+      {path: 'retirement',
       component: RetirementArticleComponent,
       children: [
         ROUTE_COMPONENTS.SAVING,
@@ -255,7 +257,10 @@ const routes: Routes = [
 
         
       },
-
+      {
+        path: 'learn',
+        component: BeginnerTalkComponent,
+      },
       {
         path: 'welcome',
         component: WelcomeComponent,
@@ -264,12 +269,9 @@ const routes: Routes = [
         path: '',
         //component: WelcomeComponent,
         pathMatch: 'full',
-        redirectTo: 'retire',
+        redirectTo: 'learn',
       },
-      {
-        path: 'learn',
-        component: BeginnerTalkComponent,
-      },
+      
       {
         path: 'debug/component',
         component: BeginnerTalkComponent,
