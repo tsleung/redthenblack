@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { gasOrElectric } from '../utils/gas-vs-electric-car';
-import { balanceToCashFlow, calculateOptimalBetSizing, createBondCashFlow, createNaiveStocksCashFlow, createRandomDataSeries, createSavingsSeries, firstValueOf, lastValueOf, randomWalk } from '../utils/learn_utils';
+import { balanceToCashFlow, calculateOptimalBetSizing, createBondCashFlow, createNaiveStocksCashFlow, createRandomDataSeries, createRetirementNestEggBalance, createSavingsSeries, firstValueOf, lastValueOf, prettyRoundNumber, randomWalk, rebalanceRandomWalk, timeDiversification } from '../utils/learn_utils';
 import { rentVsBuy } from '../utils/rent-vs-buy';
 
 @Component({
@@ -17,16 +17,18 @@ export class BeginnerTalkComponent implements OnInit {
     return lastValueOf(val);
   }
   prettyRoundNumber(val: number) {
-    const rounded = Math.round(val);
-    return rounded.toLocaleString();
-
+    return prettyRoundNumber(val);
   }
 
 steps = {
   growthRate: .01,
   startingBalance: 10000,
   savingsPerPeriod: 100,
+  withdrawalRate: .01,
   cardBetSize: .05,
+  leverageStepSize: .05,
+  decayFactorStepSize: .01,
+  
 }
 
 /* inputs */
@@ -39,12 +41,18 @@ private cardBetSize(reds, blacks) {
 preferences = {
   numPeriods: 30,
   startingBalance: 100000,
-  savingsPerPeriod: 1000,
+  savingsPerPeriod: 50000,
+  
   bondDuration: 10,
   bondPrice: 1000,
   bondCoupon: 100,
   bondFaceValue: 1000,
   naiveStockGrowthRate: 1.1,
+  // retirement
+  nestEgg: 2500000,
+  periodsInRetirement: 45,
+  withdrawalRate: .03,
+  // optimal bet sizing
   numRedCards: 18,
   numBlackCards: 12,
   cardBetSize: this.cardBetSize(18,12),
@@ -73,17 +81,14 @@ preferences = {
   /** Rebalancing amount */
   randomWalkReturnLeverage: 1,
 
-  desiredReturn: 1,
-  desiredReturnleverage: 1,
-  
-
   /** 50/50 probability, good vs bad return */
   goodPositiveReturn: 1.25,
   badPositiveReturn: .88,
 
   /** Time diversification */
-  linearDecayFactor: 1,
-  quadraticDecayFactor: 1,
+  linearDecayFactor: .1,
+  quadraticDecayFactor: .1,
+  timeDiversificationLeverage: .4,
   
   
 }
@@ -117,7 +122,11 @@ refreshOutputs() {
     this.refreshSavings();
     this.refreshBonds();
     this.refreshNaiveStocks();
+    this.refreshRetirementNestEgg();
     this.refreshOptimalBetSizing();
+    this.refreshRandomWalk();
+    this.refreshRebalanceRandomWalk();
+    this.refreshTimeDiversification();
   },200)
   
 }
@@ -165,6 +174,22 @@ refreshNaiveStocks() {
     this.preferences.startingBalance
   );
   this.naiveStocksCashFlow = balanceToCashFlow(this.naiveStocksBalance);
+}
+
+/** retirementNestEgg */
+retirementNestEggBalance = createRetirementNestEggBalance(
+  this.preferences.nestEgg, 
+  this.preferences.periodsInRetirement, 
+  this.preferences.withdrawalRate
+);
+retirementNestEggCashFlow = balanceToCashFlow(this.retirementNestEggBalance);
+refreshRetirementNestEgg() {
+  this.retirementNestEggBalance = createRetirementNestEggBalance(
+    this.preferences.nestEgg, 
+    this.preferences.periodsInRetirement, 
+    this.preferences.withdrawalRate
+  );
+  this.retirementNestEggCashFlow = balanceToCashFlow(this.retirementNestEggBalance);
 }
 
 /** Optimal bet sizing + Cards */
@@ -226,17 +251,33 @@ refreshRandomWalk() {
   );
 
   this.randomWalkBalance = balance;
-  this.randomWalkCashFlow = balanceToCashFlow(this.randomWalkBalance);
+  this.randomWalkCashFlow = balanceToCashFlow(balance);
 }
 
-/** Rebalancing */
-rebalancingCashFlow = [];
-rebalancingBalance = [];
-refreshRebalancing() {
+/** Rebalancing random walk */
+
+rebalanceRandomWalkBalance = rebalanceRandomWalk(
+  this.preferences.numPeriods,
+  this.preferences.goodEvenReturn,
+  this.preferences.badEvenReturn,
+  this.preferences.startingBalance,
+  this.preferences.randomWalkReturnLeverage,
+);
+rebalanceRandomWalkCashFlow = balanceToCashFlow(this.rebalanceRandomWalkBalance);
+refreshRebalanceRandomWalk() {
   // 50/50 chance, you will get either a good or bad event
   
   // random walk
+  const balance = rebalanceRandomWalk(
+    this.preferences.numPeriods,
+    this.preferences.goodEvenReturn,
+    this.preferences.badEvenReturn,
+    this.preferences.startingBalance,
+    this.preferences.randomWalkReturnLeverage,
+  );
 
+  this.rebalanceRandomWalkBalance = balance;
+  this.rebalanceRandomWalkCashFlow = balanceToCashFlow(balance);
 }
 
 /** Diversification */
@@ -246,52 +287,31 @@ refreshRebalancing() {
 
 
 /** Time diversification */
-timeDiversificationCashFlow = [];
-timeDiversificationBalance = [];
+timeDiversificationBalance = timeDiversification(
+  this.preferences.numPeriods,
+  this.preferences.goodEvenReturn,
+  this.preferences.badEvenReturn,
+  this.preferences.startingBalance,
+  this.preferences.savingsPerPeriod,
+  this.preferences.timeDiversificationLeverage,
+  this.preferences.nestEgg,
+  this.preferences.quadraticDecayFactor,
+  this.preferences.linearDecayFactor
+);
+timeDiversitimeDiversificationCashFlow = balanceToCashFlow(this.timeDiversificationBalance);
 refreshTimeDiversification() {
-  // assumption, 1.1 every year, (1.25*.88)
-
-
-  // nominal value of money, aside compounding, does matter. losing 50% today on 100k is a 50k lost, which is not trivial. however if you're looking to retire with 5M, a 50% lost is 2.5M. This is an almost unacceptable loss, and can completely eliminate a chance at a carefree retirement.
-
-  // therefore leverage should become a function as to the proportion of your current balance vs a confident value of retirement. we'll assume 95% confidence in retirement and the idea of 60 years between the start of investment and end of required retirement benefits. 
-
-
-  // exponential vs linear, chaos early in life and lower risk later
-  // ax^2 + bx + c
-  // balance decay factor
-  // except the balance need you need to retire is constantly changing based on how much retirement you have
-
-  // depending how much time you have left, changes the amount you need in retirement because the withdrawal rate and volatility
-
-  // rather than think about retirement alone, think about a midpoint between when you feel comfortable to retire, and how long you should maintain working
-
-  function calculateQuadraticDecay (
-    progressToRetirement: number,
-    a: number, 
-    b: number, 
-    c: number, 
-    ) {
-
-      const leverage = 
-        a * Math.pow(progressToRetirement, 2) +
-        b * progressToRetirement + 
-        c;
-
-      return leverage;
-  }
-
-  function calculateLinearDecay(
-    progressToRetirement: number,
-    a: number, 
-    b: number,
-  ) {
-      const leverage = 
-        a * progressToRetirement + 
-        b;
-        
-      return leverage;
-  }
+  this.timeDiversificationBalance =  timeDiversification(
+    this.preferences.numPeriods,
+    this.preferences.goodEvenReturn,
+    this.preferences.badEvenReturn,
+    this.preferences.startingBalance,
+    this.preferences.savingsPerPeriod,
+    this.preferences.timeDiversificationLeverage,
+    this.preferences.nestEgg,
+    this.preferences.quadraticDecayFactor,
+    this.preferences.linearDecayFactor
+  );
+  this.timeDiversitimeDiversificationCashFlow = balanceToCashFlow(this.timeDiversificationBalance);
 }
 
 /** confidence in retirement */

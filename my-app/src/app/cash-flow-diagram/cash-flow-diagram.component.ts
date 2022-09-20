@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges ,AfterViewChecked} from '@angular/core';
 import * as c3 from 'c3';
+import { firstValueOf, lastValueOf, prettyRoundNumber } from '../utils/learn_utils';
 
 
 
@@ -36,6 +37,9 @@ export class CashFlowDiagramComponent {
 
   @Input() cashFlow:number[] = []
 
+  startingBalance: number;
+  endingBalance: number;
+
   cashFlowChart:c3.Data = {
     columns: [
       ['Cash Flow']
@@ -65,8 +69,14 @@ export class CashFlowDiagramComponent {
     this.updateCharts();
   }
 
+  prettyRoundNumber(val: number) {
+    return prettyRoundNumber(val);
+  }
+
   updateCharts() {
     const updatedVals = convertCashFlowToChartData(this.cashFlow);
+    this.startingBalance = firstValueOf(updatedVals.balanceChartData);
+    this.endingBalance = lastValueOf(updatedVals.balanceChartData);
 
     this.cashFlowChart = {
       columns: [

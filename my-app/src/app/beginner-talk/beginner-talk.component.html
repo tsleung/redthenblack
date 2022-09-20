@@ -132,12 +132,35 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
 <p>
   Investing {{prettyRoundNumber(preferences.startingBalance)}} only at the start and allowing to compound over {{preferences.numPeriods}} periods with an expected growth rate of {{preferences.naiveStockGrowthRate}} per period would lead to a final balance of <em>{{prettyRoundNumber(lastValueOf(naiveStocksBalance))}}</em>.
 </p>
+<h2>Retirement and your Nest Egg</h2>
+<blockquote>
+  At retirement, individuals stop working and no longer get employment earnings, and enter a phase of their lives, where they rely on the assets they have accumulated, to supply money for their spending needs for the rest of their lives.
+  <br/><br/>
+  A portion of retirement income often comes from savings, sometimes referred to as a nest egg.
+
+  <br/>
+  <cite>
+    <a href="https://en.wikipedia.org/wiki/Retirement_spend-down" target="_">Wikipedia</a>
+  </cite>
+</blockquote>
+<p>
+  The duration of retirement drastically affects the size of nest egg that needs to be accumulated while working. As a rule of thumb annual withdrawal over a 30 year retirement could use a 4% withdrawal rate while annual withdrawal over a 60 year retirement would use a 2% withdrawal rate.
+</p>
+
+<label>Nest Egg</label>
+<input type="number" [(ngModel)]="preferences.nestEgg" (change)="refreshOutputs()"><br/>
+<label>Periods in Retirement</label>
+<input type="number" [(ngModel)]="preferences.periodsInRetirement" (change)="refreshOutputs()"><br/>
+<label>Withdrawal Rate</label>
+<input type="number" [(ngModel)]="preferences.withdrawalRate" (change)="refreshOutputs()" [step]="steps.withdrawalRate"><br/>
+
+<app-cash-flow-diagram [cashFlow]="retirementNestEggCashFlow"></app-cash-flow-diagram>
 
 <h2>Optimal Bet Sizing</h2>
 <blockquote>
   Kelly betting or proportional betting is an application of information theory to investing and gambling. Its discoverer was John Larry Kelly, Jr.
 
-  <br/>
+  <br/><br/>
   Part of Kelly's insight was to have the gambler maximize the expectation of the logarithm of his capital, rather than the expected profit from each bet. This is important, since in the latter case, one would be led to gamble all he had when presented with a favorable bet, and if he lost, would have no capital with which to place subsequent bets. Kelly realized that it was the logarithm of the gambler's capital which is additive in sequential bets, and "to which the law of large numbers applies."
 
   <br/>
@@ -209,7 +232,7 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
   There are {{preferences.numRedCards}} positive cash flow events, represented by the number of red cards. There are additionally {{preferences.numBlackCards}} negative cash flow events, represented by the number of black cards. While starting at {{prettyRoundNumber(preferences.startingBalance)}}, final account balance ends up at <em> {{prettyRoundNumber(finalAccountValue)}}</em>.
 </p>
 
-<h2>Random walk</h2>
+<h2>Random Walk</h2>
 <blockquote>
   A random walk is a random process that describes a path that consists of a succession of random steps on some mathematical space
   <br/>
@@ -244,7 +267,7 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
   In the case of a random walk with 100% of your assets invested, your funds will wander but fundamentally will not 
 </p>
 
-<h2>Random walk with Rebalancing</h2>
+<h2>Random Walk with Rebalancing</h2>
 <blockquote>
   Rebalancing of investments (or constant mix) is a strategy of bringing a portfolio that has deviated away from one's target asset allocation back into line. This can be implemented by transferring assets, that is, selling investments of an asset class that is overweight and using the money to buy investments in a class that is underweight, but it also applies to adding or removing money from a portfolio, that is, putting new money into an underweight class, or making withdrawals from an overweight class.
   <br/>
@@ -253,8 +276,38 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
   </cite>
 </blockquote>
 <p>
+  If instead of assume 1.0 leverage (100% allocation) a partial allocation which is rebalanced will perform better than even. 
 
 </p>
+<label>Leverage</label>
+<input type="number" [(ngModel)]="preferences.randomWalkReturnLeverage" (change)="refreshOutputs()" [step]="steps.leverageStepSize"><br/>
+<app-cash-flow-diagram [cashFlow]="rebalanceRandomWalkCashFlow"></app-cash-flow-diagram>
+
+
+
+<h2>Time diversification</h2>
+<blockquote>
+  Retirement savers are missing an opportunity to diversify across time—they’re putting too large a bet on the return on stocks in later years.
+  <br/>
+  <cite>
+    <a href="http://www.whynot.net/main/mortgage_retirement.pdf" target="_">Mortgage your retirement</a>
+  </cite>
+</blockquote>
+<p>
+  Time diversification is a controversial idea which I subscribe to which allows for a portfolio to be more volatile earlier when savings can offset losses and winds down leverage as a retirement goal is approached. I don't believe it's unlike the generalized "stock allocation = 120 - your age". A 50% loss with {{prettyRoundNumber(preferences.startingBalance)}} in savings is difficult to recover from, but if you're saving {{prettyRoundNumber(preferences.savingsPerPeriod)}} a year, it may be recoverable. If you're a few years from your {{prettyRoundNumber(preferences.nestEgg)}} retirement, it's a {{prettyRoundNumber(preferences.nestEgg / 2)}} loss, which may be catastrophic to retirement goals.
+</p>
+<p>
+  For this example, we add our savings rate of {{preferences.savingsPerPeriod}} to the end of each period. Also instead of a random walk we'll alternate good and bad periods, so the periods are deterministic and different preferences can be compared more easily. 
+</p>
+<label>Leverage</label>
+<input type="number" [(ngModel)]="preferences.timeDiversificationLeverage" (change)="refreshOutputs()" [step]="steps.leverageStepSize"><br/>
+<label>Quadratic decay factor</label>
+<input type="number" [(ngModel)]="preferences.quadraticDecayFactor" (change)="refreshOutputs()" [step]="steps.decayFactorStepSize"><br/>
+<label>Linear decay factor</label>
+<input type="number" [(ngModel)]="preferences.linearDecayFactor" (change)="refreshOutputs()" [step]="steps.decayFactorStepSize"><br/>
+
+<app-cash-flow-diagram [cashFlow]="timeDiversitimeDiversificationCashFlow"></app-cash-flow-diagram>
+
 
 <!--
 

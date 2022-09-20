@@ -1,4 +1,7 @@
 <app-bar-chart [chartData]="balanceChart"></app-bar-chart>
+<p>
+  An initial balance of {{prettyRoundNumber(startingBalance)}} leads to a final balance of <em>{{prettyRoundNumber(endingBalance)}}</em>.
+</p>
 <app-bar-chart [chartData]="cashFlowChart"></app-bar-chart>
 <!-- <app-bar-chart [chartData]="combinedChart"></app-bar-chart> -->
 <!--Add table with change as proportion of account balance-->

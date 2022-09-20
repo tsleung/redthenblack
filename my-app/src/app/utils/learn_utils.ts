@@ -1,4 +1,35 @@
 
+
+/** Utility functions */
+
+export function balanceToCashFlow(balances:number[], includeFirstBalance = true) {
+  const initialBalance = includeFirstBalance ? 
+    balances[0] ?? 0 :
+    0;
+  return balances.reduce((accum, val, i) => {
+    const cashFlow = i === 0 ? 
+      initialBalance : // first cash flow is initial investment
+      val - balances[i-1] // normal cash flow determination
+      
+    accum.push(cashFlow);
+    return accum;
+  },[]);
+}
+
+export function lastValueOf<T>(val: T[]):T {
+  return val[val.length - 1];
+}
+export function firstValueOf<T>(val: T[]):T {
+  return val[0];
+}
+
+export function prettyRoundNumber(val: number) {
+  const rounded = Math.round(val);
+  return rounded.toLocaleString();
+}
+
+// sort by cash flow - back to original
+
 /** Utility Functions below */
 
 export function createRandomDataSeries(): c3.Primitive[] {
@@ -66,6 +97,21 @@ export function createNaiveStocksCashFlow(numPeriods: number, growthRate, starti
   },[startingBalance]);
 }
 
+export function createRetirementNestEggBalance(
+  nestEgg:number,
+  periodsInRetirement:number,
+  withdrawalRate:number
+) :number[]{
+  const arr:number[] = new Array(periodsInRetirement).fill(withdrawalRate);
+  
+  return arr.reduce((accum, withdrawalRate) => {
+    const previousBalance = lastValueOf(accum);
+    const withdrawal = Math.round(withdrawalRate * previousBalance);
+    const newBalance = previousBalance - withdrawal;
+    return [...accum, newBalance];
+  }, [nestEgg] as number[])
+}
+
 export function randomWalk(
   numberOfPeriods: number,
   goodEvenReturn: number,
@@ -87,23 +133,92 @@ export function randomWalk(
 
 }
 
-/** Utility functions */
+export function rebalanceRandomWalk(
+  numberOfPeriods: number,
+  goodEvenReturn: number,
+  badEvenReturn: number,
+  startingBalance: number,
+  leverage: number,
+):number[] {
+  const numberOfEachCard = Math.floor(numberOfPeriods / 2);
+  const positiveReturns = new Array(numberOfEachCard).fill(goodEvenReturn);
+  const negativeReturns = new Array(numberOfEachCard).fill(badEvenReturn);
 
-export function balanceToCashFlow(balances:number[]) {
-  const initialBalance = balances[0] ?? 0;
-  return balances.reduce((accum, val, i) => {
-    const cashFlow = i === 0 ? 
-      initialBalance : // first cash flow is initial investment
-      val - balances[i-1] // normal cash flow determination
-      
-    accum.push(cashFlow);
-    return accum;
-  },[]);
+  const deck:number[] = shuffleDeck([...positiveReturns, ...negativeReturns]);
+
+  const balance = deck.reduce((accum, val) => {
+    const oldBalance = lastValueOf(accum);
+    const cashAllocation = (1 - leverage) * oldBalance;
+    const equityAllocation = leverage * (oldBalance) * val;
+    const newBalance = cashAllocation + equityAllocation;
+
+    return [...accum, newBalance];
+  }, [startingBalance]);
+
+  return balance;
 }
-export function lastValueOf<T>(val: T[]):T {
-  return val[val.length - 1];
+
+// assumption, 1.1 every year, (1.25*.88)
+
+
+  // nominal value of money, aside compounding, does matter. losing 50% today on 100k is a 50k lost, which is not trivial. however if you're looking to retire with 5M, a 50% lost is 2.5M. This is an almost unacceptable loss, and can completely eliminate a chance at a carefree retirement.
+
+  // therefore leverage should become a function as to the proportion of your current balance vs a confident value of retirement. we'll assume 95% confidence in retirement and the idea of 60 years between the start of investment and end of required retirement benefits. 
+
+
+  // exponential vs linear, chaos early in life and lower risk later
+  // ax^2 + bx + c
+  // balance decay factor
+  // except the balance need you need to retire is constantly changing based on how much retirement you have
+
+  // depending how much time you have left, changes the amount you need in retirement because the withdrawal rate and volatility
+
+  // rather than think about retirement alone, think about a midpoint between when you feel comfortable to retire, and how long you should maintain working
+
+export function timeDiversification(
+  numberOfPeriods: number,
+  goodReturn: number,
+  badReturn: number,
+  startingBalance: number,
+  savingsPerPeriod: number,
+  baseLeverage: number,
+  desiredRetirement: number,
+  quadraticDecayFactor: number,
+  linearDecayFactor: number,
+) {
+  const deck:number[] = new Array(numberOfPeriods).fill(0).map((v,i) => i % 2 === 0 ? goodReturn : badReturn);
+
+  const balance = deck.reduce((accum, val) => {
+    const oldBalance = lastValueOf(accum);
+    const leverage = calculateQuadraticDecay(
+      oldBalance / desiredRetirement,
+      Math.abs(quadraticDecayFactor) * -1,
+      Math.abs(linearDecayFactor) * -1,
+      baseLeverage,
+    );
+    
+    const cashAllocation = (1 - leverage) * oldBalance;
+    const equityAllocation = leverage * (oldBalance) * val;
+    const newBalance = cashAllocation + equityAllocation;
+
+    return [...accum, newBalance + savingsPerPeriod];
+  }, [startingBalance]);
+
+  return balance;
+
 }
-export function firstValueOf<T>(val: T[]):T {
-  return val[0];
+
+function calculateQuadraticDecay (
+  progressToRetirement: number,
+  a: number, 
+  b: number, 
+  c: number, 
+  ) {
+
+    const leverage = 
+      a * Math.pow(progressToRetirement, 2) +
+      b * progressToRetirement + 
+      c;
+
+    return leverage;
 }
-// sort by cash flow - back to original
