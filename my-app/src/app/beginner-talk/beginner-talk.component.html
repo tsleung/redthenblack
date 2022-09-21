@@ -28,6 +28,10 @@
   Everyone's past, present, and future is unique to themself; it's personal! Great advice to one person may be not-so-great advice to someone else. Be careful when considering a new investment.
 </p>
 
+<label>Current Savings</label>
+<input type="number" [(ngModel)]="preferences.startingBalance" (ngModelChange)="refreshOutputs()"><br/>
+
+
 <h2>Cash Flow Diagram</h2>
 <blockquote>
   A cash flow is a real or virtual movement of money:
@@ -59,6 +63,10 @@
   Financial products can be confusing. Reducing any financial product to an expected series of cash flows improves the explainability of the investment. If for some reason you can't explain the product, you probably shouldn't use the product. 
 </p>
 
+<label>Years (periods) until retirement</label>
+<input type="number" [(ngModel)]="preferences.numPeriods" (ngModelChange)="refreshOutputs()"><br/>
+
+
 <h2>Saving</h2>
 <blockquote>
   Saving is income not spent, or deferred consumption. Methods of saving include putting money aside in, for example, a deposit account, a pension account, an investment fund, or as cash. Saving also involves reducing expenditures, such as recurring costs. In terms of personal finance, saving generally specifies low-risk preservation of money, as in a deposit account, versus investment, wherein risk is a lot higher; in economics more broadly, it refers to any income not used for immediate consumption. Saving does not automatically include interest.
@@ -70,11 +78,8 @@
 <p>
   I think learning how to save is where most people start. We put a predictable amount into an account and watch the balance grow. Depending on how long you save, the number of periods, and the amount you save per period, you can expect to have a certain amount at the end. A period can be any arbitrary unit of time you'd prefer to use! A common period used is years, but can be as short as days or weeks.  
 </p>
-<label>Number of periods</label>
-<input type="number" [(ngModel)]="preferences.numPeriods" (change)="refreshOutputs()"><br/>
-
 <label>Savings per period</label>
-<input type="number" [(ngModel)]="preferences.savingsPerPeriod" (change)="refreshOutputs()" [step]="steps.savingsPerPeriod"><br/>
+<input type="number" [(ngModel)]="preferences.savingsPerPeriod" (ngModelChange)="refreshOutputs()" [step]="steps.savingsPerPeriod"><br/>
 
 
 <app-cash-flow-diagram [cashFlow]="savingsCashFlow"></app-cash-flow-diagram>
@@ -82,6 +87,34 @@
   The "Cash Flow" diagram here has each entry level because {{preferences.savingsPerPeriod}} is added consistently in each period. We can see over the {{preferences.numPeriods}} periods the "Balance" continues to increase.
 </p>
 
+
+<h2>Retirement and your Nest Egg</h2>
+<blockquote>
+  At retirement, individuals stop working and no longer get employment earnings, and enter a phase of their lives, where they rely on the assets they have accumulated, to supply money for their spending needs for the rest of their lives.
+  <br/><br/>
+  A portion of retirement income often comes from savings, sometimes referred to as a nest egg.
+
+  <br/>
+  <cite>
+    <a href="https://en.wikipedia.org/wiki/Retirement_spend-down" target="_">Wikipedia</a>
+  </cite>
+</blockquote>
+<p>
+  Since we'll be withdrawing money during retirement, we can see a series of cash flows out of our balance. Since we use a fixed withdrawal rate, the individual cash flows themselves decrease over each period.
+</p>
+<p>
+  The duration of retirement drastically affects the size of nest egg that needs to be accumulated while working. As a rule of thumb annual withdrawal over a 30 year retirement could use a 4% withdrawal rate while annual withdrawal over a 60 year retirement would use a 2% withdrawal rate.
+</p>
+
+<label>Nest Egg</label>
+<input type="number" [(ngModel)]="preferences.nestEgg" (ngModelChange)="refreshOutputs()"><br/>
+<label>Periods in Retirement</label>
+<input type="number" [(ngModel)]="preferences.periodsInRetirement" (ngModelChange)="refreshOutputs()"><br/>
+<label>Withdrawal Rate</label>
+<input type="number" [(ngModel)]="preferences.withdrawalRate" (ngModelChange)="refreshOutputs()" [step]="steps.withdrawalRate"><br/>
+
+<app-cash-flow-diagram [cashFlow]="retirementNestEggCashFlow"></app-cash-flow-diagram>
+<!--
 <h2>Bonds</h2>
 <blockquote>
   A bond is a type of security under which the issuer (debtor) owes the holder (creditor) a debt, and is obliged - depending on the terms - to repay the principal (i.e. amount borrowed) of the bond at the maturity date as well as interest (called the coupon) over a specified amount of time. The interest is usually payable at fixed intervals: semiannual, annual, and less often at other periods. 
@@ -96,13 +129,13 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
 
 <br>
 <label>Bond Price</label>
-<input type="number" [(ngModel)]="preferences.bondPrice" min="0" (change)="refreshOutputs()"><br/>
+<input type="number" [(ngModel)]="preferences.bondPrice" min="0" (ngModelChange)="refreshOutputs()"><br/>
 <label>Bond Coupon</label>
-<input type="number" [(ngModel)]="preferences.bondCoupon" min="0" (change)="refreshOutputs()"><br/>
+<input type="number" [(ngModel)]="preferences.bondCoupon" min="0" (ngModelChange)="refreshOutputs()"><br/>
 <label>Bond Face Value</label>
-<input type="number" [(ngModel)]="preferences.bondFaceValue" min="0" (change)="refreshOutputs()"><br/>
+<input type="number" [(ngModel)]="preferences.bondFaceValue" min="0" (ngModelChange)="refreshOutputs()"><br/>
 <label>Bond Duration</label>
-<input type="number" [(ngModel)]="preferences.bondDuration" min="0" (change)="refreshOutputs()"><br/>
+<input type="number" [(ngModel)]="preferences.bondDuration" min="0" (ngModelChange)="refreshOutputs()"><br/>
 
 <app-cash-flow-diagram [cashFlow]="bondCashFlow"></app-cash-flow-diagram>
 <p>
@@ -110,7 +143,7 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
 </p>
 
 <p>One thing we've ignored here intentionally is that this bond will always get paid. Depending what happens to the issuer of the bond, the bond may not be paid. We'll explore more how to deal with this uncertainty later.</p>
-
+-->
 <h2>Naive Stocks</h2>
 <p>I add the word "naive" to the section title here since an expected growth of 10% (or multiplying by 1.1, used as inputs here) in the stock market is a misleading and harmful assumption which may lead to financial ruin. To actually model uncertainty in the stock market, do not use this section, but use the retire tool instead.</p>
 <p>
@@ -120,41 +153,18 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
   Since compounding will benefit you over time, increasing the number of periods, starting balance, and rate of growth per period all have positive effects. 
 </p>
 <label>Number of periods</label>
-<input type="number" [(ngModel)]="preferences.numPeriods" (change)="refreshOutputs()"><br/>
+<input type="number" [(ngModel)]="preferences.numPeriods" (ngModelChange)="refreshOutputs()"><br/>
 
 <label>Starting balance</label>
-<input type="number" [(ngModel)]="preferences.startingBalance" (change)="refreshOutputs()" [step]="steps.startingBalance"><br/>
+<input type="number" [(ngModel)]="preferences.startingBalance" (ngModelChange)="refreshOutputs()" [step]="steps.startingBalance"><br/>
 
 <label>Naive stock growth per period</label>
-<input type="number" [(ngModel)]="preferences.naiveStockGrowthRate" [step]="steps.growthRate" (change)="refreshOutputs()"><br/>
+<input type="number" [(ngModel)]="preferences.naiveStockGrowthRate" [step]="steps.growthRate" (ngModelChange)="refreshOutputs()"><br/>
 
 <app-cash-flow-diagram [cashFlow]="naiveStocksCashFlow"></app-cash-flow-diagram>
 <p>
-  Investing {{prettyRoundNumber(preferences.startingBalance)}} only at the start and allowing to compound over {{preferences.numPeriods}} periods with an expected growth rate of {{preferences.naiveStockGrowthRate}} per period would lead to a final balance of <em>{{prettyRoundNumber(lastValueOf(naiveStocksBalance))}}</em>.
+  Investing {{preferences.startingBalance | number: '1.0-0':'en-US'}} only at the start and allowing to compound over {{preferences.numPeriods}} periods with an expected growth rate of {{preferences.naiveStockGrowthRate}} per period would lead to a final balance of <em>{{lastValueOf(naiveStocksBalance) | number: '1.0-0':'en-US'}}</em>.
 </p>
-<h2>Retirement and your Nest Egg</h2>
-<blockquote>
-  At retirement, individuals stop working and no longer get employment earnings, and enter a phase of their lives, where they rely on the assets they have accumulated, to supply money for their spending needs for the rest of their lives.
-  <br/><br/>
-  A portion of retirement income often comes from savings, sometimes referred to as a nest egg.
-
-  <br/>
-  <cite>
-    <a href="https://en.wikipedia.org/wiki/Retirement_spend-down" target="_">Wikipedia</a>
-  </cite>
-</blockquote>
-<p>
-  The duration of retirement drastically affects the size of nest egg that needs to be accumulated while working. As a rule of thumb annual withdrawal over a 30 year retirement could use a 4% withdrawal rate while annual withdrawal over a 60 year retirement would use a 2% withdrawal rate.
-</p>
-
-<label>Nest Egg</label>
-<input type="number" [(ngModel)]="preferences.nestEgg" (change)="refreshOutputs()"><br/>
-<label>Periods in Retirement</label>
-<input type="number" [(ngModel)]="preferences.periodsInRetirement" (change)="refreshOutputs()"><br/>
-<label>Withdrawal Rate</label>
-<input type="number" [(ngModel)]="preferences.withdrawalRate" (change)="refreshOutputs()" [step]="steps.withdrawalRate"><br/>
-
-<app-cash-flow-diagram [cashFlow]="retirementNestEggCashFlow"></app-cash-flow-diagram>
 
 <h2>Optimal Bet Sizing</h2>
 <blockquote>
@@ -183,21 +193,21 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
 </p>
 
 <label>Starting balance</label>
-<input type="number" [(ngModel)]="preferences.startingBalance" (change)="refreshOutputs()" [step]="steps.startingBalance"><br/>
+<input type="number" [(ngModel)]="preferences.startingBalance" (ngModelChange)="refreshOutputs()" [step]="steps.startingBalance"><br/>
 
 <label>Number of Red Cards</label>
-<input type="number" [(ngModel)]="preferences.numRedCards" (change)="refreshOutputs();resetGeometric()" min="0" ><br/>
+<input type="number" [(ngModel)]="preferences.numRedCards" (ngModelChange)="refreshOutputs();resetGeometric()" min="0" ><br/>
 <label>Number of Black Cards</label>
-<input type="number" [(ngModel)]="preferences.numBlackCards" (change)="refreshOutputs();resetGeometric()" min="0" ><br/>
+<input type="number" [(ngModel)]="preferences.numBlackCards" (ngModelChange)="refreshOutputs();resetGeometric()" min="0" ><br/>
 <br/>
 <label>Proportional bet size to wealth (0-1)</label>
-<input type="number" [(ngModel)]="preferences.cardBetSize" [step]="steps.cardBetSize" min="0" max="1" (change)="refreshOutputs();resetGeometric()"><br/>
+<input type="number" [(ngModel)]="preferences.cardBetSize" [step]="steps.cardBetSize" min="0" max="1" (ngModelChange)="refreshOutputs();resetGeometric()"><br/>
 <p>
   <button mat-stroked-button (click)="refreshOptimalBetSizing(1)">Shuffle Deck</button>
 </p>
 <app-cash-flow-diagram [cashFlow]="optimalBetSizingCashFlow"></app-cash-flow-diagram>
 <p>
-  There are {{preferences.numRedCards}} positive cash flow events, represented by the number of red cards. There are additionally {{preferences.numBlackCards}} negative cash flow events, represented by the number of black cards. While starting at {{prettyRoundNumber(preferences.startingBalance)}} final account balance ends up at <em> {{prettyRoundNumber(finalAccountValue)}}</em>.
+  There are {{preferences.numRedCards}} positive cash flow events, represented by the number of red cards. There are additionally {{preferences.numBlackCards}} negative cash flow events, represented by the number of black cards. While starting at {{preferences.startingBalance | number: '1.0-0':'en-US'}} final account balance ends up at <em> {{finalAccountValue | number: '1.0-0':'en-US'}}</em>.
 </p>
 <p>
   No matter how many times you shuffle the deck, the final balance is always the same. Even as independent cash flows change, the end result will always be the same. This is because the amount bet each time is multiplied, as a proportional change. Multiplied numbers, no matter which way you order them, the product is the same (e.g. 1 * .5 * 2 = 1 * 2 * .5, a recession in year 1 is the same as in year 10). 
@@ -213,15 +223,15 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
 </p>
 
 <label>Starting balance</label>
-<input type="number" [(ngModel)]="preferences.startingBalance" (change)="refreshOutputs()" [step]="steps.startingBalance"><br/>
+<input type="number" [(ngModel)]="preferences.startingBalance" (ngModelChange)="refreshOutputs()" [step]="steps.startingBalance"><br/>
 
 <label>Number of Red Cards</label>
-<input type="number" [(ngModel)]="preferences.numRedCards" (change)="refreshOutputs();resetGeometric()" min="0" ><br/>
+<input type="number" [(ngModel)]="preferences.numRedCards" (ngModelChange)="refreshOutputs();resetGeometric()" min="0" ><br/>
 <label>Number of Black Cards</label>
-<input type="number" [(ngModel)]="preferences.numBlackCards" (change)="refreshOutputs();resetGeometric()" min="0" ><br/>
+<input type="number" [(ngModel)]="preferences.numBlackCards" (ngModelChange)="refreshOutputs();resetGeometric()" min="0" ><br/>
 <br/>
 <label>Proportional bet size to wealth (0-1)</label>
-<input type="number" [(ngModel)]="preferences.cardBetSize" [step]="steps.cardBetSize" min="0" max="1" (change)="refreshOutputs();resetGeometric()"><br/>
+<input type="number" [(ngModel)]="preferences.cardBetSize" [step]="steps.cardBetSize" min="0" max="1" (ngModelChange)="refreshOutputs();resetGeometric()"><br/>
 
 <p>
   <button mat-stroked-button (click)="refreshOptimalBetSizing(25)">Run 25 times</button>
@@ -229,7 +239,7 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
 <app-multiple-line-chart [chartData]="geometric"></app-multiple-line-chart>
 
 <p>
-  There are {{preferences.numRedCards}} positive cash flow events, represented by the number of red cards. There are additionally {{preferences.numBlackCards}} negative cash flow events, represented by the number of black cards. While starting at {{prettyRoundNumber(preferences.startingBalance)}}, final account balance ends up at <em> {{prettyRoundNumber(finalAccountValue)}}</em>.
+  There are {{preferences.numRedCards}} positive cash flow events, represented by the number of red cards. There are additionally {{preferences.numBlackCards}} negative cash flow events, represented by the number of black cards. While starting at {{preferences.startingBalance | number: '1.0-0':'en-US'}}, final account balance ends up at <em> {{finalAccountValue | number: '1.0-0':'en-US'}}</em>.
 </p>
 
 <h2>Random Walk</h2>
@@ -247,13 +257,13 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
 </p>
 
 <label>Starting balance</label>
-<input type="number" [(ngModel)]="preferences.startingBalance" (change)="refreshOutputs()" [step]="steps.startingBalance"><br/>
+<input type="number" [(ngModel)]="preferences.startingBalance" (ngModelChange)="refreshOutputs()" [step]="steps.startingBalance"><br/>
 <label>Number of Periods</label>
-<input type="number" [(ngModel)]="preferences.numPeriods" (change)="refreshOutputs();" min="0" ><br/>
+<input type="number" [(ngModel)]="preferences.numPeriods" (ngModelChange)="refreshOutputs();" min="0" ><br/>
 <label>Returns in a positive event</label>
-<input type="number" [(ngModel)]="preferences.goodEvenReturn" (change)="refreshOutputs();" min="0" ><br/>
+<input type="number" [(ngModel)]="preferences.goodEvenReturn" (ngModelChange)="refreshOutputs();" min="0" ><br/>
 <label>Returns in a negative event</label>
-<input type="number" [(ngModel)]="preferences.badEvenReturn" (change)="refreshOutputs();" min="0" ><br/>
+<input type="number" [(ngModel)]="preferences.badEvenReturn" (ngModelChange)="refreshOutputs();" min="0" ><br/>
 
 <p>
   <button mat-stroked-button (click)="refreshRandomWalk()">Reshuffle</button>
@@ -261,7 +271,7 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
 <app-cash-flow-diagram [cashFlow]="randomWalkCashFlow"></app-cash-flow-diagram>
 
 <p>
-  A starting investment of {{prettyRoundNumber(firstValueOf(randomWalkBalance))}} after {{preferences.numPeriods}} periods results in <em>{{prettyRoundNumber(lastValueOf(randomWalkBalance))}}</em>.
+  A starting investment of {{firstValueOf(randomWalkBalance) | number: '1.0-0':'en-US'}} after {{preferences.numPeriods}} periods results in <em>{{lastValueOf(randomWalkBalance) | number: '1.0-0':'en-US'}}</em>.
 </p>
 <p>
   In the case of a random walk with 100% of your assets invested, your funds will wander but fundamentally will not 
@@ -280,12 +290,12 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
 
 </p>
 <label>Leverage</label>
-<input type="number" [(ngModel)]="preferences.randomWalkReturnLeverage" (change)="refreshOutputs()" [step]="steps.leverageStepSize"><br/>
+<input type="number" [(ngModel)]="preferences.randomWalkReturnLeverage" (ngModelChange)="refreshOutputs()" [step]="steps.leverageStepSize"><br/>
 <app-cash-flow-diagram [cashFlow]="rebalanceRandomWalkCashFlow"></app-cash-flow-diagram>
 
 
 
-<h2>Time diversification</h2>
+<h2>Time Diversification</h2>
 <blockquote>
   Retirement savers are missing an opportunity to diversify across time—they’re putting too large a bet on the return on stocks in later years.
   <br/>
@@ -294,19 +304,32 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
   </cite>
 </blockquote>
 <p>
-  Time diversification is a controversial idea which I subscribe to which allows for a portfolio to be more volatile earlier when savings can offset losses and winds down leverage as a retirement goal is approached. I don't believe it's unlike the generalized "stock allocation = 120 - your age". A 50% loss with {{prettyRoundNumber(preferences.startingBalance)}} in savings is difficult to recover from, but if you're saving {{prettyRoundNumber(preferences.savingsPerPeriod)}} a year, it may be recoverable. If you're a few years from your {{prettyRoundNumber(preferences.nestEgg)}} retirement, it's a {{prettyRoundNumber(preferences.nestEgg / 2)}} loss, which may be catastrophic to retirement goals.
+  Time diversification is a controversial idea which allows for a portfolio to be more volatile earlier when savings can offset losses and winds down leverage as a retirement goal is approached. I don't believe it's unlike the generalized "stock allocation = 120 - your age". A 50% loss with {{preferences.startingBalance | number: '1.0-0':'en-US'}} in savings is difficult to recover from, but if you're saving {{preferences.savingsPerPeriod | number: '1.0-0':'en-US'}} a year, it may be recoverable. If you're a few years from your {{preferences.nestEgg | number: '1.0-0':'en-US'}} retirement, it's a {{preferences.nestEgg / 2 | number: '1.0-0':'en-US'}} loss, which may be catastrophic to retirement goals.
+</p>
+<blockquote>
+  <pre>
+  LeverageToUse = BaseLeverage
+    - QuadraticDecayFactor(RetirementProgress^2)
+    - LinearDecayFactor(RetirementProgress)
+  </pre>
+</blockquote>
+<p>
+  Where LeverageToUse is the leverage applied at any given period. RetirementProgress is the current balance / desired nest egg. The closer you are to retirement, the less leverage will be used.
 </p>
 <p>
-  For this example, we add our savings rate of {{preferences.savingsPerPeriod}} to the end of each period. Also instead of a random walk we'll alternate good and bad periods, so the periods are deterministic and different preferences can be compared more easily. 
+  For this example, we add our savings rate of {{preferences.savingsPerPeriod | number: '1.0-0':'en-US'}} to the starting balance of {{preferences.startingBalance | number: '1.0-0':'en-US'}} at the end of each period. We use our random walk returns of {{preferences.goodEvenReturn}} and {{preferences.badEvenReturn}}. Nest egg to track towards will be {{preferences.nestEgg | number: '1.0-0':'en-US'}}. Also instead of a random walk we'll alternate good and bad periods. This ensures the {{preferences.numPeriods}} periods are deterministic and different preferences can be compared more easily. 
 </p>
-<label>Leverage</label>
-<input type="number" [(ngModel)]="preferences.timeDiversificationLeverage" (change)="refreshOutputs()" [step]="steps.leverageStepSize"><br/>
+<label>Base Leverage</label>
+<input type="number" [(ngModel)]="preferences.timeDiversificationLeverage" (ngModelChange)="refreshTimeDiversification()" [step]="steps.leverageStepSize"><br/>
 <label>Quadratic decay factor</label>
-<input type="number" [(ngModel)]="preferences.quadraticDecayFactor" (change)="refreshOutputs()" [step]="steps.decayFactorStepSize"><br/>
+<input type="number" [(ngModel)]="preferences.quadraticDecayFactor" (ngModelChange)="refreshTimeDiversification()" [step]="steps.decayFactorStepSize"><br/>
 <label>Linear decay factor</label>
-<input type="number" [(ngModel)]="preferences.linearDecayFactor" (change)="refreshOutputs()" [step]="steps.decayFactorStepSize"><br/>
+<input type="number" [(ngModel)]="preferences.linearDecayFactor" (ngModelChange)="refreshTimeDiversification()" [step]="steps.decayFactorStepSize"><br/>
 
-<app-cash-flow-diagram [cashFlow]="timeDiversitimeDiversificationCashFlow"></app-cash-flow-diagram>
+<app-cash-flow-diagram [cashFlow]="timeDiversificationCashFlow"></app-cash-flow-diagram>
+<p>
+  {{preferences.savingsPerPeriod * preferences.numPeriods | number: '1.0-0':'en-US'}} has been contributed in savings. {{lastValueOf(timeDiversificationBalance) - preferences.savingsPerPeriod * preferences.numPeriods | number: '1.0-0':'en-US'}} has been contributed through investments. These investment returns have been achieved with our random walk returns of {{preferences.goodEvenReturn}} and {{preferences.badEvenReturn}}, which is effectively a multiplier of {{preferences.goodEvenReturn * preferences.badEvenReturn}}.
+</p>
 
 
 <!--

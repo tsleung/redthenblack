@@ -69,10 +69,6 @@ export class CashFlowDiagramComponent {
     this.updateCharts();
   }
 
-  prettyRoundNumber(val: number) {
-    return prettyRoundNumber(val);
-  }
-
   updateCharts() {
     const updatedVals = convertCashFlowToChartData(this.cashFlow);
     this.startingBalance = firstValueOf(updatedVals.balanceChartData);

@@ -190,12 +190,12 @@ export function timeDiversification(
 
   const balance = deck.reduce((accum, val) => {
     const oldBalance = lastValueOf(accum);
-    const leverage = calculateQuadraticDecay(
+    const leverage = Math.max(0, calculateQuadraticDecay(
       oldBalance / desiredRetirement,
       Math.abs(quadraticDecayFactor) * -1,
       Math.abs(linearDecayFactor) * -1,
       baseLeverage,
-    );
+    ));
     
     const cashAllocation = (1 - leverage) * oldBalance;
     const equityAllocation = leverage * (oldBalance) * val;

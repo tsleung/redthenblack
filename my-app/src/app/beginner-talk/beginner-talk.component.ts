@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { gasOrElectric } from '../utils/gas-vs-electric-car';
 import { balanceToCashFlow, calculateOptimalBetSizing, createBondCashFlow, createNaiveStocksCashFlow, createRandomDataSeries, createRetirementNestEggBalance, createSavingsSeries, firstValueOf, lastValueOf, prettyRoundNumber, randomWalk, rebalanceRandomWalk, timeDiversification } from '../utils/learn_utils';
 import { rentVsBuy } from '../utils/rent-vs-buy';
@@ -16,9 +16,6 @@ export class BeginnerTalkComponent implements OnInit {
   lastValueOf<T>(val: T[]):T {
     return lastValueOf(val);
   }
-  prettyRoundNumber(val: number) {
-    return prettyRoundNumber(val);
-  }
 
 steps = {
   growthRate: .01,
@@ -27,7 +24,7 @@ steps = {
   withdrawalRate: .01,
   cardBetSize: .05,
   leverageStepSize: .05,
-  decayFactorStepSize: .01,
+  decayFactorStepSize: .05,
   
 }
 
@@ -40,8 +37,8 @@ private cardBetSize(reds, blacks) {
 
 preferences = {
   numPeriods: 30,
-  startingBalance: 100000,
-  savingsPerPeriod: 50000,
+  startingBalance: 250000,
+  savingsPerPeriod: 60000,
   
   bondDuration: 10,
   bondPrice: 1000,
@@ -86,23 +83,17 @@ preferences = {
   badPositiveReturn: .88,
 
   /** Time diversification */
-  linearDecayFactor: .1,
-  quadraticDecayFactor: .1,
-  timeDiversificationLeverage: .4,
+  timeDiversificationLeverage: 2,
+  quadraticDecayFactor: 1.25,
+  linearDecayFactor: 1,
+  
+  
   
   
 }
 
-/** Four suits deck */
-drawCard() {
-
-}
-rebalancingCards() {
-
-}
-
-diversificationAndCorrelationWithCards() {
-
+ngOnChanges(changes: SimpleChanges) {
+  console.log('changes',changes)
 }
 
 updatePreferences(difference) {
@@ -298,7 +289,7 @@ timeDiversificationBalance = timeDiversification(
   this.preferences.quadraticDecayFactor,
   this.preferences.linearDecayFactor
 );
-timeDiversitimeDiversificationCashFlow = balanceToCashFlow(this.timeDiversificationBalance);
+timeDiversificationCashFlow = balanceToCashFlow(this.timeDiversificationBalance);
 refreshTimeDiversification() {
   this.timeDiversificationBalance =  timeDiversification(
     this.preferences.numPeriods,
@@ -311,7 +302,7 @@ refreshTimeDiversification() {
     this.preferences.quadraticDecayFactor,
     this.preferences.linearDecayFactor
   );
-  this.timeDiversitimeDiversificationCashFlow = balanceToCashFlow(this.timeDiversificationBalance);
+  this.timeDiversificationCashFlow = balanceToCashFlow(this.timeDiversificationBalance);
 }
 
 /** confidence in retirement */
