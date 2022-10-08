@@ -14,10 +14,16 @@ export function createDatasetRoute () {
     return '/datasets';
 }
 
+export function createContactMeRoute() {
+    return "https://www.linkedin.com/in/terranleung/";
+}
 export function createSP500DatasetRoute () {
     return createDatasetRoute() + 'sp500';
 }
 
+export function createResourcesRoute() {
+    return createArticlesRoute() + '/resources';
+}
 export function createLeverageParameterCollectionRoute () {
     return createParameterCollectionRoute() + '/leverage';
 }

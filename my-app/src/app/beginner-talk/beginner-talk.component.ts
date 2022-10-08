@@ -1,4 +1,6 @@
 import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
+import { RoutingService } from '../services/routing.service';
 import { gasOrElectric } from '../utils/gas-vs-electric-car';
 import { balanceToCashFlow, calculateOptimalBetSizing, createBondCashFlow, createNaiveStocksCashFlow, createRandomDataSeries, createRetirementNestEggBalance, createSavingsSeries, firstValueOf, lastValueOf, prettyRoundNumber, randomWalk, rebalanceRandomWalk, timeDiversification } from '../utils/learn_utils';
 import { rentVsBuy } from '../utils/rent-vs-buy';
@@ -311,7 +313,10 @@ refreshTimeDiversification() {
 
 /** Construct component */
 chartData = createRandomDataSeries();
-constructor() {
+constructor(
+  private router: Router,
+  readonly routingService: RoutingService,
+) {
 
     rentVsBuy();
     gasOrElectric();

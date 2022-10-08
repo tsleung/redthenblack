@@ -37,28 +37,18 @@ const routes: Routes = [
       // { path: '', outlet: 'game2', component: GameComponent },
     ],
   },
-  {
-    path: 'articles',
-    component: ArticleComponent,
-    data: {articles: [
-      '/assets/articles/intro.md',
-      '/assets/articles/resources.md',
-    ]},
-    children: [
-      
-    ],
-  },
-  {
-    path: 'pitch',
-    component: ArticleComponent,
-    data: {articles: [
-      '/assets/articles/rtb-pitch.md',
-    ]},
-  },
+  
   {
     path: '',
     component: LayoutsComponent,
     children: [
+      {
+        path: 'pitch',
+        component: ArticleComponent,
+        data: {articles: [
+          '/assets/articles/rtb-pitch.md',
+        ]},
+      },
       {path: 'datasets', children: [
         {
           path:'sp500',
@@ -257,6 +247,17 @@ const routes: Routes = [
         ],
 
         
+      },
+      {
+        path: 'articles/resources',
+        component: ArticleComponent,
+        data: {articles: [
+          '/assets/articles/intro.md',
+          '/assets/articles/resources.md',
+        ]},
+        children: [
+          
+        ],
       },
       {
         path: 'learn',
