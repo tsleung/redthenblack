@@ -222,3 +222,168 @@ function calculateQuadraticDecay (
 
     return leverage;
 }
+
+
+/**
+ * Utility theory
+ * 
+ * Not accumulating in a vacuum. 
+ * 
+ * 
+ * Retirement is an example of a utility, where retirement has a value amount to achieve it and probability of success over a series of payments
+ * 
+ * Other utilities can simpler, instead of a series of payments, it can be a single payment
+ * 
+ * This can include a single event, like a wedding.
+ * It can be a dream vacation.
+ * 
+ * It turns out most utilities are sequences of events. College tuition.
+ * 
+ * To keep numbers simple here, we'll continue to annualize all cash flows to keep units simple
+ * 
+ * Here's how to annualize a monthly expense into an annual one with no rate changes
+ * Here's how to annualize a monthly gain into an annual one, for example a paycheck
+ */
+
+/**
+ * Discounted cash flows
+ * 
+ * Converting a series of payments into a single NPV 
+ * 
+ */
+
+/**
+ * Inflation
+ * 
+ * Typically people think of conversion of currency (dollars) to another asset class (gasoline).
+
+ * Generally when people talk about inflation, they think of it broadly in relation to a basket of goods being tracked by the consumer price index. 
+ * 
+ * When the price of gas inflates, more dollars are required to be exchanged for an equivalent amount of gas.
+ * Alternatively, the same number of dollars will net less gas.
+ * 
+ * Since we've modeled specific utilities, or the future cost of goods, we can anticipate certain price appreciation for cars/real estate/vacations based on the rate of inflation.
+ * 
+ * 
+ */
+
+/**
+ * Gas vs Electric car
+ */
+
+/**
+ * Inflation and Mortgage Debt
+ * 
+ * As we've explored inflation directly affects the relationship between dollars and other assets. When debt is taken, it's a "short" on the dollar, where while you pay back a nominal  
+ */
+
+/**
+ * Rent vs Buy
+ * 
+ * mortgage amortization schedule
+ * 
+ * Monthly compounding for a mortgage
+ * 
+ *  */ 
+
+
+function amortization(
+  years = 30,
+  principal = 800000,
+  rate = .0287,
+  monthlyPayment = 3200,
+) {
+
+/**
+ * years and the principal amount
+ * rate will determined how much goes to interest, this is dependent on outstanding balance of the loan principal
+ * the rate of
+ * 
+ * monthly payments is traditionally fixed for the duration of the mortgage.
+ * 
+ */
+
+ const numPeriods = years * 12;
+ new Array(numPeriods).fill(0).reduce((accum) => {
+  const remainingPrincipal:number = accum.length === 0 ? 
+    principal:
+    lastValueOf(accum);
+  const interestPayment = remainingPrincipal * rate;
+  const principalPayment = monthlyPayment - interestPayment;
+
+  return [...accum, remainingPrincipal - principalPayment];
+ }, []);
+}
+
+
+
+/**
+ * Create a housing buy and sell trade
+ * 
+ * buy a place, hold onto it for a few years, 
+ * 
+ * - create a cash flow for saved taxes,this needs to be a function of other 
+ * 
+ * Every year calculate how much you'll pay to interest, principal, and refund in taxes
+ * 1. Interest is cash outflow to the bank, you'll never see it again. this is a true outflow
+ * 2. Principal is transfer of asset class from cash to percentage of house. Percentage of house is the mortgage starting percentage for the loan. That percentage will be the fraction of the current value of a home
+ * 3. Tax refund is cash inflow from the government
+ * There are lots of calculate tax treatments that can be done for buy/rent so we're distilling to cash flow in/out
+ * 
+ * 
+ * calculate probability of events, you don't have to fix a roof every year, but 1 in 25
+ * HOA
+ * 
+ * convert mortgage to annualized cash flow 
+ */
+
+/** 
+ * Create a rental trade
+ * this is just cash outflow
+ */
+
+
+/**
+ * Create composable cash flows with hierarchy and drill down
+ */
+interface CompositeCashFlow{
+  children: CompositeCashFlow[];
+  cashFlows: CashFlows[];
+}
+
+interface CashFlows {
+  flows: number[]
+}
+
+/**
+ * Cash flows are a product of an event on a balance
+ * can create a tool to model the events.
+ * 
+ * this can be fixed, or sampled
+ * 
+ * absolute or relative
+ * 
+ * 
+ * absolute fixed: single nominal value e.g. a car payment
+ * absolute sampled: take a nominal value from a sample
+ * 
+ * relative fixed: after initializer, change is additive/subtracted
+ * relative sampled: after initializer, multiplier is sampled 
+ * fixed is only one inc
+ */
+
+
+/**
+ * 
+ * These need to be able to interact with each other, they're the policy we're describing
+ * 
+ * 
+ * We need to compose the policy of decisions, or a decision tree
+ * Decision tree should be able to observe period, balance, utilities, and cash flows, then make a decision
+ * 
+ * 
+ * 
+ */
+
+
+

@@ -21,6 +21,7 @@ import { PinEditorComponent } from './pin-editor/pin-editor.component';
 import * as ROUTE_COMPONENTS from './route-components';
 import { CashFlowDiagramComponent } from './cash-flow-diagram/cash-flow-diagram.component';
 import { BeginnerTalkComponent } from './beginner-talk/beginner-talk.component';
+import { UpgradeComponent } from './upgrade/upgrade.component';
 
 const routes: Routes = [
   { path: 'bet', component: SimpleBetComponent },
@@ -260,6 +261,10 @@ const routes: Routes = [
       {
         path: 'learn',
         component: BeginnerTalkComponent,
+      },
+      {
+        path: 'upgrade',
+        component: UpgradeComponent,
       },
       {
         path: 'welcome',

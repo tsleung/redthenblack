@@ -31,7 +31,7 @@
 <label>Current Savings</label>
 <input type="number" [(ngModel)]="preferences.startingBalance" (ngModelChange)="refreshOutputs()"><br/>
 
-
+<br/>
 <h2>Cash Flow Diagram</h2>
 <blockquote>
   A cash flow is a real or virtual movement of money:
@@ -63,10 +63,10 @@
   Financial products can be confusing. Reducing any financial product to an expected series of cash flows improves the explainability of the investment. If for some reason you can't explain the product, you probably shouldn't use the product. 
 </p>
 
-<label>Years (periods) until retirement</label>
+<label>Periods til retirement</label>
 <input type="number" [(ngModel)]="preferences.numPeriods" (ngModelChange)="refreshOutputs()"><br/>
 
-
+<br/>
 <h2>Saving</h2>
 <blockquote>
   Saving is income not spent, or deferred consumption. Methods of saving include putting money aside in, for example, a deposit account, a pension account, an investment fund, or as cash. Saving also involves reducing expenditures, such as recurring costs. In terms of personal finance, saving generally specifies low-risk preservation of money, as in a deposit account, versus investment, wherein risk is a lot higher; in economics more broadly, it refers to any income not used for immediate consumption. Saving does not automatically include interest.
@@ -158,7 +158,7 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
 <label>Starting balance</label>
 <input type="number" [(ngModel)]="preferences.startingBalance" (ngModelChange)="refreshOutputs()" [step]="steps.startingBalance"><br/>
 
-<label>Naive stock growth per period</label>
+<label>Stock growth</label>
 <input type="number" [(ngModel)]="preferences.naiveStockGrowthRate" [step]="steps.growthRate" (ngModelChange)="refreshOutputs()"><br/>
 
 <app-cash-flow-diagram [cashFlow]="naiveStocksCashFlow"></app-cash-flow-diagram>

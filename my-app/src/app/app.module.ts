@@ -57,6 +57,7 @@ import { CashFlowDiagramComponent } from './cash-flow-diagram/cash-flow-diagram.
 import { BeginnerTalkComponent } from './beginner-talk/beginner-talk.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { MultipleLineChartComponent } from './multiple-line-chart/multiple-line-chart.component';
+import { UpgradeComponent } from './upgrade/upgrade.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { MultipleLineChartComponent } from './multiple-line-chart/multiple-line-
     BeginnerTalkComponent,
     BarChartComponent,
     MultipleLineChartComponent,
+    UpgradeComponent,
    
   ],
   imports: [
