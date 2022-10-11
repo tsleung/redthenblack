@@ -1,6 +1,6 @@
 # Intro
 
-If there is only one thing you read/watch/listen to here, it should be "Victor Haghani - Optimal Bet Sizing https://www.youtube.com/watch?v=5NC12DhaFV8#t=1m4s". My hope is you will takeaway:
+If there is only one thing you read/watch/listen to here, it should be ["Victor Haghani - Optimal Bet Sizing (YouTube)"](https://www.youtube.com/watch?v=5NC12DhaFV8#t=1m4s). My hope is you will takeaway:
 1. Even with favorable circumstances, most lose money
 2. Geometric mean trumps arithmentic mean for compounding returns over a long series of bets
 3. There is a misconception increased risk leads to increase rewards. Excessive risk instead minimizes rewards
