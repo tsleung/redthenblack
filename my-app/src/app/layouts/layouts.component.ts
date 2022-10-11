@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RoutingService } from '../services/routing.service';
 
 @Component({
   selector: 'app-layouts',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LayoutsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    readonly routingService: RoutingService,
+  ) { }
 
   ngOnInit(): void {
   }

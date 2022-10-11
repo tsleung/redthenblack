@@ -1,11 +1,6 @@
-<mat-card>
-<mat-card-content>
-<p>
-  <i>Note: "Learn" continues to be under development but is starting to get lengthy, please <a target="_" [href]="routingService.mapper.createContactMeRoute()">contact me</a> with any feedback or questions.</i>
-</p>
 <h2>Learning to Retire</h2>
 <p>
-  Getting to retirement is hard! I created Red then Black (RtB) as a holistic tool highlighting the broad strokes to personal finance, allowing people to think about the "strategic" decisions to get them to retirement.
+  Getting to retirement is hard! I created <a [routerLink]="routingService.mapper.createPitchRoute()">Red then Black (RtB)</a> as a holistic tool highlighting the broad strokes to personal finance, allowing people to think about the "strategic" decisions to get them to retirement.
 </p>
 <p>
   A lot of the ideas used in the "retire" tool are from different hobbies I've had over time. This "learn" tool is dedicated to demonstrating why those ideas matter at all. I will be trying my best to explain here, but will also include a <a [routerLink]="routingService.mapper.createResourcesRoute()">list of books / videos / and other source material</a> where I learned. None of the ideas presented here are original.
@@ -14,26 +9,12 @@
   My hope is that by going through the following sections, you'll be able to play with a few of the concepts I found helpful for planning my own future; I further hope the time you spend with this tool will help you plan for your future too. 
 </p>
 
-<h2>Suitability</h2>
-
-<blockquote>
-  Personal finance is the financial management which an individual or a family unit performs to budget, save, and spend monetary resources over time, taking into account various financial risks and future life events.
-  <br/>
-  When planning personal finances, the individual would consider the suitability to his or her needs of a range of banking products (checking, savings accounts, credit cards and consumer loans) or investment in private equity, (companies' shares, bonds, mutual funds) and insurance (life insurance, health insurance, disability insurance) products or participation and monitoring of and- or employer-sponsored retirement plans, social security benefits, and income tax management.
-  <br/>
-  <cite>
-    <a href="https://en.wikipedia.org/wiki/Personal_finance" target="_">Wikipedia</a>
-  </cite>
-  
-</blockquote>
+<mat-card>
+<mat-card-content>
 <p>
-  Everyone's past, present, and future is unique to themself; it's personal! Great advice to one person may be not-so-great advice to someone else. Be careful when considering a new investment.
+  <i>Note: "Learn" continues to be under development but is starting to get lengthy, please <a target="_" [href]="routingService.mapper.createContactMeRoute()">contact me</a> with any feedback or questions.</i>
 </p>
 
-<label>Current Savings</label>
-<input type="number" [(ngModel)]="preferences.startingBalance" (ngModelChange)="refreshOutputs()"><br/>
-
-<br/>
 <h2>Cash Flow Diagram</h2>
 <blockquote>
   A cash flow is a real or virtual movement of money:
@@ -65,10 +46,9 @@
   Financial products can be confusing. Reducing any financial product to an expected series of cash flows improves the explainability of the investment. If for some reason you can't explain the product, you probably shouldn't use the product. 
 </p>
 
-<label>Periods til retirement</label>
+<label>Years (periods) until retirement</label>
 <input type="number" [(ngModel)]="preferences.numPeriods" (ngModelChange)="refreshOutputs()"><br/>
 
-<br/>
 <h2>Saving</h2>
 <blockquote>
   Saving is income not spent, or deferred consumption. Methods of saving include putting money aside in, for example, a deposit account, a pension account, an investment fund, or as cash. Saving also involves reducing expenditures, such as recurring costs. In terms of personal finance, saving generally specifies low-risk preservation of money, as in a deposit account, versus investment, wherein risk is a lot higher; in economics more broadly, it refers to any income not used for immediate consumption. Saving does not automatically include interest.
@@ -80,7 +60,10 @@
 <p>
   I think learning how to save is where most people start. We put a predictable amount into an account and watch the balance grow. Depending on how long you save, the number of periods, and the amount you save per period, you can expect to have a certain amount at the end. A period can be any arbitrary unit of time you'd prefer to use! A common period used is years, but can be as short as days or weeks.  
 </p>
-<label>Savings per period</label>
+
+<label>Current Savings</label>
+<input type="number" [(ngModel)]="preferences.startingBalance" (ngModelChange)="refreshOutputs()"><br/>
+<label>Savings per year (period)</label>
 <input type="number" [(ngModel)]="preferences.savingsPerPeriod" (ngModelChange)="refreshOutputs()" [step]="steps.savingsPerPeriod"><br/>
 
 
@@ -89,6 +72,42 @@
   The "Cash Flow" diagram here has each entry level because {{preferences.savingsPerPeriod}} is added consistently in each period. We can see over the {{preferences.numPeriods}} periods the "Balance" continues to increase.
 </p>
 
+<h2>Naive Stocks</h2>
+<p>I add the word "naive" to the section title here since an expected growth of 10% (or multiplying by 1.1, used as inputs here) in the stock market is a misleading and harmful assumption which may lead to financial ruin. To actually model uncertainty in the stock market, do not use this section, but use the retire tool instead.</p>
+<p>
+  Naive stock assumption are better suited for expressing the power of reliable compounding. Compounding is the idea that as you have positive cash flow and add value to your balance, you continue to reinvest. The reinvested balance, being larger, generates a larger positive cash flow, and you repeat the cycle of reinvesting and benefiting from larger and larger cash flows.
+</p>
+<p>
+  Since compounding will benefit you over time, increasing the number of periods, starting balance, and rate of growth per period all have positive effects. 
+</p>
+<label>Number of periods</label>
+<input type="number" [(ngModel)]="preferences.numPeriods" (ngModelChange)="refreshOutputs()"><br/>
+
+<label>Starting balance</label>
+<input type="number" [(ngModel)]="preferences.startingBalance" (ngModelChange)="refreshOutputs()" [step]="steps.startingBalance"><br/>
+
+<label>Stock growth</label>
+<input type="number" [(ngModel)]="preferences.naiveStockGrowthRate" [step]="steps.growthRate" (ngModelChange)="refreshOutputs()"><br/>
+
+<app-cash-flow-diagram [cashFlow]="naiveStocksCashFlow"></app-cash-flow-diagram>
+<p>
+  Investing {{preferences.startingBalance | number: '1.0-0':'en-US'}} only at the start and allowing to compound over {{preferences.numPeriods}} periods with an expected growth rate of {{preferences.naiveStockGrowthRate}} per period would lead to a final balance of <em>{{lastValueOf(naiveStocksBalance) | number: '1.0-0':'en-US'}}</em>.
+</p>
+
+<h2>Suitability</h2>
+
+<blockquote>
+  Personal finance is the financial management which an individual or a family unit performs to budget, save, and spend monetary resources over time, taking into account various financial risks and future life events.
+  <br/>
+  When planning personal finances, the individual would consider the suitability to his or her needs of a range of banking products (checking, savings accounts, credit cards and consumer loans) or investment in private equity, (companies' shares, bonds, mutual funds) and insurance (life insurance, health insurance, disability insurance) products or participation and monitoring of and- or employer-sponsored retirement plans, social security benefits, and income tax management.
+  <br/>
+  <cite>
+    <a href="https://en.wikipedia.org/wiki/Personal_finance" target="_">Wikipedia</a>
+  </cite>
+</blockquote>
+<p>
+  Everyone's past, present, and future is unique to themself; it's personal! Great advice to one person may be not-so-great advice to someone else. Be careful when considering a new investment.
+</p>
 
 <h2>Retirement and your Nest Egg</h2>
 <blockquote>
@@ -146,27 +165,6 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
 
 <p>One thing we've ignored here intentionally is that this bond will always get paid. Depending what happens to the issuer of the bond, the bond may not be paid. We'll explore more how to deal with this uncertainty later.</p>
 -->
-<h2>Naive Stocks</h2>
-<p>I add the word "naive" to the section title here since an expected growth of 10% (or multiplying by 1.1, used as inputs here) in the stock market is a misleading and harmful assumption which may lead to financial ruin. To actually model uncertainty in the stock market, do not use this section, but use the retire tool instead.</p>
-<p>
-  Naive stock assumption are better suited for expressing the power of reliable compounding. Compounding is the idea that as you have positive cash flow and add value to your balance, you continue to reinvest. The reinvested balance, being larger, generates a larger positive cash flow, and you repeat the cycle of reinvesting and benefiting from larger and larger cash flows.
-</p>
-<p>
-  Since compounding will benefit you over time, increasing the number of periods, starting balance, and rate of growth per period all have positive effects. 
-</p>
-<label>Number of periods</label>
-<input type="number" [(ngModel)]="preferences.numPeriods" (ngModelChange)="refreshOutputs()"><br/>
-
-<label>Starting balance</label>
-<input type="number" [(ngModel)]="preferences.startingBalance" (ngModelChange)="refreshOutputs()" [step]="steps.startingBalance"><br/>
-
-<label>Stock growth</label>
-<input type="number" [(ngModel)]="preferences.naiveStockGrowthRate" [step]="steps.growthRate" (ngModelChange)="refreshOutputs()"><br/>
-
-<app-cash-flow-diagram [cashFlow]="naiveStocksCashFlow"></app-cash-flow-diagram>
-<p>
-  Investing {{preferences.startingBalance | number: '1.0-0':'en-US'}} only at the start and allowing to compound over {{preferences.numPeriods}} periods with an expected growth rate of {{preferences.naiveStockGrowthRate}} per period would lead to a final balance of <em>{{lastValueOf(naiveStocksBalance) | number: '1.0-0':'en-US'}}</em>.
-</p>
 
 <h2>Optimal Bet Sizing</h2>
 <blockquote>

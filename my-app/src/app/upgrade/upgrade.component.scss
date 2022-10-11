@@ -1,6 +1,6 @@
 :host {
   display: block;
-  padding: 1rem;
+  padding: .5rem;
 }
 
 p {
@@ -11,6 +11,7 @@ p {
 
 figure {
   border: 1px solid #ddd;
+  background: white;
 
   figcaption {
     padding: 1rem;

@@ -14,6 +14,10 @@ export function createDatasetRoute () {
     return '/datasets';
 }
 
+export function createPitchRoute () {
+    return '/pitch';
+}
+
 export function createContactMeRoute() {
     return "https://www.linkedin.com/in/terranleung/";
 }

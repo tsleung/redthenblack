@@ -3,6 +3,8 @@
   $foreground: map-get($my-app-theme, foreground);
   $background: map-get($my-app-theme, background);
 
+  padding: .5rem;
+
 h1 {
   font-size: 38px;
   line-height: 42px;
@@ -43,13 +45,6 @@ header {
   h3 {
     font-weight: bold;
   }
-}
-
-// used to cap width so reading is easier
-header,
-main article {
-  max-width: 960px;
-  margin: 0 auto;
 }
 
 main {

@@ -31,7 +31,7 @@ const DEFAULT_RETIREMENT_PREFERENCES = {
   retirementInvestingLeverage: 0.6,
   retirementTimeHorizonInYears: 30,
   approximateCapitalGainsTax: .15,
-  numWorkingSimulations: 200,
+  numWorkingSimulations: 100,
   safetyThreshold: .1,
   targetThreshold: .5,
   reachThreshold: .6,
