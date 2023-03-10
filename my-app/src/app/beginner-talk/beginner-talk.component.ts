@@ -1,11 +1,12 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { RoutingService } from '../services/routing.service';
 import { gasOrElectric } from '../utils/gas-vs-electric-car';
-import { balanceToCashFlow, calculateOptimalBetSizing, createBondCashFlow, createNaiveStocksCashFlow, createRandomDataSeries, createRetirementNestEggBalance, createSavingsSeries, firstValueOf, lastValueOf, prettyRoundNumber, randomWalk, rebalanceRandomWalk, timeDiversification } from '../utils/learn_utils';
+import { balanceToCashFlow, calculateOptimalBetSizing, createBondCashFlow, createNaiveRetirementSimulations, createNaiveStocksCashFlow, createRandomDataSeries, createRetirementNestEggBalance, createSavingsSeries, firstValueOf, lastValueOf, prettyRoundNumber, randomWalk, rebalanceRandomWalk, timeDiversification } from '../utils/learn_utils';
 import { rentVsBuy } from '../utils/rent-vs-buy';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-beginner-talk',
   templateUrl: './beginner-talk.component.html',
   styleUrls: ['./beginner-talk.component.scss']
@@ -20,6 +21,8 @@ export class BeginnerTalkComponent implements OnInit {
   }
 
 steps = {
+  years: 1,
+  savingsRate: .01,
   growthRate: .01,
   startingBalance: 10000,
   savingsPerPeriod: 100,
@@ -41,6 +44,8 @@ preferences = {
   numPeriods: 30,
   startingBalance: 250000,
   savingsPerPeriod: 60000,
+  yearsToRetirement: 0,
+  savingsRate: .1,
   
   bondDuration: 10,
   bondPrice: 1000,
@@ -89,9 +94,6 @@ preferences = {
   quadraticDecayFactor: 1.25,
   linearDecayFactor: 1,
   
-  
-  
-  
 }
 
 ngOnChanges(changes: SimpleChanges) {
@@ -113,6 +115,7 @@ refreshOutputs() {
   clearTimeout(this.refreshTimeout);
   this.refreshTimeout = setTimeout(() => {
     this.refreshSavings();
+    this.refreshNaiveSavingsRateRetirement();
     this.refreshBonds();
     this.refreshNaiveStocks();
     this.refreshRetirementNestEgg();
@@ -128,6 +131,27 @@ finalBalanceOf(series: number[]) {
   return series[series.length - 1];
 }
 
+/** Naive Savings Retirement */
+naiveSavingsRateRetirementBalance = createNaiveRetirementSimulations(
+  this.preferences.naiveStockGrowthRate,
+  this.preferences.savingsRate,
+  this.preferences.numPeriods + this.preferences.periodsInRetirement,
+  this.preferences.yearsToRetirement,
+);
+naiveSavingsRateRetirementCashFlow = balanceToCashFlow(this.naiveSavingsRateRetirementBalance);
+
+refreshNaiveSavingsRateRetirement() {
+  const balance = createNaiveRetirementSimulations(
+    this.preferences.naiveStockGrowthRate,
+    this.preferences.savingsRate,
+    this.preferences.numPeriods + this.preferences.periodsInRetirement,
+    this.preferences.yearsToRetirement,
+  );
+
+  this.naiveSavingsRateRetirementBalance = balance;
+  this.naiveSavingsRateRetirementCashFlow = balanceToCashFlow(balance);
+}
+
 /** Savings */
 savingsCashFlow = createSavingsSeries(this.preferences.numPeriods,this.preferences.savingsPerPeriod);
 refreshSavings() {
@@ -135,6 +159,7 @@ refreshSavings() {
     this.preferences.numPeriods, this.preferences.savingsPerPeriod
   );
 }
+
 
 /** Bond */
 bondCashFlow = createBondCashFlow(

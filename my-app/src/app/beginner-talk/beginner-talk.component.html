@@ -15,6 +15,23 @@
   <i>Note: "Learn" continues to be under development but is starting to get lengthy, please <a target="_" [href]="routingService.mapper.createContactMeRoute()">contact me</a> with any feedback or questions.</i>
 </p>
 
+<h2>Perpetuity</h2>
+<p>
+  A consistent payout indefinitely.
+</p>
+
+<h2>Retirement as a function of savings rate</h2>
+<p>
+  If we know the value of a perpetuity, so long as we have the principal required to fund our expenses, retirement should be achievable.
+
+  Naively we can find when we will retire as a function of our savings rate.
+</p>
+<label>Savings Rate</label>
+<input type="number" [(ngModel)]="preferences.savingsRate" (ngModelChange)="refreshNaiveSavingsRateRetirement()" [step]="steps.savingsRate"><br/>
+<label>Years til Retirement</label>
+<input type="number" [(ngModel)]="preferences.yearsToRetirement" (ngModelChange)="refreshNaiveSavingsRateRetirement()" [step]="steps.years"><br/>
+<app-cash-flow-diagram [cashFlow]="naiveSavingsRateRetirementCashFlow"></app-cash-flow-diagram>
+
 <h2>Cash Flow Diagram</h2>
 <blockquote>
   A cash flow is a real or virtual movement of money:

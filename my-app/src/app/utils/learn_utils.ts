@@ -2,6 +2,8 @@
 
 /** Utility functions */
 
+import { createWorkingGraph } from "./graph_mapper";
+
 export function balanceToCashFlow(balances:number[], includeFirstBalance = true) {
   const initialBalance = includeFirstBalance ? 
     balances[0] ?? 0 :
@@ -223,6 +225,75 @@ function calculateQuadraticDecay (
     return leverage;
 }
 
+/**
+ * Determine how close you are to retirement based on your savings rate
+ * 
+ * Parameters
+ *  - Investment Compounding Rate (r) 
+ *  - Income (I)
+ *  - Savings Rate (S) (on savings rate change, tweak living expense)
+ *  - Living expense (I-S)
+ *  - Years of life to plan for (N)
+ * 
+ */
+export function createNaiveRetirementSimulations(
+  investment_rate,
+  savings_rate,
+  total_years_accounted_for,
+  yearsToRetirement = 0,
+) {
+  const income_rate = 1;
+  const simulations = new Array(total_years_accounted_for)
+    .fill(0)
+    .map((v,retirement_age) => {
+
+      // single simulation for a retirement age
+    return new Array(total_years_accounted_for)
+      .fill(0)
+      .map((v,i) => i)
+      .reduce((balances, year_number) => {
+        // if the year is less than retirement age, working, otherwise, retired
+        const previousBalance:number = lastValueOf(balances);
+        const new_balance = (year_number < retirement_age) ?
+          createWorkingBalance(previousBalance) :
+          createRetirementBalance(previousBalance);
+
+        return [...balances, new_balance];
+    },[0]);
+
+    // How to calculate a new balance 
+    function createWorkingBalance(previousBalance: number): number {
+      const passiveIncome = previousBalance * investment_rate;
+      const activeIncome = savings_rate;
+
+      return passiveIncome + activeIncome;
+    }
+
+    function createRetirementBalance(previousBalance: number):number {
+      const passiveIncome = previousBalance * investment_rate;
+      // expenses are what you're used to living on without savings
+      const livingExpenses = (income_rate - savings_rate);
+
+      return passiveIncome - livingExpenses;
+    }
+
+  });
+  console.log('simulations', simulations)
+  
+    const retirementSimulation = yearsToRetirement > 0 ? simulations[yearsToRetirement] : 
+    simulations.find((simulation_balances,i,all) => {
+          
+      const non_negative_sim = lastValueOf(simulation_balances) > 0;
+      // find the first simulation that's not negative
+      if(non_negative_sim) {
+        console.log('i',i, simulation_balances,i)
+      }
+      return non_negative_sim;
+      // return all[i-1];
+    });
+
+  return retirementSimulation;
+}
 
 /**
  * Utility theory

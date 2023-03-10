@@ -37,6 +37,7 @@ export class LineChartComponent implements OnInit, OnChanges,AfterViewInit{
   }
   
   ngAfterViewInit() {
+    console.log('create new chart')
     this.chart = c3.generate({ 
       bindto: `#${this.chartId}`,
       data: {
@@ -56,6 +57,9 @@ export class LineChartComponent implements OnInit, OnChanges,AfterViewInit{
   }
   
   private bindChart() {
+      if(!this.chart) {
+        console.log('bind create new chart')
+      }
     this.chart = this.chart ?? c3.generate({ 
       bindto: `#${this.chartId}`,
       data: {
@@ -66,6 +70,7 @@ export class LineChartComponent implements OnInit, OnChanges,AfterViewInit{
       legend: this.legend,
       tooltip: {grouped: false},
     });
+    
 
     return this.chart;
   }
