@@ -1,0 +1,53 @@
+<ng-container *ngIf="lifestreamService.streams.length > 0">
+  <ol>
+<li *ngFor="let stream of lifestreamService.streams;" 
+  style="width: {{stream.timespan.duration * 2}}em; margin-left: {{stream.timespan.start*2}}em;">
+  {{stream.name}}
+</li>
+  </ol>
+</ng-container>
+
+
+<fieldset>
+  <legend>Configuration</legend>  
+  <label for="name">Streams</label>
+  
+  <textarea [formControl]="controls.streams"></textarea>
+  <br>
+  <ng-container>
+    <div *ngFor="let stream of streams;">
+      {{stream | json}}
+    </div>
+  </ng-container>
+  <br>
+  
+  <label for="name">Policy</label>
+  <textarea [formControl]="controls.policy"></textarea>
+  <ng-container>
+    <div *ngFor="let policy of policies;">
+      {{policy | json}}
+    </div>
+  </ng-container>
+
+  <br>
+  <button (click)="runSimulation()">Run Simulation</button>
+</fieldset>
+<div *ngFor="let step of steps;">
+  {{step | json}}
+</div>
+
+
+<details>
+<summary>Notes for stream development</summary>
+
+Possibilities becoming reality, we compose the opportunities we're given and each independent sequence of circumstances. 
+
+We may observe a snapshot across all streams both now and what is projected into the future. 
+
+It may be helpful to model alternate futures for yourself as you're making decisions. This is the overall 'lifestream' all the possibilities possible for a life you'd like to live.
+ 
+
+One account, one lifestream. Multiple account to achieve multiple lifestream
+
+(How do i feel about water or threads, threads feel more deterministic, water feels more chaotic)
+</details>

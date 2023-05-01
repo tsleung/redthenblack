@@ -1,0 +1,43 @@
+<details>
+  <summary>9 New Notifications</summary>
+  <ul>
+    <li>!3 Expanded Storage credits to claim</li>
+    <li>!2 Cloud Compute credits to claim</li>
+    <li>[2023-03-21] New Education Article (With storage credit to claim)</li>
+    <li>[2023-03-12] New book recommendation</li>
+  </ul>
+  ...+ 5 more
+</details>
+
+<router-outlet></router-outlet>
+
+<details>
+  <summary>Monthly user journey</summary>
+
+  Time towards goals (draw closer), highlight goals of high variance or those approaching within year
+
+  Prompt for updates
+  Compare each projected cash flow vs reality.
+
+  - Revisit decisions to make, what are the tradeoffs
+  - Check in on assumptions which have high impact of closest trajectory
+  - Allow pinning of calculators or articles, default is top of queue and optional reminder for next month 
+
+</details>
+
+<fieldset>
+  <legend>
+    Featured Education Modules
+  </legend> 
+  <br>
+  <a [href]="routingService.mapper.createMayaEducation()">Education</a>
+</fieldset>
+
+
+<fieldset>
+  <legend>
+    Featured Calculators
+  </legend>
+  <br>
+  <a [href]="routingService.mapper.createMayaCalculator()">Calculator</a>
+</fieldset>

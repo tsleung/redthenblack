@@ -1,5 +1,5 @@
 
-import {AfterViewInit, Component, OnInit, Input, OnChanges} from '@angular/core';
+import { AfterViewInit, Component, OnInit, Input, OnChanges } from '@angular/core';
 //https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/c3/index.d.ts
 import * as c3 from 'c3';
 
@@ -8,19 +8,19 @@ import * as c3 from 'c3';
   templateUrl: './line-chart.component.html',
   styleUrls: ['./line-chart.component.scss']
 })
-export class LineChartComponent implements OnInit, OnChanges,AfterViewInit{
+export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
   chart: c3.ChartAPI;
   chartId;
-  @Input() type:c3.ChartType = 'line';
-  @Input() chartData:c3.Data = {
+  @Input() type: c3.ChartType = 'line';
+  @Input() chartData: c3.Data = {
     columns: [],
-    types:{},
+    types: {},
   }
 
-  @Input() gridOptions:c3.GridOptions = {
+  @Input() gridOptions: c3.GridOptions = {
   }
 
-  @Input() legend:c3.LegendOptions = {   
+  @Input() legend: c3.LegendOptions = {
     show: true
   }
 
@@ -35,32 +35,32 @@ export class LineChartComponent implements OnInit, OnChanges,AfterViewInit{
     this.chart = this.bindChart();
     this.updateChart();
   }
-  
+
   ngAfterViewInit() {
     console.log('create new chart')
-    this.chart = c3.generate({ 
+    this.chart = c3.generate({
       bindto: `#${this.chartId}`,
       data: {
         x: 'x',
         columns: [],
-        type:this.type,
+        type: this.type,
         labels: false
       },
-      point: {show: false},
+      point: { show: false },
       grid: this.gridOptions,
       legend: this.legend,
-      tooltip: {grouped: false},
+      tooltip: { grouped: false },
     });
 
     // console.log('generating chart', this.chartData);
     this.updateChart();
   }
-  
+
   private bindChart() {
-      if(!this.chart) {
-        console.log('bind create new chart')
-      }
-    this.chart = this.chart ?? c3.generate({ 
+    if (!this.chart) {
+      console.log('bind create new chart')
+    }
+    this.chart = this.chart ?? c3.generate({
       bindto: `#${this.chartId}`,
       data: {
         x: 'x',
@@ -68,14 +68,14 @@ export class LineChartComponent implements OnInit, OnChanges,AfterViewInit{
         labels: false
       },
       legend: this.legend,
-      tooltip: {grouped: false},
+      tooltip: { grouped: false },
     });
-    
+
 
     return this.chart;
   }
 
-  private updateChart() {  
+  private updateChart() {
     this.chart.load({
       unload: true,
       columns: this.chartData.columns,

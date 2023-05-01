@@ -1,3 +1,26 @@
+import * as MAYA_ROUTES from "../maya_routes";
+
+
+export function createMayaRoute() {
+    return '/maya/';
+}
+export function createMayaIntro() {
+    return createMayaRoute() + MAYA_ROUTES.INTRO.path;
+}
+
+export function createMayaDashboard() {
+    return createMayaRoute() + MAYA_ROUTES.DASHBOARD.path;
+}
+export function createMayaOnboarding() {
+    return createMayaRoute() + MAYA_ROUTES.ONBOARDING.path;
+}
+export function createMayaEducation() {
+    return createMayaRoute() + MAYA_ROUTES.EDUCATION.path;
+}
+export function createMayaCalculator() {
+    return createMayaRoute() + MAYA_ROUTES.CALCULATOR.path;
+}
+
 export function createMillionaireArticleRoute() {
     return createArticlesRoute() + '/millionaire';
 }

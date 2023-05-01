@@ -15,7 +15,7 @@
 </div>
 <ng-container *ngIf="articles | async as articles">
     <ng-container *ngFor="let article of articles;">
-        <mat-card>
+        <mat-card appearance="outlined">
             <mat-card-content>
                 <article markdown [src]="article" (load)="onLoad()" (error)="onError()"></article>
             </mat-card-content>

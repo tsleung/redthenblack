@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
@@ -58,6 +58,16 @@ import { BeginnerTalkComponent } from './beginner-talk/beginner-talk.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { MultipleLineChartComponent } from './multiple-line-chart/multiple-line-chart.component';
 import { UpgradeComponent } from './upgrade/upgrade.component';
+import { NgChartsModule } from 'ng2-charts';
+import { SplashIntroComponent } from './splash-intro/splash-intro.component';
+import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component';
+import { MayaLayoutComponent } from './maya-layout/maya-layout.component';
+import { MayaOnboardComponent } from './maya-onboard/maya-onboard.component';
+import { MayaEducationalArticleComponent } from './maya-educational-article/maya-educational-article.component';
+import { MayaCalculatorComponent } from './maya-calculator/maya-calculator.component';
+import { DeckEditorComponent } from './deck-editor/deck-editor.component';
+import { LifestreamViewerComponent } from './lifestream-viewer/lifestream-viewer.component';
+import { DecisionEditorComponent } from './decision-editor/decision-editor.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +96,15 @@ import { UpgradeComponent } from './upgrade/upgrade.component';
     BarChartComponent,
     MultipleLineChartComponent,
     UpgradeComponent,
+    SplashIntroComponent,
+    PersonalDashboardComponent,
+    MayaLayoutComponent,
+    MayaOnboardComponent,
+    MayaEducationalArticleComponent,
+    MayaCalculatorComponent,
+    DeckEditorComponent,
+    LifestreamViewerComponent,
+    DecisionEditorComponent,
    
   ],
   imports: [
@@ -110,6 +129,8 @@ import { UpgradeComponent } from './upgrade/upgrade.component';
     MarkdownModule.forRoot(),
     HttpClientModule,
     NgbModule,
+    NgChartsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     ProfileService,

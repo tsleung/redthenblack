@@ -54,15 +54,14 @@
               (click)="game.black(bet)">Black</button>
     </div>
     <div class="visual-bet"> Bet: {{accountStrainedBet(game.account)}}
-      <mat-slider [value]="bet / game.account * 100"
-                  (change)="updateBet($event.value * game.account / 100)"
-                  vertical
+      <!-- TODO: The 'vertical' property no longer exists -->
+      <!-- TODO: The 'tickInterval' property no longer exists -->
+      <mat-slider
                   min="0"
                   max="100"
                   thumbLabel
                   [displayWith]="formatBetLabel"
-                  steps="5"
-                  tickInterval="25">
+                  steps="5" #ngSlider><input matSliderThumb [value]="bet / game.account * 100" (change)="updateBet({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value}.value * game.account / 100)" #ngSliderThumb="matSliderThumb" />
       </mat-slider>
       <div>Account: {{game.account - bet}} </div>
     </div>

@@ -1,5 +1,5 @@
 @mixin welcome() {
-    .mat-card {
+    .mat-mdc-card {
         margin: .5rem;
     }
 
@@ -9,7 +9,7 @@
         flex: 1;
         flex-direction: row;
 
-        .mat-card {
+        .mat-mdc-card {
             flex-direction: column;
             flex: 2 1 20%;
             display: flex;
@@ -19,7 +19,7 @@
 
     }
 
-    .mat-card-actions {
+    .mat-mdc-card-actions {
         display: flex;
         flex-direction: column;
         flex: 1;    

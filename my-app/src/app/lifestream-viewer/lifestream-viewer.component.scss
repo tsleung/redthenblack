@@ -1,0 +1,30 @@
+:host {
+  display: flex;
+  flex: 1;
+  position: relative;
+  flex-direction: column;
+
+  ol {
+    max-width: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    li {
+      list-style: none;
+      border: 1px solid #ddd;
+    }
+  }
+
+  fieldset {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+  }
+  textarea {
+    display: flex;
+    flex: 1;
+    min-height: 10em;
+  }
+}

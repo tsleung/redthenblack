@@ -6,7 +6,7 @@ Retirement planning consists of three primary attributes (1) time (2) value and 
 
   <article>
 
-    <mat-card>
+    <mat-card appearance="outlined">
       <mat-card-content>
         <router-outlet name="saving"></router-outlet>
         <router-outlet name="investing"></router-outlet>
@@ -23,7 +23,7 @@ Retirement planning consists of three primary attributes (1) time (2) value and 
   </article>
 
   <aside [ngClass]="{open:opened}">
-    <mat-card>
+    <mat-card appearance="outlined">
       <mat-card-content>
         <router-outlet name="results"></router-outlet>
       </mat-card-content>

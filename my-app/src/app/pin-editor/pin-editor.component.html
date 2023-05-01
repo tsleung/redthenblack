@@ -43,21 +43,21 @@
     (submit)="pinsService.addPin({active: true, id: name.value, years:years.value, amount: amount.value});$event.preventDefault();findMyRetirementService.updateRetirementPreferences({})"
     [action]="parameters.href" method="GET">
 
-    <mat-form-field appearance="standard">
+    <mat-form-field>
       <mat-label>
         Years ahead
       </mat-label>
       <input #years matInput name="years" type="number" placeholder="5">
     </mat-form-field>
 
-    <mat-form-field appearance="standard">
+    <mat-form-field>
       <mat-label>
         Amount required
       </mat-label>
       <input matInput #amount name="amount" type="number" placeholder="200000">
     </mat-form-field>
 
-    <mat-form-field appearance="standard">
+    <mat-form-field>
       <mat-label>
         Event name
       </mat-label>

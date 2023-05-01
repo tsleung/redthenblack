@@ -1,0 +1,47 @@
+<form [formGroup]="form">
+  
+<fieldset>
+  <legend>How many years would you like to spend in retirement?</legend>
+  <input type="number" mat-input [formControl]="controls.workingYears"/>
+
+  <br>
+  <ng-container *ngIf="!form.value.workingYears">
+    --empty chart--
+  </ng-container>
+</fieldset>
+  
+<ng-container *ngIf="form.value.workingYears">
+  <fieldset>
+    <legend>What percentage of your income are you currently saving?</legend>
+    <input type="number" [formControl]="controls.savingsRate" />
+    <br>
+    
+  </fieldset>
+  
+</ng-container>
+<br>
+<ng-container *ngIf="form.value.savingsRate">
+  Great! Given your current savings, and expected time in retirement, it will take N years of saving to reach that point!
+
+  <br>
+  <br>
+  Want to take a look at some options to make it go faster? Use some of these calculators.
+
+  <br>
+  <br>
+  New to the space? Take a look at some of these articles.
+
+  <br>
+  <br>
+  Already know what you're doing or someone has already introduced you to R/B? Dive right in here:
+  <br>
+  <a mat-stroked-button [href]="routingService.mapper.createMayaDashboard()">Dashboard</a>
+</ng-container>
+
+
+<br>
+<ng-container *ngIf="!form.value.savingsRate">
+  <a [href]="routingService.mapper.createMayaDashboard()">skip</a>
+</ng-container>
+
+</form>

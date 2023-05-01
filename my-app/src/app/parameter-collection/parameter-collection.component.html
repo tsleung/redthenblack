@@ -7,7 +7,7 @@
     </p>
     <form ngForm (submit)="paramSubmit(parameters, $event)" [action]="parameters.href" method="GET">
       <ng-container *ngFor="let input of parameters.inputs">
-        <mat-form-field appearance="standard">
+        <mat-form-field>
             <mat-label *ngIf="input.label">
               {{input.label}} 
             </mat-label>
