@@ -1,0 +1,22 @@
+<p>savings-calculator works!</p>
+
+<textarea [formControl]="controls.savingsPerPeriod"></textarea>
+
+<ng-container *ngIf="savings | async as savings">
+<fieldset>
+  <mat-form-field>
+    <mat-label>Autosize textarea</mat-label>
+    <textarea matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="3"
+              cdkAutosizeMaxRows="50">
+              {{savings | json}}
+            </textarea>
+  </mat-form-field>
+  
+</fieldset>
+  
+</ng-container>
+
+

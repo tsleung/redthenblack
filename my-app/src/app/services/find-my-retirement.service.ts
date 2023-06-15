@@ -108,7 +108,7 @@ export class FindMyRetirementService {
   ) {
     this.updateMarketLeverage();
     this.createPolicyConfidenceCurve();
-    this.updateRetirementPreferences({});
+    // this.updateRetirementPreferences({});
   }
 
   editLeverage() {

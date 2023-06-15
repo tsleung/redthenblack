@@ -1,0 +1,22 @@
+<ng-container *ngIf="data|async as data">
+  <hgroup>
+    <h2 class="subtitle" *ngIf="data.subtitle">
+      {{data.subtitle}}
+    </h2>
+    <h1 class="title" *ngIf="data.title">
+      {{data.title}}
+    </h1>
+    <h3 class="caption" *ngIf="data.caption">
+      {{data.caption}}
+    </h3>
+  </hgroup>
+  <p>
+    {{data.content}}
+  </p>
+  <ng-container *ngIf="data.action && data.action.primary">
+    <a mat-flat-button color="primary" [routerLink]="[data.action.href]">{{data.action.text}}</a>
+  </ng-container>
+  <ng-container *ngIf="data.action && !data.action.primary">
+    <a mat-stroked-button [routerLink]="[data.action.href]">{{data.action.text}}</a>
+  </ng-container>
+</ng-container>

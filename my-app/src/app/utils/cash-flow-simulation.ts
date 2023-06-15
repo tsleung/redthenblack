@@ -225,7 +225,9 @@ export function runTestSimulation() {
     runs,
   }
   
-
   console.log('simulationResults', simulationResults);
-  // start arbitrarily halfway through and run more
+  // TODO start arbitrarily halfway through and run more
+  // Also wire this to the UI so that we can see the simulation run results in a table, at each period. 
+  // Should be able to create a new simulation from that period and micro the policy
+
 }

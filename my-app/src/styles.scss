@@ -1,58 +1,142 @@
 
+@use '@angular/material' as mat;
 
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
-@import '~@angular/material/theming';
-// Plus imports for other components in your app.
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
-@include mat-core();
+.mat-elevation-z7 {
+  box-shadow: 0 4px 5px -2px #0003, 0 7px 10px 1px #00000024, 0 2px 16px 1px #0000001f;
+}
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$my-app-primary: mat-palette($mat-pink);
-$my-app-accent: mat-palette($mat-blue-grey, A200, A100, A400);
+$my-primary: mat.define-palette(mat.$indigo-palette, 500);
+$my-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 
-// The warn palette is optional (defaults to red).
-$my-app-warn: mat-palette($mat-amber);
+// The "warn" palette is optional and defaults to red if not specified.
+$my-warn: mat.define-palette(mat.$red-palette);
 
-// Create the theme object (a Sass map containing all of the palettes).
-$my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
+$my-theme: mat.define-light-theme((
+ color: (
+   primary: $my-primary,
+   accent: $my-accent,
+   warn: $my-warn,
+ ),
+ typography: mat.define-typography-config(),
+ density: 0,
+));
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include angular-material-theme($my-app-theme);
+@include mat.core();
+// Adds density level 0 styles
+@include mat.all-component-themes($my-theme);
 
-/* You can add global styles to this file, and also import other style files */
-@import '~@angular/material/theming';
 
-$foreground: map-get($my-app-theme, foreground);
-$background: map-get($my-app-theme, background);
+$dark-primary-text: rgba(black, 0.87);
 
-// pastel black hex
-// https://www.google.com/search?q=pastel+black+hex&safe=off&rlz=1C5CHFA_enUS824US824&sxsrf=ALeKk01aDOvY-NdmQPE6XlvazPRg2v6frQ:1594848272189&tbm=isch&source=iu&ictx=1&fir=LLHjGNj_lWKDNM%252C7KBZqRGH6G1N4M%252C_&vet=1&usg=AI4_-kRqqONat7JFhPJNc81JGQ5mmOKEXQ&sa=X&ved=2ahUKEwjwze_lmNDqAhVFJzQIHaJPDbMQ9QEwA3oECAIQHg&biw=1398&bih=739#imgrc=7rXzfy_K6vTZ9M
-// https://www.google.com/search?q=pastel%20black%20hex&tbm=isch&safe=off&safe=off&tbs=rimg%3ACe61838vyur0YQADfKPAHgh1&rlz=1C5CHFA_enUS824US824&hl=en&ved=0CBsQuIIBahcKEwjAzsHpmNDqAhUAAAAAHQAAAAAQCw&biw=1383&bih=739
-$custom-typography: mat-typography-config($font-family: "'Work Sans','Montserrat','Raleway','Work Sans'",
-  $display-4: mat-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
-  $display-3: mat-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
-  $display-2: mat-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
-  $display-1: mat-typography-level(34px, 40px, 400),
-  $headline: mat-typography-level(26px, 32px, 300, $letter-spacing: 0.05em),
-  $title: mat-typography-level(24px, 32px, 300),
-  $subheading-2: mat-typography-level(20px, 32px, 100, $letter-spacing: 0.00em),
-  $subheading-1: mat-typography-level(16px, 28px, 400),
-  $body-2: mat-typography-level(14px, 26px, 500, $letter-spacing: 0.02em, $font-family: 'Raleway'),
-  $body-1: mat-typography-level(17px, 30px, 300, $letter-spacing: -0.02em, $font-family: 'Montserrat'),
-  $caption: mat-typography-level(12px, 20px, 400),
-  $button: mat-typography-level(14px, 14px, 500),
-  // Line-height must be unit-less fraction of the font-size.
-  $input: mat-typography-level(inherit, 1.125, 400),
+$light-primary-text: white;
+
+$mat-primary: (
+        50: #e8eaf6,
+        100: #c5cae9,
+        200: #9fa8da,
+        300: #7986cb,
+        400: #5c6bc0,
+        500: #3f51b5,
+        600: #3949ab,
+        700: #303f9f,
+        800: #283593,
+        900: #1a237e,
+        A100: #8c9eff,
+        A200: #536dfe,
+        A400: #3d5afe,
+        A700: #304ffe,
+        contrast: (
+                50: $dark-primary-text,
+                100: $dark-primary-text,
+                200: $dark-primary-text,
+                300: $light-primary-text,
+                400: $light-primary-text,
+                500: $light-primary-text,
+                600: $light-primary-text,
+                700: $light-primary-text,
+                800: $light-primary-text,
+                900: $light-primary-text,
+                A100: $dark-primary-text,
+                A200: $light-primary-text,
+                A400: $light-primary-text,
+                A700: $light-primary-text,
+        )
 );
-@include mat-core($custom-typography);
+
+$mat-accent: (
+        50: #fce4ec,
+        100: #f8bbd0,
+        200: #f48fb1,
+        300: #f06292,
+        400: #ec407a,
+        500: #e91e63,
+        600: #d81b60,
+        700: #c2185b,
+        800: #ad1457,
+        900: #880e4f,
+        A100: #ff80ab,
+        A200: #ff4081,
+        A400: #f50057,
+        A700: #c51162,
+        contrast: (
+                50: $dark-primary-text,
+                100: $dark-primary-text,
+                200: $dark-primary-text,
+                300: $dark-primary-text,
+                400: $dark-primary-text,
+                500: $light-primary-text,
+                600: $light-primary-text,
+                700: $light-primary-text,
+                800: $light-primary-text,
+                900: $light-primary-text,
+                A100: $dark-primary-text,
+                A200: $light-primary-text,
+                A400: $light-primary-text,
+                A700: $light-primary-text,
+        )
+);
+
+
+
+$primary: mat.define-palette(mat.$pink-palette, 500);
+
+$accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
+
+$theme: mat.define-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+));
+
+@include mat.all-component-themes($theme);
+
+
+@import "./_mixins";
+
+@include responsive-dialogs();
+
+@import "./maya";
+@include maya-layout();
+
+.highlight-date {
+  background: red;
+}
+
+
+.c3 .domain,
+.c3 .tick line {
+  stroke: #888;
+}
+
+.c3-axis .tick text {
+  fill: #888;
+}
 
 html,
 body {
@@ -74,16 +158,42 @@ body {
 }
 
 
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
-
 app-article {
   display: block;
   padding: 1rem;
 }
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
 
+// Background palette for light themes.
+$background: (
+  status-bar:  rgba(black, 0.38),
+  app-bar:     rgba(black, 0.38),
+  background:  rgba(black, 0.38),
+  hover:      rgba(black, 0.04), // TODO(kara): check style with Material Design UX
+  card:       white,
+  dialog:     white,
+  disabled-button:  rgba(black, 0.38),
+  raised-button: white,
+  focused-button:  rgba(black, 0.38),
+  selected-button:  rgba(black, 0.38),
+  selected-disabled-button:  rgba(black, 0.38),
+  disabled-button-toggle:  rgba(black, 0.38),
+);
+// Foreground palette for light themes.
+$foreground: (
+  base:              black,
+  divider:            rgba(black, 0.38),
+  dividers:           rgba(black, 0.38),
+  disabled:          rgba(black, 0.38),
+  disabled-button:   rgba(black, 0.38),
+  disabled-text:     rgba(black, 0.38),
+  hint-text:         rgba(black, 0.38),
+  secondary-text:    rgba(black, 0.54),
+  icon:              rgba(black, 0.54),
+  icons:             rgba(black, 0.54),
+  text:              rgba(black, 0.87),
+  slider-off:        rgba(black, 0.26),
+  slider-off-active: rgba(black, 0.38),
+);
 
 @import 'app/welcome/welcome.component.scss';
 @import 'app/summary/summary.component.scss';
@@ -107,11 +217,11 @@ parameter-collection {
   @include parameter-collection();
 }
 app-layouts {
-  @include app-layouts($my-app-theme);
+  @include app-layouts($theme);
 }
 app-article {
   @include article();
 }
 app-retirement-article {
-  @include app-retirement-article($my-app-theme);
+  @include app-retirement-article($theme);
 }

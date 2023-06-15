@@ -12,13 +12,14 @@ export function createMayaDashboard() {
     return createMayaRoute() + MAYA_ROUTES.DASHBOARD.path;
 }
 export function createMayaOnboarding() {
-    return createMayaRoute() + MAYA_ROUTES.ONBOARDING.path;
+    return createMayaRoute() + 'onboarding';
 }
+
 export function createMayaEducation() {
-    return createMayaRoute() + MAYA_ROUTES.EDUCATION.path;
+    return createMayaRoute() + 'education';
 }
 export function createMayaCalculator() {
-    return createMayaRoute() + MAYA_ROUTES.CALCULATOR.path;
+    return createMayaRoute() + 'calculator';
 }
 
 export function createMillionaireArticleRoute() {

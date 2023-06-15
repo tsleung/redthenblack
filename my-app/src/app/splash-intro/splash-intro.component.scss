@@ -1,0 +1,28 @@
+:host {
+
+  aside {
+    background: #96BAFA;
+    text-align: center;
+    padding: 48px 48px 0;
+
+    p {
+
+      font-family: 'Manrope';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 22px;
+      line-height: 30px;
+
+      color: #000000;
+
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+  }
+
+}

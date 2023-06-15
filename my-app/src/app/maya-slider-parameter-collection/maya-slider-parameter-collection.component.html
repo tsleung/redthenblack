@@ -1,0 +1,43 @@
+<div *ngIf="parameters | async as parameters">
+  <div class="title">
+    {{parameters.title}}
+  </div>
+  <p class="description">
+    {{parameters.description}}
+  </p>
+  <form ngForm #form (submit)="formSubmit($event);" (input)="onFormInput(parameters, form)"
+  [action]="parameters.href" method="GET">
+    <ng-container *ngFor="let input of parameters.inputs">
+      <mat-form-field appearance="outline">
+          <mat-label *ngIf="input.label">
+            {{input.label}} 
+          </mat-label>
+        <input matInput 
+        [name]="input.name" 
+        [type]="input.type || 'number'"
+        [step]="input.step ? input.step : .1"
+        [placeholder]="input.placeholder"
+        [value]="input.value || this.findMyRetirementService.retirementPreferences[input.name]">
+        <ng-container *ngIf="input.tooltip && false">
+          <mat-icon [matTooltip]="input.tooltip"
+            matSuffix>help</mat-icon>
+        </ng-container>
+        
+        <mat-hint *ngIf="input.startHint" 
+          align="start">{{input.startHint}}
+        </mat-hint>
+        <mat-hint *ngIf="input.endHint" 
+          align="end">
+          <strong>{{input.endHint}}</strong>
+          </mat-hint>
+          
+      </mat-form-field>
+    </ng-container>
+    
+      <button class="save" mat-flat-button 
+      type="submit" 
+      color="primary">Submit</button>
+    
+    </form>
+    
+</div>

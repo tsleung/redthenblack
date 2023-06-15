@@ -1,0 +1,18 @@
+:host {
+
+  .parameters {
+    display: flex;
+    flex: 1;
+  }
+  .parameter {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin: .25rem;
+  }
+
+  .actions {
+    display: block;
+    text-align: center;  
+  }
+}

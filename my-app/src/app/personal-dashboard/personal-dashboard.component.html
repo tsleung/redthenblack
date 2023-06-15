@@ -9,6 +9,12 @@
   ...+ 5 more
 </details>
 
+<ng-container *ngIf="working | async as working">
+  <app-line-chart [chartData]="working" [legend]="{show:true}"
+  [gridOptions]="findMyRetirementService.workingGridOptions"></app-line-chart>
+
+</ng-container>
+
 <router-outlet></router-outlet>
 
 <details>
@@ -21,14 +27,14 @@
 
   - Revisit decisions to make, what are the tradeoffs
   - Check in on assumptions which have high impact of closest trajectory
-  - Allow pinning of calculators or articles, default is top of queue and optional reminder for next month 
+  - Allow pinning of calculators or articles, default is top of queue and optional reminder for next month
 
 </details>
 
 <fieldset>
   <legend>
     Featured Education Modules
-  </legend> 
+  </legend>
   <br>
   <a [href]="routingService.mapper.createMayaEducation()">Education</a>
 </fieldset>

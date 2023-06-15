@@ -68,6 +68,25 @@ import { MayaCalculatorComponent } from './maya-calculator/maya-calculator.compo
 import { DeckEditorComponent } from './deck-editor/deck-editor.component';
 import { LifestreamViewerComponent } from './lifestream-viewer/lifestream-viewer.component';
 import { DecisionEditorComponent } from './decision-editor/decision-editor.component';
+import { MayaLayoutTwoRowComponent } from './maya-layout-two-row/maya-layout-two-row.component';
+import { MayaLayoutTwoColumnComponent } from './maya-layout-two-column/maya-layout-two-column.component';
+import { MayaCardSelectionComponent } from './maya-card-selection/maya-card-selection.component';
+import { MayaTitledContentComponent } from './maya-titled-content/maya-titled-content.component';
+import { MayaFeatureImageComponent } from './maya-feature-image/maya-feature-image.component';
+import { MayaTypedInputComponent } from './maya-typed-input/maya-typed-input.component';
+import { MayaParameterCollectionComponent } from './maya-parameter-collection/maya-parameter-collection.component';
+import { MayaSliderParameterCollectionComponent } from './maya-slider-parameter-collection/maya-slider-parameter-collection.component';
+import { SavingsCalculatorComponent } from './savings-calculator/savings-calculator.component';
+import { IndexingCalculatorComponent } from './indexing-calculator/indexing-calculator.component';
+import { PayingDebtCalculatorComponent } from './paying-debt-calculator/paying-debt-calculator.component';
+import { RentOrBuyCalculatorComponent } from './rent-or-buy-calculator/rent-or-buy-calculator.component';
+import { ComparingCashFlowsCalculatorComponent } from './comparing-cash-flows-calculator/comparing-cash-flows-calculator.component';
+import { BackToSchoolCalculatorComponent } from './back-to-school-calculator/back-to-school-calculator.component';
+import { GasOrElectricCalculatorComponent } from './gas-or-electric-calculator/gas-or-electric-calculator.component';
+import { RetirementWithdrawalCalculatorComponent } from './retirement-withdrawal-calculator/retirement-withdrawal-calculator.component';
+import { SeniorCareCalculatorComponent } from './senior-care-calculator/senior-care-calculator.component';
+import { KidsCollegeFundCalculatorComponent } from './kids-college-fund-calculator/kids-college-fund-calculator.component';
+import { CostOfLivingCalculatorComponent } from './cost-of-living-calculator/cost-of-living-calculator.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +124,25 @@ import { DecisionEditorComponent } from './decision-editor/decision-editor.compo
     DeckEditorComponent,
     LifestreamViewerComponent,
     DecisionEditorComponent,
+    MayaLayoutTwoRowComponent,
+    MayaLayoutTwoColumnComponent,
+    MayaCardSelectionComponent,
+    MayaTitledContentComponent,
+    MayaFeatureImageComponent,
+    MayaTypedInputComponent,
+    MayaParameterCollectionComponent,
+    MayaSliderParameterCollectionComponent,
+    SavingsCalculatorComponent,
+    IndexingCalculatorComponent,
+    PayingDebtCalculatorComponent,
+    RentOrBuyCalculatorComponent,
+    ComparingCashFlowsCalculatorComponent,
+    BackToSchoolCalculatorComponent,
+    GasOrElectricCalculatorComponent,
+    RetirementWithdrawalCalculatorComponent,
+    SeniorCareCalculatorComponent,
+    KidsCollegeFundCalculatorComponent,
+    CostOfLivingCalculatorComponent,
    
   ],
   imports: [

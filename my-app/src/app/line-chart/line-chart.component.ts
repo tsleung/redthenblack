@@ -58,7 +58,7 @@ export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
 
   private bindChart() {
     if (!this.chart) {
-      console.log('bind create new chart')
+      console.log('bind create new chart',document)
     }
     this.chart = this.chart ?? c3.generate({
       bindto: `#${this.chartId}`,
