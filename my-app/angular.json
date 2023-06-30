@@ -33,7 +33,7 @@
               "./node_modules/c3/c3.min.css"
             ],
             "scripts": [
-	      "node_modules/marked/lib/marked.js"
+	      "node_modules/marked/marked.min.js"
 	    ]
           },
           "configurations": {
@@ -131,5 +131,8 @@
         }
       }
     }},
-  "defaultProject": "my-app"
+  "defaultProject": "my-app",
+  "cli": {
+    "analytics": false
+  }
 }
