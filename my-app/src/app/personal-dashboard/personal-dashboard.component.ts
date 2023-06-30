@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { combineLatest, map, Subject, tap } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
+import {  map, tap } from 'rxjs/operators';
 import { FindMyRetirementService } from '../services/find-my-retirement.service';
 import { RoutingService } from '../services/routing.service';
 
@@ -18,7 +19,8 @@ export class PersonalDashboardComponent {
 
   }
 
-  working = combineLatest([
+  working = this.findMyRetirementService.working;
+  working2 = combineLatest([
     this.ready,this.findMyRetirementService.working
   ]).pipe(
     map(([ready, val]) => ({...val})),
@@ -29,9 +31,7 @@ export class PersonalDashboardComponent {
     
     //this.findMyRetirementService.updateMarketLeverage();
     //this.findMyRetirementService.createPolicyConfidenceCurve();
-    setTimeout(() => {
-      this.ready.next();
-      this.findMyRetirementService.updateRetirementPreferences({});
-    }, 2000); 
+    this.ready.next();
+    this.findMyRetirementService.updateRetirementPreferences({});
   }  
 }

@@ -23,7 +23,7 @@ export const CALCULATOR = {
       component: IndexingCalculatorComponent,
     },
     {
-      path: 'paying-debt',
+      path: 'differences-in-debt',
       component: PayingDebtCalculatorComponent,
     },
     {

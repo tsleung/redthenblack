@@ -1,8 +1,47 @@
-<p>savings-calculator works!</p>
+<article>
+  
+  <markdown ngPreserveWhitespaces>
 
-<textarea [formControl]="controls.savingsPerPeriod"></textarea>
+    ## Why Saving Money is Important
+    
+    Saving money is one of the most important things you can do for your financial future. It can help you cover unexpected expenses, reach your long-term goals, and live a more comfortable life.
+    
+    ### Here are some of the benefits of saving money:
+      
+    - **Peace of mind:** Having money saved up can give you peace of mind knowing that you have a financial cushion in case of an unexpected expense, such as a job loss, medical emergency, or car repair.
+    - **Reach your goals:** Saving money can help you reach your long-term goals, such as buying a house, saving for retirement, or sending your children to college.
+    - **Live a more comfortable life:** Having money saved up can allow you to live a more comfortable life by taking vacations, eating out, or buying new clothes without having to worry about going into debt.
+    
+    Saving money can be challenging, but it's worth it. Here are some tips to help you get started:
+    
+    - **Set financial goals:** Once you know how much money you have coming in and going out, you can start setting financial goals. Your goals could be anything from saving for a down payment on a house to saving for retirement.
+    - **Automate your savings:** One of the best ways to save money is to automate your savings. This means setting up a direct deposit from your paycheck into your savings account.
+    - **Find ways to cut back on expenses:** There are many ways to cut back on expenses, such as cooking at home more often, canceling unnecessary subscriptions, and shopping around for better deals on insurance and other services.
+  </markdown>
 
+  <markdown ngPreserveWhitespaces>
+    ## Interest rates and compounding
+
+    Interest rates are the percentage of your savings that you earn each year. Compounding is when your interest earnings are added to your savings and then earn interest themselves. This can help your savings grow much faster over time.
+    
+    For example, let's say you save $100 per month at an interest rate of 5%. After one year, you will have earned $5 in interest. The following year, you will earn interest on your original $100 plus the $5 in interest you earned the previous year. This means that you will earn more interest in the second year than you did in the first year.
+    
+    Over time, compounding can have a dramatic impact on your savings. Let's say you save $100 per month for 30 years at an interest rate of 5%. After 30 years, you will have over $60,000 saved. This is because of the power of compounding.
+    
+  
+  </markdown>
+  
+  Here is an example of a savings calculator that you can use:
+
+  Periods: <input [formControl]="controls.numPeriods" step="1" min="0" type="number" /><br/>
+  Initial: <input [formControl]="controls.initialBalance" step=".01" type="number" /><br/>
+  SavingRate: <input [formControl]="controls.savingsPerPeriod" step=".01" type="number" /><br/>
+  InterestRate: <input [formControl]="controls.interestRate" step=".01" type="number" /><br/>
+  
 <ng-container *ngIf="savings | async as savings">
+  <app-line-chart [chartData]="savings" [legend]="{show:true}"></app-line-chart>
+  
+
 <fieldset>
   <mat-form-field>
     <mat-label>Autosize textarea</mat-label>
@@ -11,12 +50,29 @@
               #autosize="cdkTextareaAutosize"
               cdkAutosizeMinRows="3"
               cdkAutosizeMaxRows="50">
-              {{savings | json}}
+              {{form.value | json}}
             </textarea>
   </mat-form-field>
   
 </fieldset>
   
 </ng-container>
+  
+  <div markdown>
+    Saving money is a journey, not a destination. It takes time and effort, but it's worth it in the long run. By following these tips, you can start saving money today and build a secure financial future for yourself.
+
+    Your savings rate is the percentage of your income that you save each month. It's a good idea to aim for a savings rate of at least 20%, but even saving 10% or 5% can make a big difference over time.
+
+    There are many ways to increase your savings rate. You can automate your savings, find ways to cut back on expenses, or get a part-time job.
+
+    No matter how you choose to do it, saving money is one of the best things you can do for your financial future.
+  </div>
+  
+</article>
+
+
+<aside>
+  Saving with Indexing
+</aside>
 
 

@@ -30,7 +30,6 @@ import { CashFlowPlanComponent } from './cash-flow-plan/cash-flow-plan.component
 import { TimeseriesChartComponent } from './timeseries-chart/timeseries-chart.component';
 import { SimpleBetComponent } from './simple-bet/simple-bet.component';
 import { PosenetComponent } from './posenet/posenet.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MarkdownModule } from 'ngx-markdown';
 import { ArticleComponent } from './article/article.component';
 import { DemonComponent } from './demon/demon.component';
@@ -58,7 +57,6 @@ import { BeginnerTalkComponent } from './beginner-talk/beginner-talk.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { MultipleLineChartComponent } from './multiple-line-chart/multiple-line-chart.component';
 import { UpgradeComponent } from './upgrade/upgrade.component';
-import { NgChartsModule } from 'ng2-charts';
 import { SplashIntroComponent } from './splash-intro/splash-intro.component';
 import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component';
 import { MayaLayoutComponent } from './maya-layout/maya-layout.component';
@@ -166,8 +164,6 @@ import { CostOfLivingCalculatorComponent } from './cost-of-living-calculator/cos
     BrowserAnimationsModule,
     MarkdownModule.forRoot(),
     HttpClientModule,
-    NgbModule,
-    NgChartsModule,
     ReactiveFormsModule,
   ],
   providers: [

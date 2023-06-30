@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 
 interface Period{
   salaryHours: number;
@@ -184,7 +183,8 @@ function runSimulation(simulationInput: SimulationInput):SimulationRun {
 
   const portfolioHistory = periods.reduce((portfolios, period) => {
     // create new portfolio copy for mutation
-    const copiedPortfolio = {...portfolios.at(-1)};
+    // const copiedPortfolio = {...portfolios.at(-1)};
+    const copiedPortfolio = {...portfolios.slice(-1,1)[0]};
     // execute each trade over the entire portfolio
     const updatedPortfolio = trades.reduce((portfolio, trade) => {
       // cause mutation

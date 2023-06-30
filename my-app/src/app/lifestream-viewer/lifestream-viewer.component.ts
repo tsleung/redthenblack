@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { LifestreamService } from '../services/lifestream.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Deck } from '../services/deck.service';
-import { filter, map, Observable, startWith } from 'rxjs';
+import { Observable} from 'rxjs';
+import { filter, map, startWith } from 'rxjs/operators';
 import { runTestSimulation } from '../utils/cash-flow-simulation';
 
 
