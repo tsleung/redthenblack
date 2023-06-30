@@ -1,0 +1,165 @@
+
+@mixin maya-layout {
+
+  body {
+    font-family: 'Manrope', sans-serif;
+
+  }
+
+  @media screen and (max-width: 959px) {
+
+  }
+
+
+  .split.layout {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    
+    & > * {
+      display: flex;
+      flex: 2;
+      flex-direction: column;
+    }
+
+    & > *:first-child {
+      flex: 2;
+    }
+  }
+
+  details {
+    border: 1px solid #ddd;
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  app-maya-layout {
+    display: block;
+    min-height:100vh;
+    box-sizing: border-box;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-style: normal;
+    font-weight: 800;
+    font-size: 57.05px;
+    line-height: 78px;
+    color: #000000;
+  }
+
+  h3 {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 25px;
+
+    color: #000000;
+  }
+
+  p {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 25px;
+
+    color: #000000;
+
+  }
+  hgroup {
+    .title {
+      font-family: 'Manrope';
+      font-style: normal;
+      font-weight: 800;
+      font-size: 57.05px;
+      line-height: 78px;
+      margin: 0;
+      padding: 0;
+      color: #000000;
+    }
+  
+    .subtitle {
+      font-family: 'Manrope';
+      font-style: normal;
+      font-weight: 800;
+      font-size: 18.05px;
+      line-height: 25px;
+      margin: 0;
+      padding: 0;
+      /* identical to box height */
+  
+  
+      color: #FD5053;
+    }
+
+    .caption {
+      font-family: 'Manrope';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 32px;
+      line-height: 44px;
+
+      color: #000000;
+    }
+  
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+
+      background: #FFFFFF;
+      border: 10px solid #96BAFA;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.12);
+      border-radius: 6px;
+
+      font-family: 'Manrope';
+      font-style: normal;
+      font-weight: 800;
+      font-size: 18px;
+      line-height: 25px;
+      text-align: center;
+
+      color: #000000;
+            
+      margin: 32px;
+      padding: 42px;
+      text-align: center;
+      text-decoration: none;
+    }
+  }
+  
+  .label {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
+    /* identical to box height */
+
+
+    color: #000000;
+  }
+
+  .value {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 25px;
+    /* identical to box height */
+
+
+    color: #000000;
+  }
+
+
+}
