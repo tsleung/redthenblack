@@ -17,7 +17,7 @@ export function createMayaEducation() {
     return createMayaRoute() + 'education';
 }
 export function createMayaCalculator() {
-    return createMayaRoute() + 'calculator';
+    return createMayaRoute() + 'calculators';
 }
 
 export function createMillionaireArticleRoute() {

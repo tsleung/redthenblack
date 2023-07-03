@@ -11,7 +11,7 @@ import { KidsCollegeFundCalculatorComponent } from './kids-college-fund-calculat
 import { CostOfLivingCalculatorComponent } from './cost-of-living-calculator/cost-of-living-calculator.component';
 
 export const CALCULATOR = {
-  path: 'calculator',
+  path: 'calculators',
   component: MayaCalculatorComponent,
   children: [
     {
