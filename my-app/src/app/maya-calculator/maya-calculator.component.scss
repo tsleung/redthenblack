@@ -1,0 +1,15 @@
+:host {
+  a {
+    text-decoration: none;
+  }
+
+
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+ 
+
+  mat-list {
+    width: 320px;
+  }
+}

@@ -1,10 +1,5 @@
 import { Component } from '@angular/core';
 
-interface Savings {
-  series: number[][];
-  config: object;
-}
-
 /**
  * Savings calculator
  * 
@@ -20,13 +15,13 @@ interface Savings {
 })
 export class SavingsCalculatorComponent {
   controls = {
-    initialBalance: new FormControl(0),
-    nominalMultiplier: new FormControl(1),
-    savingsPerPeriod: new FormControl(.1),
-    interestRate: new FormControl(.05),
-    numPeriods: new FormControl(30),
-    useMultiplier: new FormControl(true),
-    stepNext: new FormControl(true),
+    initialBalance: new FormControl<number>(1e4),
+    nominalMultiplier: new FormControl(<number>1),
+    savingsPerPeriod: new FormControl<number>(1e3),
+    interestRate: new FormControl<number>(.05),
+    numPeriods: new FormControl<number>(30),
+    useMultiplier: new FormControl<boolean>(true),
+    stepNext: new FormControl<boolean>(true),
   }
 
   form = new FormGroup(this.controls);
@@ -44,7 +39,7 @@ export class SavingsCalculatorComponent {
     
     const columns = createSavingsColumns(options);
     console.log('columns', columns)
-    return {
+    const chartData = {
       x: 'x',
       columns: [
         ['x', ...new Array(20).fill(0).map((v, i) => i)],
@@ -53,6 +48,10 @@ export class SavingsCalculatorComponent {
         }),
       ],
     };
+
+    return {
+      chartData,
+    }
   }
 
   constructor() {

@@ -26,7 +26,7 @@ import { SplashIntroComponent } from './splash-intro/splash-intro.component';
 
 export const LEGACY_ROUTES: Routes = [
   {
-    path: '',
+    path: 'l0',
     component: LayoutsComponent,
     children: [
       {

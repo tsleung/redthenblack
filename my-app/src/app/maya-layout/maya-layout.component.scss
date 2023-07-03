@@ -7,8 +7,13 @@
     margin-bottom: 1rem;
   }
 
+  mat-toolbar-row {
+    justify-content: center;
+  }
 
-  router-outlet + * {
-    margin: 1rem;
+  > .main {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 1rem;
   }
 }

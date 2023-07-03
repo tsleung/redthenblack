@@ -1,15 +1,13 @@
-import * as MAYA_ROUTES from "../maya_routes";
-
 
 export function createMayaRoute() {
-    return '/maya/';
+    return '/m/0/';
 }
 export function createMayaIntro() {
-    return createMayaRoute() + MAYA_ROUTES.INTRO.path;
+    return createMayaRoute() + 'intro';
 }
 
 export function createMayaDashboard() {
-    return createMayaRoute() + MAYA_ROUTES.DASHBOARD.path;
+    return createMayaRoute() + 'dashboard';
 }
 export function createMayaOnboarding() {
     return createMayaRoute() + 'onboarding';

@@ -13,7 +13,7 @@ import { MayaTitledContentComponent } from './maya-titled-content/maya-titled-co
 import { MayaTypedInputComponent } from './maya-typed-input/maya-typed-input.component';
 import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component';
 import { SplashIntroComponent } from './splash-intro/splash-intro.component';
-import { createMayaOnboarding } from './utils/route_mapper';
+import { createMayaCalculator, createMayaOnboarding } from './utils/route_mapper';
 import { ABOUT_RTB } from './utils/articles_mapper';
 import { CALCULATOR } from './maya-calculator-routes';
 
@@ -46,7 +46,7 @@ function createOnboardingPath(path: string) {
               content: `Retirement planning consists of three primary attributes time, value and  confidence. While the first two factors are commonly addressed, the third is seldom considered. With R/B we hope to provide you with resources to tap into the confidence aspect of planning.
   
               A fundamental part of starting any retirement plan is generating income and putting aside a portion of that income into savings. Starting to save earlier will allow more time to accumulate.`,
-              
+
             }
           }
         ]
@@ -67,12 +67,12 @@ function createOnboardingPath(path: string) {
             {
               label: 'After tax income',
               name: 'annualAfterTaxIncome',
-              
+
             },
             {
               label: 'Savings per year',
               name: 'annualAmountSavedAfterTax',
-              
+
             },
           ],
           action: 'Next'
@@ -105,7 +105,7 @@ export const INTRO = {
               data: {
                 title: `Planning for your retirement doesn't have to be scary.`,
                 action: {
-                  href: createMayaOnboarding(),
+                  href: createMayaCalculator(),
                   text: `Find out how`,
                   primary: true,
                 }
@@ -117,8 +117,9 @@ export const INTRO = {
               component: MayaTitledContentComponent,
               data: {
                 caption: `Fear of the unknown.`,
-                content: `it Is what makes retirement planning Teel overwhelming. Where do start? How do I know if Tr plannina properlv? What if I don't have enough?
-                Those are just a few of many of the uncertainties  `,
+                content: `The unknown can be daunting. It's what makes retirement planning feel overwhelming. Where do I start? How do I know if I'm planning properly? What if I don't have enough? These are just a few of the many uncertainties.`,
+                // content: `it Is what makes retirement planning Teel overwhelming. Where do start? How do I know if Tr plannina properlv? What if I don't have enough?
+                // Those are just a few of many of the uncertainties  `,
               }
             }
           ]
@@ -161,15 +162,28 @@ export const INTRO = {
           component: MayaTitledContentComponent,
           data: {
             caption: `Your future is like a deck of cards.`,
-            content: `You never know which card you are going to get. R/B excepteur sint occaecat cupidatat non proident, sunt in culpa aui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus
-            errorsit vOluotatem accusantum goioremoue
-            laudantium, totam rem aperiam, eaque ipsa quae al
-            _loinventore vertaus er cuasrarcnilecto oeaTae
-            vitae dicta sunt explicabo  `
+            content: `The future is like a deck of cards: unknown, full of possibilities, and with the potential for good or bad. Just like you don't know what cards are in a deck of cards before they're dealt, you don't know what the future holds. There are many possible outcomes, and we can't know for sure which one will happen, but we can make educated guesses based on the information we have.`
+            // content: `You never know which card you are going to get. R/B excepteur sint occaecat cupidatat non proident, sunt in culpa aui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus
+            // errorsit vOluotatem accusantum goioremoue
+            // laudantium, totam rem aperiam, eaque ipsa quae al
+            // _loinventore vertaus er cuasrarcnilecto oeaTae
+            // vitae dicta sunt explicabo  `
+
+            /**
+             * "The unknown. Just like you don't know what cards are in a deck of cards before they're dealt, you don't know what the future holds. There are many unknowns in life, and that can be a source of uncertainty.
+The possibilities. Just like a deck of cards contains many different possibilities, the future contains many different possibilities. You don't know what will happen, but there are many different things that could happen.
+The risks. Just like a deck of cards contains some risky cards, the future contains some risks. There are things that could happen that you don't want to happen, but they're a possibility.
+The unknown. Just like the cards in a deck, the future is unknown. We can't know for sure what will happen, but we can make educated guesses based on the information we have.
+The possibility of different outcomes. Just like a deck of cards can be shuffled to create different hands, the future can unfold in different ways. There are many possible outcomes, and we can't know for sure which one will happen.
+The potential for good or bad. Just like a deck of cards can contain both good and bad cards, the future can contain both positive and negative outcomes. We don't know what we're going to get, but we know that there is both the potential for good and the potential for bad."
+             */
+
+
           }
         }
       ]
     },
+    /*
     {
       path: '',
       outlet: 'calculator',
@@ -197,6 +211,7 @@ export const INTRO = {
         },
       ]
     }
+    */
   ]
 };
 export const DASHBOARD = {
@@ -260,7 +275,7 @@ export const ONBOARDING = {
               {
                 label: 'Savings per year',
                 name: 'annualAmountSavedAfterTax',
-                
+
               },
             ],
             action: 'Next'
@@ -281,12 +296,12 @@ export const ONBOARDING = {
 export const EDUCATION = {
   path: 'education',
   component: MayaEducationalArticleComponent,
-  
+
 };
 
 export const MAYA_ROUTES: Routes = [
   {
-    path: 'maya',
+    path: 'm/0',
     component: MayaLayoutComponent,
     children: [
       INTRO,

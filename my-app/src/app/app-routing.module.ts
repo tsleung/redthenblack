@@ -4,25 +4,7 @@ import { GameComponent } from './game/game.component';
 import { SimpleBetComponent } from './simple-bet/simple-bet.component';
 import { CashFlowPlanComponent } from './cash-flow-plan/cash-flow-plan.component';
 import { PosenetComponent } from './posenet/posenet.component';
-import { ArticleComponent } from './article/article.component';
-import { WelcomeComponent } from './welcome/welcome.component';
-import { PokerComponent } from './poker/poker.component';
 import { DemonComponent } from './demon/demon.component';
-import { ParameterCollectionComponent,ParameterRouteData } from './parameter-collection/parameter-collection.component';
-import { SummaryComponent,SummaryRouteData} from './summary/summary.component';
-import { ResultsComponent,ResultsRouteData} from './results/results.component';
-import { LayoutsComponent } from './layouts/layouts.component';
-import { RetirementArticleComponent } from './retirement-article/retirement-article.component';
-import { ABOUT_RTB } from './utils/articles_mapper';
-import { DatasetRouteData, DatasetViewerComponent } from './dataset-viewer/dataset-viewer.component';
-import { sp500DatasetResolver } from './services/dataset.service';
-import {of, Observable} from 'rxjs';
-import { PinEditorComponent } from './pin-editor/pin-editor.component';
-import * as ROUTE_COMPONENTS from './route-components';
-import { CashFlowDiagramComponent } from './cash-flow-diagram/cash-flow-diagram.component';
-import { BeginnerTalkComponent } from './beginner-talk/beginner-talk.component';
-import { UpgradeComponent } from './upgrade/upgrade.component';
-import { SplashIntroComponent } from './splash-intro/splash-intro.component';
 import { LEGACY_ROUTES } from './legacy-route';
 import { MAYA_ROUTES } from './maya_routes';
 
@@ -31,7 +13,6 @@ const routes: Routes = [
   { path: 'game', component: GameComponent },
   { path: 'pose', component: PosenetComponent },
   { path: 'editor', component: DemonComponent },
-  
   {
     path: 'beta',
     component: CashFlowPlanComponent,
@@ -42,7 +23,7 @@ const routes: Routes = [
   },
   ...LEGACY_ROUTES,
   ...MAYA_ROUTES,
-  { path: '**', redirectTo: '/' }
+  { path: '**', redirectTo: '/m/0/intro' }
 ];
 
 @NgModule({

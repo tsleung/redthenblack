@@ -5,15 +5,18 @@
 
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span>R/B is still under construction. Please enjoy the articles while development is completed.</span> 
+    <span>R/B is still under construction, please enjoy the articles while development is completed</span> 
     <span class="example-spacer"></span>
     <a routerLink="articles" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
       <mat-icon>chevron_right</mat-icon>
     </a> 
   </mat-toolbar-row>
 </mat-toolbar>
-<a [href]="routingService.mapper.createMayaRoute()">
-  <img src="assets/images/logo.jpg" alt="R/B">
-</a>
 
-<router-outlet></router-outlet>
+<div class="main">
+  <a [href]="routingService.mapper.createMayaRoute()">
+    <img src="assets/images/logo.jpg" alt="R/B">
+  </a>
+  
+  <router-outlet></router-outlet>
+</div>
