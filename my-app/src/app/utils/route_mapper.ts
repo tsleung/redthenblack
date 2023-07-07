@@ -17,7 +17,13 @@ export function createMayaEducation() {
     return createMayaRoute() + 'education';
 }
 export function createMayaCalculator() {
-    return createMayaRoute() + 'calculators';
+    return createMayaRoute() + 'calculators/';
+}
+export function createSavingsCalculator() {
+    return createMayaCalculator() + 'savings';
+}
+export function createIndexingCalculator() {
+    return createMayaCalculator() + 'indexing';
 }
 
 export function createMillionaireArticleRoute() {

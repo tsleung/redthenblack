@@ -25,12 +25,12 @@ function createOnboardingPath(path: string) {
     children: [
       {
         path: '',
-        outlet: 'top',
+
         component: MayaLayoutTwoColumnComponent,
         children: [
           {
             path: '',
-            outlet: 'right',
+            outlet: 'secondary',
             component: MayaFeatureImageComponent,
             data: {
               src: `assets/images/painting_path.jpg`
@@ -38,7 +38,7 @@ function createOnboardingPath(path: string) {
           },
           {
             path: '',
-            outlet: 'left',
+
             component: MayaTitledContentComponent,
             data: {
               title: `Let’s start painting your path!`,
@@ -95,12 +95,10 @@ export const INTRO = {
       children: [
         {
           path: '',
-          outlet: 'left',
           component: MayaLayoutTwoRowComponent,
           children: [
             {
               path: '',
-              outlet: 'top',
               component: MayaTitledContentComponent,
               data: {
                 title: `Planning for your retirement doesn't have to be scary.`,
@@ -113,7 +111,7 @@ export const INTRO = {
             },
             {
               path: '',
-              outlet: 'bottom',
+              outlet: 'secondary',
               component: MayaTitledContentComponent,
               data: {
                 caption: `Fear of the unknown.`,
@@ -124,10 +122,9 @@ export const INTRO = {
             }
           ]
         },
-
         {
           path: '',
-          outlet: 'right',
+          outlet: 'secondary',
           component: MayaFeatureImageComponent,
           data: {
             src: `/assets/images/no_fear.jpg`
@@ -150,7 +147,7 @@ export const INTRO = {
       children: [
         {
           path: '',
-          outlet: 'left',
+
           component: MayaFeatureImageComponent,
           data: {
             src: `assets/images/deck.jpg`
@@ -158,7 +155,7 @@ export const INTRO = {
         },
         {
           path: '',
-          outlet: 'right',
+          outlet: 'secondary',
           component: MayaTitledContentComponent,
           data: {
             caption: `Your future is like a deck of cards.`,
@@ -191,7 +188,7 @@ The potential for good or bad. Just like a deck of cards can contain both good a
       children: [
         {
           path: '',
-          outlet: 'left',
+          
           component: MayaTitledContentComponent,
           data: {
             caption: `Here will be some type of generic calculator.`,
@@ -203,7 +200,7 @@ The potential for good or bad. Just like a deck of cards can contain both good a
         },
         {
           path: '',
-          outlet: 'right',
+          outlet: 'secondary',
           component: MayaFeatureImageComponent,
           data: {
             src: `assets/images/placeholder_figure.jpg`
@@ -243,7 +240,7 @@ export const ONBOARDING = {
           children: [
             {
               path: '',
-              outlet: 'right',
+              outlet: 'secondary',
               component: MayaFeatureImageComponent,
               data: {
                 src: `assets/images/placeholder_chart.jpg`
@@ -251,7 +248,7 @@ export const ONBOARDING = {
             },
             {
               path: '',
-              outlet: 'left',
+
               component: MayaTitledContentComponent,
               data: {
                 title: `Benefits of savings and how to get started.`,
@@ -265,7 +262,7 @@ export const ONBOARDING = {
         },
         {
           path: '',
-          outlet: 'bottom',
+          outlet: 'secondary',
           component: MayaParameterCollectionComponent,
           data: {
             title: 'Your annual contributions',

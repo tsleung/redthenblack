@@ -9,50 +9,67 @@ import { RetirementWithdrawalCalculatorComponent } from './retirement-withdrawal
 import { SeniorCareCalculatorComponent } from './senior-care-calculator/senior-care-calculator.component';
 import { KidsCollegeFundCalculatorComponent } from './kids-college-fund-calculator/kids-college-fund-calculator.component';
 import { CostOfLivingCalculatorComponent } from './cost-of-living-calculator/cost-of-living-calculator.component';
+import { MayaLayoutTwoColumnComponent } from './maya-layout-two-column/maya-layout-two-column.component';
+import { MayaLayoutTwoRowComponent } from './maya-layout-two-row/maya-layout-two-row.component';
 
 export const CALCULATOR = {
   path: 'calculators',
-  component: MayaCalculatorComponent,
+  component: MayaLayoutTwoColumnComponent,
+  data: {
+    featured: true
+  },
   children: [
     {
-      path: 'savings',
-      component: SavingsCalculatorComponent,
+      path: '',
+      outlet: 'secondary',
+      component: MayaCalculatorComponent,  
     },
     {
-      path: 'indexing',
-      component: IndexingCalculatorComponent,
-    },
-    {
-      path: 'differences-in-debt',
-      component: PayingDebtCalculatorComponent,
-    },
-    {
-      path: 'comparing-cash-flows',
-      component: ComparingCashFlowsCalculatorComponent,
-    },
-    {
-      path: 'back-to-school',
-      component: BackToSchoolCalculatorComponent,
-    },
-    {
-      path: 'gas-or-electric',
-      component: GasOrElectricCalculatorComponent,
-    },
-    {
-      path: 'retirement-withdrawal',
-      component: RetirementWithdrawalCalculatorComponent,
-    },
-    {
-      path: 'senior-care',
-      component: SeniorCareCalculatorComponent,
-    },
-    {
-      path: 'kids-college-fund',
-      component: KidsCollegeFundCalculatorComponent,
-    },
-    {
-      path: 'cost-of-living',
-      component: CostOfLivingCalculatorComponent,
+      path: '',
+      component:  MayaLayoutTwoRowComponent,
+      children: [
+        {
+          path: 'savings',
+          component: SavingsCalculatorComponent,
+        },
+        {
+          path: 'indexing',
+          component: IndexingCalculatorComponent,
+        },
+        {
+          path: 'differences-in-debt',
+          component: PayingDebtCalculatorComponent,
+        },
+        {
+          
+          path: 'comparing-cash-flows',
+          component: ComparingCashFlowsCalculatorComponent,
+        },
+        { 
+          path: 'back-to-school',
+          component: BackToSchoolCalculatorComponent,
+        },
+        { 
+          path: 'gas-or-electric',
+          component: GasOrElectricCalculatorComponent,
+        },
+        { 
+          path: 'retirement-withdrawal',
+          component: RetirementWithdrawalCalculatorComponent,
+        },
+        { 
+          path: 'senior-care',
+          component: SeniorCareCalculatorComponent,
+        },
+        { 
+          path: 'kids-college-fund',
+          component: KidsCollegeFundCalculatorComponent,
+        },
+        { 
+          path: 'cost-of-living',
+          component: CostOfLivingCalculatorComponent,
+        },
+      ]
     },
   ],
 };

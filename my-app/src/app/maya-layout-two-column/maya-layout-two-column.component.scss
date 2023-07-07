@@ -1,14 +1,24 @@
 :host {
   
-  div {
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-
-    > div {
+  @media screen and (min-width: 30em) {
+    
+    div {
       display: flex;
       flex: 1;
-      flex-direction: column;
+      flex-direction: row;
+  
+      > div {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        min-width: 400px;
+      }
+    }
+
+    .primary.featured {
+      flex: 3;
+      display: flex;
     }
   }
+
 }

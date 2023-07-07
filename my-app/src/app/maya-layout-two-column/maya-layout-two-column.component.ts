@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-maya-layout-two-column',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./maya-layout-two-column.component.scss']
 })
 export class MayaLayoutTwoColumnComponent {
-
+  data = this.route.data;
+  constructor(private route: ActivatedRoute) {}
 }

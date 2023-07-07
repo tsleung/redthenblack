@@ -1,15 +1,12 @@
-<article>
-  <router-outlet></router-outlet>
-</article>
 <mat-list>
   <h3>Calculators</h3>
   <mat-list-item lines="3">
-    <span matListItemTitle><a routerLink="./savings">Why Saving Money is Important</a></span>
+    <span matListItemTitle><a [routerLink]="routingService.mapper.createSavingsCalculator()">Why Saving Money is Important</a></span>
     <span>Saving money is a journey, not a destination. It takes time and effort, but it's worth it in the long run. You can start saving money today and build a secure financial future for yourself.
     </span>
   </mat-list-item>
   <mat-list-item lines="3">
-    <span matListItemTitle><a routerLink="./indexing">Index Investing</a></span>
+    <span matListItemTitle><a [routerLink]="routingService.mapper.createIndexingCalculator()">Index Investing</a></span>
     <span> A Low-Cost, Diversified, and Easy Way to Grow Your Money
       Index investing is a passive investment strategy that seeks to replicate the returns of a benchmark index. Index funds are baskets of securities that track a specific index, such as the S&P 500 or the Dow Jones Industrial Average. Index funds are typically much cheaper than actively managed funds, and they offer a simple and easy way to invest in the market.
     </span>

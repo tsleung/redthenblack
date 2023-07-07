@@ -5,10 +5,14 @@
 
   mat-toolbar {
     margin-bottom: 1rem;
+    height: auto;;
   }
 
   mat-toolbar-row {
     justify-content: center;
+    white-space: normal;
+    text-align: center;
+    height: auto;
   }
 
   > .main {

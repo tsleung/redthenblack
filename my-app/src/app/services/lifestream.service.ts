@@ -3,6 +3,17 @@ import { DecisionsService } from './decisions.service';
 import { DeckService } from './deck.service';
 
 /**
+ * integrated calculator component, combine parameters of two independent models
+ * make those config parameters transparent, may need to be merged.
+ * - merge happens in decks? single card can be converted to many
+ * - per turn, draw cards in a row, last one wins. card can trigger draw on another card
+ * - game of life for decision making personal finance
+ * 
+ */
+
+
+
+/**
  * Take a decision policy and execute for N number of timesteps
  * 
  * At each timestep, cards are drawn from decks and decisions are made

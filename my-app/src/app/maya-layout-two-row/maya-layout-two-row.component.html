@@ -1,4 +1,5 @@
 <div>
-  <router-outlet name="top"></router-outlet>
-  <router-outlet name="bottom"></router-outlet>
+  <!-- named routes can't have path:'' overwritten in routing table with outlet property-->
+  <router-outlet></router-outlet>
+  <router-outlet name="secondary"></router-outlet>
 </div>

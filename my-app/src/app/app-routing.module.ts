@@ -23,7 +23,7 @@ const routes: Routes = [
   },
   ...LEGACY_ROUTES,
   ...MAYA_ROUTES,
-  { path: '**', redirectTo: '/m/0/intro' }
+  // { path: '**', redirectTo: '/m/0/intro' }
 ];
 
 @NgModule({
