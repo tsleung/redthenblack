@@ -13,7 +13,7 @@ import { MayaTitledContentComponent } from './maya-titled-content/maya-titled-co
 import { MayaTypedInputComponent } from './maya-typed-input/maya-typed-input.component';
 import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component';
 import { SplashIntroComponent } from './splash-intro/splash-intro.component';
-import { createMayaCalculator, createMayaOnboarding } from './utils/route_mapper';
+import { createMayaCalculator, createMayaCalculatorList, createMayaOnboarding } from './utils/route_mapper';
 import { ABOUT_RTB } from './utils/articles_mapper';
 import { CALCULATOR } from './maya-calculator-routes';
 
@@ -103,7 +103,7 @@ export const INTRO = {
               data: {
                 title: `Planning for your retirement doesn't have to be scary.`,
                 action: {
-                  href: createMayaCalculator(),
+                  href: createMayaCalculatorList(),
                   text: `Find out how`,
                   primary: true,
                 }
@@ -111,7 +111,7 @@ export const INTRO = {
             },
             {
               path: '',
-              outlet: 'secondary',
+              outlet: 'below',
               component: MayaTitledContentComponent,
               data: {
                 caption: `Fear of the unknown.`,
@@ -262,7 +262,7 @@ export const ONBOARDING = {
         },
         {
           path: '',
-          outlet: 'secondary',
+          outlet: 'below',
           component: MayaParameterCollectionComponent,
           data: {
             title: 'Your annual contributions',
@@ -305,10 +305,9 @@ export const MAYA_ROUTES: Routes = [
       DASHBOARD,
       ONBOARDING,
       EDUCATION,
-      CALCULATOR,
+      ...CALCULATOR,
       { path: '**', redirectTo: 'intro' }
 
     ]
   }
-
 ];

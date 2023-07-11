@@ -11,8 +11,14 @@ import { KidsCollegeFundCalculatorComponent } from './kids-college-fund-calculat
 import { CostOfLivingCalculatorComponent } from './cost-of-living-calculator/cost-of-living-calculator.component';
 import { MayaLayoutTwoColumnComponent } from './maya-layout-two-column/maya-layout-two-column.component';
 import { MayaLayoutTwoRowComponent } from './maya-layout-two-row/maya-layout-two-row.component';
+import { RentOrBuyCalculatorComponent } from './rent-or-buy-calculator/rent-or-buy-calculator.component';
 
-export const CALCULATOR = {
+export const CALCULATOR = [
+  {
+    path: 'calculators/list',
+    component: MayaCalculatorComponent,  
+  },
+  {
   path: 'calculators',
   component: MayaLayoutTwoColumnComponent,
   data: {
@@ -29,6 +35,11 @@ export const CALCULATOR = {
       component:  MayaLayoutTwoRowComponent,
       children: [
         {
+          path: '',
+          outlet: 'secondary',
+          component: MayaCalculatorComponent,  
+        },
+        {
           path: 'savings',
           component: SavingsCalculatorComponent,
         },
@@ -37,11 +48,14 @@ export const CALCULATOR = {
           component: IndexingCalculatorComponent,
         },
         {
+          path: 'rent-or-buy',
+          component: RentOrBuyCalculatorComponent,
+        },
+        {
           path: 'differences-in-debt',
           component: PayingDebtCalculatorComponent,
         },
-        {
-          
+        { 
           path: 'comparing-cash-flows',
           component: ComparingCashFlowsCalculatorComponent,
         },
@@ -71,5 +85,6 @@ export const CALCULATOR = {
         },
       ]
     },
+    
   ],
-};
+}];

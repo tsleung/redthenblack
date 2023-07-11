@@ -19,6 +19,9 @@ export function createMayaEducation() {
 export function createMayaCalculator() {
     return createMayaRoute() + 'calculators/';
 }
+export function createMayaCalculatorList() {
+    return createMayaCalculator() + 'list';
+}
 export function createSavingsCalculator() {
     return createMayaCalculator() + 'savings';
 }
@@ -26,6 +29,9 @@ export function createIndexingCalculator() {
     return createMayaCalculator() + 'indexing';
 }
 
+export function createRentOrBuyCalculator() {
+    return createMayaCalculator() + 'rent-or-buy';
+}
 export function createMillionaireArticleRoute() {
     return createArticlesRoute() + '/millionaire';
 }
