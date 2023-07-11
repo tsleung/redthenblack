@@ -56,6 +56,12 @@
     line-height: 78px;
   }
 
+  h2 {
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 25px;
+  }
+
   h3 {
     font-family: 'Manrope';
     font-style: normal;
@@ -66,6 +72,7 @@
     color: #000000;
   }
 
+  markdown li,
   p {
     font-style: normal;
     font-weight: 400;

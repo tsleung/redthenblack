@@ -7,7 +7,7 @@
   <mat-toolbar-row>
     <span>R/B is still under construction, please enjoy playing with the calculators while development is completed</span> 
     <span class="example-spacer"></span>
-    <a routerLink="calculators" mat-icon-button aria-label="">
+    <a [routerLink]="routingService.mapper.createMayaCalculatorList()" mat-icon-button aria-label="">
       <mat-icon>chevron_right</mat-icon>
     </a> 
   </mat-toolbar-row>
