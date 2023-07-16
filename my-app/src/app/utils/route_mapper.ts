@@ -28,10 +28,16 @@ export function createSavingsCalculator() {
 export function createIndexingCalculator() {
     return createMayaCalculator() + 'indexing';
 }
-
 export function createRentOrBuyCalculator() {
     return createMayaCalculator() + 'rent-or-buy';
 }
+export function createComparingCashFlowsCalculator() {
+    return createMayaCalculator() + 'comparing-cash-flows';
+}
+export function createBackToSchoolCalculator() {
+    return createMayaCalculator() + 'back-to-school';
+}
+
 export function createMillionaireArticleRoute() {
     return createArticlesRoute() + '/millionaire';
 }
