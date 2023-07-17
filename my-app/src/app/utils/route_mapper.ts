@@ -40,6 +40,9 @@ export function createBackToSchoolCalculator() {
 export function createGasOrElectricCalculator() {
     return createMayaCalculator() + 'gas-or-electric';
 }
+export function createRetirementWithdrawalCalculator() {
+    return createMayaCalculator() + 'retirement-withdrawal';
+}
 
 export function createMillionaireArticleRoute() {
     return createArticlesRoute() + '/millionaire';
