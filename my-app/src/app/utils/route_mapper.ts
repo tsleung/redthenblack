@@ -37,6 +37,9 @@ export function createComparingCashFlowsCalculator() {
 export function createBackToSchoolCalculator() {
     return createMayaCalculator() + 'back-to-school';
 }
+export function createGasOrElectricCalculator() {
+    return createMayaCalculator() + 'gas-or-electric';
+}
 
 export function createMillionaireArticleRoute() {
     return createArticlesRoute() + '/millionaire';
