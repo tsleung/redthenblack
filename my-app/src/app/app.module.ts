@@ -86,6 +86,8 @@ import { RetirementWithdrawalCalculatorComponent } from './retirement-withdrawal
 import { SeniorCareCalculatorComponent } from './senior-care-calculator/senior-care-calculator.component';
 import { KidsCollegeFundCalculatorComponent } from './kids-college-fund-calculator/kids-college-fund-calculator.component';
 import { CostOfLivingCalculatorComponent } from './cost-of-living-calculator/cost-of-living-calculator.component';
+import { MortgageYourRetirementCalculatorComponent } from './mortgage-your-retirement-calculator/mortgage-your-retirement-calculator.component';
+import { OptimalBetSizingCalculatorComponent } from './optimal-bet-sizing-calculator/optimal-bet-sizing-calculator.component';
 
 @NgModule({
   declarations: [
@@ -142,6 +144,8 @@ import { CostOfLivingCalculatorComponent } from './cost-of-living-calculator/cos
     SeniorCareCalculatorComponent,
     KidsCollegeFundCalculatorComponent,
     CostOfLivingCalculatorComponent,
+    MortgageYourRetirementCalculatorComponent,
+    OptimalBetSizingCalculatorComponent,
    
   ],
   imports: [

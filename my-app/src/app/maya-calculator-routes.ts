@@ -12,6 +12,8 @@ import { CostOfLivingCalculatorComponent } from './cost-of-living-calculator/cos
 import { MayaLayoutTwoColumnComponent } from './maya-layout-two-column/maya-layout-two-column.component';
 import { MayaLayoutTwoRowComponent } from './maya-layout-two-row/maya-layout-two-row.component';
 import { RentOrBuyCalculatorComponent } from './rent-or-buy-calculator/rent-or-buy-calculator.component';
+import { OptimalBetSizingCalculatorComponent } from './optimal-bet-sizing-calculator/optimal-bet-sizing-calculator.component';
+import { MortgageYourRetirementCalculatorComponent } from './mortgage-your-retirement-calculator/mortgage-your-retirement-calculator.component';
 
 export const CALCULATOR = [
   {
@@ -83,6 +85,15 @@ export const CALCULATOR = [
           path: 'cost-of-living',
           component: CostOfLivingCalculatorComponent,
         },
+        { 
+          path: 'mortgage-your-retirement',
+          component: MortgageYourRetirementCalculatorComponent,
+        },
+        { 
+          path: 'optimal-bet-sizing',
+          component: OptimalBetSizingCalculatorComponent,
+        },
+        
       ]
     },
     

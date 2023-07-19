@@ -43,6 +43,12 @@ export function createGasOrElectricCalculator() {
 export function createRetirementWithdrawalCalculator() {
     return createMayaCalculator() + 'retirement-withdrawal';
 }
+export function createMortgageYourRetirement() {
+    return createMayaCalculator() + 'mortgage-your-retirement';
+}
+export function createOptimalBetSizingCalculator() {
+    return createMayaCalculator() + 'optimal-bet-sizing';
+}
 
 export function createMillionaireArticleRoute() {
     return createArticlesRoute() + '/millionaire';
