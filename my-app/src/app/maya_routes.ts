@@ -82,8 +82,6 @@ function createOnboardingPath(path: string) {
   };
 }
 
-
-
 export const INTRO = {
   path: 'intro',
   component: SplashIntroComponent,

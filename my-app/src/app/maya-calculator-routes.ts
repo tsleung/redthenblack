@@ -15,6 +15,9 @@ import { RentOrBuyCalculatorComponent } from './rent-or-buy-calculator/rent-or-b
 import { OptimalBetSizingCalculatorComponent } from './optimal-bet-sizing-calculator/optimal-bet-sizing-calculator.component';
 import { MortgageYourRetirementCalculatorComponent } from './mortgage-your-retirement-calculator/mortgage-your-retirement-calculator.component';
 import { MathToMillionaireCalculatorComponent } from './math-to-millionaire-calculator/math-to-millionaire-calculator.component';
+import { CouplesFinancesCalculatorComponent } from './couples-finances-calculator/couples-finances-calculator.component';
+import { WeddingHoneymoonDownPaymentCalculatorComponent } from './wedding-honeymoon-down-payment-calculator/wedding-honeymoon-down-payment-calculator.component';
+import { DebtHedgeInflationCalculatorComponent } from './debt-hedge-inflation-calculator/debt-hedge-inflation-calculator.component';
 
 export const CALCULATOR = [
   {
@@ -97,6 +100,18 @@ export const CALCULATOR = [
         { 
           path: 'optimal-bet-sizing',
           component: OptimalBetSizingCalculatorComponent,
+        },
+        { 
+          path: 'couples-finances',
+          component: CouplesFinancesCalculatorComponent,
+        },
+        { 
+          path: 'wedding-honeymoon-down-payment',
+          component: WeddingHoneymoonDownPaymentCalculatorComponent,
+        },
+        { 
+          path: 'debt-hedge-inflation',
+          component: DebtHedgeInflationCalculatorComponent,
         },
         
       ]

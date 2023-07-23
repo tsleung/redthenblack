@@ -58,6 +58,15 @@ export function createMathToAMillionaireCalculator() {
 export function createKidsCollegeFundCalculator() {
     return createMayaCalculator() + 'kids-college-fund';
 }
+export function createCouplesFinancesCalculator() {
+    return createMayaCalculator() + 'couples-finances';
+}
+export function createWeddingHoneymoonDownPaymentCalculator() {
+    return createMayaCalculator() + 'wedding-honeymoon-down-payment';
+}
+export function createDebtHedgeInflationCalculator() {
+    return createMayaCalculator() + 'debt-hedge-inflation';
+}
 
 export function createMillionaireArticleRoute() {
     return createArticlesRoute() + '/millionaire';

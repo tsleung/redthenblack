@@ -89,6 +89,10 @@ import { CostOfLivingCalculatorComponent } from './cost-of-living-calculator/cos
 import { MortgageYourRetirementCalculatorComponent } from './mortgage-your-retirement-calculator/mortgage-your-retirement-calculator.component';
 import { OptimalBetSizingCalculatorComponent } from './optimal-bet-sizing-calculator/optimal-bet-sizing-calculator.component';
 import { MathToMillionaireCalculatorComponent } from './math-to-millionaire-calculator/math-to-millionaire-calculator.component';
+import { PreparingForLayoffCalculatorComponent } from './preparing-for-layoff-calculator/preparing-for-layoff-calculator.component';
+import { CouplesFinancesCalculatorComponent } from './couples-finances-calculator/couples-finances-calculator.component';
+import { WeddingHoneymoonDownPaymentCalculatorComponent } from './wedding-honeymoon-down-payment-calculator/wedding-honeymoon-down-payment-calculator.component';
+import { DebtHedgeInflationCalculatorComponent } from './debt-hedge-inflation-calculator/debt-hedge-inflation-calculator.component';
 
 @NgModule({
   declarations: [
@@ -148,6 +152,10 @@ import { MathToMillionaireCalculatorComponent } from './math-to-millionaire-calc
     MortgageYourRetirementCalculatorComponent,
     OptimalBetSizingCalculatorComponent,
     MathToMillionaireCalculatorComponent,
+    PreparingForLayoffCalculatorComponent,
+    CouplesFinancesCalculatorComponent,
+    WeddingHoneymoonDownPaymentCalculatorComponent,
+    DebtHedgeInflationCalculatorComponent,
    
   ],
   imports: [
