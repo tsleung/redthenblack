@@ -88,6 +88,7 @@ import { KidsCollegeFundCalculatorComponent } from './kids-college-fund-calculat
 import { CostOfLivingCalculatorComponent } from './cost-of-living-calculator/cost-of-living-calculator.component';
 import { MortgageYourRetirementCalculatorComponent } from './mortgage-your-retirement-calculator/mortgage-your-retirement-calculator.component';
 import { OptimalBetSizingCalculatorComponent } from './optimal-bet-sizing-calculator/optimal-bet-sizing-calculator.component';
+import { MathToMillionaireCalculatorComponent } from './math-to-millionaire-calculator/math-to-millionaire-calculator.component';
 
 @NgModule({
   declarations: [
@@ -146,6 +147,7 @@ import { OptimalBetSizingCalculatorComponent } from './optimal-bet-sizing-calcul
     CostOfLivingCalculatorComponent,
     MortgageYourRetirementCalculatorComponent,
     OptimalBetSizingCalculatorComponent,
+    MathToMillionaireCalculatorComponent,
    
   ],
   imports: [

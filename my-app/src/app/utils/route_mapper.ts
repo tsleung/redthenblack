@@ -49,6 +49,15 @@ export function createMortgageYourRetirement() {
 export function createOptimalBetSizingCalculator() {
     return createMayaCalculator() + 'optimal-bet-sizing';
 }
+export function createSeniorCareCalculator() {
+    return createMayaCalculator() + 'senior-care';
+}
+export function createMathToAMillionaireCalculator() {
+    return createMayaCalculator() + 'math-to-millionaire';
+}
+export function createKidsCollegeFundCalculator() {
+    return createMayaCalculator() + 'kids-college-fund';
+}
 
 export function createMillionaireArticleRoute() {
     return createArticlesRoute() + '/millionaire';

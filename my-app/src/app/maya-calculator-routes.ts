@@ -14,6 +14,7 @@ import { MayaLayoutTwoRowComponent } from './maya-layout-two-row/maya-layout-two
 import { RentOrBuyCalculatorComponent } from './rent-or-buy-calculator/rent-or-buy-calculator.component';
 import { OptimalBetSizingCalculatorComponent } from './optimal-bet-sizing-calculator/optimal-bet-sizing-calculator.component';
 import { MortgageYourRetirementCalculatorComponent } from './mortgage-your-retirement-calculator/mortgage-your-retirement-calculator.component';
+import { MathToMillionaireCalculatorComponent } from './math-to-millionaire-calculator/math-to-millionaire-calculator.component';
 
 export const CALCULATOR = [
   {
@@ -76,6 +77,10 @@ export const CALCULATOR = [
         { 
           path: 'senior-care',
           component: SeniorCareCalculatorComponent,
+        },
+        { 
+          path: 'math-to-millionaire',
+          component: MathToMillionaireCalculatorComponent,
         },
         { 
           path: 'kids-college-fund',
