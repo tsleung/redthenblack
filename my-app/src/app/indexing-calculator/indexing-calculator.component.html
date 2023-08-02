@@ -1,3 +1,21 @@
+
+<ng-container *ngIf="balance | async as balance">
+  <app-line-chart [chartData]="balance.chartData" [legend]="{show:false}"></app-line-chart>
+</ng-container>
+<div class="inputs">
+  <mat-form-field >
+    <mat-label>Periods</mat-label>
+    <input matInput name="numPeriods" [formControl]="controls.numPeriods" step="1" min="0" type="number" /><br/>
+  </mat-form-field>
+  <mat-form-field >
+    <mat-label>Starting Investment</mat-label>
+    <input matInput name="balance" [formControl]="controls.initialBalance" step=".01" type="number" /><br/>
+  </mat-form-field>
+  <mat-form-field >
+    <mat-label>Expected Return</mat-label>
+    <input matInput name="expectedReturn" [formControl]="controls.expectedReturn" step=".01" type="number" /><br/>
+  </mat-form-field>  
+</div>
 <markdown ngPreserveWhitespaces>
 
 # Index Investing for Retirement, a Quantitative Approach

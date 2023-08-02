@@ -11,15 +11,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./back-to-school-calculator.component.scss']
 })
 export class BackToSchoolCalculatorComponent {
-  controls = {
-    numPeriods: new FormControl(30),
-  }
-
-  form = new FormGroup(this.controls);
-
-
-  constructor() {
-
-  }
 }
-import { FormControl, FormGroup } from '@angular/forms';

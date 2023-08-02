@@ -11,13 +11,81 @@ import { Component } from '@angular/core';
 })
 export class RetirementWithdrawalCalculatorComponent {
   controls = {
-    numPeriods: new FormControl(30),
+    initialBalance: new FormControl<number>(1e6),
+    nominalMultiplier: new FormControl(<number>1),
+    savingsPerPeriod: new FormControl<number>(0),
+    withdrawalRate: new FormControl<number>(.03),
+    numPeriods: new FormControl<number>(30),
+    useMultiplier: new FormControl<boolean>(true),
+    stepNext: new FormControl<boolean>(true),
   }
 
   form = new FormGroup(this.controls);
+
+  balance = this.form.valueChanges.pipe(
+    map(() => {
+      return this.calculateReturns();
+    }),
+    startWith(this.calculateReturns())
+  );
+
+  calculateReturns() {
+    const options = this.form.value;
+    console.log('options', options)
+    
+    const columns = createColumns(options);
+    console.log('columns', columns)
+    const chartData = {
+      x: 'x',
+      columns: [
+        ['x', ...new Array(20).fill(0).map((v, i) => i)],
+        ...columns.map((v, i) => {
+          return [i, ...v];
+        }),
+      ],
+    };
+
+    return {
+      chartData,
+    }
+  }
 
   constructor() {
 
   }
 }
+
+function createColumns(options):number[][] {
+
+  const savingsPlan = new Array(
+    options.numPeriods).fill(options.savingsPerPeriod).reduce((allPeriods, savingsPerPeriod) => {
+      const lastPeriod = allPeriods.at(-1);
+      const withdrawalRate = 1 - options.withdrawalRate;
+  return [
+      ...allPeriods,
+      calculateOnePeriod(lastPeriod, savingsPerPeriod, withdrawalRate),
+    ];
+  }, [options.initialBalance])
+
+  return [
+    savingsPlan.map(v => Number(v.toFixed(2))),
+  ]
+}
+
+
+function calculateOnePeriod(
+  lastPeriod: number,
+  savingsPerPeriod: number,
+  rateMultiplier: number,
+) {
+
+  // at the beginning of the period, add to savings
+  // compound new return
+  const newBalanceAfterSavings = lastPeriod + savingsPerPeriod;
+  const newBalanceAfterSavingsAndInterest = newBalanceAfterSavings * (rateMultiplier);
+
+  return newBalanceAfterSavingsAndInterest;
+}
+
 import { FormControl, FormGroup } from '@angular/forms';
+import { map, startWith } from 'rxjs/operators';

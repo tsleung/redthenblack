@@ -10,16 +10,33 @@
   <mat-list-item lines="3">
     <span matListItemTitle><a [routerLink]="routingService.mapper.createIndexingCalculator()">Index Investing for
         Retirement, a Quantitative Approach</a></span>
-    <span>
-      Index investing is a passive investment strategy that involves tracking a specific market index, such as the S&P
+    <span>Index investing is a passive investment strategy that involves tracking a specific market index, such as the S&P
       500. This means that index investors do not try to pick individual stocks, but instead buy and hold a basket of
       securities that mirrors the performance of the index.
     </span>
   </mat-list-item>
+
+
+  <mat-list-item lines="3">
+    <span matListItemTitle><a [routerLink]="routingService.mapper.createRetirementWithdrawalCalculator()">Evaluating
+        Withdrawal Rate Over a Variable Length Retirement Horizon</a></span>
+    <span>When planning for retirement, one of the most important decisions is how much money you can safely withdraw
+      from
+      your nest egg each year. This is known as the withdrawal rate. The withdrawal rate that you choose will have a big
+      impact on how long your money lasts, so it's important to get it right.
+
+      There are a number of factors that can affect the safe withdrawal rate, including inflation, equity risk, interest
+      rates, and whether or not you own your home. In this article, we'll discuss the quantitative approach to
+      evaluating withdrawal rate over a variable length retirement horizon.
+    </span>
+  </mat-list-item>
+
+
   <mat-list-item lines="3">
     <span matListItemTitle><a [routerLink]="routingService.mapper.createRentOrBuyCalculator()">Renting vs. Buying a
         Home</a></span>
-    <span>Whether to rent or buy a home is a major financial decision that can have a significant impact on your life. There
+    <span>Whether to rent or buy a home is a major financial decision that can have a significant impact on your life.
+      There
       are many factors to consider, both financial and personal, and the best decision for you will depend on your
       individual circumstances.
     </span>
@@ -41,7 +58,8 @@
   <mat-list-item lines="3">
     <span matListItemTitle><a [routerLink]="routingService.mapper.createBackToSchoolCalculator()">Going Back to School
         vs Continuing a Profession, how to Evaluate the Tradeoff</a></span>
-    <span>Making the decision to go back to school can be a difficult one. There are many factors to consider, including the
+    <span>Making the decision to go back to school can be a difficult one. There are many factors to consider, including
+      the
       cost of tuition, lost wages, the potential increase in earnings after graduation, and the personal fulfillment
       that comes from learning and achieving. A quantitative approach can help you to weigh the pros and cons of going
       back to school and make an informed decision.
@@ -64,21 +82,6 @@
 
     </span>
   </mat-list-item>
-
-  <mat-list-item lines="3">
-    <span matListItemTitle><a [routerLink]="routingService.mapper.createRetirementWithdrawalCalculator()">Evaluating
-        Withdrawal Rate Over a Variable Length Retirement Horizon</a></span>
-    <span>When planning for retirement, one of the most important decisions is how much money you can safely withdraw
-      from
-      your nest egg each year. This is known as the withdrawal rate. The withdrawal rate that you choose will have a big
-      impact on how long your money lasts, so it's important to get it right.
-
-      There are a number of factors that can affect the safe withdrawal rate, including inflation, equity risk, interest
-      rates, and whether or not you own your home. In this article, we'll discuss the quantitative approach to
-      evaluating withdrawal rate over a variable length retirement horizon.
-    </span>
-  </mat-list-item>
-
 
   <mat-list-item lines="3">
     <span matListItemTitle><a [routerLink]="routingService.mapper.createMortgageYourRetirement()">Mortgaging Your
@@ -176,17 +179,19 @@
   </mat-list-item>
 
   <mat-list-item lines="3">
-    <span matListItemTitle><a
-        [routerLink]="routingService.mapper.createDebtHedgeInflationCalculator()">Hedge Against Inflation with Debt</a></span>
-    <span>Inflation is a general increase in prices and a decrease in the purchasing power of money. When inflation occurs, the value of money decreases, which means that you need more money to buy the same goods and services.
-      
-      There are a number of ways to hedge against inflation, including investing in assets that are likely to appreciate in value, such as real estate or commodities. However, you can also hedge against inflation with debt.
+    <span matListItemTitle><a [routerLink]="routingService.mapper.createDebtHedgeInflationCalculator()">Hedge Against
+        Inflation with Debt</a></span>
+    <span>Inflation is a general increase in prices and a decrease in the purchasing power of money. When inflation
+      occurs, the value of money decreases, which means that you need more money to buy the same goods and services.
+
+      There are a number of ways to hedge against inflation, including investing in assets that are likely to appreciate
+      in value, such as real estate or commodities. However, you can also hedge against inflation with debt.
     </span>
   </mat-list-item>
 
   <p>
     <i>
-      Please consult an accountant or financial advisor for tax and investmentment considerations. 
+      Please consult an accountant or financial advisor for tax and investmentment considerations.
     </i>
   </p>
 </mat-list>
