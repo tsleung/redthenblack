@@ -24,9 +24,11 @@ import { BeginnerTalkComponent } from './beginner-talk/beginner-talk.component';
 import { UpgradeComponent } from './upgrade/upgrade.component';
 import { SplashIntroComponent } from './splash-intro/splash-intro.component';
 
+
+const PARAMETER_COLLECTION_RESULTS_HREF = 'l/0/results';
 export const LEGACY_ROUTES: Routes = [
   {
-    path: 'l0',
+    path: 'l/0',
     component: LayoutsComponent,
     children: [
       {
@@ -112,7 +114,7 @@ export const LEGACY_ROUTES: Routes = [
             data: {
               title:'Math to a million',
               article: ABOUT_RTB,
-              href: 'results',
+              href: PARAMETER_COLLECTION_RESULTS_HREF,
               inputs: [
                 {label: 'Savings per year', name:'annualAmountSavedAfterTax'},
                 {label: 'Current savings', name:'initialSavings'},
@@ -127,7 +129,7 @@ export const LEGACY_ROUTES: Routes = [
             component: ParameterCollectionComponent,
             data: {
               title:'Saver',
-              href: 'results',
+              href: PARAMETER_COLLECTION_RESULTS_HREF,
               inputs: [
                 {label: 'Savings per year', name:'annualAmountSavedAfterTax'},
                 {label: 'Current savings', name:'initialSavings'},
@@ -144,7 +146,7 @@ export const LEGACY_ROUTES: Routes = [
             component: ParameterCollectionComponent,
             data: {
               title:'Nest egg',
-              href: 'results',
+              href: PARAMETER_COLLECTION_RESULTS_HREF,
               inputs: [
                 {label:'Time in retirement', 
                   name:'retirementTimeHorizonInYears',},
@@ -161,7 +163,7 @@ export const LEGACY_ROUTES: Routes = [
             component: ParameterCollectionComponent,
             data: {
               title:'Investing leverage',
-              href: 'results',
+              href: PARAMETER_COLLECTION_RESULTS_HREF,
               inputs: [
                 {label:'Investing leverage while working', 
                   name:'investingLeverage',},
@@ -175,7 +177,7 @@ export const LEGACY_ROUTES: Routes = [
             component: ParameterCollectionComponent,
             data: {
               title:'Retirement',
-              href: 'results',
+              href: PARAMETER_COLLECTION_RESULTS_HREF,
               inputs: [
                 {label:'Time in retirement', 
                   name:'retirementTimeHorizonInYears',},
@@ -193,7 +195,7 @@ export const LEGACY_ROUTES: Routes = [
             component: ParameterCollectionComponent,
             data: {
               title:'Working',
-              href: 'results',
+              href: PARAMETER_COLLECTION_RESULTS_HREF,
               inputs: [
                 {label: 'Savings per year', name:'annualAmountSavedAfterTax', value: ''},
                 {label: 'Current savings', name:'initialSavings', value: ''},
@@ -211,7 +213,7 @@ export const LEGACY_ROUTES: Routes = [
             component: ParameterCollectionComponent,
             data: {
               title:'Parameters',
-              href: 'results',
+              href: PARAMETER_COLLECTION_RESULTS_HREF,
               inputs: [
                 {label:'After tax income', 
                   name:'annualAfterTaxIncome',value: ''},
@@ -224,7 +226,7 @@ export const LEGACY_ROUTES: Routes = [
             component: ParameterCollectionComponent,
             data: {
               title:'Simulation',
-              href: 'results',
+              href: PARAMETER_COLLECTION_RESULTS_HREF,
               inputs: [
                 {label:'Number of simulations to run', 
                   name:'numWorkingSimulations',value: ''},
@@ -275,5 +277,19 @@ export const LEGACY_ROUTES: Routes = [
       },
     ],
   },
-
+  {
+    path: 'l0/learn',
+    redirectTo: 'l/0/learn',
+    pathMatch: 'full',
+  },
+  {
+    path: 'l0/retirement',
+    redirectTo: 'l/0/retirement',
+    pathMatch: 'full',
+  },
+  {
+    path: 'l0',
+    redirectTo: 'l/0',
+    pathMatch: 'full',
+  },
 ];

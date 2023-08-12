@@ -17,13 +17,13 @@
       <mat-icon>menu</mat-icon>
       </button> -->
     <span>
-      <a mat-button routerLink="/learn">Learn</a>
+      <a mat-button [routerLink]="routingService.mapper.createLearnRoute()">Learn</a>
     </span>
     <span>
-      <a mat-button routerLink="/retirement">Retire</a>
+      <a mat-button [routerLink]="routingService.mapper.createRetirementRoute()">Retire</a>
     </span>
     <span>
-      <a mat-button routerLink="/upgrade">Upgrade</a>
+      <a mat-button [routerLink]="routingService.mapper.createUpgradeRoute()">Upgrade</a>
     </span>
   </mat-toolbar-row>
   

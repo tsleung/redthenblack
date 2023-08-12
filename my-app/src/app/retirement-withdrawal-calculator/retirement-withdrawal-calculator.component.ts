@@ -72,7 +72,6 @@ function createColumns(options):number[][] {
   ]
 }
 
-
 function calculateOnePeriod(
   lastPeriod: number,
   savingsPerPeriod: number,
