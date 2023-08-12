@@ -54,6 +54,8 @@ export class CashFlowDiagramComponent {
     type: 'line'
   }
 
+  balanceChartGridOptions: c3.GridOptions = {}
+
   combinedChart:c3.Data = {
     columns: [
     ],
@@ -86,8 +88,17 @@ export class CashFlowDiagramComponent {
         ['Balance',...updatedVals.balanceChartData]
       ],
       type: 'line',
-      
     };
+
+    this.balanceChartGridOptions = {
+      y: {
+        lines: [
+            {value: 0},
+            {value: this.startingBalance, text: 'Starting Balance', position: 'start'},
+            {value: this.endingBalance, text: 'Ending Balance', position: 'end'},
+        ]
+      }
+    }
 
     this.combinedChart = {
       columns: [

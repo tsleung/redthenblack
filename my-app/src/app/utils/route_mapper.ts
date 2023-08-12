@@ -1,4 +1,8 @@
 
+export function createHomeRoute() {
+  return '/';
+}
+
 export function createMayaRoute() {
   return '/m/0/';
 }
@@ -103,6 +107,14 @@ export function createDatasetRoute() {
 
 export function createPitchRoute() {
   return '/pitch';
+}
+
+export function createGameRoute() {
+  return '/game';
+}
+
+export function createEditorRoute() {
+  return '/editor';
 }
 
 export function createContactMeRoute() {

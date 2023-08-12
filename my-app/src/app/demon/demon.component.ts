@@ -141,7 +141,7 @@ withdrawalConfidenceGridOptions:c3.GridOptions = {
     probabilityOfSuccess: .95,
     approximateCapitalGainsTax: .15,
   }
-  numWorkingSimulations = 5;
+  numWorkingSimulations = 100;
   workingMessage = '';
 
   calculateTargetNestEgg() {

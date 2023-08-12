@@ -303,9 +303,18 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
   </cite>
 </blockquote>
 <p>
-  If instead of assume 1.0 leverage (100% allocation) a partial allocation which is rebalanced will perform better than even. 
+  If instead of assuming 1.0 leverage (100% allocation) a partial allocation which is rebalanced will perform better than even. Try leverage of value .4!
 
 </p>
+<label>Starting balance</label>
+<input type="number" [(ngModel)]="preferences.startingBalance" (ngModelChange)="refreshOutputs()" [step]="steps.startingBalance"><br/>
+<label>Number of Periods</label>
+<input type="number" [(ngModel)]="preferences.numPeriods" (ngModelChange)="refreshOutputs();" min="0" ><br/>
+<label>Returns in a positive event</label>
+<input type="number" [(ngModel)]="preferences.goodEvenReturn" (ngModelChange)="refreshOutputs();" min="0" ><br/>
+<label>Returns in a negative event</label>
+<input type="number" [(ngModel)]="preferences.badEvenReturn" (ngModelChange)="refreshOutputs();" min="0" ><br/>
+
 <label>Leverage</label>
 <input type="number" [(ngModel)]="preferences.randomWalkReturnLeverage" (ngModelChange)="refreshOutputs()" [step]="steps.leverageStepSize"><br/>
 <app-cash-flow-diagram [cashFlow]="rebalanceRandomWalkCashFlow"></app-cash-flow-diagram>

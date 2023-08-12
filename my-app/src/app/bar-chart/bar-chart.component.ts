@@ -14,6 +14,9 @@ export class BarChartComponent {
     type: 'bar'
   }
   
+  @Input() gridOptions:c3.GridOptions = {
+  }
+
   chartId;
   chart: c3.ChartAPI;
   
@@ -30,7 +33,7 @@ export class BarChartComponent {
           ratio:.2
         }
       },
-      grid: {
+      grid: this.gridOptions ?? {
         y: {
             lines: [
                 {value: 0},
