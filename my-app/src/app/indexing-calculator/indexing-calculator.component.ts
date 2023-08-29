@@ -36,10 +36,11 @@ export class IndexingCalculatorComponent {
     
     const columns = createColumns(options);
     console.log('columns', columns)
+    const numColumns = this.controls.numPeriods.value ?? 0; 
     const chartData = {
       x: 'x',
       columns: [
-        ['x', ...new Array(20).fill(0).map((v, i) => i)],
+        ['x', ...new Array(numColumns).fill(0).map((v, i) => i)],
         ...columns.map((v, i) => {
           return [i, ...v];
         }),
@@ -52,7 +53,6 @@ export class IndexingCalculatorComponent {
   }
 
   constructor() {
-
   }
 }
 
@@ -61,7 +61,7 @@ function createColumns(options) {
   const savingsPlan = new Array(
     options.numPeriods).fill(options.savingsPerPeriod).reduce((allPeriods, savingsPerPeriod) => {
       const lastPeriod = allPeriods.at(-1);
-      const interestRate = options.interestRate;
+      const interestRate = options.expectedReturn;
   return [
       ...allPeriods,
       calculateOnePeriod(lastPeriod, savingsPerPeriod, interestRate),
@@ -69,7 +69,7 @@ function createColumns(options) {
   }, [options.initialBalance])
 
   return [
-    savingsPlan,
+    savingsPlan.map(v => Number(v.toFixed(2))),
   ]
 }
 
@@ -84,7 +84,6 @@ function calculateOnePeriod(
   // compound new return
   const newBalanceAfterSavings = lastPeriod + savingsPerPeriod;
   const newBalanceAfterSavingsAndInterest = newBalanceAfterSavings * (1+interestRate);
-
   return newBalanceAfterSavingsAndInterest;
 }
 

@@ -1,0 +1,48 @@
+<div class="inputs">
+  <mat-form-field >
+    <mat-label>Number of years</mat-label>
+    <input matInput name="numYears" [formControl]="controls.numYears" step="1" min="0" type="number" /><br/>
+  </mat-form-field>
+  <mat-form-field >
+    <mat-label>Annual rate</mat-label>
+    <input matInput name="annualRate" [formControl]="controls.annualRate" min="0" type="number" /><br/>
+  </mat-form-field>
+  <mat-form-field >
+    <mat-label>Total principal loan amount</mat-label>
+    <input matInput name="principal" [formControl]="controls.principal" type="number" /><br/>
+  </mat-form-field>
+</div>
+<ng-container *ngIf="amortization | async as amortization">
+  <h2>{{amortization | number : '1.2-2'}}<h3>Monthly payment</h3></h2>
+</ng-container>
+
+<markdown ngPreserveWhitespaces>
+  # Amortization Calculation in Mortgages, Car Payments, and Other Loans
+  Amortization is the process of paying off a loan over time in equal installments. Part of each payment goes toward the loan principal, and part goes toward interest. As the loan amortizes, the amount going toward principal starts out small, and gradually grows larger month by month.
+  
+  The amortization calculation is a formula that lenders use to determine how much of each payment goes toward principal and interest. The formula is as follows:
+  
+  ```Monthly payment = (principal balance * interest rate) / (1 - (1 + interest rate)^-(number of payments))```
+  
+  - **Principal balance:** The amount of money you borrowed.
+  - **Interest rate:** The percentage of the principal balance that you pay in interest each year.
+  - **Number of payments:** The total number of payments you will make over the life of the loan.
+  For example, let's say you take out a $200,000 mortgage with an interest rate of 5% and a 30-year term. Your monthly payment would be $1,068.68. Of this amount, $68.68 would go toward interest and $990 would go toward principal.
+  
+  The amortization schedule is a table that shows how much of each payment goes toward principal and interest over the life of the loan. The amortization schedule can be used to track your progress in paying off your loan, and to see how much interest you will pay over the life of the loan.
+  
+  You can get an amortization schedule from your lender, or you can use an online amortization calculator.
+  
+  There are a few things you can do to reduce the amount of interest you pay on a loan:
+  
+  - Make a down payment. The larger your down payment, the less you will have to borrow, and the less interest you will pay.
+  - Choose a shorter loan term. The shorter the loan term, the more of your payment will go toward principal and the less will go toward interest.
+  - Make extra payments. If you can afford to make extra payments on your loan, you will pay it off sooner and save money on interest.
+  Amortization is a complex topic, but it is important to understand how it works if you are taking out a loan. By understanding how amortization works, you can make informed decisions about how to pay off your loan and save money.
+  
+  Here are some additional things to keep in mind about amortization:
+  
+  - The amount of interest you pay over the life of a loan is determined by the principal balance, the interest rate, and the length of the loan.
+  - The amount of principal that you pay off each month increases over time, as the interest portion of your payment decreases.
+  -You can use an amortization calculator to estimate how much interest you will pay on a loan, and to see how much your monthly payments will be.
+</markdown>

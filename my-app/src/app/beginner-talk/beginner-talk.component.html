@@ -328,6 +328,11 @@ To look at a slightly more complicated cash flow, let's look at bonds. Bonds are
 <p>
   For this example, we add our savings rate of {{preferences.savingsPerPeriod | number: '1.0-0':'en-US'}} to the starting balance of {{preferences.startingBalance | number: '1.0-0':'en-US'}} at the end of each period. We use our random walk returns of {{preferences.goodEvenReturn}} and {{preferences.badEvenReturn}}. Nest egg to track towards will be {{preferences.nestEgg | number: '1.0-0':'en-US'}}. Also instead of a random walk we'll alternate good and bad periods. This ensures the {{preferences.numPeriods}} periods are deterministic and different preferences can be compared more easily. 
 </p>
+<label>Current Savings</label>
+<input type="number" [(ngModel)]="preferences.startingBalance" (ngModelChange)="refreshOutputs()"><br/>
+<label>Savings per year (period)</label>
+<input type="number" [(ngModel)]="preferences.savingsPerPeriod" (ngModelChange)="refreshOutputs()" [step]="steps.savingsPerPeriod"><br/>
+
 <label>Base Leverage</label>
 <input type="number" [(ngModel)]="preferences.timeDiversificationLeverage" (ngModelChange)="refreshTimeDiversification()" [step]="steps.leverageStepSize"><br/>
 <label>Quadratic decay factor</label>

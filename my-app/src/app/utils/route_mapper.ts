@@ -11,65 +11,91 @@ export function createMayaIntro() {
 }
 
 export function createMayaDashboard() {
-  return createMayaRoute() + 'dashboard';
+  return createMayaRoute() + '/dashboard';
 }
 export function createMayaOnboarding() {
-  return createMayaRoute() + 'onboarding';
+  return createMayaRoute() + '/onboarding';
+}
+export const NEST_EGG_FRAGMENT = 'nest-egg';
+export function createMayaNestEgg() {
+  return createMayaOnboarding() + `/${NEST_EGG_FRAGMENT}`;
+}
+export function createMayaPath() {
+  return createMayaOnboarding() + '/path';
+}
+export const INVESTING_FRAGMENT = 'investing';
+export function createMayaInvesting() {
+  return createMayaOnboarding() + `/${INVESTING_FRAGMENT}`;
+}
+export const INVESTING_ADDITIONAL_FRAGMENT = 'investing/additional';
+export function createMayaInvestingAdditional() {
+  return createMayaOnboarding() + `/${INVESTING_ADDITIONAL_FRAGMENT}`;
+}
+
+export const GAME_OF_LIFE_FRAGMENT = 'life-events';
+export function createGameOfLife() {
+  return createMayaOnboarding() + `/${GAME_OF_LIFE_FRAGMENT}`;
 }
 
 export function createMayaEducation() {
-  return createMayaRoute() + 'education';
+  return createMayaRoute() + '/education';
 }
 export function createMayaCalculator() {
-  return createMayaRoute() + 'calculators/';
+  return createMayaRoute() + '/calculators/';
 }
 export function createMayaCalculatorList() {
-  return createMayaCalculator() + 'list';
+  return createMayaCalculator() + '/list';
 }
 export function createSavingsCalculator() {
-  return createMayaCalculator() + 'savings';
+  return createMayaCalculator() + '/savings';
 }
 export function createIndexingCalculator() {
-  return createMayaCalculator() + 'indexing';
+  return createMayaCalculator() + '/indexing';
 }
 export function createRentOrBuyCalculator() {
-  return createMayaCalculator() + 'rent-or-buy';
+  return createMayaCalculator() + '/rent-or-buy';
 }
 export function createComparingCashFlowsCalculator() {
-  return createMayaCalculator() + 'comparing-cash-flows';
+  return createMayaCalculator() + '/comparing-cash-flows';
 }
 export function createBackToSchoolCalculator() {
-  return createMayaCalculator() + 'back-to-school';
+  return createMayaCalculator() + '/back-to-school';
 }
 export function createGasOrElectricCalculator() {
-  return createMayaCalculator() + 'gas-or-electric';
+  return createMayaCalculator() + '/gas-or-electric';
 }
 export function createRetirementWithdrawalCalculator() {
-  return createMayaCalculator() + 'retirement-withdrawal';
+  return createMayaCalculator() + '/retirement-withdrawal';
 }
 export function createMortgageYourRetirement() {
-  return createMayaCalculator() + 'mortgage-your-retirement';
+  return createMayaCalculator() + '/mortgage-your-retirement';
 }
 export function createOptimalBetSizingCalculator() {
-  return createMayaCalculator() + 'optimal-bet-sizing';
+  return createMayaCalculator() + '/optimal-bet-sizing';
 }
 export function createSeniorCareCalculator() {
-  return createMayaCalculator() + 'senior-care';
+  return createMayaCalculator() + '/senior-care';
 }
 export function createMathToAMillionaireCalculator() {
-  return createMayaCalculator() + 'math-to-millionaire';
+  return createMayaCalculator() + '/math-to-millionaire';
 }
 export function createKidsCollegeFundCalculator() {
-  return createMayaCalculator() + 'kids-college-fund';
+  return createMayaCalculator() + '/kids-college-fund';
 }
 export function createCouplesFinancesCalculator() {
-  return createMayaCalculator() + 'couples-finances';
+  return createMayaCalculator() + '/couples-finances';
 }
 export function createWeddingHoneymoonDownPaymentCalculator() {
-  return createMayaCalculator() + 'wedding-honeymoon-down-payment';
+  return createMayaCalculator() + '/wedding-honeymoon-down-payment';
 }
 export function createDebtHedgeInflationCalculator() {
-  return createMayaCalculator() + 'debt-hedge-inflation';
+  return createMayaCalculator() + '/debt-hedge-inflation';
+}
+export function createAmortizationCalculator() {
+  return createMayaCalculator() + '/amortization';
+}
+export function createPerpetuityCalculator() {
+  return createMayaCalculator() + '/perpetuity';
 }
 
 export function createMillionaireArticleRoute() {

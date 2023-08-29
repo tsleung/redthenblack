@@ -1,0 +1,38 @@
+<div class="inputs">
+  <mat-form-field >
+    <mat-label>Desired annual cash flow</mat-label>
+    <input matInput name="annualCashFlow" [formControl]="controls.annualCashFlow" step="1" min="0" type="number" /><br/>
+  </mat-form-field>
+  <mat-form-field >
+    <mat-label>Annual discount rate</mat-label>
+    <input matInput name="discountRate" [formControl]="controls.discountRate" step=".001" min="0" type="number" /><br/>
+  </mat-form-field>
+</div>
+<ng-container *ngIf="principal | async as principal">
+  <h2>{{principal | number : '1.2-2'}}<h3>Required principal</h3></h2>
+</ng-container>
+<markdown ngPreserveWhitespaces>
+# What is a perpetuity?
+
+A perpetuity is a financial instrument that pays a fixed amount of money in perpetuity, meaning forever. This is in contrast to an annuity, which pays a fixed amount of money for a fixed period of time. Perpetuities are often used to calculate the present value of an investment that pays a fixed amount of money each year, such as a bond or a dividend-paying stock.
+
+## How to calculate the present value of a perpetuity
+
+The present value of a perpetuity is calculated using the following formula:
+
+```Present Value = Annual Cash Flow / Discount Rate```
+The annual cash flow is the fixed amount of money that the perpetuity pays each year. The discount rate is the interest rate that is used to discount the future cash flows back to the present value.
+
+For example, let's say that you are considering investing in a bond that pays $100 per year in perpetuity. If the discount rate is 5%, then the present value of the bond would be $100 / 0.05 = $2,000.
+
+## How is perpetuity used for retirement, loans, and investments?
+
+Perpetuity can be used in a variety of financial applications, including retirement planning, loan amortization, and investment valuation.
+
+- **Retirement planning:** Perpetuity can be used to calculate the amount of money you need to save for retirement. For example, if you want to have $10,000 per year in retirement income, and you expect to live for 20 years, then you would need to have a present value of $10,000 / 0.05 = $200,000 saved for retirement.
+- **Loan amortization:** Perpetuity can be used to calculate the monthly payments on a loan that is amortized over a long period of time. For example, if you take out a 30-year mortgage with a principal of $200,000 and an interest rate of 5%, then your monthly payment would be $1,000.
+- **Investment valuation:** Perpetuity can be used to value an investment that pays a fixed amount of money each year in perpetuity. For example, if a stock pays a dividend of $1 per share per year and the discount rate is 5%, then the present value of the stock would be $1 / 0.05 = $20 per share.
+## Conclusion
+
+Perpetuity is a useful financial concept that can be used to calculate the present value of an investment that pays a fixed amount of money each year. It can be used in a variety of financial applications, including retirement planning, loan amortization, and investment valuation.
+</markdown>

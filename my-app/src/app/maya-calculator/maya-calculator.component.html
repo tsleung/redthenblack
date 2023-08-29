@@ -16,6 +16,16 @@
     </span>
   </mat-list-item>
 
+  <mat-list-item lines="3">
+    <span matListItemTitle><a [routerLink]="routingService.mapper.createAmortizationCalculator()">Amortization Calculation in Mortgages, Car Payments, and Other Loans</a></span>
+    <span>Amortization is the process of paying off a loan over time in equal installments. Part of each payment goes toward the loan principal, and part goes toward interest. As the loan amortizes, the amount going toward principal starts out small, and gradually grows larger month by month.
+    </span>
+  </mat-list-item>
+
+  <mat-list-item lines="3">
+    <span matListItemTitle><a [routerLink]="routingService.mapper.createPerpetuityCalculator()">What is a perpetuity?</a></span>
+    <span>A perpetuity is a financial instrument that pays a fixed amount of money in perpetuity, meaning forever. This is in contrast to an annuity, which pays a fixed amount of money for a fixed period of time. Perpetuities are often used to calculate the present value of an investment that pays a fixed amount of money each year, such as a bond or a dividend-paying stock.</span>
+  </mat-list-item>
 
   <mat-list-item lines="3">
     <span matListItemTitle><a [routerLink]="routingService.mapper.createRetirementWithdrawalCalculator()">Evaluating
@@ -188,7 +198,6 @@
       in value, such as real estate or commodities. However, you can also hedge against inflation with debt.
     </span>
   </mat-list-item>
-
   <p>
     <i>
       Please consult an accountant or financial advisor for tax and investmentment considerations.

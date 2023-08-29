@@ -39,10 +39,11 @@ export class SavingsCalculatorComponent {
     
     const columns = createSavingsColumns(options);
     console.log('columns', columns)
+    const numPeriods = this.controls.numPeriods.value ?? 0; 
     const chartData = {
       x: 'x',
       columns: [
-        ['x', ...new Array(20).fill(0).map((v, i) => i)],
+        ['x', ...new Array(numPeriods).fill(0).map((v, i) => i)],
         ...columns.map((v, i) => {
           return [i, ...v];
         }),

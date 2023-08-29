@@ -18,6 +18,8 @@ import { MathToMillionaireCalculatorComponent } from './math-to-millionaire-calc
 import { CouplesFinancesCalculatorComponent } from './couples-finances-calculator/couples-finances-calculator.component';
 import { WeddingHoneymoonDownPaymentCalculatorComponent } from './wedding-honeymoon-down-payment-calculator/wedding-honeymoon-down-payment-calculator.component';
 import { DebtHedgeInflationCalculatorComponent } from './debt-hedge-inflation-calculator/debt-hedge-inflation-calculator.component';
+import { AmortizationCalculatorComponent } from './amortization-calculator/amortization-calculator.component';
+import { PerpetuityCalculatorComponent } from './perpetuity-calculator/perpetuity-calculator.component';
 
 export const CALCULATOR = [
   {
@@ -113,7 +115,14 @@ export const CALCULATOR = [
           path: 'debt-hedge-inflation',
           component: DebtHedgeInflationCalculatorComponent,
         },
-        
+        { 
+          path: 'amortization',
+          component: AmortizationCalculatorComponent,
+        },
+        { 
+          path: 'perpetuity',
+          component: PerpetuityCalculatorComponent,
+        },
       ]
     },
     
