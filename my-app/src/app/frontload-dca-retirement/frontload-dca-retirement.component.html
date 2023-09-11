@@ -7,7 +7,6 @@
     <mat-label>Annual Investment</mat-label>
     <input matInput [formControl]="controls.annualInvestment" min="0" type="number" /><br/>
   </mat-form-field>
-  
 </div>
 <div class="inputs">
   <mat-form-field>
@@ -18,7 +17,9 @@
     Annualized Rate: {{annualizedReturns | number : '1.4-4'}}
   </ng-container>  
 </div>
-
+<button mat-stroked-button (click)="toVolatileRate()">To Sample Volatile Rate</button>
+<button mat-stroked-button (click)="toSimpleRate()">To Sample Simple Rate</button>
+  
 <h1>
   401k. Frontload vs Dollar Cost Averaging
 </h1>

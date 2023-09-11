@@ -1,23 +1,31 @@
 import { Component } from '@angular/core';
 
 const DEFAULT_ANNUAL_RATE = 1.1;
+const DEFAULT_MONTHLY_RATE = Math.pow(DEFAULT_ANNUAL_RATE, 1 / 12).toFixed(6);
+const DEFAULT_SPECIAL_RATE = `1.1953, 0.85`;
 @Component({
   selector: 'app-frontload-dca-retirement',
   templateUrl: './frontload-dca-retirement.component.html',
   styleUrls: ['./frontload-dca-retirement.component.scss']
 })
 export class FrontloadDcaRetirementComponent {
-
+  
   controls = {
     annualInvestment: new FormControl(20000),
     numYears: new FormControl(45),
-    monthlyReturns: new FormControl(`${Math.pow(DEFAULT_ANNUAL_RATE, 1 / 12).toFixed(6)}`),
+    monthlyReturns: new FormControl(`1.1953, 0.85`),
   }
 
   form = new FormGroup(this.controls);
-
+  
+  toVolatileRate() {
+    this.controls.monthlyReturns.setValue(DEFAULT_SPECIAL_RATE);
+  }
+  toSimpleRate() {
+    this.controls.monthlyReturns.setValue(`${DEFAULT_MONTHLY_RATE}`);
+  }
   monthlyReturns: Observable<number[]> = this.controls.monthlyReturns.valueChanges.pipe(
-    startWith(`${Math.pow(DEFAULT_ANNUAL_RATE, 1 / 12).toFixed(6)}`),
+    startWith(DEFAULT_SPECIAL_RATE),
     // convert the string to an array of primitives
     map(val => {
       return convertCommaStrToNumArr(val);
