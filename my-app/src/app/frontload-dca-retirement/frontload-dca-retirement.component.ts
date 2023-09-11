@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 
 const DEFAULT_ANNUAL_RATE = 1.1;
 const DEFAULT_MONTHLY_RATE = Math.pow(DEFAULT_ANNUAL_RATE, 1 / 12).toFixed(6);
-const DEFAULT_SPECIAL_RATE = `1.1953, 0.85`;
+const DEFAULT_VERY_VOLATILE_RATE = ` 0.85, 1.1953`;
+const DEFAULT_VOLATILE_RATE = `0.87, 1.16783`;
 @Component({
   selector: 'app-frontload-dca-retirement',
   templateUrl: './frontload-dca-retirement.component.html',
@@ -13,19 +14,23 @@ export class FrontloadDcaRetirementComponent {
   controls = {
     annualInvestment: new FormControl(20000),
     numYears: new FormControl(45),
-    monthlyReturns: new FormControl(`1.1953, 0.85`),
+    monthlyReturns: new FormControl(DEFAULT_VOLATILE_RATE),
   }
 
   form = new FormGroup(this.controls);
   
+
+  toVeryVolatileRate() {
+    this.controls.monthlyReturns.setValue(DEFAULT_VERY_VOLATILE_RATE);
+  }
   toVolatileRate() {
-    this.controls.monthlyReturns.setValue(DEFAULT_SPECIAL_RATE);
+    this.controls.monthlyReturns.setValue(DEFAULT_VOLATILE_RATE);
   }
   toSimpleRate() {
     this.controls.monthlyReturns.setValue(`${DEFAULT_MONTHLY_RATE}`);
   }
   monthlyReturns: Observable<number[]> = this.controls.monthlyReturns.valueChanges.pipe(
-    startWith(DEFAULT_SPECIAL_RATE),
+    startWith(DEFAULT_VOLATILE_RATE),
     // convert the string to an array of primitives
     map(val => {
       return convertCommaStrToNumArr(val);
@@ -129,10 +134,15 @@ function firstYearDifference(monthlyReturns: number[], numYears: number, annualI
     return monthlyReturns[monthIndex];
   });
 
-  const frontload = [...monthlyPeriods].reduce((pastBalances, monthlyReturn) => {
+  const frontload = [...monthlyPeriods].reduce((pastBalances, monthlyReturn, i) => {
     const balance = pastBalances.at(-1) * monthlyReturn;
-    return [...pastBalances, balance];
-  }, [annualInvestment]);
+    // check if its the beginning of the year
+    return i % 12 === 0 && i < 12 ? 
+      // add frontload
+      [...pastBalances, balance + annualInvestment] :
+      // Otherwise add nothing
+      [...pastBalances, balance];
+  }, [0]);
 
   const dca = [...monthlyPeriods].reduce((pastBalances, monthlyReturn, i) => {
     const balance = pastBalances.at(-1) * monthlyReturn;
@@ -176,7 +186,7 @@ function allYearsDifference(monthlyReturns: number[], numYears: number, annualIn
       [...pastBalances, balance + annualInvestment] :
       // Otherwise add nothing
       [...pastBalances, balance];
-  }, [annualInvestment]);
+  }, [0]);
 
   const dca = [...monthlyPeriods].reduce((pastBalances, monthlyReturn, i) => {
     const balance = pastBalances.at(-1) * monthlyReturn;
