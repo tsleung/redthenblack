@@ -22,8 +22,15 @@
 <h1>
   401k. Frontload vs Dollar Cost Averaging
 </h1>
+<markdown ngPreserveWhitespaces>
+Front loading and dollar cost averaging are two different investment strategies for 401(k) plans.
+
+- **Front loading** is the strategy of investing a lump sum of money into your 401(k) at the beginning of the year. This can be a good option if you have a large amount of money to invest or if you believe that the stock market is going to go up in the near future.
+- **Dollar cost averaging** is the strategy of investing a fixed amount of money into your 401(k) on a regular basis, such as every paycheck. This can be a good option if you don't have a large amount of money to invest or if you are concerned about market volatility.
+</markdown>
 <ng-container *ngIf="firstYearDifference | async as difference">
   <h2>Only 401k investing in year one.</h2>
+  <app-line-chart [chartData]="difference.charts"></app-line-chart>
   <summary>
     Frontload after {{controls.numYears.value}} years: {{difference.frontload.at(-1)  | number : '1.0-0'}}
     <details>
@@ -48,6 +55,7 @@
 
 <ng-container *ngIf="allYearsDifference | async as difference">
   <h2>401k investing in all years.</h2>
+  <app-line-chart [chartData]="difference.charts"></app-line-chart>
   <summary>
     Frontload after {{controls.numYears.value}} years: {{difference.frontload.at(-1)  | number : '1.0-0'}}
     <details>
@@ -69,3 +77,14 @@
     </details>
   </summary>
 </ng-container>
+
+<markdown ngPreserveWhitespaces>
+The best strategy for you will depend on your individual circumstances and investment goals. If you are not sure which strategy is right for you, it is a good idea to talk to a financial advisor.
+
+Here are some additional things to consider when choosing between front loading and dollar cost averaging:
+
+- Your risk tolerance: If you are comfortable with risk, then front loading may be a good option for you. However, if you are risk averse, then dollar cost averaging may be a better choice.
+- Your investment horizon: If you are investing for the long term, then front loading may be a good option. However, if you are investing for the short term, then dollar cost averaging may be a better choice.
+- Your investment goals: If you are saving for a specific goal, such as retirement, then front loading may be a good option. However, if you are investing for general purposes, then dollar cost averaging may be a better choice.
+Ultimately, the best way to choose between front loading and dollar cost averaging is to consider your individual circumstances and investment goals.
+</markdown>

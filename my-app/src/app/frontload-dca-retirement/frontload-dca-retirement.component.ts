@@ -36,7 +36,17 @@ export class FrontloadDcaRetirementComponent {
     map(() => {
       return this.calculateFirstYearDifference();  
     }),
-    startWith(this.calculateFirstYearDifference())
+    startWith(this.calculateFirstYearDifference()),
+    map(results => {
+      return {
+        ...results, 
+        charts: this.createCharts(
+          results.frontload,
+          results.dca,
+          results.difference,
+        )
+      };
+    })
   );
 
   calculateFirstYearDifference() {
@@ -52,7 +62,17 @@ export class FrontloadDcaRetirementComponent {
     map(() => {
       return this.calculateAllYearsDifference();  
     }),
-    startWith(this.calculateAllYearsDifference())
+    startWith(this.calculateAllYearsDifference()),
+    map(results => {
+      return {
+        ...results, 
+        charts: this.createCharts(
+          results.frontload,
+          results.dca,
+          results.difference,
+        )
+      };
+    })
   );
 
   calculateAllYearsDifference() {
@@ -63,8 +83,27 @@ export class FrontloadDcaRetirementComponent {
     return allYearsDifference(monthlyReturns, numYears, annualInvestment);
   }
 
+  createCharts(
+    frontload: number[],
+    dca: number[],
+    difference: number[],
+  ) {
+    const chartData = {
+      x: 'x',
+      columns: [
+        ['x', ...new Array(frontload.length).fill(0).map((v, i) => i)],
+        ['Frontload', ...frontload],
+        ['DCA', ...dca],
+        ['Difference', ...difference],
+      ],
+    };
+
+    return chartData;
+  }
   constructor() { }
 }
+
+
 import { FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, filter, startWith } from 'rxjs/operators';
