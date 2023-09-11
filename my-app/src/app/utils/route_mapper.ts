@@ -97,11 +97,13 @@ export function createAmortizationCalculator() {
 export function createPerpetuityCalculator() {
   return createMayaCalculator() + '/perpetuity';
 }
+export function createFrontloadDca401kCalculator() {
+  return createMayaCalculator() + '/frontload-dca-401k';
+}
 
 export function createMillionaireArticleRoute() {
   return createArticlesRoute() + '/millionaire';
 }
-
 
 function createLegacyRoute() {
   return '/l/0';

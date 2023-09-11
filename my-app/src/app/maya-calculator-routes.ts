@@ -20,6 +20,7 @@ import { WeddingHoneymoonDownPaymentCalculatorComponent } from './wedding-honeym
 import { DebtHedgeInflationCalculatorComponent } from './debt-hedge-inflation-calculator/debt-hedge-inflation-calculator.component';
 import { AmortizationCalculatorComponent } from './amortization-calculator/amortization-calculator.component';
 import { PerpetuityCalculatorComponent } from './perpetuity-calculator/perpetuity-calculator.component';
+import { FrontloadDcaRetirementComponent } from './frontload-dca-retirement/frontload-dca-retirement.component';
 
 export const CALCULATOR = [
   {
@@ -122,6 +123,10 @@ export const CALCULATOR = [
         { 
           path: 'perpetuity',
           component: PerpetuityCalculatorComponent,
+        },
+        { 
+          path: 'frontload-dca-401k',
+          component: FrontloadDcaRetirementComponent,
         },
       ]
     },

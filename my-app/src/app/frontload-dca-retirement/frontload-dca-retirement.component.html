@@ -1,0 +1,67 @@
+<div class="inputs">
+  <mat-form-field>
+    <mat-label>Number of Years to Invest 401k</mat-label>
+    <input matInput [formControl]="controls.numYears" min="0" type="number" /><br/>
+  </mat-form-field>
+  
+</div>
+<div class="inputs">
+  <mat-form-field>
+    <mat-label>Monthly Investment Return</mat-label>
+    <input matInput [formControl]="controls.monthlyReturns" min="0" type="text" /><br/>
+  </mat-form-field>
+</div>
+<ng-container *ngIf="annualizedReturns | async as annualizedReturns">
+  Annualized Rate: {{annualizedReturns | number : '1.4-4'}}
+</ng-container>
+
+<h1>
+  401k. Frontload vs Dollar Cost Averaging
+</h1>
+<ng-container *ngIf="firstYearDifference | async as difference">
+  <h2>Only 401k investing in year one.</h2>
+  <summary>
+    Frontload after {{controls.numYears.value}} years: {{difference.frontload.at(-1)  | number : '1.0-0'}}
+    <details>
+      {{difference.frontload  | json}}
+    </details>
+  </summary>
+
+  <summary>
+    DCA after {{controls.numYears.value}} years: {{difference.dca.at(-1)  | number : '1.0-0'}}
+    <details>
+      {{difference.dca  | json}}
+    </details>
+  </summary>
+
+  <summary>
+    Difference Frontload less DCA after {{controls.numYears.value}} years: {{difference.difference.at(-1)  | number : '1.0-0'}}
+    <details>
+      {{difference.difference  | json}}
+    </details>
+  </summary>
+</ng-container>
+
+<ng-container *ngIf="allYearsDifference | async as difference">
+  <h2>401k investing in all years.</h2>
+  <summary>
+    Frontload after {{controls.numYears.value}} years: {{difference.frontload.at(-1)  | number : '1.0-0'}}
+    <details>
+      {{difference.frontload  | json}}
+    </details>
+  </summary>
+
+  <summary>
+    DCA after {{controls.numYears.value}} years: {{difference.dca.at(-1)  | number : '1.0-0'}}
+    <details>
+      {{difference.dca  | json}}
+    </details>
+  </summary>
+
+  <summary>
+    Difference Frontload less DCA after {{controls.numYears.value}} years: {{difference.difference.at(-1)  | number : '1.0-0'}}
+    <details>
+      {{difference.difference  | json}}
+    </details>
+  </summary>
+</ng-container>
