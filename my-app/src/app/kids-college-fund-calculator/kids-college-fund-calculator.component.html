@@ -1,3 +1,46 @@
+<div class="inputs">
+  <mat-form-field >
+    <mat-label>How long until kid goes to college</mat-label>
+    <input matInput [formControl]="controls.numPeriods" step="1" min="0" type="number" /><br/>
+  </mat-form-field>
+  <mat-form-field >
+    <mat-label>Delay until savings</mat-label>
+    <input matInput [formControl]="controls.delayUntilSaving" min="0" type="number" /><br/>
+  </mat-form-field>
+</div>
+<div class="inputs">
+  <mat-form-field >
+    <mat-label>Initial savings</mat-label>
+    <input matInput [formControl]="controls.initialInvestment" min="0" type="number" /><br/>
+  </mat-form-field>
+  <mat-form-field >
+    <mat-label>Savings Rate of return</mat-label>
+    <input matInput [formControl]="controls.rateOfReturn" min="0" type="number" /><br/>
+  </mat-form-field>
+  <mat-form-field >
+    <mat-label>Additional savings per period</mat-label>
+    <input matInput [formControl]="controls.additionalSavings" min="0" type="number" /><br/>
+  </mat-form-field>
+  <mat-form-field >
+    <mat-label>Savings Rate Change over Time</mat-label>
+    <input matInput [formControl]="controls.additionalSavingsGrowth" min="0" type="number" /><br/>
+  </mat-form-field>
+</div>
+<div class="inputs">
+  <mat-form-field>
+    <mat-label>Cost of College</mat-label>
+    <input matInput [formControl]="controls.costOfCollege" min="0" type="number" /><br/>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Cost of College Annual Inflation</mat-label>
+    <input matInput [formControl]="controls.costOfCollegeInflation" min="0" type="number" /><br/>
+  </mat-form-field>
+</div>
+
+<ng-container *ngIf="fund | async as fund">
+  
+</ng-container>
+
 <markdown ngPreserveWhitespaces>
 # Saving for a Kid's College Fund
 

@@ -3,6 +3,10 @@
     <mat-label>Number of Years to Invest 401k</mat-label>
     <input matInput [formControl]="controls.numYears" min="0" type="number" /><br/>
   </mat-form-field>
+  <mat-form-field>
+    <mat-label>Annual Investment</mat-label>
+    <input matInput [formControl]="controls.annualInvestment" min="0" type="number" /><br/>
+  </mat-form-field>
   
 </div>
 <div class="inputs">
@@ -10,10 +14,10 @@
     <mat-label>Monthly Investment Return</mat-label>
     <input matInput [formControl]="controls.monthlyReturns" min="0" type="text" /><br/>
   </mat-form-field>
+  <ng-container *ngIf="annualizedReturns | async as annualizedReturns">
+    Annualized Rate: {{annualizedReturns | number : '1.4-4'}}
+  </ng-container>  
 </div>
-<ng-container *ngIf="annualizedReturns | async as annualizedReturns">
-  Annualized Rate: {{annualizedReturns | number : '1.4-4'}}
-</ng-container>
 
 <h1>
   401k. Frontload vs Dollar Cost Averaging

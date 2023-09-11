@@ -9,6 +9,7 @@ const DEFAULT_ANNUAL_RATE = 1.1;
 export class FrontloadDcaRetirementComponent {
 
   controls = {
+    annualInvestment: new FormControl(20000),
     numYears: new FormControl(45),
     monthlyReturns: new FormControl(`${Math.pow(DEFAULT_ANNUAL_RATE, 1 / 12).toFixed(6)}`),
   }
@@ -41,8 +42,9 @@ export class FrontloadDcaRetirementComponent {
   calculateFirstYearDifference() {
     const monthlyReturns = convertCommaStrToNumArr(this.controls.monthlyReturns.value);
     const numYears = this.controls.numYears.value;
+    const annualInvestment = this.controls.annualInvestment.value;
 
-    return firstYearDifference(monthlyReturns, numYears);
+    return firstYearDifference(monthlyReturns, numYears, annualInvestment);
   }
 
 
@@ -56,8 +58,9 @@ export class FrontloadDcaRetirementComponent {
   calculateAllYearsDifference() {
     const monthlyReturns = convertCommaStrToNumArr(this.controls.monthlyReturns.value);
     const numYears = this.controls.numYears.value;
+    const annualInvestment = this.controls.annualInvestment.value;
 
-    return allYearsDifference(monthlyReturns, numYears);
+    return allYearsDifference(monthlyReturns, numYears, annualInvestment);
   }
 
   constructor() { }
@@ -67,7 +70,7 @@ import { Observable } from 'rxjs';
 import { map, filter, startWith } from 'rxjs/operators';
 
 
-function firstYearDifference(monthlyReturns: number[], numYears: number) {
+function firstYearDifference(monthlyReturns: number[], numYears: number, annualInvestment: number) {
   if(monthlyReturns.length != 12) {
     throw new Error(`Monthly returns needs to be have 12 values ${JSON.stringify(monthlyReturns)}`);
   }
@@ -82,13 +85,13 @@ function firstYearDifference(monthlyReturns: number[], numYears: number) {
   const frontload = [...monthlyPeriods].reduce((pastBalances, monthlyReturn) => {
     const balance = pastBalances.at(-1) * monthlyReturn;
     return [...pastBalances, balance];
-  }, [20000]);
+  }, [annualInvestment]);
 
   const dca = [...monthlyPeriods].reduce((pastBalances, monthlyReturn, i) => {
     const balance = pastBalances.at(-1) * monthlyReturn;
     return i < 12 ? 
       // DCA the first year
-      [...pastBalances, balance + (20000 / 12)] :
+      [...pastBalances, balance + (annualInvestment / 12)] :
       // Past first year
       [...pastBalances, balance];
   }, [0]);
@@ -106,7 +109,7 @@ function firstYearDifference(monthlyReturns: number[], numYears: number) {
 }
 
 
-function allYearsDifference(monthlyReturns: number[], numYears: number) {
+function allYearsDifference(monthlyReturns: number[], numYears: number, annualInvestment: number) {
   if(monthlyReturns.length != 12) {
     throw new Error(`Monthly returns needs to be have 12 values ${JSON.stringify(monthlyReturns)}`);
   }
@@ -123,15 +126,15 @@ function allYearsDifference(monthlyReturns: number[], numYears: number) {
     // check if its the beginning of the year
     return i % 12 === 0 ? 
       // add frontload
-      [...pastBalances, balance + 20000] :
+      [...pastBalances, balance + annualInvestment] :
       // Otherwise add nothing
       [...pastBalances, balance];
-  }, [20000]);
+  }, [annualInvestment]);
 
   const dca = [...monthlyPeriods].reduce((pastBalances, monthlyReturn, i) => {
     const balance = pastBalances.at(-1) * monthlyReturn;
     // DCA all years
-    return [...pastBalances, balance + (20000 / 12)];
+    return [...pastBalances, balance + (annualInvestment / 12)];
   }, [0]);
 
   // zip arrays and diff
