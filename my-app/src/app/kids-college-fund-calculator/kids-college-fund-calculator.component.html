@@ -15,7 +15,7 @@
   </mat-form-field>
   <mat-form-field >
     <mat-label>Savings Rate of return</mat-label>
-    <input matInput [formControl]="controls.rateOfReturn" min="0" type="number" /><br/>
+    <input matInput [formControl]="controls.rateOfReturn" min="0" step=".01" type="number" /><br/>
   </mat-form-field>
   <mat-form-field >
     <mat-label>Additional savings per period</mat-label>
@@ -23,22 +23,32 @@
   </mat-form-field>
   <mat-form-field >
     <mat-label>Savings Rate Change over Time</mat-label>
-    <input matInput [formControl]="controls.additionalSavingsGrowth" min="0" type="number" /><br/>
+    <input matInput [formControl]="controls.additionalSavingsGrowth" step=".01" min="0" type="number" /><br/>
   </mat-form-field>
 </div>
 <div class="inputs">
   <mat-form-field>
-    <mat-label>Cost of College</mat-label>
+    <mat-label>Current Cost of College</mat-label>
     <input matInput [formControl]="controls.costOfCollege" min="0" type="number" /><br/>
   </mat-form-field>
   <mat-form-field>
-    <mat-label>Cost of College Annual Inflation</mat-label>
-    <input matInput [formControl]="controls.costOfCollegeInflation" min="0" type="number" /><br/>
+    <mat-label>College Cost Inflation Rate</mat-label>
+    <input matInput [formControl]="controls.costOfCollegeInflation" step=".01" min="0" type="number" /><br/>
   </mat-form-field>
 </div>
 
+<ng-container *ngIf="fundCharts | async as charts">
+  <app-line-chart [chartData]="charts"></app-line-chart>
+</ng-container>
 <ng-container *ngIf="fund | async as fund">
-  
+  <dl>
+    <dt>Balance of College Fund</dt>
+    <dd>{{fund.fund.at(-1) | currency: 'USD'}}</dd>
+    <dt>Cost of College</dt>
+    <dd>{{fund.cost.at(-1) | currency: 'USD'}}</dd>
+    <dt>Difference</dt>
+    <dd>{{fund.difference.at(-1) | currency: 'USD'}}</dd>
+  </dl>
 </ng-container>
 
 <markdown ngPreserveWhitespaces>

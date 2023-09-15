@@ -40,6 +40,7 @@ export class FrontloadDcaRetirementComponent {
 
   annualizedReturns = this.monthlyReturns.pipe(
     map(returns => {
+      console.log('annualized returns', returns);
       return returns.reduce((returns, ret) => returns * ret, 1);
     }),
     filter(val => !isNaN(val))
@@ -69,7 +70,6 @@ export class FrontloadDcaRetirementComponent {
 
     return firstYearDifference(monthlyReturns, numYears, annualInvestment);
   }
-
 
   allYearsDifference = this.form.valueChanges.pipe(
     map(() => {
@@ -113,99 +113,55 @@ export class FrontloadDcaRetirementComponent {
 
     return chartData;
   }
+
+  simulateVariance = new Subject<boolean>();
+  allYearsDifferenceWithVariationResults = combineLatest([
+    this.form.valueChanges.pipe(startWith(true)),
+    this.simulateVariance.pipe(startWith(0)), 
+  ]).pipe(
+    map(() => {
+      console.log('generating new sample')
+      return this.calculateAllYearsDifferenceWithVariation();  
+    }),
+    publishReplay(),
+    refCount(),
+  );
+
+  clear = new BehaviorSubject(true);
+  allYearsDifferenceWithVariationAggregated = this.allYearsDifferenceWithVariationResults.pipe(
+  scan((all,results) => {
+    return [results, ...all];
+  }, []),
+  );
+
+  allYearsDifferenceWithVariation = this.allYearsDifferenceWithVariationResults.pipe(
+    map(results => {
+      return {
+        ...results, 
+        charts: this.createCharts(
+          results.frontload,
+          results.dca,
+          results.difference,
+        )
+      };
+    })
+  )
+
+  calculateAllYearsDifferenceWithVariation() {
+    const monthlyReturns = convertCommaStrToNumArr(this.controls.monthlyReturns.value);
+    const numYears = this.controls.numYears.value;
+    const annualInvestment = this.controls.annualInvestment.value;
+
+    return allYearsSamplingDifference(monthlyReturns, numYears, annualInvestment);
+  }
+  
   constructor() { }
 }
 
-
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, filter, startWith } from 'rxjs/operators';
-
-
-function firstYearDifference(monthlyReturns: number[], numYears: number, annualInvestment: number) {
-  if(monthlyReturns.length != 12) {
-    throw new Error(`Monthly returns needs to be have 12 values ${JSON.stringify(monthlyReturns)}`);
-  }
-  
-  const numMonths = numYears * 12;
-  // create standard monthly periods to compare evenly, right now not sampling
-  const monthlyPeriods = new Array(numMonths).fill(0).map((v,i) => {
-    const monthIndex = i % 12;
-    return monthlyReturns[monthIndex];
-  });
-
-  const frontload = [...monthlyPeriods].reduce((pastBalances, monthlyReturn, i) => {
-    const balance = pastBalances.at(-1) * monthlyReturn;
-    // check if its the beginning of the year
-    return i % 12 === 0 && i < 12 ? 
-      // add frontload
-      [...pastBalances, balance + annualInvestment] :
-      // Otherwise add nothing
-      [...pastBalances, balance];
-  }, [0]);
-
-  const dca = [...monthlyPeriods].reduce((pastBalances, monthlyReturn, i) => {
-    const balance = pastBalances.at(-1) * monthlyReturn;
-    return i < 12 ? 
-      // DCA the first year
-      [...pastBalances, balance + (annualInvestment / 12)] :
-      // Past first year
-      [...pastBalances, balance];
-  }, [0]);
-
-  // zip arrays and diff
-  const difference = frontload.map((v,i) => {
-    return frontload[i] - dca[i];
-  });
-
-  return {
-    frontload,
-    dca,
-    difference
-  };
-}
-
-
-function allYearsDifference(monthlyReturns: number[], numYears: number, annualInvestment: number) {
-  if(monthlyReturns.length != 12) {
-    throw new Error(`Monthly returns needs to be have 12 values ${JSON.stringify(monthlyReturns)}`);
-  }
-  
-  const numMonths = numYears * 12;
-  // create standard monthly periods to compare evenly, right now not sampling
-  const monthlyPeriods = new Array(numMonths).fill(0).map((v,i) => {
-    const monthIndex = i % 12;
-    return monthlyReturns[monthIndex];
-  });
-
-  const frontload = [...monthlyPeriods].reduce((pastBalances, monthlyReturn, i) => {
-    const balance = pastBalances.at(-1) * monthlyReturn;
-    // check if its the beginning of the year
-    return i % 12 === 0 ? 
-      // add frontload
-      [...pastBalances, balance + annualInvestment] :
-      // Otherwise add nothing
-      [...pastBalances, balance];
-  }, [0]);
-
-  const dca = [...monthlyPeriods].reduce((pastBalances, monthlyReturn, i) => {
-    const balance = pastBalances.at(-1) * monthlyReturn;
-    // DCA all years
-    return [...pastBalances, balance + (annualInvestment / 12)];
-  }, [0]);
-
-  // zip arrays and diff
-  const difference = frontload.map((v,i) => {
-    return frontload[i] - dca[i];
-  });
-
-  return {
-    frontload,
-    dca,
-    difference
-  };
-}
-
+import { BehaviorSubject, combineLatest,merge, Subject, Observable } from 'rxjs';
+import { map, filter, startWith,publishReplay, refCount,scan } from 'rxjs/operators';
+import { allYearsDifference, allYearsSamplingDifference, firstYearDifference } from './utils';
 
 function convertCommaStrToNumArr(val: string) {
   const arr = val.split(',');

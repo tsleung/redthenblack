@@ -20,9 +20,9 @@
 <button mat-stroked-button color="warn" (click)="toVeryVolatileRate()">To Sample Very Volatile Rate</button>
 <button mat-stroked-button (click)="toVolatileRate()">To Sample Volatile Rate</button>
 <button mat-stroked-button color="primary" (click)="toSimpleRate()">To Sample Simple Rate</button>
-  
+
 <h1>
-  401k. Frontload vs Dollar Cost Averaging
+  401k. Front loading vs Dollar Cost Averaging
 </h1>
 <markdown ngPreserveWhitespaces>
 Front loading and dollar cost averaging are two different investment strategies for 401(k) plans.
@@ -79,6 +79,50 @@ Front loading and dollar cost averaging are two different investment strategies 
     </details>
   </summary>
 </ng-container>
+
+<ng-container *ngIf="allYearsDifferenceWithVariation | async as difference">
+  <h2>401k investing in all years with sampling from monthly distribution.</h2>
+  <p>Sampling from the monthly distribution provides examples where returns may be more extreme, both positively and negatively. In these cases we can understand the difference between frontloading and dca under alternative conditions.</p>
+  <button mat-stroked-button (click)="simulateVariance.next()">Sample to create new simulation</button>
+  <app-line-chart [chartData]="difference.charts"></app-line-chart>
+</ng-container>
+<fieldset *ngIf="allYearsDifferenceWithVariationAggregated | async as all">
+  <table>
+    <thead>
+      <td>Frontload</td>
+      <td>DCA</td>
+      <td>Difference</td>
+    </thead>
+    <tr *ngFor="let result of all;">
+      <td>{{result.frontload.at(-1) | number: '1.2-2'}}</td>
+      <td>{{result.dca.at(-1) | number: '1.2-2'}}</td>
+      <td>{{result.difference.at(-1) | number: '1.2-2'}}</td>
+    </tr>
+  </table>
+</fieldset>
+<ng-container *ngIf="allYearsDifferenceWithVariation | async as difference">
+  <summary>
+    Frontload after {{controls.numYears.value}} years: {{difference.frontload.at(-1)  | number : '1.0-0'}}
+    <details>
+      {{difference.frontload  | json}}
+    </details>
+  </summary>
+
+  <summary>
+    DCA after {{controls.numYears.value}} years: {{difference.dca.at(-1)  | number : '1.0-0'}}
+    <details>
+      {{difference.dca  | json}}
+    </details>
+  </summary>
+
+  <summary>
+    Difference Frontload less DCA after {{controls.numYears.value}} years: {{difference.difference.at(-1)  | number : '1.0-0'}}
+    <details>
+      {{difference.difference  | json}}
+    </details>
+  </summary>
+</ng-container>
+
 
 <markdown ngPreserveWhitespaces>
 The best strategy for you will depend on your individual circumstances and investment goals. If you are not sure which strategy is right for you, it is a good idea to talk to a financial advisor.

@@ -11,9 +11,9 @@ import { Component } from '@angular/core';
 })
 export class KidsCollegeFundCalculatorComponent {
   controls = {
-    numPeriods: new FormControl(30),
-    delayUntilSaving: new FormControl(0),
-    initialInvestment: new FormControl(1e4),
+    numPeriods: new FormControl(22),
+    delayUntilSaving: new FormControl(2),
+    initialInvestment: new FormControl(5e4),
     rateOfReturn: new FormControl(1.1),
     additionalSavings: new FormControl(1e4),
     additionalSavingsGrowth: new FormControl(1.05),
@@ -27,8 +27,17 @@ export class KidsCollegeFundCalculatorComponent {
     map(() => {
       return this.calculateCollegeFund();
     }),
-    startWith(this.calculateCollegeFund())
+    startWith(this.calculateCollegeFund()),
+    publishReplay(),
+    refCount(),
   );
+  fundCharts = this.fund.pipe(map(fundCostDifference => {
+    return this.createCharts(
+      fundCostDifference.fund,
+      fundCostDifference.cost,
+      fundCostDifference.difference,
+    );
+  }))
 
   calculateCollegeFund() {
     return calculateCollegeFund(
@@ -40,14 +49,33 @@ export class KidsCollegeFundCalculatorComponent {
       this.controls.additionalSavingsGrowth.value,
       this.controls.costOfCollege.value,
       this.controls.costOfCollegeInflation.value,
-      
     );
+
+
   }
-  
-  constructor() {}
+
+  createCharts(
+    fund: number[],
+    cost: number[],
+    difference: number[],
+  ) {
+    const chartData = {
+      x: 'x',
+      columns: [
+        ['x', ...new Array(fund.length).fill(0).map((v, i) => i)],
+        ['College Fund', ...fund],
+        ['Cost of College', ...cost],
+        ['Difference', ...difference],
+      ],
+    };
+
+    return chartData;
+  }
+
+  constructor() { }
 }
 import { FormControl, FormGroup } from '@angular/forms';
-import {map, startWith} from 'rxjs/operators';
+import { map, publishReplay, refCount, startWith } from 'rxjs/operators';
 
 function calculateCollegeFund(
   numPeriods: number,
@@ -60,6 +88,45 @@ function calculateCollegeFund(
   costOfCollegeInflation: number,
 ) {
 
+  // figure out the college fund
+  const fund = new Array(numPeriods).fill(0).reduce((accum, v, i) => {
+    const previousBalance = accum.at(-1);
+    const savings = additionalSavings *
+      Math.pow(additionalSavingsGrowth, i - delayUntilSaving);
+
+    return delayUntilSaving < i ?
+      // add savings
+      [...accum ,nextStepSavings(
+        previousBalance,
+        rateOfReturn,
+        savings
+      )] :
+      // no savings
+      [...accum, previousBalance];
+
+  }, [initialInvestment]);
+
+  // figure out the cost of college
+  const cost = new Array(numPeriods).fill(0).reduce((accum, v, i) => {
+    const costOfCollege = accum.at(-1);
+    const inflatedCostOfCollege = nextStepCollege(
+      costOfCollege,
+      costOfCollegeInflation
+    );
+
+    return [...accum, inflatedCostOfCollege]
+  }, [costOfCollege]);
+
+
+  const difference = fund.map((v, i) => {
+    return fund[i] - cost[i];
+  });
+
+  return {
+    fund,
+    cost,
+    difference,
+  }
 
 }
 
@@ -67,8 +134,8 @@ function nextStepSavings(
   currentInvestment: number,
   investmentReturn: number,
   additionalSavings: number,
-  ) {
-    return currentInvestment* investmentReturn + additionalSavings;
+) {
+  return currentInvestment * investmentReturn + additionalSavings;
 
 }
 function nextStepCollege(
@@ -76,5 +143,5 @@ function nextStepCollege(
   costOfCollegeInflation: number,
 ) {
 
-  return costOfCollege*costOfCollegeInflation;
+  return costOfCollege * costOfCollegeInflation;
 }
