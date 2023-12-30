@@ -22,12 +22,45 @@ const DEFAULT_TRADES = `
  * A stream can be maintained every period (trade in or out)
  * 
  */
-const DEFAULT_STREAMS = `
+const DEFAULT_STREAMS_V0 = `
 available_time, 0,60,absolute,front,2000
 income,0,30,absolute,random, 500000
 equities, 0,60,relative,random, 1.25, .8
 child,5,10,absolute,random,.2,.2,.2,.2,1
 `;
+
+
+const DEFAULT_STREAMS = `
+Exist,0,90
+College,18,[21|22]
+Kid[],!Kid[0|1] && College[5->10]|Exist[30->35]
+Kids,37-45
+Kids college,Kids[18],Kids[[21|22]]
+Next Kid
+Second Kid,
+Senior Care,50
+Retirement,35-65
+Investment,
+`;
+
+/**
+ * 
+ */
+const DEFAULT_DECKS = `
+SP500 Returns,1.08,1.2,.9
+Inflation,1.06
+Real Estate Return,1.04
+Interest Rates: 1.05
+`;
+
+/**
+ * Need a compressible deck descriptor
+ */
+const HISTORICAL_DECK =`
+ID,SP500,Inflation,Real Estate
+
+`;
+
 
 const DEFAULT_POLICY = `
 working full time job, 0, 30, awake_time - work_time 
@@ -44,27 +77,71 @@ export class LifestreamViewerComponent {
   controls = {
     startingPositions: new FormControl(DEFAULT_POSITION),
     streams: new FormControl(DEFAULT_STREAMS),
+    decks: new FormControl(DEFAULT_DECKS),
     policy : new FormControl(DEFAULT_POLICY),
     duration: new FormControl(30),
   }
 
   form = new FormGroup(this.controls);
-
+  decks = [];
   streams = [];
   policies = [];
 
   updateInputs(){
     this.streams = convertCsvStringToArray(this.controls.streams.value)
       .map(convertToStream);
+    console.log('streams',this.streams)
+
+    this.decks = convertCsvStringToArray(this.controls.decks.value)
+    console.log('decks', this.decks)
 
     this.policies = convertCsvStringToArray(this.controls.streams.value)
-    
+    console.log('policies',this.policies)
   }
   
   steps = [];
-  
 
+  table = {
+    assets: [
+      ['hours', 0],
+    ],
+    scopedlifeEvents: [
+      ['Exist', {start: 0, end: 87}],
+    ],
+    
+  }
   runStep() {
+    const output = [];
+    const period = this.steps.length;
+
+    this.table.scopedlifeEvents
+      .filter(suspect => {
+        return period > Number(suspect[1]);
+      })
+      .filter(suspect => {
+        return Number(suspect[2]) > period
+      })
+    output.push(
+
+    )
+
+
+
+
+
+
+
+    this.steps.push(output);
+    if(this.steps.length < this.controls.duration.value) {
+      this.runStep();
+    }
+  }
+
+  readIndex(input:string) {
+    return [Number(input)];
+  }
+
+  runStep_v0() {
     setTimeout(() => {
       const output = [];
       const period = this.steps.length;
@@ -81,6 +158,7 @@ export class LifestreamViewerComponent {
       });
       output.push(streamOutput.filter(Boolean));
       this.steps.push(output)
+
       if(this.steps.length < this.controls.duration.value) {
         this.runStep();
       }
@@ -224,8 +302,8 @@ function convertToStream([
   ...deck]) {
   return {
     name,
-    start,
-    end,
+    start: Number(start),
+    end: Number(end),
     draw,
     position,
     deck: deck.map(Number),

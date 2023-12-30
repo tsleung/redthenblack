@@ -1,0 +1,45 @@
+<header>
+
+  <dl *ngIf="muxs.nestEgg | async as nestEgg">
+    <dt>Nest Egg</dt>
+    <dd>{{nestEgg}}</dd>
+  </dl>
+  <dl *ngIf="muxs.retirementAge | async as retirementAge">
+    <dt>Years to Retire</dt>
+    <dd>{{retirementAge}}</dd>
+  </dl>
+  <dl *ngIf="muxs.retirementConfidence | async as retirementConfidence">
+    <dt>Retirement Confidence</dt>
+    <dd>{{retirementConfidence | percent}}</dd>
+  </dl>
+  
+</header>
+<aside>
+  Target retirement
+  <br>
+  401k contributions
+  <br>
+  Years in retirement
+  <br>
+  Gross annual income
+  <br>
+  
+</aside>
+<article>
+  
+  <header>
+    Your retirement confidence is fair
+  </header>
+  <figure>
+    <app-maya-life-simulation-results-chart></app-maya-life-simulation-results-chart>
+  </figure>
+  <fieldset>
+    <h3>Defining your thresholds</h3>
+    <p>
+      Retirement is inherently personal, and there are always personal thresholds for what is goal “safe”, “target” and “reach” goal. Use the sliders to adjust the thresholds for your Target, Safety and Reach goals.
+    </p>
+  </fieldset>
+</article>
+<section class="sign-up">
+  Sign up for an account
+</section>

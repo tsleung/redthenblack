@@ -1,9 +1,91 @@
-<div class="inputs">
-  <mat-form-field>
-    <mat-label>Time Horizon</mat-label>
-    <input matInput [formControl]="controls.numPeriods" step="1" min="0" type="number" /><br/>
-  </mat-form-field>
-</div>
+
+<ng-container *ngIf="mortgage | async as val">
+  <h2>Fixed Mortgage</h2>
+  <app-line-chart [chartData]="val.charts"></app-line-chart>
+
+  <div class="inputs">
+    <mat-form-field>
+      <mat-label>Property Principal</mat-label>
+      <input matInput [formControl]="controls.propertyPrincipal" step="1" min="0" type="number" /><br/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Down Payment</mat-label>
+      <input matInput [formControl]="controls.downPayment" step=".01" min="0" type="number" /><br/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Mortgage Rate</mat-label>
+      <input matInput [formControl]="controls.mortgageRate" step=".0025" min="0" type="number" /><br/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Mortgage Duration</mat-label>
+      <input matInput [formControl]="controls.mortgageDuration" step="1" min="1" max="45" type="number" /><br/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Property Appreciation</mat-label>
+      <input matInput [formControl]="controls.realEstateAppreciation" step=".0025" min="0" type="number" /><br/>
+    </mat-form-field>
+  </div>
+<!--
+  <div class="inputs">
+    <mat-form-field>
+      <mat-label>Closing Costs</mat-label>
+      <input matInput [formControl]="controls.closingCosts" step=".01" min="0" type="number" /><br/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Misc Annual Costs (HOA, Property Tax)</mat-label>
+      <input matInput [formControl]="controls.miscAnnualCosts" step=".01" min="0" type="number" /><br/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Costs Inflation</mat-label>
+      <input matInput [formControl]="controls.costInflation" step=".01" min="0" type="number" /><br/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Mortgage Interest Deduction Saving</mat-label>
+      <input matInput [formControl]="controls.mortgageInterestDeductionSaving" step=".01" min="0" type="number" /><br/>
+    </mat-form-field>
+  </div>
+-->
+  Total Interest Paid to Bank: {{val.totalInterestPaidToBank  | number : '1.0-0'}}
+  Final Home Equity: {{val.finalHomeEquity  | number : '1.0-0'}}
+  <br>
+  home equity - interest paid: {{
+    val.finalHomeEquity 
+    - val.totalInterestPaidToBank 
+    | number : '1.0-0'}}
+</ng-container>
+
+
+
+<ng-container *ngIf="rent | async as val">
+  <h2>Rent</h2>
+  <app-line-chart [chartData]="val.charts"></app-line-chart>
+  <div class="inputs">
+    <mat-form-field>
+      <mat-label>Time to Rent</mat-label>
+      <input matInput [formControl]="controls.numPeriods" step="1" min="0" type="number" /><br/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Rent Inflation</mat-label>
+      <input matInput [formControl]="controls.rentInflation" step=".01" min="0" type="number" /><br/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Down Payment Alternative Rate of Return</mat-label>
+      <input matInput [formControl]="controls.alternativeOpportunityRateOfReturn" step=".01" min="0" type="number" /><br/>
+    </mat-form-field>
+  </div>
+  <div class="inputs">
+    <mat-form-field>
+      <mat-label>Annual Rental Payment</mat-label>
+      <input matInput [formControl]="controls.rentAnnually" step="1" min="0" type="number" /><br/>
+    </mat-form-field>
+    Monthly Rent: {{controls.rentAnnually.value  / 12 | number : '1.0-0'}}
+  </div>
+
+  Total paid to rent: {{val.totalPaidToRent  | number : '1.0-0'}}
+  Alternative Investment Opportunity: {{val.opportunityCost  | number : '1.0-0'}}
+  <br>
+  Invest - Rent: {{val.opportunityCost - val.totalPaidToRent  | number : '1.0-0'}}
+</ng-container>
 <markdown ngPreserveWhitespaces>
 # Renting vs. Buying a Home
 

@@ -1,0 +1,42 @@
+header {
+  display: flex;
+  flex-direction: row;
+
+  dl {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  dt {
+    color: #000;
+    font-family: Manrope;
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+
+  }
+
+  dd {
+    color: #96BAFA;
+    font-family: Manrope;
+    font-size: 3rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+
+    margin: 0;
+  }
+}
+aside {
+  float: right;
+  width: 300px;
+}
+article {
+  position: relative;
+  margin-right: 300px;
+}
+.sign-up {
+  clear: both;
+}

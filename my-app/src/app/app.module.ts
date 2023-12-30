@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
@@ -96,6 +97,11 @@ import { DebtHedgeInflationCalculatorComponent } from './debt-hedge-inflation-ca
 import { AmortizationCalculatorComponent } from './amortization-calculator/amortization-calculator.component';
 import { PerpetuityCalculatorComponent } from './perpetuity-calculator/perpetuity-calculator.component';
 import { FrontloadDcaRetirementComponent } from './frontload-dca-retirement/frontload-dca-retirement.component';
+import { MayaLifeEventsComponent } from './maya-life-events/maya-life-events.component';
+import { MayaLifeEventsAddComponent } from './maya-life-events-add/maya-life-events-add.component';
+import { MayaLifeEventsResultsComponent } from './maya-life-events-results/maya-life-events-results.component';
+import { MayaLifeEventsListComponent } from './maya-life-events-list/maya-life-events-list.component';
+import { MayaLifeSimulationResultsChartComponent } from './maya-life-simulation-results-chart/maya-life-simulation-results-chart.component';
 
 @NgModule({
   declarations: [
@@ -162,6 +168,12 @@ import { FrontloadDcaRetirementComponent } from './frontload-dca-retirement/fron
     AmortizationCalculatorComponent,
     PerpetuityCalculatorComponent,
     FrontloadDcaRetirementComponent,
+    MayaLifeEventsComponent,
+    MayaLifeEventsAddComponent,
+    MayaLifeEventsResultsComponent,
+    MayaLifeEventsListComponent,
+    MayaLifeSimulationResultsChartComponent,
+
    
   ],
   imports: [
@@ -187,6 +199,7 @@ import { FrontloadDcaRetirementComponent } from './frontload-dca-retirement/fron
     MarkdownModule.forRoot(),
     HttpClientModule,
     ReactiveFormsModule,
+    MatBottomSheetModule,
   ],
   providers: [
     ProfileService,

@@ -114,9 +114,7 @@ export class CashFlowDiagramComponent {
         'Cash Flow': 'y',
         'Balance': 'y2'
       }
-
     }
-    
   }
 }
 

@@ -14,6 +14,10 @@ import { SplashIntroComponent } from './splash-intro/splash-intro.component';
 import * as routes from './utils/route_mapper';
 import { CALCULATOR } from './maya-calculator-routes';
 import { ONBOARDING } from './maya-onboarding-routes';
+import { MayaLifeEventsComponent } from './maya-life-events/maya-life-events.component';
+import { MayaLifeEventsAddComponent } from './maya-life-events-add/maya-life-events-add.component';
+import { MayaLifeEventsResultsComponent } from './maya-life-events-results/maya-life-events-results.component';
+import { MayaLifeEventsListComponent } from './maya-life-events-list/maya-life-events-list.component';
 
 export const INTRO = {
   path: 'intro',
@@ -156,8 +160,30 @@ export const DASHBOARD = {
 export const EDUCATION = {
   path: 'education',
   component: MayaEducationalArticleComponent,
-
 };
+
+export const LIFE_EVENTS = [
+  {
+    path: 'life-events/add/:type',
+    component: MayaLifeEventsAddComponent,
+  },
+  {
+    path: 'life-events/edit/:type',
+    component: MayaLifeEventsAddComponent,
+  },
+  {
+    path: 'life-events/list',
+    component: MayaLifeEventsListComponent,
+  },
+  {
+    path: 'life-events/results',
+    component: MayaLifeEventsResultsComponent,
+  },
+  {
+    path: 'life-events',
+    component: MayaLifeEventsComponent,
+  },
+]
 
 export const MAYA_ROUTES: Routes = [
   {
@@ -168,9 +194,9 @@ export const MAYA_ROUTES: Routes = [
       DASHBOARD,
       ONBOARDING,
       EDUCATION,
+      ...LIFE_EVENTS,
       ...CALCULATOR,
       { path: '**', redirectTo: 'intro' }
-
     ]
   }
 ];

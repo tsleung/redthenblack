@@ -6,7 +6,7 @@
 </li>
   </ol>
 </ng-container>
-
+<a routerLink="../life-events">Life events</a>
 
 <fieldset>
   <legend>Configuration</legend>  
@@ -14,13 +14,23 @@
   
   <textarea [formControl]="controls.streams"></textarea>
   <br>
+  <button (click)="updateInputs()">Update Inputs</button>
+  <br>
+  
   <ng-container>
     <div *ngFor="let stream of streams;">
       {{stream | json}}
     </div>
   </ng-container>
   <br>
-  
+  <textarea [formControl]="controls.decks"></textarea>
+  <ng-container>
+    <div *ngFor="let deck of decks;">
+      {{deck | json}}
+    </div>
+  </ng-container>
+  <br>
+
   <label for="name">Policy</label>
   <textarea [formControl]="controls.policy"></textarea>
   <ng-container>

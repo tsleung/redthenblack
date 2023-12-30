@@ -14,9 +14,11 @@
 </mat-toolbar>
 
 <div class="main">
-  <a [routerLink]="routingService.mapper.createMayaRoute()">
-    <img src="assets/images/logo.jpg" alt="R/B">
-  </a>
+  <header>
+    <a [routerLink]="routingService.mapper.createMayaRoute()">
+      <img src="assets/images/logo.jpg" alt="R/B">
+    </a>
+  </header>
   
   <router-outlet></router-outlet>
 </div>

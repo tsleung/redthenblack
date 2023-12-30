@@ -1,0 +1,46 @@
+<div class="hero">
+  <figure>
+    <div class="placeholder">
+
+    </div>
+  </figure>
+  <div class="subtitle ">Life Events</div>
+  <h1 class="title">Play your game of life.</h1>
+  <p class="you-can-t-pick-from">
+    You can’t pick from a deck of cards and let that define your future, but you can dream of all the cards that
+    could appear in the life ahead. A fancy car, a nice big house, college tuition for children... By spending a
+    little time thinking (fascinating) about your future, you can start painting a clearer picture of what you’ll
+    need to get there<br /><br />Below you will find your current life events.&nbsp;&nbsp;Each time you add or
+    change a life event, your retirement confidence will change. To see how each life event affects your retirement
+    outlook, open the calculator below.
+  </p>
+</div>
+
+<section class="cards" *ngIf="lifeEventsService.selectedLifeEvents as selectedLifeEvents">
+  <mat-card class="card" *ngFor="let lifeEvent of selectedLifeEvents;let i = index">
+    <mat-card-content>
+      {{lifeEvent.name}}
+      <br>
+      <br>
+      <a mat-fab [routerLink]="lifeEvent.href">
+        <mat-icon>edit</mat-icon>
+      </a>
+      <br>
+      <br>
+      <button mat-button (click)="lifeEventsService.removeLifeEvent(i)">Remove</button>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="card add">
+    <mat-card-content>
+      Add a life event
+      <br>
+      <br>
+      <a mat-fab color="primary" [routerLink]="routingService.mapper.createLifeEventsListRoute()">
+        <mat-icon>add</mat-icon>
+      </a>
+    </mat-card-content>
+  </mat-card>
+  
+</section>
+
+<button mat-raised-button (click)="openBottomSheet()">Open Results</button>

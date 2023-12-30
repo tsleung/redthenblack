@@ -17,6 +17,12 @@ export class BarChartComponent {
   @Input() gridOptions:c3.GridOptions = {
   }
 
+  @Input() axesOptions:c3.AxesOptions = {
+  }
+
+  @Input() legendOptions:c3.LegendOptions = {
+  }
+
   chartId;
   chart: c3.ChartAPI;
   
@@ -40,8 +46,11 @@ export class BarChartComponent {
             ]
         }
       },
+      legend: this.legendOptions ?? {
+        show: true,
+      },
       // this can be made a separate input
-      axis: {
+      axis: this.axesOptions ?? {
         y2: {
             show: true
         }

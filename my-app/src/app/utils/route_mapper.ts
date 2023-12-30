@@ -105,6 +105,26 @@ export function createMillionaireArticleRoute() {
   return createArticlesRoute() + '/millionaire';
 }
 
+export function createLifeEventsRoute() {
+  return createMayaRoute() + '/life-events';
+}
+
+export function createLifeEventsListRoute() {
+  return createLifeEventsRoute() + '/list';
+}
+
+export function createLifeEventsAddTypeRoute(type: string) {
+  return createLifeEventsRoute() + `/add/${type}`;
+}
+
+export function createLifeEventsEditTypeRoute(type: string) {
+  return createLifeEventsRoute() + `/edit/${type}`;
+}
+
+export function createLifeEventsResultsRoute() {
+  return createLifeEventsRoute() + '/results';
+}
+
 function createLegacyRoute() {
   return '/l/0';
 }

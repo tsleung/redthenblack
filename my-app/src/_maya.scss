@@ -119,37 +119,6 @@
     }
   
   }
-
-  .cards {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-
-    .card {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-
-      background: #FFFFFF;
-      border: 10px solid #96BAFA;
-      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.12);
-      border-radius: 6px;
-
-      font-family: 'Manrope';
-      font-style: normal;
-      font-weight: 800;
-      font-size: 18px;
-      line-height: 25px;
-      text-align: center;
-
-      color: #000000;
-            
-      margin: 32px;
-      padding: 42px;
-      text-align: center;
-      text-decoration: none;
-    }
-  }
   
   .label {
     font-family: 'Manrope';
@@ -175,5 +144,14 @@
     color: #000000;
   }
 
+  .cdk-overlay-container {
+    .full-width {
+      width: 100vw;
+    }
+    .mat-bottom-sheet-container {
+      max-width: none;
+    }
+  }
+  
 
 }

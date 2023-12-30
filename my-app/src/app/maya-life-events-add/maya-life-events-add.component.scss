@@ -1,0 +1,52 @@
+:host {
+  &::after {
+    content: '';
+    clear: both;
+    display: block;
+  }
+}
+figure {
+  float:left;
+  width: 16rem;
+  margin: 1rem;
+}
+.placeholder {
+  margin: .25rem;
+  background: #ddd;
+  height: 20rem;
+  width: 15rem;
+  display: block;
+}
+aside {
+  float:right;
+  width: 20rem;
+  margin: 1rem;
+}
+article {
+  margin: 1rem 22rem 1rem 18rem;
+
+}
+.subtitle {
+  color: #FD5053;
+  font-family: Manrope;
+  font-size: 1.12813rem;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+}
+h1 {
+  color: #000;
+  font-family: Manrope;
+  font-size: 3.56563rem;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+}
+.description {
+  color: #000;
+  font-family: Manrope;
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}

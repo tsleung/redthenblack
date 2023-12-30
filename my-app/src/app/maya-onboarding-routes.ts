@@ -323,7 +323,6 @@ export const ONBOARDING = {
             },
             {
               path: '',
-  
               component: MayaTitledContentComponent,
               data: {
                 title: `Your game of life.`,

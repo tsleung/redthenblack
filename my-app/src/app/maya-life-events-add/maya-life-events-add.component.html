@@ -1,0 +1,24 @@
+
+<figure>
+  <div class="placeholder">
+
+  </div>
+</figure>
+<aside>
+  Helpful Calculators
+</aside>
+<article *ngIf="lifeEvent| async as lifeEvent">
+  <div class="subtitle ">Life Events</div>
+  <h1 class="title">{{lifeEvent.name}}</h1>
+  <p class="you-can-t-pick-from">
+    components
+  </p>
+  
+  <br>
+  {{lifeEvent.type}}, {{lifeEvent.href}}
+  <br>
+  
+  <button mat-button (click)="addLifeEvent($event, lifeEvent)">Add</button>
+</article>
+
+
