@@ -5,11 +5,15 @@ export enum ComponentKey {
   SavingsAccount='SavingsAccount',
   Job='Job',
   Mortgage='Mortgage',
+  CostOfLiving='CostOfLiving',
+  Retirement='Retirement',
 }
 export enum ComponentType {
   Value,
   CashFlow,
   Loan,
+  Milestone,
+  Phase,
 }
 
 export interface Component {
@@ -45,5 +49,36 @@ interface CashFlowComponent extends Component{
 export class Job implements CashFlowComponent{
   key = ComponentKey.Job;
   type = ComponentType.CashFlow;
+  constructor(public cashFlow, public periods: number) {}
+}
+
+export class CostOfLiving implements CashFlowComponent{
+  key = ComponentKey.CostOfLiving;
+  type = ComponentType.CashFlow;
   constructor(public cashFlow) {}
+}
+
+interface MilestoneComponent extends Component{
+  period: number;
+}
+
+class Milestone {
+  type = ComponentType.Milestone;
+}
+
+interface PhaseComponent extends Component{
+  start: number;
+  end: number;
+}
+
+class Phase {
+  type = ComponentType.Phase;
+}
+
+
+export class Retirement extends Milestone implements MilestoneComponent{
+  key = ComponentKey.Retirement;
+  constructor(public period) {
+    super();
+  }
 }

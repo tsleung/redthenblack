@@ -1,7 +1,7 @@
 
 // Systems
 
-import { Cash, ComponentKey, Job, SavingsAccount, Stocks } from "./maya-ecs-components";
+import { Cash, ComponentKey, CostOfLiving, Job, Retirement, SavingsAccount, Stocks } from "./maya-ecs-components";
 import { Entity, getComponent } from "./maya-ecs-entities";
 
 // MarketSystem
@@ -29,11 +29,14 @@ export class IncomeSystem {
     for (const entity of entities) {
       const cash = getComponent<Cash>(entity, ComponentKey.Cash);
       const job = getComponent<Job>(entity, ComponentKey.Job);
-      // console.log('checking income', cash, job)
-      if (cash && job) {
-        
+      const costOfLiving = getComponent<CostOfLiving>(entity, ComponentKey.CostOfLiving);
+      
+      if (cash && job && job.periods > 0) { 
         cash.value = this.calculateNewValue(cash, job);
-        // console.log('updating income', cash, job)
+      }
+
+      if (cash && costOfLiving) { 
+        cash.value = cash.value - costOfLiving.cashFlow;
       }
     }
   }
@@ -49,6 +52,28 @@ export class InterestSystem {
     for (const entity of entities) {
       const savingsAccount = getComponent<SavingsAccount>(entity, ComponentKey.SavingsAccount);
       savingsAccount.value = savingsAccount.value * (1+ selectRandomFromList(savingsAccount.interestRates)??0);
+      
+    }
+  }
+}
+
+export class RetirementSystem {
+  name = 'RetirementSystem';
+  update(entities: Entity[]) {
+    for (const entity of entities) {
+      const job = getComponent<Job>(entity, ComponentKey.Job);
+      if(job) {
+        job.periods = job.periods - 1;
+      }
+      
+      const retirement = getComponent<Retirement>(entity, ComponentKey.Retirement);
+      if(retirement) {
+        retirement.period = retirement.period - 1;
+        
+        if(retirement.period <=0) {
+          job.periods = 0;
+        }
+      }
       
     }
   }

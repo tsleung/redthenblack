@@ -102,6 +102,7 @@ import { MayaLifeEventsAddComponent } from './maya-life-events-add/maya-life-eve
 import { MayaLifeEventsResultsComponent } from './maya-life-events-results/maya-life-events-results.component';
 import { MayaLifeEventsListComponent } from './maya-life-events-list/maya-life-events-list.component';
 import { MayaLifeSimulationResultsChartComponent } from './maya-life-simulation-results-chart/maya-life-simulation-results-chart.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -182,6 +183,7 @@ import { MayaLifeSimulationResultsChartComponent } from './maya-life-simulation-
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     FormsModule,
     MatRadioModule,
+    MatFormFieldModule,
     MatTableModule,
     MatBadgeModule,
     MatCardModule,

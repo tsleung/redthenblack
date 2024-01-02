@@ -16,18 +16,18 @@
   </p>
 </div>
 
-<section class="cards" *ngIf="lifeEventsService.selectedLifeEvents as selectedLifeEvents">
+<section class="cards" *ngIf="lifeEventsService.selectedLifeEvents | async as selectedLifeEvents">
   <mat-card class="card" *ngFor="let lifeEvent of selectedLifeEvents;let i = index">
     <mat-card-content>
       {{lifeEvent.name}}
       <br>
       <br>
-      <a mat-fab [routerLink]="lifeEvent.href">
+      <a mat-fab [routerLink]="lifeEvent.editHref">
         <mat-icon>edit</mat-icon>
       </a>
       <br>
       <br>
-      <button mat-button (click)="lifeEventsService.removeLifeEvent(i)">Remove</button>
+      <button mat-button (click)="lifeEventsService.removeLifeEvent(lifeEvent)">Remove</button>
     </mat-card-content>
   </mat-card>
   <mat-card class="card add">
@@ -40,7 +40,22 @@
       </a>
     </mat-card-content>
   </mat-card>
-  
 </section>
 
-<button mat-raised-button (click)="openBottomSheet()">Open Results</button>
+<mat-card class="footer">
+  <mat-card-content>
+    <dl *ngIf="muxs.nestEgg | async as nestEgg">
+      <dt>Nest Egg</dt>
+      <dd>{{nestEgg}}</dd>
+    </dl>
+    <dl *ngIf="muxs.retirementAge | async as retirementAge">
+      <dt>Years to Retire</dt>
+      <dd>{{retirementAge}}</dd>
+    </dl>
+    <dl *ngIf="muxs.retirementConfidence | async as retirementConfidence">
+      <dt>Retirement Confidence</dt>
+      <dd>{{retirementConfidence | percent}}</dd>
+    </dl>
+    <button mat-raised-button (click)="openBottomSheet()">Open Results</button>  
+  </mat-card-content>
+</mat-card>

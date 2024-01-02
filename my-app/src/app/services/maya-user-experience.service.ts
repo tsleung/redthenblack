@@ -2,16 +2,52 @@ import { Injectable } from '@angular/core';
 import { SimulationManager, Snapshot } from '../utils/maya-ecs';
 import { Cash, Component, ComponentKey, Job, SavingsAccount, Stocks, ValueComponent } from '../utils/maya-ecs-components';
 import { getComponent, setComponent } from '../utils/maya-ecs-entities';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map, publishReplay, refCount } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, merge } from 'rxjs';
+import { map, publishReplay, refCount, scan, shareReplay, startWith, tap } from 'rxjs/operators';
 
+
+interface ComponentAction {
+  action: ComponentActionType;
+  component: Component;
+}
+export enum ComponentActionType {
+  Add,
+  Remove,
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class MayaUserExperienceService {
   simulationManager = new SimulationManager();
-  components: BehaviorSubject<Component[]> = new BehaviorSubject([]);
+  addComponent: Subject<Component> = new Subject<Component>(); 
+  removeComponent: Subject<Component> = new Subject<Component>(); 
+  private addComponentAction:Observable<ComponentAction> = this.addComponent.pipe(map(component => {
+    return {component, action: ComponentActionType.Add} as ComponentAction;
+  }));
+  private removeComponentAction:Observable<ComponentAction> = this.removeComponent.pipe(map(component => {
+    return {component, action: ComponentActionType.Remove} as ComponentAction;
+  }));
+  
+  components: Observable<Map<ComponentKey,Component>> = merge(
+    this.addComponentAction, this.removeComponentAction
+    ).pipe(
+    scan((accum, val:ComponentAction) => {
+      if(val.action === ComponentActionType.Add) {
+        console.log('ADDING', val)
+        accum.set(val.component.key, val.component);
+      }
+
+      if(val.action === ComponentActionType.Remove) {
+        console.log('removing', val)
+        accum.delete(val.component.key)
+      }
+
+      return accum;
+    }, new Map<ComponentKey,Component>()),
+    shareReplay(),
+    startWith(new Map<ComponentKey,Component>()),
+  );
   constructor() {}
 
   simulations =  this.components.pipe(map(components => {
@@ -74,12 +110,13 @@ export class MayaUserExperienceService {
   retirementAge = this.simulationsBalances.pipe(map(simulations => {
     const maxOfAllSimulations = simulations.map(simulation => {
       const maximumValue = Math.max(...simulation);
-      return simulation.indexOf(maximumValue);
+      return simulation.lastIndexOf(maximumValue);
     });
 
     // replace when we have target threshold, for now find the median
     maxOfAllSimulations.sort();
     const midIndex = Math.floor(maxOfAllSimulations.length / 2);
+    console.log('mid index', midIndex, maxOfAllSimulations[midIndex])
     return maxOfAllSimulations[midIndex];
   }));
 

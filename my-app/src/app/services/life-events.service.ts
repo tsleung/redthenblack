@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { createLifeEventsAddTypeRoute, createLifeEventsEditTypeRoute } from '../utils/route_mapper';
 import { MayaUserExperienceService } from './maya-user-experience.service';
-import { Cash, Component, Job, SavingsAccount, Stocks } from '../utils/maya-ecs-components';
+import { Cash, Component, ComponentKey, CostOfLiving, Job, Retirement, SavingsAccount, Stocks } from '../utils/maya-ecs-components';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 
 interface Field {
-
+  name: string;
 }
 
 /**
@@ -15,11 +17,13 @@ interface Field {
 export interface LifeEvent {
   name: string;
   icon: string;
-  type: string;
   addHref: string;
   editHref: string;
   fields: Field[];
+  componentKey: ComponentKey;
   createComponent: () => Component;
+  addLifeEvent: () => void;
+  removeLifeEvent: () => void;
 }
 
 
@@ -37,10 +41,16 @@ const iconMap = {
   gifts: 'redeem',
   inheritance: 'next_plan',
   entrepreneurship: 'work',
+  cash: 'local_atm',
+  savings: 'account_balance',
+  job: 'work',
+  investment: 'trending_up',
 }
 
 const fieldsMap = {
-
+  cash: [
+    {name: 'value'},
+  ]
 };
 
 const samples = [
@@ -70,14 +80,17 @@ const samples = [
   'Investment', 
 ];
 
-const shorthand: Array<[string, ()=>Component]> = [
-  ['Cash', () => new Cash(5e3)],
-  ['Savings Account', () => new SavingsAccount(5e4, [.01, .05])],
-  ['Job', () => new Job(1e5)],
-  ['Stocks', () => new Stocks(4e5, [...new Array(4).fill(1.1), .75])],
+const shorthand: Array<[string, ComponentKey, ()=>Component]> = [
+  ['Cash',ComponentKey.Cash, () => new Cash(5e3)],
+  ['Cost of Living',ComponentKey.CostOfLiving, () => new CostOfLiving(5e4)],
+  ['Job',ComponentKey.Job, () => new Job(1e5, 10)],
+  ['Retirement',ComponentKey.Retirement, () => new Retirement(15)],
+  ['Stocks',ComponentKey.Stocks, () => new Stocks(4e5, [...new Array(4).fill(1.1), .75])],
+  ['Savings Account',ComponentKey.SavingsAccount, () => new SavingsAccount(5e4, [.01, .05])],
+  
 ];
 
-const availableLifeEvents = shorthand.map(([name, createComponent]) => {
+const availableLifeEvents = shorthand.map(([name, componentKey, createComponent]) => {
   const key = Object.keys(iconMap).find(key => name.toLocaleLowerCase().includes(key));
   const icon = iconMap[key] ?? 'question_mark';
   const fields:Field[] = fieldsMap[key] ?? [];
@@ -87,6 +100,7 @@ const availableLifeEvents = shorthand.map(([name, createComponent]) => {
     icon,
     createComponent, 
     fields,
+    componentKey,
   };
 });
 
@@ -103,39 +117,42 @@ export class LifeEventsService {
   readonly availableLifeEvents = availableLifeEvents
     .map(v => generateDerivativeFields(v));
 
-  selectedLifeEvents:LifeEvent[] = [];
-
+  selectedLifeEvents:Observable<LifeEvent[]> = this.muxs.components.pipe(map(components => {
+    console.log('sle', components)
+    return Array.from(components.values()).map(component => {
+      const found = this.availableLifeEvents.find(suspect => suspect.componentKey === component.key);
+      console.log('checking', component.key, found.componentKey, component, found)
+      return found;
+    }).filter(Boolean);
+  }));
+  
   addLifeEvent(lifeEvent: LifeEvent) {
-    this.selectedLifeEvents = [...this.selectedLifeEvents,{...lifeEvent}];
-    const components = this.selectedLifeEvents.map(lifeEvent => lifeEvent.createComponent());
-    this.muxs.components.next(components);
+    console.log('adding life evnt',lifeEvent)
+    this.muxs.addComponent.next(lifeEvent.createComponent());
   }
-  removeLifeEvent(index: number) {
-    this.selectedLifeEvents.splice(index, 1);
+
+  removeLifeEvent(lifeEvent: LifeEvent) {
+    // kinda hacky, don't need to create. work on an interface
+    this.muxs.removeComponent.next(lifeEvent.createComponent());
   }
 
   constructor(
     private muxs: MayaUserExperienceService
-  ) { 
-    this.availableLifeEvents.slice(0,5).forEach(this.addLifeEvent.bind(this))
-  }
+  ) {}
 }
 
-function convertNameToType(name: string):string {
-  return name.replaceAll(' ','-').toLocaleLowerCase()
-}
-
-function generateDerivativeFields(v: {name: string, icon: string, createComponent: () => Component, fields: Field[]}): LifeEvent {
+function generateDerivativeFields(v: {name: string, icon: string,componentKey: ComponentKey, createComponent: () => Component, fields: Field[]}): LifeEvent {
   // auto generate derivative fields
-  const type = convertNameToType(v.name);
-  const addHref = createLifeEventsAddTypeRoute(type);
-  const editHref = createLifeEventsEditTypeRoute(type);
+  
+  const addHref = createLifeEventsAddTypeRoute(v.componentKey);
+  const editHref = createLifeEventsEditTypeRoute(v.componentKey);
 
   return {
     ...v,
-    type,
     addHref,
     editHref,
+    addLifeEvent: () => {},
+    removeLifeEvent: () => {},
   };
 }
   

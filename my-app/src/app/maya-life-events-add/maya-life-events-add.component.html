@@ -1,4 +1,3 @@
-
 <figure>
   <div class="placeholder">
 
@@ -10,15 +9,22 @@
 <article *ngIf="lifeEvent| async as lifeEvent">
   <div class="subtitle ">Life Events</div>
   <h1 class="title">{{lifeEvent.name}}</h1>
-  <p class="you-can-t-pick-from">
-    components
-  </p>
+
   
+  <ng-container *ngFor="let field of lifeEvent.fields">
+    <mat-form-field>
+      <mat-label>
+        {{field.name}}
+      </mat-label>
+      <input matInput
+      type="number" 
+      [name]="field.name"/>
+    </mat-form-field>
+  </ng-container>
   <br>
-  {{lifeEvent.type}}, {{lifeEvent.href}}
-  <br>
+  <button mat-button (click)="addLifeEvent($event, lifeEvent)">Save</button>
   
-  <button mat-button (click)="addLifeEvent($event, lifeEvent)">Add</button>
+  
 </article>
 
 

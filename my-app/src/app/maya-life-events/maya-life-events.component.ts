@@ -11,6 +11,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
 import { MayaLifeEventsResultsComponent } from '../maya-life-events-results/maya-life-events-results.component';
 import { RoutingService } from '../services/routing.service';
+import { MayaUserExperienceService } from '../services/maya-user-experience.service';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class MayaLifeEventsComponent {
     readonly lifeEventsService: LifeEventsService,
     readonly lifestreamService: LifestreamService,
     private _bottomSheet: MatBottomSheet,
+    readonly muxs: MayaUserExperienceService,
     ) {}
     openBottomSheet(): void {
       this._bottomSheet.open(MayaLifeEventsResultsComponent, {
@@ -32,5 +34,9 @@ export class MayaLifeEventsComponent {
       });
       
     }
-  
+    
+    ngAfterViewInit() {
+      console.log('adding life evnts')
+      this.lifeEventsService.availableLifeEvents.slice(0,5).forEach(this.lifeEventsService.addLifeEvent.bind(this))
+    } 
 }

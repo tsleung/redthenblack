@@ -14,9 +14,10 @@ export class MayaLifeEventsAddComponent {
 
   parameters = this.route.data;
   lifeEvent = this.route.params.pipe(map((params) => {
-    const type = params.type ?? 'custom';
+    const componentKey = params.type ?? 'custom';
     const lifeEvent:LifeEvent = this.lifeEventsService.availableLifeEvents.find(suspect => {
-      return suspect.type === type;
+      console.log('componentKey/type', componentKey)
+      return suspect.componentKey === componentKey;
     });
     return lifeEvent;
   }));
@@ -25,10 +26,23 @@ export class MayaLifeEventsAddComponent {
     private router: Router,
     private readonly lifeEventsService: LifeEventsService,
     private readonly routingService: RoutingService,
-    ) {
-      
-  }
+    ) {   }
 
+
+  saveForm(e, lifeEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const data = new FormData(e.target);
+
+    lifeEvent.fields.forEach(field => {
+      field.value = data.get(lifeEvent.field.name);
+    });
+
+    this.lifeEventsService.addLifeEvent(lifeEvent);
+    this.router.navigate([createLifeEventsRoute()]);
+    return false;  
+  }
   addLifeEvent(e,lifeEvent) {
     e.preventDefault();
     this.lifeEventsService.addLifeEvent(lifeEvent);
