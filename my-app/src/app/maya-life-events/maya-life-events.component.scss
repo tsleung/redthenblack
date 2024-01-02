@@ -68,7 +68,7 @@ figure {
   }
 
   .card {
-    width: 16.75rem;
+    min-width: 16.75rem;
     height: 20rem;
     justify-content: center;
 
@@ -117,19 +117,24 @@ figure {
   z-index: 1;
   box-shadow: 0 0 15px #0000001f;
 
-  padding: 0 1rem;
-
+  padding: 0;
 
   .mat-mdc-card-content {
     display: flex;
     flex-direction: row;
     flex: 1;
+
+    flex-wrap: wrap-reverse;
+    padding: 0;
   }
 
   dl {
     display: flex;
     flex-direction: column;
     flex: 1;
+
+    padding: 1rem;
+    margin: 0;
   }
 
   dt {
@@ -152,4 +157,21 @@ figure {
 
     margin: 0;
   }
+
+  .expand {
+    background: black;
+    color: white;
+    
+    min-width: 14rem;
+    font-weight: bold;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex: 1;
+
+    padding: 1rem;
+  }
 }
+

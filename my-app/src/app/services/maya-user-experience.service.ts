@@ -28,7 +28,7 @@ export class MayaUserExperienceService {
   private removeComponentAction:Observable<ComponentAction> = this.removeComponent.pipe(map(component => {
     return {component, action: ComponentActionType.Remove} as ComponentAction;
   }));
-  
+
   components: Observable<Map<ComponentKey,Component>> = merge(
     this.addComponentAction, this.removeComponentAction
     ).pipe(
@@ -43,6 +43,7 @@ export class MayaUserExperienceService {
         accum.delete(val.component.key)
       }
 
+      console.log('accum components', accum);
       return accum;
     }, new Map<ComponentKey,Component>()),
     shareReplay(),
@@ -51,7 +52,6 @@ export class MayaUserExperienceService {
   constructor() {}
 
   simulations =  this.components.pipe(map(components => {
-      console.log('is this emitting also')
       const rootSnapshot = new Snapshot();
       const entity = rootSnapshot.entityManager.createEntity();
       
@@ -68,7 +68,6 @@ export class MayaUserExperienceService {
     
 
   simulationsBalances = this.simulations.pipe(map(simulations => {
-      console.log('is this emitting again')
       const simulationsCashValue = simulations.map(simulation => {
         return simulation.map(period => {
           return period.entityManager.entities.reduce((accum, entity) => {

@@ -13,7 +13,6 @@ import { MayaLifeEventsResultsComponent } from '../maya-life-events-results/maya
 import { RoutingService } from '../services/routing.service';
 import { MayaUserExperienceService } from '../services/maya-user-experience.service';
 
-
 @Component({
   selector: 'app-maya-life-events',
   templateUrl: './maya-life-events.component.html',
@@ -35,8 +34,17 @@ export class MayaLifeEventsComponent {
       
     }
     
+    
     ngAfterViewInit() {
-      console.log('adding life evnts')
-      this.lifeEventsService.availableLifeEvents.slice(0,5).forEach(this.lifeEventsService.addLifeEvent.bind(this))
+      
+      if(!runOnce) {
+        console.log('adding life evnts')
+        runOnce = true;
+        this.lifeEventsService.availableLifeEvents.slice(0,5).forEach(this.lifeEventsService.addLifeEvent.bind(this))
+        
+      }
+      
     } 
 }
+
+let runOnce = false;

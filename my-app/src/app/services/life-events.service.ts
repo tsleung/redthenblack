@@ -118,10 +118,9 @@ export class LifeEventsService {
     .map(v => generateDerivativeFields(v));
 
   selectedLifeEvents:Observable<LifeEvent[]> = this.muxs.components.pipe(map(components => {
-    console.log('sle', components)
+    
     return Array.from(components.values()).map(component => {
       const found = this.availableLifeEvents.find(suspect => suspect.componentKey === component.key);
-      console.log('checking', component.key, found.componentKey, component, found)
       return found;
     }).filter(Boolean);
   }));
@@ -133,6 +132,7 @@ export class LifeEventsService {
 
   removeLifeEvent(lifeEvent: LifeEvent) {
     // kinda hacky, don't need to create. work on an interface
+    console.log('removing life event')
     this.muxs.removeComponent.next(lifeEvent.createComponent());
   }
 

@@ -56,6 +56,16 @@
       <dt>Retirement Confidence</dt>
       <dd>{{retirementConfidence | percent}}</dd>
     </dl>
-    <button mat-raised-button (click)="openBottomSheet()">Open Results</button>  
+    <div class="expand">
+      See how your life events affect your retirement confidence
+      <button mat-fab
+        color="primary"
+        (click)="openBottomSheet()"
+        aria-label="Expand results">
+        <mat-icon>expand_more</mat-icon>
+      </button>
+    </div>
+
+    
   </mat-card-content>
 </mat-card>
