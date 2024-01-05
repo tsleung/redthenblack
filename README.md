@@ -26,6 +26,16 @@
 ### Bootstrap
 ```./node_modules/@angular/cli/bin/ng add @ng-bootstrap/ng-bootstrap```
 
+### Deploy
+```
+ng build
+cp ../CNAME ../docs/CNAME
+cp ../docs/index.html ../docs/404.html
+git add --all ../docs
+git commit -m "Updated deployment"
+git push
+```
+
 ### Markdown
 https://www.npmjs.com/package/ngx-markdown
 ```npm install ngx-markdown --save```
