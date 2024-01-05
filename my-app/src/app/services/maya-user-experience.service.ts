@@ -6,15 +6,22 @@ import { BehaviorSubject, Observable, Subject, merge } from 'rxjs';
 import { map, publishReplay, refCount, scan, shareReplay, startWith, tap } from 'rxjs/operators';
 
 
-interface ComponentAction {
-  action: ComponentActionType;
-  component: Component;
-}
 export enum ComponentActionType {
   Add,
   Remove,
 }
 
+interface ComponentAction {
+  action: ComponentActionType;
+  component: Component;
+}
+
+/**
+ * A bundle of simulations with is sourced from a single entity
+ * - Components are added to the entity
+ * 
+ * A snapshot is created for each period within each simulation. A snapshot is a copy, so that prior snapshots are not modified.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -22,6 +29,8 @@ export class MayaUserExperienceService {
   simulationManager = new SimulationManager();
   addComponent: Subject<Component> = new Subject<Component>(); 
   removeComponent: Subject<Component> = new Subject<Component>(); 
+  
+
   private addComponentAction:Observable<ComponentAction> = this.addComponent.pipe(map(component => {
     return {component, action: ComponentActionType.Add} as ComponentAction;
   }));
@@ -115,7 +124,6 @@ export class MayaUserExperienceService {
     // replace when we have target threshold, for now find the median
     maxOfAllSimulations.sort();
     const midIndex = Math.floor(maxOfAllSimulations.length / 2);
-    console.log('mid index', midIndex, maxOfAllSimulations[midIndex])
     return maxOfAllSimulations[midIndex];
   }));
 

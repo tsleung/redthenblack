@@ -1,17 +1,17 @@
 <header>
-
   <dl *ngIf="muxs.nestEgg | async as nestEgg">
-    <dt>Nest Egg</dt>
+    <dt>Nest <br>Egg</dt>
     <dd>{{nestEgg}}</dd>
   </dl>
   <dl *ngIf="muxs.retirementAge | async as retirementAge">
-    <dt>Years to Retire</dt>
+    <dt>Years to <br>Retire</dt>
     <dd>{{retirementAge}}</dd>
   </dl>
   <dl *ngIf="muxs.retirementConfidence | async as retirementConfidence">
-    <dt>Retirement Confidence</dt>
+    <dt>Retirement <br>Confidence</dt>
     <dd>{{retirementConfidence | percent}}</dd>
   </dl>
+
   
 </header>
 

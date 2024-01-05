@@ -69,6 +69,7 @@ figure {
 
   .card {
     min-width: 16.75rem;
+    flex: 1;
     height: 20rem;
     justify-content: center;
 
@@ -135,6 +136,12 @@ figure {
 
     padding: 1rem;
     margin: 0;
+
+    border-left: 1px solid #C6C6C6;
+
+    &:first-child {
+      border-left: 0px solid transparent;
+    }
   }
 
   dt {
@@ -171,7 +178,7 @@ figure {
     gap: 1rem;
     flex: 1;
 
-    padding: 1rem;
+    padding: 1rem 2rem;
   }
 }
 

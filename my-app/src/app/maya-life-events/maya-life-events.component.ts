@@ -40,7 +40,7 @@ export class MayaLifeEventsComponent {
       if(!runOnce) {
         console.log('adding life evnts')
         runOnce = true;
-        this.lifeEventsService.availableLifeEvents.slice(0,5).forEach(this.lifeEventsService.addLifeEvent.bind(this))
+        // this.lifeEventsService.availableLifeEvents.slice(0,5).forEach(this.lifeEventsService.addLifeEvent.bind(this))
         
       }
       

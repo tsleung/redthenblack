@@ -6,12 +6,12 @@
 <aside>
   Helpful Calculators
 </aside>
-<article *ngIf="lifeEvent| async as lifeEvent">
+<article *ngIf="editableLifeEvent| async as ele">
   <div class="subtitle ">Life Events</div>
-  <h1 class="title">{{lifeEvent.name}}</h1>
+  <h1 class="title">{{ele.lifeEvent.name}}</h1>
 
-  
-  <ng-container *ngFor="let field of lifeEvent.fields">
+  <form ngForm (submit)="saveForm($event, ele)">
+  <ng-container *ngFor="let field of ele.lifeEvent.fields">
     <mat-form-field>
       <mat-label>
         {{field.name}}
@@ -22,8 +22,8 @@
     </mat-form-field>
   </ng-container>
   <br>
-  <button mat-button (click)="addLifeEvent($event, lifeEvent)">Save</button>
-  
+  <button mat-button>Save</button>
+</form>  
   
 </article>
 

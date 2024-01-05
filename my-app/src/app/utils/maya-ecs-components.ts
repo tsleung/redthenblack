@@ -2,10 +2,10 @@
 export enum ComponentKey {
   Cash='Cash',
   Stocks='Stocks',
-  SavingsAccount='SavingsAccount',
+  SavingsAccount='Savings Account',
   Job='Job',
   Mortgage='Mortgage',
-  CostOfLiving='CostOfLiving',
+  CostOfLiving='Cost Of Living',
   Retirement='Retirement',
 }
 export enum ComponentType {
