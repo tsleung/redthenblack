@@ -17,7 +17,8 @@
         {{field.name}}
       </mat-label>
       <input matInput
-      type="number" 
+      type="text"
+      [value]="field.value"
       [name]="field.name"/>
     </mat-form-field>
   </ng-container>

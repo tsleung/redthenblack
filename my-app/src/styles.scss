@@ -1,6 +1,76 @@
 
 @use '@angular/material' as mat;
 
+$dark-primary-text: rgba(black, 0.87);
+
+$light-primary-text: white;
+
+$rtb-red-palette: (
+  50: #ffebef,
+  100: #ffced4,
+  200: #f89b9d,
+  300: #f17376,
+  400: #fd5053,
+  500: #ff3c37,
+  600: #f53237,
+  700: #e22631,
+  800: #d51d29,
+  900: #c60b1d,
+  A100: #ff80ab,
+  A200: #ff4081,
+  A400: #f50057,
+  A700: #c51162,
+ contrast: (
+  50: $dark-primary-text,
+  100: $dark-primary-text,
+  200: $dark-primary-text,
+  300: $dark-primary-text,
+  400: $dark-primary-text,
+  500: $light-primary-text,
+  600: $light-primary-text,
+  700: $light-primary-text,
+  800: $light-primary-text,
+  900: $light-primary-text,
+  A100: $dark-primary-text,
+  A200: $light-primary-text,
+  A400: $light-primary-text,
+  A700: $light-primary-text,
+ )
+);
+
+
+$rtb-blue-palette: (
+  50: #e4eefe,
+  100: #bed5fc,
+  200: #96bbfa,
+  300: #73a0f4,
+  400: #638ced,
+  500: #5c79e5,
+  600: #5a6bd6,
+  700: #5659c1,
+  800: #5148ad,
+  900: #48278b,
+  A100: #8c9eff,
+  A200: #536dfe,
+  A400: #3d5afe,
+  A700: #304ffe,
+ contrast: (
+  50: $dark-primary-text,
+  100: $dark-primary-text,
+  200: $dark-primary-text,
+  300: $dark-primary-text,
+  400: $dark-primary-text,
+  500: $light-primary-text,
+  600: $light-primary-text,
+  700: $light-primary-text,
+  800: $light-primary-text,
+  900: $light-primary-text,
+  A100: $dark-primary-text,
+  A200: $light-primary-text,
+  A400: $light-primary-text,
+  A700: $light-primary-text,
+ )
+);
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
@@ -8,11 +78,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   box-shadow: 0 4px 5px -2px #0003, 0 7px 10px 1px #00000024, 0 2px 16px 1px #0000001f;
 }
 
-$my-primary: mat.define-palette(mat.$indigo-palette, 500);
-$my-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$my-primary: mat.define-palette($rtb-red-palette);
+$my-accent: mat.define-palette($rtb-blue-palette, 200, 100, 500);
 
 // The "warn" palette is optional and defaults to red if not specified.
-$my-warn: mat.define-palette(mat.$red-palette);
+$my-warn: mat.define-palette($rtb-red-palette);
 
 $my-theme: mat.define-light-theme((
  color: (
@@ -27,94 +97,6 @@ $my-theme: mat.define-light-theme((
 @include mat.core();
 // Adds density level 0 styles
 @include mat.all-component-themes($my-theme);
-
-
-$dark-primary-text: rgba(black, 0.87);
-
-$light-primary-text: white;
-
-$mat-primary: (
-        50: #e8eaf6,
-        100: #c5cae9,
-        200: #9fa8da,
-        300: #7986cb,
-        400: #5c6bc0,
-        500: #3f51b5,
-        600: #3949ab,
-        700: #303f9f,
-        800: #283593,
-        900: #1a237e,
-        A100: #8c9eff,
-        A200: #536dfe,
-        A400: #3d5afe,
-        A700: #304ffe,
-        contrast: (
-                50: $dark-primary-text,
-                100: $dark-primary-text,
-                200: $dark-primary-text,
-                300: $light-primary-text,
-                400: $light-primary-text,
-                500: $light-primary-text,
-                600: $light-primary-text,
-                700: $light-primary-text,
-                800: $light-primary-text,
-                900: $light-primary-text,
-                A100: $dark-primary-text,
-                A200: $light-primary-text,
-                A400: $light-primary-text,
-                A700: $light-primary-text,
-        )
-);
-
-$mat-accent: (
-        50: #fce4ec,
-        100: #f8bbd0,
-        200: #f48fb1,
-        300: #f06292,
-        400: #ec407a,
-        500: #e91e63,
-        600: #d81b60,
-        700: #c2185b,
-        800: #ad1457,
-        900: #880e4f,
-        A100: #ff80ab,
-        A200: #ff4081,
-        A400: #f50057,
-        A700: #c51162,
-        contrast: (
-                50: $dark-primary-text,
-                100: $dark-primary-text,
-                200: $dark-primary-text,
-                300: $dark-primary-text,
-                400: $dark-primary-text,
-                500: $light-primary-text,
-                600: $light-primary-text,
-                700: $light-primary-text,
-                800: $light-primary-text,
-                900: $light-primary-text,
-                A100: $dark-primary-text,
-                A200: $light-primary-text,
-                A400: $light-primary-text,
-                A700: $light-primary-text,
-        )
-);
-
-
-
-$primary: mat.define-palette(mat.$pink-palette, 500);
-
-$accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
-
-$theme: mat.define-light-theme((
-  color: (
-    primary: $primary,
-    accent: $accent,
-  ),
-  typography: mat.define-typography-config(),
-  density: 0,
-));
-
-@include mat.all-component-themes($theme);
 
 
 @import "./_mixins";
@@ -217,11 +199,11 @@ parameter-collection {
   @include parameter-collection();
 }
 app-layouts {
-  @include app-layouts($theme);
+  @include app-layouts($my-theme);
 }
 app-article {
   @include article();
 }
 app-retirement-article {
-  @include app-retirement-article($theme);
+  @include app-retirement-article($my-theme);
 }

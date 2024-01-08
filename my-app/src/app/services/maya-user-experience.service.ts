@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { SimulationManager, Snapshot } from '../utils/maya-ecs';
 import { Cash, Component, ComponentKey, Job, SavingsAccount, Stocks, ValueComponent } from '../utils/maya-ecs-components';
 import { getComponent, setComponent } from '../utils/maya-ecs-entities';
-import { BehaviorSubject, Observable, Subject, merge } from 'rxjs';
-import { map, publishReplay, refCount, scan, shareReplay, startWith, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, asyncScheduler, merge } from 'rxjs';
+import { map, publishReplay, refCount, scan, shareReplay, startWith, tap, throttleTime } from 'rxjs/operators';
 
 
 export enum ComponentActionType {
@@ -56,10 +56,13 @@ export class MayaUserExperienceService {
       return accum;
     }, new Map<ComponentKey,Component>()),
     shareReplay(),
+    throttleTime(200, asyncScheduler, {trailing: true}),
     startWith(new Map<ComponentKey,Component>()),
   );
   constructor() {}
 
+  numberOfPeriods = 60;
+  numberOfSimulations = 200;
   simulations =  this.components.pipe(map(components => {
       const rootSnapshot = new Snapshot();
       const entity = rootSnapshot.entityManager.createEntity();
@@ -68,7 +71,8 @@ export class MayaUserExperienceService {
         setComponent(entity, component);
       });
   
-      const simulations = this.simulationManager.createSimulations(rootSnapshot, 50, 30);
+      
+      const simulations = this.simulationManager.createSimulations(rootSnapshot, this.numberOfSimulations, this.numberOfPeriods);
       return simulations;
     }),
     publishReplay(),
@@ -124,7 +128,7 @@ export class MayaUserExperienceService {
     // replace when we have target threshold, for now find the median
     maxOfAllSimulations.sort();
     const midIndex = Math.floor(maxOfAllSimulations.length / 2);
-    return maxOfAllSimulations[midIndex];
+    return `${maxOfAllSimulations[midIndex]}`;
   }));
 
   /**
@@ -140,7 +144,8 @@ export class MayaUserExperienceService {
     const failedRetirements = minimumValue.filter(suspect => suspect < 0);
     
     // rate of failure / all simulations
-    return 1 - (failedRetirements.length / minimumValue.length);
+    const decimal = 1 - (failedRetirements.length / minimumValue.length);
+    return `${Math.round(decimal * 100) ?? '0'}`;
   }));
   
 }

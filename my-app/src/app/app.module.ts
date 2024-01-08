@@ -103,6 +103,8 @@ import { MayaLifeEventsResultsComponent } from './maya-life-events-results/maya-
 import { MayaLifeEventsListComponent } from './maya-life-events-list/maya-life-events-list.component';
 import { MayaLifeSimulationResultsChartComponent } from './maya-life-simulation-results-chart/maya-life-simulation-results-chart.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 
 @NgModule({
   declarations: [
@@ -197,6 +199,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatSidenavModule,
     MatToolbarModule,
     MatDividerModule,
+    MatProgressSpinnerModule,
     BrowserAnimationsModule,
     MarkdownModule.forRoot(),
     HttpClientModule,

@@ -1,5 +1,5 @@
 import { Entity } from "./maya-ecs-entities";
-import { IncomeSystem, MarketSystem } from "./maya-ecs-systems";
+import { IncomeSystem, LoanSystem, MarketSystem } from "./maya-ecs-systems";
 
 
 // RiskLevel component
@@ -31,7 +31,7 @@ export class Snapshot {
 
 
 export class SimulationManager {
-  private readonly systems = [new MarketSystem(), new IncomeSystem(), /* ... */];
+  private readonly systems = [new MarketSystem(), new IncomeSystem(), new LoanSystem()/* ... */];
 
   
   constructor() {}

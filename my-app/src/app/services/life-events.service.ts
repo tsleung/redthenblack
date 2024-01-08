@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { createLifeEventsAddTypeRoute, createLifeEventsEditTypeRoute } from '../utils/route_mapper';
 import { MayaUserExperienceService } from './maya-user-experience.service';
-import { Cash, Component, ComponentKey, CostOfLiving, Job, Retirement, SavingsAccount, Stocks } from '../utils/maya-ecs-components';
+import { AmortizedLoan, AutoLoan, Cash, Component, ComponentKey, CostOfLiving, Job, Mortgage, Retirement, SavingsAccount, SbaLoan, Stocks, StudentLoan } from '../utils/maya-ecs-components';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 
 interface Field {
   name: string;
-  value: string|number;
+  value: string;
   readFrom: (component:Component, field:Field) => void;
   updateTo: (component:Component, field:Field) => void;
 }
@@ -49,38 +49,88 @@ const iconMap = {
   investment: 'trending_up',
 }
 
+
+const amortizedLoanFields:Field[] = [
+  {
+    name: 'Principal', 
+    value: '268000', 
+    readFrom:(component: AmortizedLoan, field:Field) =>{
+      field.value = component.principal;
+    },
+    updateTo:(component: AmortizedLoan, field:Field) => {
+      component.principal = Number(field.value) || 0;
+    }
+  },
+  {
+    name: 'Interest Rate', 
+    value: '.0696', 
+    readFrom:(component: AmortizedLoan, field:Field) =>{
+      field.value = component.interestRate;
+    },
+    updateTo:(component: AmortizedLoan, field:Field) => {
+      component.interestRate = Number(field.value) || 0;
+    }
+  },
+  {
+    name: 'Monthly Payment', 
+    value: '1776', 
+    readFrom:(component: AmortizedLoan, field:Field) =>{
+      field.value = component.monthlyPayment;
+    },
+    updateTo:(component: AmortizedLoan, field:Field) => {
+      component.monthlyPayment = Number(field.value) || 0;
+    }
+  },
+];
+
+
 const fieldsMap = {
   'Cash': [
     {
       name: 'Balance', 
-      value: 0, 
+      value: '0', 
       readFrom:(cash: Cash, field:Field) =>{
         field.value = cash.value;
       },
       updateTo:(cash: Cash, field:Field) => {
-        cash.value = field.value;
+        cash.value = Number(field.value) || 0;
       }
     },
   ],
+
+  'Cost Of Living': [
+    {
+      name: 'Annual Expenses', 
+      value: '0', 
+      readFrom:(component: CostOfLiving, field:Field) =>{
+        field.value = component.cashFlow;
+      },
+      updateTo:(component: CostOfLiving, field:Field) => {
+        component.cashFlow = Number(field.value) || 0;
+      }
+    },
+  ],
+
   'Stocks': [
     {
       name: 'Market Value', 
-      value: 0, 
+      value: '0', 
       readFrom:(component: Stocks, field:Field) =>{
         field.value = component.value;
       },
       updateTo:(component: Stocks, field:Field) => {
-        component.value = field.value;
+        component.value = Number(field.value) || 0;
       }
     },
     {
       name: 'Annual Returns', 
-      value: 0, 
+      value: '0', 
       readFrom:(component: Stocks, field:Field) =>{
         field.value = component.annualReturns.join(', ');
       },
       updateTo:(component: Stocks, field:Field) => {
-        component.annualReturns = `${field.value}`.split(',').map(v => v.trim()).map(Boolean).map(Number);
+        const annualReturns = `${field.value}`.split(',').map(v => v.trim()).map(Number).filter(v => !isNaN(v));;
+        component.annualReturns = annualReturns;
       }
     },
   ],
@@ -88,22 +138,24 @@ const fieldsMap = {
   'Savings Account': [
     {
       name: 'Balance', 
-      value: 0, 
+      value: '0', 
       readFrom:(component: SavingsAccount, field:Field) =>{
         field.value = component.value;
       },
       updateTo:(component: SavingsAccount, field:Field) => {
-        component.value = field.value;
+        component.value = Number(field.value) || 0;
       }
     },
     {
       name: 'Interest Rate', 
-      value: 0, 
+      value: '0', 
       readFrom:(component: SavingsAccount, field:Field) =>{
         field.value = component.interestRates.join(', ');
       },
       updateTo:(component: SavingsAccount, field:Field) => {
-        component.value = `${field.value}`.split(',').map(v => v.trim()).map(Boolean).map(Number);
+        const value = `${field.value}`.split(',').map(v => v.trim()).map(Number).filter(v => !isNaN(v));
+        
+        component.interestRates = value;
       }
     },
   ],
@@ -111,41 +163,35 @@ const fieldsMap = {
   'Job': [
     {
       name: 'Annual Savings after Income', 
-      value: 0, 
+      value: '0', 
       readFrom:(component: Job, field:Field) =>{
         field.value = component.cashFlow;
       },
       updateTo:(component: Job, field:Field) => {
-        component.cashFlow = field.value;
+        component.cashFlow = Number(field.value) || 0;
       }
     },
   ],
   
-  'Cost Of Living': [
-    {
-      name: 'Annual Expenses', 
-      value: 0, 
-      readFrom:(component: CostOfLiving, field:Field) =>{
-        field.value = component.cashFlow;
-      },
-      updateTo:(component: CostOfLiving, field:Field) => {
-        component.cashFlow = field.value;
-      }
-    },
-  ],
   
   'Retirement': [
     {
       name: 'Years until retirement', 
-      value: 0, 
+      value: '0', 
       readFrom:(component: Retirement, field:Field) =>{
         field.value = component.period;
       },
       updateTo:(component: Retirement, field:Field) => {
-        component.period = field.value;
+        component.period = Number(field.value) || 0;
       }
     },
   ],
+
+  'Mortgage': [...amortizedLoanFields] as Field[],
+  'StudentLoan': [...amortizedLoanFields] as Field[],
+  'AutoLoan': [...amortizedLoanFields] as Field[],
+  'SbaLoan': [...amortizedLoanFields] as Field[],
+  
   
 };
 
@@ -178,13 +224,15 @@ const samples = [
 
 const shorthand: Array<[string, ComponentKey, ()=>Component]> = [
   ['Cash',ComponentKey.Cash, () => new Cash(5e3)],
+  ['Cost of Living',ComponentKey.CostOfLiving, () => new CostOfLiving(5e4)],
   ['Stocks',ComponentKey.Stocks, () => new Stocks(4e5, [...new Array(4).fill(1.1), .75])],
   ['Savings Account',ComponentKey.SavingsAccount, () => new SavingsAccount(5e4, [.01, .05])],
   ['Job',ComponentKey.Job, () => new Job(1e5, 10)],
-  ['Cost of Living',ComponentKey.CostOfLiving, () => new CostOfLiving(5e4)],
   ['Retirement',ComponentKey.Retirement, () => new Retirement(15)],
-  
-  
+  ['Mortgage',ComponentKey.Mortgage, () => new Mortgage(27e5, .07, 1800)],
+  ['Student Loan',ComponentKey.StudentLoan, () => new StudentLoan(5.5e4, .07, 640)],
+  ['Auto Loan',ComponentKey.AutoLoan, () => new AutoLoan(26e4, .06, 610)],
+  ['SBA Loan',ComponentKey.SbaLoan, () => new SbaLoan(7.92e5, .02875, 3286)],
   
 ];
 
@@ -260,9 +308,8 @@ export class LifeEventsService {
     console.log('removing life event')
     this.muxs.removeComponent.next(lifeEvent.createComponent());
   }
-
   constructor(
-    private muxs: MayaUserExperienceService
+    private muxs: MayaUserExperienceService,
   ) {}
 }
 

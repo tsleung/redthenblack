@@ -10,7 +10,6 @@ import { MayaUserExperienceService } from '../services/maya-user-experience.serv
 interface EditableLifeComponent {
   lifeEvent: LifeEvent;
   component: Component;
-  save: () => void;
 }
 
 
@@ -44,7 +43,8 @@ export class MayaLifeEventsAddComponent {
       // override defaults from add, if applicable
       return this.muxs.components.pipe(map(components => {
         // in each field, overwrite if there is a component available
-        const component = components.get(lifeEvent.componentKey) ?? lifeEvent.createComponent();
+
+        const component = Array.from(components.values()).find(suspect => suspect.key === lifeEvent.componentKey) ?? lifeEvent.createComponent();
 
         lifeEvent.fields.forEach(field => {
           // run mutation
@@ -53,7 +53,6 @@ export class MayaLifeEventsAddComponent {
         return {
           lifeEvent,
           component,
-          save: () => { },
         };
       }));
     })
@@ -67,14 +66,14 @@ export class MayaLifeEventsAddComponent {
   ) { }
 
 
-  saveForm(e, editableLifeEvent:EditableLifeComponent) {
+  saveForm(e, editableLifeEvent: EditableLifeComponent) {
     e.preventDefault();
     e.stopPropagation();
 
     const data = new FormData(e.target);
 
     editableLifeEvent.lifeEvent.fields.forEach(field => {
-      field.value = Number(data.get(field.name).valueOf());
+      field.value = data.get(field.name).valueOf() as string;
 
     });
 

@@ -20,6 +20,22 @@ import { MayaUserExperienceService } from '../services/maya-user-experience.serv
 })
 export class MayaLifeEventsComponent {
 
+
+
+  promptNumberOfYears() {
+    const numYears = Number(window.prompt('Number of Years', '60'));
+    if(!isNaN(numYears)) {
+      this.muxs.numberOfPeriods = numYears;
+    }
+  }
+  
+  promptNumberOfSimulations() {
+    const numSims = Number(window.prompt('Number of Simulations', '200'));
+    if(!isNaN(numSims)) {
+      this.muxs.numberOfSimulations = numSims;
+    }
+  }
+  
   constructor(
     readonly routingService: RoutingService,
     readonly lifeEventsService: LifeEventsService,
@@ -40,7 +56,9 @@ export class MayaLifeEventsComponent {
       if(!runOnce) {
         console.log('adding life evnts')
         runOnce = true;
-        // this.lifeEventsService.availableLifeEvents.slice(0,5).forEach(this.lifeEventsService.addLifeEvent.bind(this))
+        this.lifeEventsService.availableLifeEvents.slice(0,2).forEach(lifeEvent => {
+          this.lifeEventsService.addLifeEvent(lifeEvent);
+        });
         
       }
       

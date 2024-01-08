@@ -1,11 +1,63 @@
 header {
   display: flex;
   flex-direction: row;
+  border-bottom: #c6c6c6;
 
+  
   dl {
     display: flex;
     flex-direction: column;
     flex: 1;
+
+    padding: 1rem;
+    margin: 0;
+
+    border-left: 1px solid #C6C6C6;
+    position: relative;
+
+    &:first-child {
+      border-left: 0px solid transparent;
+    }
+
+    &.retirement-confidence {
+      flex: 3;
+      flex-direction: row-reverse;
+      justify-content: left;
+      gap: 1rem;
+      align-items: center;
+
+      dt {
+
+        font-family: Manrope;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 25px;
+        letter-spacing: 0em;
+        text-align: left;
+
+        p {
+          font-family: Manrope;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 25px;
+          letter-spacing: 0em;
+          text-align: left;  
+          margin: .25rem 0;
+        }
+        
+      }
+
+      dd {
+        position: relative;
+        .label {
+          position: absolute;
+          left: 0;
+          right: 0;
+          text-align: center;
+          top: 2.5rem;
+        }
+      }
+    }
   }
 
   dt {
@@ -15,6 +67,7 @@ header {
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+
   }
 
   dd {

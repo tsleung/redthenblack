@@ -1,17 +1,28 @@
 <header>
   <dl *ngIf="muxs.nestEgg | async as nestEgg">
-    <dt>Nest <br>Egg</dt>
+    <dt>Peak<br>Wealth</dt>
     <dd>{{nestEgg}}</dd>
   </dl>
   <dl *ngIf="muxs.retirementAge | async as retirementAge">
-    <dt>Years to <br>Retire</dt>
+    <dt>Peak Year<br>of Wealth</dt>
     <dd>{{retirementAge}}</dd>
   </dl>
-  <dl *ngIf="muxs.retirementConfidence | async as retirementConfidence">
-    <dt>Retirement <br>Confidence</dt>
-    <dd>{{retirementConfidence | percent}}</dd>
+  <dl *ngIf="muxs.retirementConfidence | async as retirementConfidence" class="retirement-confidence">
+    <dt>Retirement Confidence
+      <p>This is a dynamic value that changes based on your life events.</p>
+    </dt>
+    
+    
+    <dd>
+      <mat-progress-spinner
+        mode="determinate"
+        color="accent"
+        [value]="retirementConfidence">
+      </mat-progress-spinner>
+      <span class="label">{{retirementConfidence}}%</span>
+    </dd>
+    
   </dl>
-
   
 </header>
 

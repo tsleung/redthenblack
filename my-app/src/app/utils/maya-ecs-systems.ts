@@ -1,7 +1,7 @@
 
 // Systems
 
-import { Cash, ComponentKey, CostOfLiving, Job, Retirement, SavingsAccount, Stocks } from "./maya-ecs-components";
+import { AmortizedLoan, AmortizedLoanComponent, Cash, ComponentKey, ComponentType, CostOfLiving, Job, Retirement, SavingsAccount, Stocks } from "./maya-ecs-components";
 import { Entity, getComponent } from "./maya-ecs-entities";
 
 // MarketSystem
@@ -78,6 +78,61 @@ export class RetirementSystem {
     }
   }
 }
+
+export class LoanSystem {
+  name = 'LoanSystem';
+  update(entities: Entity[]) {
+    for (const entity of entities) {
+
+      const cash = getComponent<Cash>(entity, ComponentKey.Cash);
+
+      Array.from(entity.components.values())
+      .filter(suspect => suspect.type === ComponentType.AmortizedLoan)
+      .map(amorizedLoan => amorizedLoan as AmortizedLoan)
+      .forEach((amortizedLoan: AmortizedLoan) => {
+        const loanPaymentsForYear = this.calculateLoanPaymentsForYear(
+          amortizedLoan.principal, 
+          amortizedLoan.interestRate, 
+          amortizedLoan.monthlyPayment
+        );
+        amortizedLoan.principal = loanPaymentsForYear.principal;
+        cash.value = cash.value - (loanPaymentsForYear.principalPayments + loanPaymentsForYear.interestPayments);
+      });
+      
+    }
+  }
+
+  calculateLoanPaymentsForYear(principal: number, interestRate: number, monthlyPayment: number) {
+    const annualPayments = new Array(12).fill(0).reduce(({principal, principalPayments, interestPayments}) => {
+      const interestPayment = this.calculateMonthlyInterestPayment(principal, interestRate);
+
+
+      // If principal is less than monthly payment, principal payment reduces to only that of the principal
+      const principalPayment = Math.min(principal, monthlyPayment - interestPayment);
+
+      // reducing principal loan balance
+      principal = principal - principalPayment;
+
+      // keeping track of principal payments
+      principalPayments = principalPayments + principalPayment;
+      // keeping track of interest payments
+      interestPayments = interestPayments + interestPayment;
+      return {
+        principal,
+        principalPayments,
+        interestPayments,
+      };
+    }, {principal, principalPayments: 0, interestPayments: 0});
+
+    return annualPayments;
+  }
+
+  calculateMonthlyInterestPayment(principal: number, interestRate: number) {
+    const monthlyInterestPayment = principal * interestRate / 12;
+    return monthlyInterestPayment;
+  }
+}
+
 
 // IncomeSystem, ExpenseSystem, LifeMilestoneSystem, CareerSystem (similar structure)
 

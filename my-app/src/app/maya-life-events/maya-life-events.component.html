@@ -16,6 +16,7 @@
   </p>
 </div>
 
+
 <section class="cards" *ngIf="lifeEventsService.selectedLifeEvents | async as selectedLifeEvents">
   <mat-card class="card" *ngFor="let lifeEvent of selectedLifeEvents;let i = index">
     <mat-card-content>
@@ -26,13 +27,13 @@
         {{lifeEvent.createFriendlyFieldDescription()}}
       </p>
       
-      <br>
-      <a mat-fab [routerLink]="lifeEvent.editHref">
-        <mat-icon>edit</mat-icon>
+      <a mat-button [routerLink]="lifeEvent.editHref">
+        edit
       </a>
-      <br>
-      <br>
-      <button mat-button (click)="lifeEventsService.removeLifeEvent(lifeEvent)">Remove</button>
+
+      <button mat-mini-fab color="accent" (click)="lifeEventsService.removeLifeEvent(lifeEvent)">
+        <mat-icon>close</mat-icon>
+      </button>
     </mat-card-content>
   </mat-card>
   <mat-card class="card add">
@@ -46,20 +47,35 @@
     </mat-card-content>
   </mat-card>
 </section>
+<!-- <section>
+  <button mat-button (click)="promptNumberOfYears()">Years</button> <button mat-button (click)="promptNumberOfSimulations()">Simulations</button>
+</section> -->
 
 <mat-card class="footer">
   <mat-card-content>
     <dl *ngIf="muxs.nestEgg | async as nestEgg">
-      <dt>Nest <br>Egg</dt>
+      <dt>Peak<br>Wealth</dt>
       <dd>{{nestEgg}}</dd>
     </dl>
     <dl *ngIf="muxs.retirementAge | async as retirementAge">
-      <dt>Years to <br>Retire</dt>
+      <dt>Peak Year<br>of Wealth</dt>
       <dd>{{retirementAge}}</dd>
     </dl>
-    <dl *ngIf="muxs.retirementConfidence | async as retirementConfidence">
-      <dt>Retirement <br>Confidence</dt>
-      <dd>{{retirementConfidence | percent}}</dd>
+    <dl *ngIf="muxs.retirementConfidence | async as retirementConfidence" class="retirement-confidence">
+      <dt>Retirement Confidence
+        <p>This is a dynamic value that changes based on your life events.</p>
+      </dt>
+      
+      
+      <dd>
+        <mat-progress-spinner
+          mode="determinate"
+          color="accent"
+          [value]="retirementConfidence">
+        </mat-progress-spinner>
+        <span class="label">{{retirementConfidence}}%</span>
+      </dd>
+      
     </dl>
     <div class="expand">
       See how your life events affect your retirement confidence
