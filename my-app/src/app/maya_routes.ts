@@ -38,7 +38,7 @@ export const INTRO = {
               data: {
                 title: `Planning for your retirement doesn't have to be scary.`,
                 action: {
-                  href: routes.createMayaCalculatorList(),
+                  href: routes.createLifeEventsRoute(),
                   text: `Find out how`,
                   primary: true,
                 }

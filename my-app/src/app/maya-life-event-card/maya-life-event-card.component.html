@@ -1,0 +1,18 @@
+<mat-card class="card" *ngIf="lifeEvent">
+  <mat-card-content>
+    {{lifeEvent.name}}
+    <br>
+    <br>
+    <p>
+      {{lifeEvent.createFriendlyFieldDescription()}}
+    </p>
+    
+    <a *ngIf="actionable" mat-button [routerLink]="lifeEvent.editHref">
+      edit
+    </a>
+
+    <button *ngIf="actionable" mat-mini-fab color="accent" (click)="lifeEventsService.removeLifeEvent(lifeEvent)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-card-content>
+</mat-card>

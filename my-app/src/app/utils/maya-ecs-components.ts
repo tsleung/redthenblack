@@ -1,4 +1,9 @@
 
+enum NamedPeriods { 
+  StartPeriod = 0,
+  EndPeriod = 120,
+}
+
 export enum ComponentKey {
   Cash='Cash',
   CostOfLiving='Cost Of Living',
@@ -10,19 +15,55 @@ export enum ComponentKey {
   StudentLoan='StudentLoan',
   AutoLoan='AutoLoan',
   SbaLoan='SbaLoan',
-  
+  MyAllocationChoices='MyAllocationChoices',
+  ChildCare='ChildCare',
+  SeniorCare='SeniorCare',
 }
 export enum ComponentType {
   Value,
   CashFlow,
   AmortizedLoan,
   Milestone,
+  Choices,
 }
 
 export interface Component {
   key: ComponentKey;
-  type: ComponentType;
+  readonly type: ComponentType;
 }
+
+export interface DelayedStartComponent extends Component{
+  startPeriod: number;
+}
+
+export class DelayedStart implements DelayedStartComponent{
+  startPeriod = 0;
+  type: ComponentType
+  key: ComponentKey;
+}
+
+export interface EarlyEndComponent extends Component{
+  endPeriod: number;
+}
+
+export class EarlyEnd implements EarlyEndComponent{
+  endPeriod = NamedPeriods.EndPeriod;
+  type: ComponentType
+  key: ComponentKey;
+}
+
+export interface TimeBoundComponent extends Component, DelayedStartComponent, EarlyEndComponent{
+  startPeriod: number;
+  endPeriod: number;
+}
+
+export class Timebound implements TimeBoundComponent {
+  type: ComponentType
+  key: ComponentKey;
+  startPeriod = NamedPeriods.StartPeriod;
+  endPeriod = NamedPeriods.EndPeriod;
+}
+
 export interface ValueComponent extends Component{
   value: number;
 }
@@ -39,28 +80,46 @@ export class Stocks implements ValueComponent {
   constructor(public value, public annualReturns: number[]) {}
 }
 
-export class SavingsAccount implements ValueComponent {
+export class SavingsAccount implements ValueComponent, DelayedStartComponent {
   key = ComponentKey.SavingsAccount;
   type = ComponentType.Value;
+  startPeriod = NamedPeriods.StartPeriod;
   constructor(public value, public interestRates:number[]) {}
 }
 
-interface CashFlowComponent extends Component{
+interface CashFlowComponent extends DelayedStartComponent{
   cashFlow: number
 }
 
-export class Job implements CashFlowComponent{
+export class CashFlow implements CashFlowComponent {
+  key: ComponentKey;
+  type = ComponentType.CashFlow;
+  startPeriod = NamedPeriods.StartPeriod;
+  
+  constructor(public cashFlow, public periods: number = 0) {
+  }
+}
+
+export class ChildCare extends CashFlow {
+  key= ComponentKey.ChildCare;
+  periods = 18;
+}
+
+export class SeniorCare extends CashFlow {
+  key= ComponentKey.SeniorCare;
+  periods = 120;
+}
+
+export class Job extends CashFlow implements TimeBoundComponent{
   key = ComponentKey.Job;
-  type = ComponentType.CashFlow;
-  constructor(public cashFlow, public periods: number) {}
+  startPeriod = 0;
+  endPeriod = NamedPeriods.EndPeriod;
 }
 
-export class CostOfLiving implements CashFlowComponent{
+
+export class CostOfLiving extends CashFlow{
   key = ComponentKey.CostOfLiving;
-  type = ComponentType.CashFlow;
-  constructor(public cashFlow) {}
 }
-
 
 interface MilestoneComponent extends Component{
   period: number;
@@ -77,7 +136,7 @@ export class Retirement extends Milestone implements MilestoneComponent{
   }
 }
 
-export interface AmortizedLoanComponent extends Component{
+export interface AmortizedLoanComponent extends DelayedStartComponent{
   principal: number;
   interestRate: number;
   monthlyPayment: number;
@@ -86,6 +145,7 @@ export interface AmortizedLoanComponent extends Component{
 export class AmortizedLoan implements AmortizedLoanComponent{
   type = ComponentType.AmortizedLoan;
   key: ComponentKey;
+  startPeriod = 0;
   constructor(public principal, public interestRate, public monthlyPayment) {}
 }
 
@@ -103,4 +163,18 @@ export class AutoLoan extends AmortizedLoan {
 
 export class SbaLoan extends AmortizedLoan {
   key = ComponentKey.SbaLoan;
+}
+
+
+interface ChoicesComponent extends DelayedStartComponent{
+}
+
+class Choices implements ChoicesComponent{
+  type = ComponentType.Choices;
+  key: ComponentKey;
+  startPeriod = 0;
+}
+
+export class MyAllocationChoices extends Choices {
+  key = ComponentKey.MyAllocationChoices;
 }

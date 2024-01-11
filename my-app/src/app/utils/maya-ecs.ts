@@ -1,12 +1,5 @@
 import { Entity } from "./maya-ecs-entities";
-import { IncomeSystem, LoanSystem, MarketSystem } from "./maya-ecs-systems";
-
-
-// RiskLevel component
-enum RiskLevel { Low, Medium, High }
-
-// ... (other components as needed)
-
+import { IncomeSystem, LoanSystem, MarketSystem, System } from "./maya-ecs-systems";
 
 class EntityManager {
   public readonly entities: Entity[] = [];
@@ -29,20 +22,18 @@ export class Snapshot {
   constructor() {}
 }
 
-
 export class SimulationManager {
-  private readonly systems = [new MarketSystem(), new IncomeSystem(), new LoanSystem()/* ... */];
+  private readonly systems:System[] = [new MarketSystem(), new IncomeSystem(), new LoanSystem()/* ... */];
 
-  
   constructor() {}
 
-  createNextSnapshot(current: Snapshot) {
+  createNextSnapshot(current: Snapshot, pastPeriod: number) {
     // create a copy
     const next = structuredClone(current);
     // run all systems to update to next period
     for (const system of this.systems) {
       
-      system.update(next.entityManager.entities);
+      system.update(next.entityManager.entities, pastPeriod);
       // console.log('update', next.entityManager.entities)
     }
     // return the copy
@@ -52,12 +43,12 @@ export class SimulationManager {
   createSimulation(rootSnapshot: Snapshot, numberOfPeriods: number) {
     return new Array(numberOfPeriods).fill(0).reduce((accum) => {
       const current = accum.at(-1);
-      return [...accum, this.createNextSnapshot(current)];
+      return [...accum, this.createNextSnapshot(current, accum.length)];
     },[rootSnapshot]);
   }
 
   createSimulations(rootSnapshot: Snapshot, numberOfSimulations: number, numberOfPeriods: number):Snapshot[][] {
-    return new Array(numberOfSimulations).fill(0).map(() => {
+    return new Array(numberOfSimulations).fill(0).map((v, simIndex) => {
       return this.createSimulation(rootSnapshot, numberOfPeriods);
     });
   }

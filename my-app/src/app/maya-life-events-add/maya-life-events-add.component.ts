@@ -30,7 +30,7 @@ interface EditableLifeComponent {
 export class MayaLifeEventsAddComponent {
 
   parameters = this.route.data;
-  editableLifeEvent = this.route.params.pipe(map((params) => {
+  lifeEvent = this.route.params.pipe(map((params) => {
     const componentKey = params.type ?? 'custom';
     const lifeEvent: LifeEvent = this.lifeEventsService.availableLifeEvents.find(suspect => {
       console.log('componentKey/type', componentKey)
@@ -50,10 +50,8 @@ export class MayaLifeEventsAddComponent {
           // run mutation
           field.readFrom(component, field);
         });
-        return {
-          lifeEvent,
-          component,
-        };
+        
+        return lifeEvent;
       }));
     })
   );
@@ -66,18 +64,17 @@ export class MayaLifeEventsAddComponent {
   ) { }
 
 
-  saveForm(e, editableLifeEvent: EditableLifeComponent) {
+  saveForm(e, lifeEvent: LifeEvent) {
     e.preventDefault();
     e.stopPropagation();
 
     const data = new FormData(e.target);
 
-    editableLifeEvent.lifeEvent.fields.forEach(field => {
+    lifeEvent.fields.forEach(field => {
       field.value = data.get(field.name).valueOf() as string;
-
     });
 
-    this.lifeEventsService.updateLifeEvent(editableLifeEvent.lifeEvent);
+    this.lifeEventsService.updateLifeEvent(lifeEvent);
     this.router.navigate([createLifeEventsRoute()]);
     return false;
   }

@@ -14,7 +14,7 @@ export class MayaLifeSimulationResultsChartComponent {
       columns: [],
       type: 'line'
     };  
-    console.log('adding to chart',results)
+    
     results.forEach((simulation, i) => {
       chartData.columns.push([`series ${i}`, ...simulation])
     });

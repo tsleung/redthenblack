@@ -18,24 +18,9 @@
 
 
 <section class="cards" *ngIf="lifeEventsService.selectedLifeEvents | async as selectedLifeEvents">
-  <mat-card class="card" *ngFor="let lifeEvent of selectedLifeEvents;let i = index">
-    <mat-card-content>
-      {{lifeEvent.name}}
-      <br>
-      <br>
-      <p>
-        {{lifeEvent.createFriendlyFieldDescription()}}
-      </p>
-      
-      <a mat-button [routerLink]="lifeEvent.editHref">
-        edit
-      </a>
-
-      <button mat-mini-fab color="accent" (click)="lifeEventsService.removeLifeEvent(lifeEvent)">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-card-content>
-  </mat-card>
+  <ng-container *ngFor="let lifeEvent of selectedLifeEvents;let i = index">
+      <app-maya-life-event-card actionable="true" [lifeEvent]="lifeEvent"></app-maya-life-event-card>
+  </ng-container>
   <mat-card class="card add">
     <mat-card-content>
       Add a life event

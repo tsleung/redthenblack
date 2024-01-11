@@ -1,31 +1,44 @@
-<figure>
-  <div class="placeholder">
-
-  </div>
-</figure>
-<aside>
-  Helpful Calculators
-</aside>
-<article *ngIf="editableLifeEvent| async as ele">
-  <div class="subtitle ">Life Events</div>
-  <h1 class="title">{{ele.lifeEvent.name}}</h1>
-
-  <form ngForm (submit)="saveForm($event, ele)">
-  <ng-container *ngFor="let field of ele.lifeEvent.fields">
-    <mat-form-field>
-      <mat-label>
-        {{field.name}}
-      </mat-label>
-      <input matInput
-      type="text"
-      [value]="field.value"
-      [name]="field.name"/>
-    </mat-form-field>
-  </ng-container>
-  <br>
-  <button mat-button>Save</button>
-</form>  
-  
-</article>
-
-
+<ng-container *ngIf="lifeEvent | async as lifeEvent">
+  <header>
+    <div class="subtitle ">Life Events</div>
+    <h1 class="title">{{lifeEvent.name}}</h1>  
+  </header>
+  <form ngForm (submit)="saveForm($event, lifeEvent)">
+  <main>
+    <figure>
+      <app-maya-life-event-card [lifeEvent]="lifeEvent"></app-maya-life-event-card>
+    </figure>
+    <aside *ngIf="lifeEvent.calculators">
+      <h3>Helpful Calculators</h3>
+      <ng-container *ngFor="let calculator of lifeEvent.calculators">
+        <h4>
+          <a [routerLink]="calculator.href">{{calculator.title}}</a>
+        </h4>
+        <p>
+          {{calculator.description}}
+        </p>
+      </ng-container>
+    </aside>
+    
+      <article>
+      
+        <ng-container *ngFor="let field of lifeEvent.fields">
+          <mat-form-field>
+            <mat-label>
+              {{field.name}}
+            </mat-label>
+            <input matInput
+            type="text"
+            [value]="field.value"
+            [name]="field.name"/>
+          </mat-form-field>
+        </ng-container>
+        
+    </article>
+          
+  </main>
+  <footer>
+    <button color="primary" mat-flat-button>Save</button>
+  </footer>
+  </form>  
+</ng-container>

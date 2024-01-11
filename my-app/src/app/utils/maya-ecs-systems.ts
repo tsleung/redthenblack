@@ -4,8 +4,14 @@
 import { AmortizedLoan, AmortizedLoanComponent, Cash, ComponentKey, ComponentType, CostOfLiving, Job, Retirement, SavingsAccount, Stocks } from "./maya-ecs-components";
 import { Entity, getComponent } from "./maya-ecs-entities";
 
+
+export interface System {
+  name: string;
+  update: (entities: Entity[], period: number) => void;
+}
+
 // MarketSystem
-export class MarketSystem {
+export class MarketSystem implements System{
   name = 'MarketSystem';
   update(entities: Entity[]) {
     for (const entity of entities) {
@@ -23,15 +29,15 @@ export class MarketSystem {
   }
 }
 
-export class IncomeSystem {
+export class IncomeSystem implements System{
   name = 'IncomeSystem';
-  update(entities: Entity[]) {
+  update(entities: Entity[], currentPeriod: number) {
     for (const entity of entities) {
       const cash = getComponent<Cash>(entity, ComponentKey.Cash);
       const job = getComponent<Job>(entity, ComponentKey.Job);
       const costOfLiving = getComponent<CostOfLiving>(entity, ComponentKey.CostOfLiving);
       
-      if (cash && job && job.periods > 0) { 
+      if (cash && job && job.startPeriod >= 0 && job.endPeriod <= currentPeriod) { 
         cash.value = this.calculateNewValue(cash, job);
       }
 
@@ -46,7 +52,7 @@ export class IncomeSystem {
   }
 }
 
-export class InterestSystem {
+export class InterestSystem implements System{
   name = 'InterestSystem';
   update(entities: Entity[]) {
     for (const entity of entities) {
@@ -57,7 +63,7 @@ export class InterestSystem {
   }
 }
 
-export class RetirementSystem {
+export class RetirementSystem implements System{
   name = 'RetirementSystem';
   update(entities: Entity[]) {
     for (const entity of entities) {
@@ -74,14 +80,13 @@ export class RetirementSystem {
           job.periods = 0;
         }
       }
-      
     }
   }
 }
 
-export class LoanSystem {
+export class LoanSystem implements System{
   name = 'LoanSystem';
-  update(entities: Entity[]) {
+  update(entities: Entity[], currentPeriod: number) {
     for (const entity of entities) {
 
       const cash = getComponent<Cash>(entity, ComponentKey.Cash);
@@ -89,16 +94,18 @@ export class LoanSystem {
       Array.from(entity.components.values())
       .filter(suspect => suspect.type === ComponentType.AmortizedLoan)
       .map(amorizedLoan => amorizedLoan as AmortizedLoan)
+      .filter(amortizedLoan => currentPeriod >= amortizedLoan.startPeriod)
       .forEach((amortizedLoan: AmortizedLoan) => {
+        debugger;
         const loanPaymentsForYear = this.calculateLoanPaymentsForYear(
           amortizedLoan.principal, 
           amortizedLoan.interestRate, 
           amortizedLoan.monthlyPayment
         );
         amortizedLoan.principal = loanPaymentsForYear.principal;
-        cash.value = cash.value - (loanPaymentsForYear.principalPayments + loanPaymentsForYear.interestPayments);
-      });
+        cash.value = cash.value - (loanPaymentsForYear.principalPayments + loanPaymentsForYear.interestPayments);  
       
+      }); 
     }
   }
 

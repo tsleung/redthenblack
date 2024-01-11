@@ -104,6 +104,7 @@ import { MayaLifeEventsListComponent } from './maya-life-events-list/maya-life-e
 import { MayaLifeSimulationResultsChartComponent } from './maya-life-simulation-results-chart/maya-life-simulation-results-chart.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MayaLifeEventCardComponent } from './maya-life-event-card/maya-life-event-card.component';
 
 
 @NgModule({
@@ -176,6 +177,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MayaLifeEventsResultsComponent,
     MayaLifeEventsListComponent,
     MayaLifeSimulationResultsChartComponent,
+    MayaLifeEventCardComponent,
 
    
   ],
