@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createLifeEventsAddTypeRoute, createLifeEventsEditTypeRoute } from '../utils/route_mapper';
 import { MayaUserExperienceService } from './maya-user-experience.service';
-import { AmortizedLoan, AutoLoan, Cash, ChildCare, Component, ComponentKey, CostOfLiving, DelayedStartComponent, Job, Mortgage, Retirement, SavingsAccount, SbaLoan, Stocks, StudentLoan, TimeBoundComponent } from '../utils/maya-ecs-components';
+import { AmortizedLoan, AutoLoan, Bereavement, Cash, CashFlowComponent, ChildCare, Children, Component, ComponentKey, CostOfLiving, DelayedStartComponent, Entrepreneurship, Fertility, FertilityBirth, FertilityIVF, Gifts, Inheritance, Insurance, Job, Medical, Mortgage, RenovationAndRepairs, Retirement, SavingsAccount, SbaLoan, School, Stocks, StudentLoan, TimeBoundComponent, Travel, Wedding } from '../utils/maya-ecs-components';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
@@ -52,6 +52,14 @@ const iconMap = {
   savings: 'account_balance',
   job: 'work',
   investment: 'trending_up',
+  renovation: 'construction',
+  student: 'school',
+  stock: 'ssid_chart',
+  auto: 'car_crash',
+  mortgage: 'home',
+  retirement: 'elderly',
+  'cost of living': 'living',
+  'sba': 'credit_score',
 }
 
 function createStartPeriodFields():Field[] {
@@ -94,6 +102,40 @@ function createTimeboundFields(): Field[] {
 ];
 }
 
+function createCashFlowFields(): Field[] {
+  return [
+    {
+      name: 'Cash Flow',
+      value: '0',
+      readFrom: (component: CashFlowComponent, field: Field) => {
+        field.value = component.cashFlow;
+      },
+      updateTo: (component: CashFlowComponent, field: Field) => {
+        component.cashFlow = Number(field.value) || 0;
+      }
+    },
+    {
+      name: 'Start Period',
+      value: '0',
+      readFrom: (component: CashFlowComponent, field: Field) => {
+        field.value = component.startPeriod;
+      },
+      updateTo: (component: CashFlowComponent, field: Field) => {
+        component.startPeriod = Number(field.value) || 0;
+      }
+    },
+    {
+      name: 'Periods',
+      value: '1',
+      readFrom: (component: CashFlowComponent, field: Field) => {
+        field.value = component.periods;
+      },
+      updateTo: (component: CashFlowComponent, field: Field) => {
+        component.periods = Number(field.value) || 0;
+      }
+    },
+  ];
+}
 
 function addAmortizedLoanFields():Field[] {
   const amortizedLoanFields: Field[] = [
@@ -259,6 +301,51 @@ const fieldsMap = {
     },
     ...createStartPeriodFields()
   ],
+  'Senior Care': [
+    ...createCashFlowFields(),
+  ],
+  'Travel': [
+    ...createCashFlowFields(),
+  ],
+  'Wedding': [
+    ...createCashFlowFields(),
+  ],
+  'School': [
+    ...createCashFlowFields(),
+  ],
+  'Children': [
+    ...createCashFlowFields(),
+  ],
+  'Medical': [
+    ...createCashFlowFields(),
+  ],
+  'Fertility': [
+    ...createCashFlowFields(),
+  ],
+  'Fertility (IVF)': [
+    ...createCashFlowFields(),
+  ],
+  'Fertility (Birth)': [
+    ...createCashFlowFields(),
+  ],
+  'Bereavement': [
+    ...createCashFlowFields(),
+  ],
+  'Renovation and Repairs': [
+    ...createCashFlowFields(),
+  ],
+  'Inheritance': [
+    ...createCashFlowFields(),
+  ],
+  'Gifts': [
+    ...createCashFlowFields(),
+  ],
+  'Insurance': [
+    ...createCashFlowFields(),
+  ],
+  'Entrepreneurship': [
+    ...createCashFlowFields(),
+  ],
 };
 
 const samples = [
@@ -299,8 +386,22 @@ const shorthand: Array<[string, ComponentKey, () => Component]> = [
   ['Student Loan', ComponentKey.StudentLoan, () => new StudentLoan(5.5e4, .07, 640)],
   ['Auto Loan', ComponentKey.AutoLoan, () => new AutoLoan(2.6e4, .06, 610)],
   ['SBA Loan', ComponentKey.SbaLoan, () => new SbaLoan(7.92e5, .02875, 3286)],
-  ['Child Care', ComponentKey.ChildCare, () => new ChildCare(15e3)],
+  ['Child Care', ComponentKey.ChildCare, () => new ChildCare()],
   ['Senior Care', ComponentKey.SeniorCare, () => new CostOfLiving(90e3)],
+  ['Travel', ComponentKey.Travel, () => new Travel()],
+  ['Wedding', ComponentKey.Wedding, () => new Wedding()],
+  ['School', ComponentKey.School, () => new School()],
+  ['Children', ComponentKey.Children, () => new Children()],
+  ['Medical', ComponentKey.Medical, () => new Medical()],
+  ['Fertility (General)', ComponentKey.Fertility, () => new Fertility()],
+  ['Fertility (IVF)', ComponentKey.FertilityIVF, () => new FertilityIVF()],
+  ['Fertility (Birth)', ComponentKey.FertilityBirth, () => new FertilityBirth()],
+  ['Bereavement', ComponentKey.Bereavement, () => new Bereavement()],
+  ['Renovation and Repairs', ComponentKey.RenovationAndRepairs, () => new RenovationAndRepairs()],
+  ['Inheritance', ComponentKey.Inheritance, () => new Inheritance()],
+  ['Gifts', ComponentKey.Gifts, () => new Gifts()],
+  ['Insurance', ComponentKey.Insurance, () => new Insurance()],
+  ['Entrepreneurship', ComponentKey.Entrepreneurship, () => new Entrepreneurship()],
 ];
 
 const availableLifeEvents = shorthand.map(([name, componentKey, createComponent,]) => {
