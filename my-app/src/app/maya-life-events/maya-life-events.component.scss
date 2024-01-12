@@ -1,4 +1,5 @@
 :host{
+  display: block;
   margin-bottom: 3rem;
 }
 
@@ -39,13 +40,30 @@ figure {
   float:right;
   width: 26rem;
   margin: 1rem;
-}
-.placeholder {
-  margin: .25rem;
-  background: #ddd;
-  height: 25rem;
-  width: 25rem;
-  display: block;
+  padding: 2rem;
+  max-width: 100vw;
+  box-sizing: border-box;
+
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-inline-start: 0px;
+  margin-inline-end: -1rem;
+
+  img {
+    display: flex;
+    flex: 1;
+    margin: 0 auto;
+    max-width: 100%;
+    position: relative;
+  }
+
+  .placeholder {
+    margin: .25rem;
+    background: #ddd;
+    height: 25rem;
+    width: 25rem;
+    display: block;
+  }
 }
 
 .cards {
@@ -55,7 +73,7 @@ figure {
   flex: 1 0 25%;
   flex-wrap: wrap;
   position: relative;
-  margin: 0 -1rem;
+  margin: 3rem -1rem;
 
   &:before {
     content: 'Your current life events';
@@ -124,13 +142,17 @@ figure {
 
   padding: 0;
 
+  max-width: 100vw;
+  overflow-x: scroll;
+
   .mat-mdc-card-content {
     display: flex;
     flex-direction: row;
     flex: 1;
 
-    flex-wrap: wrap-reverse;
+    flex-wrap: nowrap;
     padding: 0;
+    min-width: 65rem;
   }
 
   dl {

@@ -1,37 +1,38 @@
 <header>
-  <dl *ngIf="muxs.nestEgg | async as nestEgg">
-    <dt>Peak<br>Wealth</dt>
-    <dd>{{nestEgg}}</dd>
-  </dl>
-  <dl *ngIf="muxs.retirementAge | async as retirementAge">
-    <dt>Peak Year<br>of Wealth</dt>
-    <dd>{{retirementAge}}</dd>
-  </dl>
-  <dl *ngIf="muxs.retirementConfidence | async as retirementConfidence" class="retirement-confidence">
-    <dt>Retirement Confidence
-      <p>This is a dynamic value that changes based on your life events.</p>
-    </dt>
-    
-    
-    <dd>
-      <mat-progress-spinner
-        mode="determinate"
-        color="accent"
-        [value]="retirementConfidence">
-      </mat-progress-spinner>
-      <span class="label">{{retirementConfidence}}%</span>
-    </dd>
-    
-  </dl>
-  
+  <section>
+    <dl *ngIf="muxs.nestEgg | async as nestEgg">
+      <dt>Peak<br>Wealth</dt>
+      <dd>{{nestEgg}}</dd>
+    </dl>
+    <dl *ngIf="muxs.retirementAge | async as retirementAge">
+      <dt>Peak Year<br>of Wealth</dt>
+      <dd>{{retirementAge}}</dd>
+    </dl>
+    <dl *ngIf="muxs.retirementConfidence | async as retirementConfidence" class="retirement-confidence">
+      <dt>Retirement Confidence
+        <p>This is a dynamic value that changes based on your life events.</p>
+      </dt>
+      
+      
+      <dd>
+        <mat-progress-spinner
+          mode="determinate"
+          color="accent"
+          [value]="retirementConfidence">
+        </mat-progress-spinner>
+        <span class="label">{{retirementConfidence}}%</span>
+      </dd>
+      
+    </dl>
+  </section>
 </header>
 
 
 <article>
   
-  <header>
+  <h1>
     Your retirement confidence is fair
-  </header>
+  </h1>
   <figure>
     <app-maya-life-simulation-results-chart></app-maya-life-simulation-results-chart>
   </figure>

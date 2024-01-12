@@ -11,7 +11,7 @@
       edit
     </a>
 
-    <button *ngIf="actionable" mat-mini-fab color="accent" (click)="lifeEventsService.removeLifeEvent(lifeEvent)">
+    <button *ngIf="actionable && lifeEvent.optional" mat-mini-fab color="accent" (click)="lifeEventsService.removeLifeEvent(lifeEvent)">
       <mat-icon>close</mat-icon>
     </button>
   </mat-card-content>

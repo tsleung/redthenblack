@@ -8,6 +8,7 @@ import {
 import { MayaLifeEventsResultsComponent } from '../maya-life-events-results/maya-life-events-results.component';
 import { RoutingService } from '../services/routing.service';
 import { MayaUserExperienceService } from '../services/maya-user-experience.service';
+import { ImageAssetService } from '../services/image-asset.service';
 
 @Component({
   selector: 'app-maya-life-events',
@@ -38,6 +39,7 @@ export class MayaLifeEventsComponent {
     readonly lifestreamService: LifestreamService,
     private _bottomSheet: MatBottomSheet,
     readonly muxs: MayaUserExperienceService,
+    readonly images: ImageAssetService
     ) {}
     openBottomSheet(): void {
       this._bottomSheet.open(MayaLifeEventsResultsComponent, {

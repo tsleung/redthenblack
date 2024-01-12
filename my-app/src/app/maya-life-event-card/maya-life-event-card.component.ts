@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { LifeEvent, LifeEventsService } from '../services/life-events.service';
+import { LifeEventsService } from '../services/life-events.service';
+import { LifeEvent } from '../utils/life-event-utils';
 
 @Component({
   selector: 'app-maya-life-event-card',

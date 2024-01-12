@@ -12,8 +12,8 @@
  <p>
   From newbies to financiers, here at R/B we break down finances and retirement to three simple paths to better assist those who are in different stages of planning. Pick from three cards, and you are ready to get started!
  </p>
- <a mat-flat-button color="primary" [routerLink]="[routingService.mapper.createMayaCalculatorList()]">Get Started</a>
- <img src="/assets/images/plan.jpg" alt="">
+ <a mat-flat-button color="primary" [routerLink]="[routingService.mapper.createLifeEventsListRoute()]">Get Started</a>
+ <img [src]="images.getAssetUrl('plan.jpg')" alt="">
 </aside>
 
 <router-outlet name="calculator"></router-outlet>

@@ -5,6 +5,7 @@ enum NamedPeriods {
   FourPeriods = 4,
   Childhood = 18,
   WorkingYears = 30,
+  Adulthood = 60,
   EndPeriod = 120,
   RetirementPeriod = 30,
 }
@@ -37,7 +38,15 @@ export enum ComponentKey {
   Entrepreneurship='Entrepreneurship',
   FertilityIVF='FertilityIVF',
   FertilityBirth='FertilityBirth',
-  
+  Rental='Rental',
+  HOA='HOA',
+  PropertyTax='PropertyTax',
+  RentalIncome='RentalIncome',
+  KidCollegeTuition='KidCollegeTuition',
+  KidsCollegeFund='KidsCollegeFund',
+  NiceBigHouse='NiceBigHouse',
+  FancyCar='FancyCar',
+  SocialSecurityIncome='SocialSecurityIncome',
 }
 export enum ComponentType {
   Value,
@@ -123,7 +132,6 @@ export class CashFlow implements CashFlowComponent {
 
 export class ChildCare extends CashFlow {
   key= ComponentKey.ChildCare;
-  periods = NamedPeriods.Childhood;
   
   constructor() {
   // bard: average cash flow cost of child care for an individual annually in america
@@ -133,7 +141,6 @@ export class ChildCare extends CashFlow {
 
 export class SeniorCare extends CashFlow {
   key= ComponentKey.SeniorCare;
-  periods = NamedPeriods.EndPeriod;
   constructor() {
     // bard: average cash flow cost of senior care for an individual in america
     super(-80e3, NamedPeriods.RetirementPeriod);
@@ -141,27 +148,31 @@ export class SeniorCare extends CashFlow {
 }
 
 
+export class SocialSecurityIncome extends CashFlow {
+  key= ComponentKey.SocialSecurityIncome;
+  constructor() {
+    super(12e3, NamedPeriods.RetirementPeriod);
+  }
+}
+
 export class Travel extends CashFlow {
   key= ComponentKey.Travel;
-  periods = NamedPeriods.SinglePeriod;
   constructor() {
     // bard: average cash flow cost of travel annual for an individual in america
-    super(-5e3, 1);
+    super(-5e3, NamedPeriods.SinglePeriod);
   }
 }
 
 export class Wedding extends CashFlow {
   key= ComponentKey.Wedding;
-  periods = NamedPeriods.SinglePeriod;
   constructor() {
     // bard: average cash flow cost of wedding in america
-    super(-30e3, 1);
+    super(-30e3, NamedPeriods.SinglePeriod);
   }
 }
 
 export class School extends CashFlow {
   key= ComponentKey.School;
-  periods = NamedPeriods.FourPeriods;
   constructor() {
     // bard: average cash flow cost of school in america
     super(-40e3, NamedPeriods.FourPeriods);
@@ -169,98 +180,142 @@ export class School extends CashFlow {
 }
 export class Children extends CashFlow {
   key= ComponentKey.Children;
-  periods = NamedPeriods.Childhood;
   constructor() {
     // bard: average cash flow cost of children in america
-    super(-15e3, 1);
+    super(-15e3, NamedPeriods.Childhood);
   }
 }
-
 
 export class Medical extends CashFlow {
   key= ComponentKey.Medical;
-  periods = NamedPeriods.SinglePeriod;
   constructor() {
     // bard: median cash flow cost of emergency medical procedure for an individual annually in america
-    super(-12e3, 1);
+    super(-12e3, NamedPeriods.SinglePeriod);
   }
 }
-
 
 export class FertilityIVF extends CashFlow {
   key= ComponentKey.FertilityIVF;
-  periods = NamedPeriods.SinglePeriod;
   constructor() {
     // bard: average cash flow cost of fertility IVF or birth in america
-    super(-30e3, 1);
+    super(-30e3, NamedPeriods.SinglePeriod);
   }
 }
 
-
 export class FertilityBirth extends CashFlow {
   key= ComponentKey.FertilityBirth;
-  periods = NamedPeriods.SinglePeriod;
   constructor() {
     // bard: average cash flow cost of fertility IVF or birth in america
-    super(-20e3, 1);
+    super(-20e3, NamedPeriods.SinglePeriod);
   }
 }
 export class Fertility extends CashFlow {
   key= ComponentKey.Fertility;
-  periods = NamedPeriods.SinglePeriod;
   constructor() {
     // bard: average cash flow cost of bereavement in america
-    super(-25e3, 1);
+    super(-25e3, NamedPeriods.SinglePeriod);
   }
 }
 export class Bereavement extends CashFlow {
   key= ComponentKey.Bereavement;
-  periods = NamedPeriods.SinglePeriod;
   constructor() {
     // bard: average cash flow cost of bereavement in america
-    super(-20e3, 1);
+    super(-20e3, NamedPeriods.SinglePeriod);
   }
 }
 export class RenovationAndRepairs extends CashFlow {
   key= ComponentKey.RenovationAndRepairs;
-  periods = NamedPeriods.SinglePeriod;
   constructor() {
     // bard: average cash flow cost of Renovation And Repairs in america
-    super(-20e3, 1);
+    super(-20e3, NamedPeriods.SinglePeriod);
   }
 }
 
 export class Inheritance extends CashFlow {
   key= ComponentKey.Inheritance;
-  periods = NamedPeriods.SinglePeriod;
   constructor() {
     // bard: average cash flow gain of inheritance in america
-    super(180e3, 1);
+    super(180e3, NamedPeriods.SinglePeriod);
   }
 }
 
 export class Gifts extends CashFlow {
   key= ComponentKey.Gifts;
-  periods = NamedPeriods.SinglePeriod;
   constructor() {
     // bard: average cash flow cost of gifts in america
-    super(-1e3, 1);
+    super(-1e3, NamedPeriods.SinglePeriod);
   }
 }
 export class Insurance extends CashFlow {
   key= ComponentKey.Insurance;
-  periods = NamedPeriods.WorkingYears;
   constructor() {
     // bard: average cash flow cost of insurance in america
-    super(-10e3, 1);
+    super(-10e3, NamedPeriods.SinglePeriod);
   }
 }
 export class Entrepreneurship extends CashFlow {
   key= ComponentKey.Entrepreneurship;
-  periods = NamedPeriods.SinglePeriod;
   constructor() {
     // bard: average cash flow cost of entreprenurship in america
-    super(-40e3, 1);
+    super(-40e3, NamedPeriods.SinglePeriod);
+  }
+}
+
+export class Rental extends CashFlow {
+  key= ComponentKey.Rental;
+  constructor() {
+    super(-36e3, NamedPeriods.Adulthood);
+  }
+}
+
+export class HOA extends CashFlow {
+  key= ComponentKey.HOA;
+  constructor() {
+    super(-12e3, NamedPeriods.Adulthood);
+  }
+}
+
+export class PropertyTax extends CashFlow {
+  key= ComponentKey.PropertyTax;
+  constructor() {
+    super(-12e3, NamedPeriods.Adulthood);
+  }
+}
+
+export class RentalIncome extends CashFlow {
+  key= ComponentKey.RentalIncome;
+  constructor() {
+    super(36e3, NamedPeriods.Adulthood);
+  }
+}
+
+
+export class FancyCar extends CashFlow {
+  key= ComponentKey.FancyCar;
+  constructor() {
+    super(120e3, NamedPeriods.SinglePeriod);
+  }
+}
+
+
+export class NiceBigHouse extends CashFlow {
+  key= ComponentKey.NiceBigHouse;
+  constructor() {
+    super(2e6, NamedPeriods.SinglePeriod);
+  }
+}
+
+export class KidsCollegeFund extends CashFlow {
+  key= ComponentKey.KidsCollegeFund;
+  constructor() {
+    super(14e3, NamedPeriods.Childhood);
+  }
+}
+
+export class KidCollegeTuition extends CashFlow {
+  key= ComponentKey.KidCollegeTuition;
+  constructor() {
+    super(250e3, NamedPeriods.SinglePeriod);
   }
 }
 

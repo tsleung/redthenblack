@@ -1,17 +1,11 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LifeEvent, LifeEventsService } from '../services/life-events.service';
+import { LifeEventsService } from '../services/life-events.service';
 import { RoutingService } from '../services/routing.service';
 import { createLifeEventsRoute } from '../utils/route_mapper';
 import { map, switchMap } from 'rxjs/operators';
 import { MayaUserExperienceService } from '../services/maya-user-experience.service';
-
-
-interface EditableLifeComponent {
-  lifeEvent: LifeEvent;
-  component: Component;
-}
-
+import { LifeEvent } from '../utils/life-event-utils';
 
 /**
  * This component should be an experience which focuses on UX of modifying a set of fields

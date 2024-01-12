@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RoutingService } from '../services/routing.service';
+import { ImageAssetService } from '../services/image-asset.service';
 
 @Component({
   selector: 'app-splash-intro',
@@ -8,7 +9,8 @@ import { RoutingService } from '../services/routing.service';
 })
 export class SplashIntroComponent {
   constructor(
-    readonly routingService: RoutingService
+    readonly routingService: RoutingService,
+    readonly images: ImageAssetService,
   ){
 
   }

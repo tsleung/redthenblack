@@ -1,8 +1,6 @@
 <div class="hero">
   <figure>
-    <div class="placeholder">
-
-    </div>
+    <img [src]="images.getAssetUrl('life-events-splash.png')" alt="">
   </figure>
   <div class="subtitle ">Life Events</div>
   <h1 class="title">Play your game of life.</h1>
@@ -36,7 +34,7 @@
   <button mat-button (click)="promptNumberOfYears()">Years</button> <button mat-button (click)="promptNumberOfSimulations()">Simulations</button>
 </section> -->
 
-<mat-card class="footer">
+<mat-card class="footer" (click)="openBottomSheet()">
   <mat-card-content>
     <dl *ngIf="muxs.nestEgg | async as nestEgg">
       <dt>Peak<br>Wealth</dt>

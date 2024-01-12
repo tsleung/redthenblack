@@ -8,10 +8,10 @@
   max-width: 1200px;
   margin: 0 auto;
 }
+
 figure {
   width: 16rem;
-  margin: -1rem;
-  margin-right: 3rem;
+  margin: 1rem 3rem 1rem -1rem;
 }
 
 aside {
@@ -57,7 +57,7 @@ main {
   display: flex;
   flex-direction: row;
   flex: 1;
-   
+  flex-wrap: wrap;
 
 }
 article {
