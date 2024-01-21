@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MayaUserExperienceService } from '../services/maya-user-experience.service';
-import { map, takeUntil, tap } from 'rxjs/operators';
-import { ReplaySubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-maya-life-simulation-results-chart',
@@ -19,8 +18,9 @@ export class MayaLifeSimulationResultsChartComponent {
       chartData.columns.push([`series ${i}`, ...simulation])
     });
 
+    // console.log('adding chart data',chartData)
     return chartData;
-  }))
+  }));
 
   gridOptions: c3.GridOptions = {};
   constructor(private muxs: MayaUserExperienceService) { }

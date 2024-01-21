@@ -1,0 +1,11 @@
+.exhibits {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.exhibit {
+  display: block;
+  width: 18rem;
+  
+}

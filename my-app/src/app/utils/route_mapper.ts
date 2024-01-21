@@ -13,8 +13,22 @@ export function createMayaIntro() {
 export function createMayaDashboard() {
   return createMayaRoute() + '/dashboard';
 }
+
 export function createMayaOnboarding() {
   return createMayaRoute() + '/onboarding';
+}
+
+export function createMayaOnboardingSavings() {
+  return createMayaOnboarding() + '/savings/';
+}
+export function createMayaOnboardingNewbie() {
+  return createMayaOnboarding() + '/newbie/';
+}
+export function createMayaOnboardingDipper() {
+  return createMayaOnboarding() + '/dipper/';
+}
+export function createMayaOnboardingFinancier() {
+  return createMayaOnboarding() + '/financier/';
 }
 export const NEST_EGG_FRAGMENT = 'nest-egg';
 export function createMayaNestEgg() {

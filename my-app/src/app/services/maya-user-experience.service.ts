@@ -59,10 +59,17 @@ export class MayaUserExperienceService {
     throttleTime(200, asyncScheduler, {trailing: true}),
     startWith(new Map<ComponentKey,Component>()),
   );
-  constructor() {}
+  
+  alwaysOn = this.components.subscribe();
+  constructor() {
+    this.addComponent.next(new Cash(0))
+  }
 
-  numberOfPeriods = 60;
+  periodsUntilRetirement = 30;
+  periodsOfRetirement = 30;
+
   numberOfSimulations = 200;
+  // numberOfSimulations = 1;
   simulations =  this.components.pipe(map(components => {
       const rootSnapshot = new Snapshot();
       const entity = rootSnapshot.entityManager.createEntity();
@@ -70,9 +77,11 @@ export class MayaUserExperienceService {
       components.forEach(component => {
         setComponent(entity, component);
       });
-  
       
-      const simulations = this.simulationManager.createSimulations(rootSnapshot, this.numberOfSimulations, this.numberOfPeriods);
+      const simulations = this.simulationManager.createSimulations(
+        rootSnapshot, 
+        this.numberOfSimulations, 
+        this.periodsUntilRetirement + this.periodsOfRetirement);
       return simulations;
     }),
     publishReplay(),

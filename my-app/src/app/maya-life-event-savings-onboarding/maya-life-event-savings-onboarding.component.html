@@ -1,0 +1,13 @@
+<p>maya-life-event-savings-onboarding works!</p>
+
+<form ngForm (submit)="saveForm($event)">
+  <div class="inputs">
+    <section class="investments">
+      <mat-form-field >
+        <mat-label>Your monthly contributions</mat-label>
+        <input matInput name="contributions" [formControl]="controls.contributions" type="number" /><br/>
+      </mat-form-field>
+    </section>
+  </div>
+  <button mat-flat-button color="primary">Next: Cash flow and Savings</button>
+</form>

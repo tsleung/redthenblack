@@ -1,7 +1,7 @@
 
 // Systems
 
-import { AmortizedLoan, AmortizedLoanComponent, Cash, ComponentKey, ComponentType, CostOfLiving, Job, Retirement, SavingsAccount, Stocks } from "./maya-ecs-components";
+import { AmortizedLoan, Cash, CashFlow, ComponentKey, ComponentType, CostOfLiving, Job, Retirement, SavingsAccount, Stocks, Trade, VolatileAsset } from "./maya-ecs-components";
 import { Entity, getComponent } from "./maya-ecs-entities";
 
 
@@ -10,55 +10,48 @@ export interface System {
   update: (entities: Entity[], period: number) => void;
 }
 
-// MarketSystem
-export class MarketSystem implements System{
-  name = 'MarketSystem';
-  update(entities: Entity[]) {
+export class VolatileAssetSystem implements System{
+  name = 'VolatileAssetSystem';
+  update(entities: Entity[], currentPeriod: number) {
     for (const entity of entities) {
-      const stocks = getComponent<Stocks>(entity,ComponentKey.Stocks);
-      // console.log('checking market', stocks)
-      if (stocks) {
-        stocks.value = this.calculateNewValue(stocks.value, stocks.annualReturns);
-        // console.log('updating market', stocks)
-      }
+      Array.from(entity.components.values())
+      .filter(suspect => suspect.type === ComponentType.VolatileAsset)
+      .map(volatileAsset => volatileAsset as VolatileAsset)
+      .forEach((volatileAsset: VolatileAsset) => {
+        volatileAsset.value = volatileAsset.value * selectRandomFromList(volatileAsset.annualMultiplier) ?? 1;
+      });
     }
-  }
-
-  private calculateNewValue(currentValue: number, annualReturns: number[]): number {
-    return currentValue * selectRandomFromList(annualReturns) ?? 1;
   }
 }
 
-export class IncomeSystem implements System{
-  name = 'IncomeSystem';
+export class CashFlowSystem implements System{
+  name = 'CashFlowSystem';
   update(entities: Entity[], currentPeriod: number) {
     for (const entity of entities) {
       const cash = getComponent<Cash>(entity, ComponentKey.Cash);
-      const job = getComponent<Job>(entity, ComponentKey.Job);
-      const costOfLiving = getComponent<CostOfLiving>(entity, ComponentKey.CostOfLiving);
-      
-      if (cash && job && job.startPeriod >= 0 && job.endPeriod <= currentPeriod) { 
-        cash.value = this.calculateNewValue(cash, job);
-      }
 
-      if (cash && costOfLiving) { 
-        cash.value = cash.value - costOfLiving.cashFlow;
-      }
+      Array.from(entity.components.values())
+      .filter(suspect => suspect.type === ComponentType.CashFlow)
+      .map(cashFlow => cashFlow as CashFlow)
+      .filter(cashFlow => currentPeriod >= cashFlow.startPeriod)
+      .filter(cashFlow => currentPeriod < cashFlow.startPeriod + cashFlow.periods)
+      .forEach((cashFlow: CashFlow) => {
+        cash.value = cash.value + cashFlow.cashFlow;
+      });
     }
-  }
-
-  private calculateNewValue(cash: Cash, job: Job): number {
-    return cash.value + job.cashFlow;
   }
 }
 
-export class InterestSystem implements System{
-  name = 'InterestSystem';
+export class TradeSystem implements System{
+  name = 'TradeSystem';
   update(entities: Entity[]) {
     for (const entity of entities) {
-      const savingsAccount = getComponent<SavingsAccount>(entity, ComponentKey.SavingsAccount);
-      savingsAccount.value = savingsAccount.value * (1+ selectRandomFromList(savingsAccount.interestRates)??0);
-      
+      Array.from(entity.components.values())
+      .filter(suspect => suspect.type === ComponentType.Trade)
+      .map(trade => trade as Trade)
+      .forEach((trade: Trade) => {
+        trade.transaction(entity);
+      });
     }
   }
 }
@@ -96,7 +89,13 @@ export class LoanSystem implements System{
       .map(amorizedLoan => amorizedLoan as AmortizedLoan)
       .filter(amortizedLoan => currentPeriod >= amortizedLoan.startPeriod)
       .forEach((amortizedLoan: AmortizedLoan) => {
-        debugger;
+        
+        // Open the loan and receive principal at start
+        if(currentPeriod === amortizedLoan.startPeriod) {
+          console.log('LOAN adding cash balance', currentPeriod, amortizedLoan.startPeriod, amortizedLoan.principal)
+          cash.value = cash.value + amortizedLoan.principal;
+        }
+
         const loanPaymentsForYear = this.calculateLoanPaymentsForYear(
           amortizedLoan.principal, 
           amortizedLoan.interestRate, 

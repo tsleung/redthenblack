@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createLifeEventsAddTypeRoute, createLifeEventsEditTypeRoute } from '../utils/route_mapper';
 import { MayaUserExperienceService } from './maya-user-experience.service';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { availableLifeEvents } from '../config/life-event-config';
 import { LifeEvent } from '../utils/life-event-utils';
@@ -18,20 +18,26 @@ import { LifeEvent } from '../utils/life-event-utils';
 })
 export class LifeEventsService {
 
-  readonly availableLifeEvents = availableLifeEvents
+  readonly availableLifeEvents:LifeEvent[] = availableLifeEvents
     .map(v => generateDerivativeFields(v));
 
   selectedLifeEvents: Observable<LifeEvent[]> = this.muxs.components.pipe(map(components => {
 
     return Array.from(components.values()).map(component => {
       const lifeEvent = this.availableLifeEvents.find(suspect => suspect.componentKey === component.key);
+      if(!lifeEvent){
+        console.error('no life event for ' + component.key, component)
+      }
+      
       lifeEvent.fields.forEach(field => {
         field.readFrom(component, field);
       });
 
       return lifeEvent;
     }).filter(Boolean);
-  }));
+  }),
+  shareReplay(),
+  );
 
   addLifeEvent(lifeEvent: LifeEvent) {
     console.log('adding life evnt', lifeEvent)

@@ -1,3 +1,4 @@
+import { Entity, getComponent } from "./maya-ecs-entities";
 
 enum NamedPeriods { 
   StartPeriod = 0,
@@ -13,7 +14,10 @@ enum NamedPeriods {
 export enum ComponentKey {
   Cash='Cash',
   CostOfLiving='Cost Of Living',
+  RetirementSpend='RetirementSpend',
   Stocks='Stocks',
+  Traditional401k='Traditional401k',
+  Traditional401kContribution='Traditional401kContribution',
   SavingsAccount='Savings Account',
   Job='Job',
   Retirement='Retirement',
@@ -50,10 +54,12 @@ export enum ComponentKey {
 }
 export enum ComponentType {
   Value,
+  VolatileAsset,
   CashFlow,
   AmortizedLoan,
   Milestone,
   Choices,
+  Trade,
 }
 
 export interface Component {
@@ -97,23 +103,85 @@ export interface ValueComponent extends Component{
   value: number;
 }
 
+export interface VolatileAssetComponent extends ValueComponent{
+  annualMultiplier: number[];
+}
+
+export class VolatileAsset implements VolatileAssetComponent {
+  key: ComponentKey;
+  type = ComponentType.VolatileAsset;
+  startPeriod = NamedPeriods.StartPeriod;
+  value: number;
+  annualMultiplier: number[] = [1];
+  constructor() {
+  }
+}
+
+
+export interface TradeComponent extends Component{
+  transaction: (entity: Entity) => void;
+}
+
+export class Trade implements TradeComponent {
+  key: ComponentKey;
+  type = ComponentType.Trade;
+  constructor(
+    public criteria: (entity:Entity, period: number) => boolean,
+    public transaction: (entity: Entity) => void,
+  ) {
+  }
+}
+
+export class Traditional401kContribution extends Trade {
+  key = ComponentKey.Traditional401kContribution;
+  constructor(contribution: number, endPeriod: number ) {
+
+    // This should move to a system since behavior
+    const isContributing = (entity, period) => {
+      return period <= endPeriod;
+    };
+    // This should move to a system since behavior
+    const addContribution =  entity => {
+      const traditional401k = getComponent<Traditional401k>(entity, ComponentKey.Traditional401k);
+      traditional401k.value = traditional401k.value + contribution;
+    };
+
+    super(isContributing, addContribution);
+  }
+}
+
+
+export class Stocks extends VolatileAsset {
+  key = ComponentKey.Stocks;
+  type = ComponentType.VolatileAsset;
+  constructor(public value, public annualMultiplier: number[]) {
+    super();
+  }
+}
+
+export class Traditional401k extends VolatileAsset {
+  key = ComponentKey.Traditional401k;
+
+  contribution = 0;
+  constructor(public value, public annualMultiplier: number[]) {
+    super();
+  }
+}
+
+export class SavingsAccount extends VolatileAsset {
+  key = ComponentKey.SavingsAccount;
+  
+  startPeriod = NamedPeriods.StartPeriod;
+  constructor(public value, public annualMultiplier: number[]) {
+    super();
+  }
+}
+
+
 export class Cash implements ValueComponent {
   key = ComponentKey.Cash;
   type = ComponentType.Value;
   constructor(public value) {}
-}
-
-export class Stocks implements ValueComponent {
-  key = ComponentKey.Stocks;
-  type = ComponentType.Value;
-  constructor(public value, public annualReturns: number[]) {}
-}
-
-export class SavingsAccount implements ValueComponent, DelayedStartComponent {
-  key = ComponentKey.SavingsAccount;
-  type = ComponentType.Value;
-  startPeriod = NamedPeriods.StartPeriod;
-  constructor(public value, public interestRates:number[]) {}
 }
 
 export interface CashFlowComponent extends DelayedStartComponent{
@@ -293,7 +361,7 @@ export class RentalIncome extends CashFlow {
 export class FancyCar extends CashFlow {
   key= ComponentKey.FancyCar;
   constructor() {
-    super(120e3, NamedPeriods.SinglePeriod);
+    super(-120e3, NamedPeriods.SinglePeriod);
   }
 }
 
@@ -301,33 +369,46 @@ export class FancyCar extends CashFlow {
 export class NiceBigHouse extends CashFlow {
   key= ComponentKey.NiceBigHouse;
   constructor() {
-    super(2e6, NamedPeriods.SinglePeriod);
+    super(-2e6, NamedPeriods.SinglePeriod);
   }
 }
 
 export class KidsCollegeFund extends CashFlow {
   key= ComponentKey.KidsCollegeFund;
   constructor() {
-    super(14e3, NamedPeriods.Childhood);
+    super(-14e3, NamedPeriods.Childhood);
   }
 }
 
 export class KidCollegeTuition extends CashFlow {
   key= ComponentKey.KidCollegeTuition;
   constructor() {
-    super(250e3, NamedPeriods.SinglePeriod);
+    super(-50e3, NamedPeriods.FourPeriods);
   }
 }
 
-export class Job extends CashFlow implements TimeBoundComponent{
+export class Job extends CashFlow{
   key = ComponentKey.Job;
   startPeriod = NamedPeriods.StartPeriod;
-  endPeriod = NamedPeriods.EndPeriod;
+  
+  constructor() {
+    super(50e3, NamedPeriods.WorkingYears)
+  }
 }
 
 
 export class CostOfLiving extends CashFlow{
   key = ComponentKey.CostOfLiving;
+  constructor() {
+    super(-50e3, NamedPeriods.Adulthood)
+  }
+}
+
+export class RetirementSpend extends CashFlow{
+  key = ComponentKey.RetirementSpend;
+  constructor() {
+    super(-50e3, NamedPeriods.RetirementPeriod)
+  }
 }
 
 interface MilestoneComponent extends Component{

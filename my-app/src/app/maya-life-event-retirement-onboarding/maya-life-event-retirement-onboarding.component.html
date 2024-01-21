@@ -1,0 +1,18 @@
+<form ngForm (submit)="saveForm($event)">
+  <div class="inputs">
+    <section class="investments">
+      <mat-form-field >
+        <mat-label>Years in retirement</mat-label>
+        <input matInput name="retirement" [formControl]="controls.retirement" type="number" /><br/>
+      </mat-form-field>
+    </section>
+    <section>
+      <mat-form-field >
+        <mat-label>Desired monthly spend</mat-label>
+        <input matInput name="monthlyRetirementSpend" [formControl]="controls.monthlyRetirementSpend" type="number" /><br/>
+      </mat-form-field>
+    </section>
+  </div>
+  <button mat-flat-button color="primary">Next, Investments</button>
+</form>
+

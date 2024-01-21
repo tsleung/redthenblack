@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RoutingService } from '../services/routing.service';
 
 @Component({
   selector: 'app-maya-card-selection',
@@ -7,5 +8,6 @@ import { Component } from '@angular/core';
 })
 export class MayaCardSelectionComponent {
 
+  constructor(readonly routingService: RoutingService) {}
 }
 

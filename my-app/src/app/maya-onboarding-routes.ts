@@ -2,8 +2,12 @@ import { MayaCardSelectionComponent } from './maya-card-selection/maya-card-sele
 import { MayaFeatureImageComponent } from './maya-feature-image/maya-feature-image.component';
 import { MayaLayoutTwoColumnComponent } from './maya-layout-two-column/maya-layout-two-column.component';
 import { MayaLayoutTwoRowComponent } from './maya-layout-two-row/maya-layout-two-row.component';
+import { MayaLifeEventAssetsOnboardingComponent } from './maya-life-event-assets-onboarding/maya-life-event-assets-onboarding.component';
+import { MayaLifeEventBuildingOnboardingComponent } from './maya-life-event-building-onboarding/maya-life-event-building-onboarding.component';
+import { MayaLifeEventInvestmentsOnboardingComponent } from './maya-life-event-investments-onboarding/maya-life-event-investments-onboarding.component';
+import { MayaLifeEventRetirementOnboardingComponent } from './maya-life-event-retirement-onboarding/maya-life-event-retirement-onboarding.component';
+import { MayaLifeEventSavingsOnboardingComponent } from './maya-life-event-savings-onboarding/maya-life-event-savings-onboarding.component';
 import { MayaOnboardComponent } from './maya-onboard/maya-onboard.component';
-import { MayaParameterCollectionComponent, MayaParameterRouteData } from './maya-parameter-collection/maya-parameter-collection.component';
 
 import { MayaTitledContentComponent } from './maya-titled-content/maya-titled-content.component';
 import { ABOUT_RTB } from './utils/articles_mapper';
@@ -48,29 +52,8 @@ function createOnboardingPath(path: string) {
           {
             path: '',
             outlet: 'below',
-            component: MayaParameterCollectionComponent,
-            data: {
-              // title: 'Your annual contributions',
-              article: ABOUT_RTB,
-              action: 'Next',
-              href: routes.createMayaNestEgg(),
-              inputs: [
-                {
-                  label: 'Years to work',
-                  name: 'timeToWorkInYears',
-                },
-                {
-                  label: 'After tax income',
-                  name: 'annualAfterTaxIncome',
-    
-                },
-                {
-                  label: 'Savings per year',
-                  name: 'annualAmountSavedAfterTax',
-    
-                },
-              ],
-            } as MayaParameterRouteData
+            // href: routes.createMayaNestEgg(),
+            component: MayaLifeEventBuildingOnboardingComponent,
           },
         ]
       },
@@ -88,12 +71,11 @@ export const ONBOARDING = {
       component: MayaCardSelectionComponent
     },
     {
-      path: 'newbie',
+      path: 'savings',
       component: MayaLayoutTwoRowComponent,
       children: [
         {
           path: '',
-          outlet: 'top',
           component: MayaLayoutTwoColumnComponent,
           children: [
             {
@@ -110,9 +92,9 @@ export const ONBOARDING = {
               component: MayaTitledContentComponent,
               data: {
                 title: `Benefits of savings and how to get started.`,
-                subtitle: `1. Cash flow and savings`,
+                subtitle: `1. Introduction to Savings`,
                 content: `Learning how to save is where most people start. We put a predictable amount into an account and watch the balance grow. Depending on how long you save, the number of periods, and the amount you save per period, you can expect to have a certain amount at the end. A period can be any arbitrary unit of time you'd prefer to use! A common period used is years, but can be as short as days or weeks.
-    
+
                 See how much you can save over 10 years by using the slider. It’s pretty satisfying to see the curve!`,
               }
             }
@@ -121,20 +103,44 @@ export const ONBOARDING = {
         {
           path: '',
           outlet: 'below',
-          component: MayaParameterCollectionComponent,
-          data: {
-            title: 'Your annual contributions',
-            article: ABOUT_RTB,
-            href: routes.createMayaNestEgg(),
-            inputs: [
-              {
-                label: 'Savings per year',
-                name: 'annualAmountSavedAfterTax',
+          component: MayaLifeEventSavingsOnboardingComponent,
+        }
+      ]
+    },
+    {
+      path: 'newbie',
+      component: MayaLayoutTwoRowComponent,
+      children: [
+        {
+          path: '',
+          component: MayaLayoutTwoColumnComponent,
+          children: [
+            {
+              path: '',
+              outlet: 'secondary',
+              component: MayaFeatureImageComponent,
+              data: {
+                src: `assets/images/placeholder_chart.jpg`
+              }
+            },
+            {
+              path: '',
 
-              },
-            ],
-            action: 'Next'
-          } as MayaParameterRouteData
+              component: MayaTitledContentComponent,
+              data: {
+                title: `Let’s start painting your path!`,
+                subtitle: `2. Cash flow and savings`,
+                content: `Retirement planning consists of three primary attributes time, value and  confidence. While the first two factors are commonly addressed, the third is seldom considered. With R/B we hope to provide you with resources to tap into the confidence aspect of planning.
+
+                A fundamental part of starting any retirement plan is generating income and putting aside a portion of that income into savings. Starting to save earlier will allow more time to accumulate.`,
+              }
+            }
+          ]
+        },
+        {
+          path: '',
+          outlet: 'below',
+          component: MayaLifeEventBuildingOnboardingComponent,
         }
       ]
     },
@@ -173,24 +179,7 @@ export const ONBOARDING = {
         {
           path: '',
           outlet: 'below',
-          component: MayaParameterCollectionComponent,
-          data: {
-            // title: 'Your annual contributions',
-            article: ABOUT_RTB,
-            action: 'Next',
-            href: routes.createMayaInvesting(),
-            inputs: [
-              {
-                label: 'Years in retirement',
-                name: 'retirementTimeHorizonInYears',
-              },
-              {
-                label: 'Desired annual retirement income',
-                name: 'annualRetirementIncome',
-  
-              },
-            ],
-          } as MayaParameterRouteData
+          component: MayaLifeEventRetirementOnboardingComponent,
         },
       ]
     },
@@ -231,24 +220,8 @@ export const ONBOARDING = {
         {
           path: '',
           outlet: 'below',
-          component: MayaParameterCollectionComponent,
-          data: {
-            // title: 'Your annual contributions',
-            article: ABOUT_RTB,
-            action: 'Next',
-            href: routes.createGameOfLife(),
-            inputs: [
-              {
-                label: 'Cash Savings',
-                name: 'initialSavings',
-              },
-              {
-                label: 'Asset allocation',
-                name: 'investingLeverage',
-  
-              },
-            ],
-          } as MayaParameterRouteData
+          // href: routes.createGameOfLife(),
+          component: MayaLifeEventInvestmentsOnboardingComponent,
         },
       ]
     },
@@ -283,24 +256,9 @@ export const ONBOARDING = {
         {
           path: '',
           outlet: 'below',
-          component: MayaParameterCollectionComponent,
-          data: {
-            // title: 'Your annual contributions',
-            article: ABOUT_RTB,
-            action: 'Next',
-            href: routes.createGameOfLife(),
-            inputs: [
-              {
-                label: 'Stock Allocation',
-                name: 'investingLeverage',
-              },
-              {
-                label: 'Property',
-                name: 'initialSavings',
-  
-              },
-            ],
-          } as MayaParameterRouteData
+          // href: routes.createGameOfLife(),
+          component: MayaLifeEventAssetsOnboardingComponent,
+          
         },
       ]
     },

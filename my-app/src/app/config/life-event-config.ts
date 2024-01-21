@@ -1,5 +1,5 @@
 
-import { AmortizedLoan, AutoLoan, Bereavement, Cash, CashFlowComponent, ChildCare, Children, Component, ComponentKey, CostOfLiving, DelayedStartComponent, Entrepreneurship, FancyCar, Fertility, FertilityBirth, FertilityIVF, Gifts, Inheritance, Insurance, Job, KidCollegeTuition, KidsCollegeFund, Medical, Mortgage, NiceBigHouse, PropertyTax, RenovationAndRepairs, Rental, RentalIncome, Retirement, SavingsAccount, SbaLoan, School, SocialSecurityIncome, Stocks, StudentLoan, TimeBoundComponent, Travel, Wedding } from '../utils/maya-ecs-components';
+import { AmortizedLoan, AutoLoan, Bereavement, Cash, CashFlowComponent, ChildCare, Children, Component, ComponentKey, CostOfLiving, DelayedStartComponent, Entrepreneurship, FancyCar, Fertility, FertilityBirth, FertilityIVF, Gifts, Inheritance, Insurance, Job, KidCollegeTuition, KidsCollegeFund, Medical, Mortgage, NiceBigHouse, PropertyTax, RenovationAndRepairs, Rental, RentalIncome, Retirement, RetirementSpend, SavingsAccount, SbaLoan, School, SeniorCare, SocialSecurityIncome, Stocks, StudentLoan, TimeBoundComponent, Traditional401k, Traditional401kContribution, Travel, VolatileAsset, Wedding } from '../utils/maya-ecs-components';
 import { Field } from '../utils/life-event-utils';
 
 /** This may be better to reverse, icon as key and tags as matches */
@@ -39,7 +39,7 @@ const iconMap = {
   'HOA': 'add_business',
   'PropertyTax' : 'home_work',
   'Rental': 'apartment',
-  'RentalIncome': 'heat_pump_balance',
+  'RentalIncome': 'domain_add',
 }
 
 function createStartPeriodFields():Field[] {
@@ -73,10 +73,10 @@ function createTimeboundFields(): Field[] {
     name: 'End Period',
     value: '120',
     readFrom: (component: TimeBoundComponent, field: Field) => {
-      field.value = component.startPeriod;
+      field.value = component.endPeriod;
     },
     updateTo: (component: TimeBoundComponent, field: Field) => {
-      component.startPeriod = Number(field.value) || 0;
+      component.endPeriod = Number(field.value) || 0;
     }
   },
 ];
@@ -85,7 +85,7 @@ function createTimeboundFields(): Field[] {
 function createCashFlowFields(): Field[] {
   return [
     {
-      name: 'Cash Flow',
+      name: 'Annual Cash Flow',
       value: '0',
       readFrom: (component: CashFlowComponent, field: Field) => {
         field.value = component.cashFlow;
@@ -115,6 +115,34 @@ function createCashFlowFields(): Field[] {
       }
     },
   ];
+}
+
+function createVolatileAssetFields():Field[] {
+  const fields:Field[] = [
+    {
+      name: 'Market Value',
+      value: '0',
+      readFrom: (component: VolatileAsset, field: Field) => {
+        field.value = component.value;
+      },
+      updateTo: (component: VolatileAsset, field: Field) => {
+        component.value = Number(field.value) || 0;
+      }
+    },
+    {
+      name: 'Annual Returns',
+      value: '0',
+      readFrom: (component: VolatileAsset, field: Field) => {
+        field.value = component.annualMultiplier.join(', ');
+      },
+      updateTo: (component: VolatileAsset, field: Field) => {
+        const annualReturns = `${field.value}`.split(',').map(v => v.trim()).map(Number).filter(v => !isNaN(v));;
+        component.annualMultiplier = annualReturns;
+      }
+    },
+  ];
+
+  return fields;
 }
 
 function addAmortizedLoanFields():Field[] {
@@ -170,40 +198,14 @@ const fieldsMap = {
   ],
 
   'Cost Of Living': [
-    {
-      name: 'Annual Expenses',
-      value: '0',
-      readFrom: (component: CostOfLiving, field: Field) => {
-        field.value = component.cashFlow;
-      },
-      updateTo: (component: CostOfLiving, field: Field) => {
-        component.cashFlow = Number(field.value) || 0;
-      }
-    },
+    ...createCashFlowFields(),
   ],
 
   'Stocks': [
-    {
-      name: 'Market Value',
-      value: '0',
-      readFrom: (component: Stocks, field: Field) => {
-        field.value = component.value;
-      },
-      updateTo: (component: Stocks, field: Field) => {
-        component.value = Number(field.value) || 0;
-      }
-    },
-    {
-      name: 'Annual Returns',
-      value: '0',
-      readFrom: (component: Stocks, field: Field) => {
-        field.value = component.annualReturns.join(', ');
-      },
-      updateTo: (component: Stocks, field: Field) => {
-        const annualReturns = `${field.value}`.split(',').map(v => v.trim()).map(Number).filter(v => !isNaN(v));;
-        component.annualReturns = annualReturns;
-      }
-    },
+    ...createVolatileAssetFields(),
+  ],
+  'Traditional401k': [
+    ...createVolatileAssetFields(),
   ],
 
   'Savings Account': [
@@ -221,29 +223,18 @@ const fieldsMap = {
       name: 'Interest Rate',
       value: '0',
       readFrom: (component: SavingsAccount, field: Field) => {
-        field.value = component.interestRates.join(', ');
+        field.value = component.annualMultiplier.join(', ');
       },
       updateTo: (component: SavingsAccount, field: Field) => {
         const value = `${field.value}`.split(',').map(v => v.trim()).map(Number).filter(v => !isNaN(v));
 
-        component.interestRates = value;
+        component.annualMultiplier = value;
       }
     },
-    ...createTimeboundFields(),
   ],
 
   'Job': [
-    {
-      name: 'Annual Savings after Income',
-      value: '0',
-      readFrom: (component: Job, field: Field) => {
-        field.value = component.cashFlow;
-      },
-      updateTo: (component: Job, field: Field) => {
-        component.cashFlow = Number(field.value) || 0;
-      }
-    },
-    ...createTimeboundFields(),
+    ...createCashFlowFields(),
   ],
 
 
@@ -353,24 +344,30 @@ const fieldsMap = {
   'SocialSecurityIncome': [
     ...createCashFlowFields(),
   ],
+  'RetirementSpend': [
+    ...createCashFlowFields(),
+  ],
   
 };
 
 const shorthand: Array<[string, ComponentKey, () => Component]> = [
-  ['Cash', ComponentKey.Cash, () => new Cash(5e3)],
-  ['Cost of Living', ComponentKey.CostOfLiving, () => new CostOfLiving(5e4)],
-  ['Job', ComponentKey.Job, () => new Job(1e5, 10)],
+  ['Starting Cash', ComponentKey.Cash, () => new Cash(5e3)],
+  ['Cost of Living', ComponentKey.CostOfLiving, () => new CostOfLiving()],
+  ['Retirement Spend', ComponentKey.RetirementSpend, () => new RetirementSpend()],
+  ['Job', ComponentKey.Job, () => new Job()],
+  ['Traditional 401k', ComponentKey.Traditional401k, () => new Traditional401k(4e5, [...new Array(4).fill(1.1), .75])],
+  // ['Traditional 401k Contribution', ComponentKey.Traditional401kContribution, () => new Traditional401kContribution(4e5, 30)],
   ['Stocks', ComponentKey.Stocks, () => new Stocks(4e5, [...new Array(4).fill(1.1), .75])],
   ['Fancy Car', ComponentKey.FancyCar, () => new FancyCar()],
   ['Nice Big House', ComponentKey.NiceBigHouse, () => new NiceBigHouse()],
-  ['KidsCollegeTuition', ComponentKey.KidCollegeTuition, () => new KidCollegeTuition()],
-  ['Savings Account', ComponentKey.SavingsAccount, () => new SavingsAccount(5e4, [.01, .05])],
+  ['Kids College Tuition', ComponentKey.KidCollegeTuition, () => new KidCollegeTuition()],
+  ['Savings Account', ComponentKey.SavingsAccount, () => new SavingsAccount(5e4, [1.01, 1.05])],
   ['Mortgage', ComponentKey.Mortgage, () => new Mortgage(2.7e5, .07, 1800)],
   ['Student Loan', ComponentKey.StudentLoan, () => new StudentLoan(5.5e4, .07, 640)],
   ['Auto Loan', ComponentKey.AutoLoan, () => new AutoLoan(2.6e4, .06, 610)],
   ['Social Security Income', ComponentKey.SocialSecurityIncome, () => new SocialSecurityIncome()],
   ['Child Care', ComponentKey.ChildCare, () => new ChildCare()],
-  ['Senior Care', ComponentKey.SeniorCare, () => new CostOfLiving(90e3)],
+  ['Senior Care', ComponentKey.SeniorCare, () => new SeniorCare()],
   ['Travel', ComponentKey.Travel, () => new Travel()],
   ['Wedding', ComponentKey.Wedding, () => new Wedding()],
   ['School', ComponentKey.School, () => new School()],
@@ -389,9 +386,10 @@ const shorthand: Array<[string, ComponentKey, () => Component]> = [
   ['Rental', ComponentKey.Rental, () => new Rental()],
   ['HOA', ComponentKey.HOA, () => new Entrepreneurship()],
   ['PropertyTax', ComponentKey.PropertyTax, () => new PropertyTax()],
-  ['KidsCollegeFund', ComponentKey.KidsCollegeFund, () => new KidsCollegeFund()],
+  ['Kids College Fund', ComponentKey.KidsCollegeFund, () => new KidsCollegeFund()],
   ['Rental Income', ComponentKey.RentalIncome, () => new RentalIncome()],
   ['Retirement', ComponentKey.Retirement, () => new Retirement(15)],
+  
 ];
 
 export const availableLifeEvents = shorthand.map(([name, componentKey, createComponent,]) => {

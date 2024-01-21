@@ -1,0 +1,12 @@
+.inputs {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+section {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}

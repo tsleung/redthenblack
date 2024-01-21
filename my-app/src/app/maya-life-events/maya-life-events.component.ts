@@ -16,15 +16,6 @@ import { ImageAssetService } from '../services/image-asset.service';
   styleUrls: ['./maya-life-events.component.scss']
 })
 export class MayaLifeEventsComponent {
-
-
-
-  promptNumberOfYears() {
-    const numYears = Number(window.prompt('Number of Years', '60'));
-    if(!isNaN(numYears)) {
-      this.muxs.numberOfPeriods = numYears;
-    }
-  }
   
   promptNumberOfSimulations() {
     const numSims = Number(window.prompt('Number of Simulations', '200'));
@@ -51,7 +42,7 @@ export class MayaLifeEventsComponent {
     
     ngAfterViewInit() {
       
-      if(!runOnce) {
+      if(!runOnce && false) {
         console.log('adding life evnts')
         runOnce = true;
         this.lifeEventsService.availableLifeEvents.slice(0,2).forEach(lifeEvent => {

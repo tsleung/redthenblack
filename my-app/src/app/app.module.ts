@@ -105,6 +105,12 @@ import { MayaLifeSimulationResultsChartComponent } from './maya-life-simulation-
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MayaLifeEventCardComponent } from './maya-life-event-card/maya-life-event-card.component';
+import { MayaLifeEventBuildingOnboardingComponent } from './maya-life-event-building-onboarding/maya-life-event-building-onboarding.component';
+import { MayaLifeEventRetirementOnboardingComponent } from './maya-life-event-retirement-onboarding/maya-life-event-retirement-onboarding.component';
+import { MayaLifeEventInvestmentsOnboardingComponent } from './maya-life-event-investments-onboarding/maya-life-event-investments-onboarding.component';
+import { MayaLifeEventAssetsOnboardingComponent } from './maya-life-event-assets-onboarding/maya-life-event-assets-onboarding.component';
+import { MayaLifeEventSavingsOnboardingComponent } from './maya-life-event-savings-onboarding/maya-life-event-savings-onboarding.component';
+import { EcsGalleryComponent } from './ecs-gallery/ecs-gallery.component';
 
 
 @NgModule({
@@ -178,6 +184,12 @@ import { MayaLifeEventCardComponent } from './maya-life-event-card/maya-life-eve
     MayaLifeEventsListComponent,
     MayaLifeSimulationResultsChartComponent,
     MayaLifeEventCardComponent,
+    MayaLifeEventBuildingOnboardingComponent,
+    MayaLifeEventRetirementOnboardingComponent,
+    MayaLifeEventInvestmentsOnboardingComponent,
+    MayaLifeEventAssetsOnboardingComponent,
+    MayaLifeEventSavingsOnboardingComponent,
+    EcsGalleryComponent,
 
    
   ],

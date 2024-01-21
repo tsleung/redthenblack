@@ -18,6 +18,7 @@ import { MayaLifeEventsComponent } from './maya-life-events/maya-life-events.com
 import { MayaLifeEventsAddComponent } from './maya-life-events-add/maya-life-events-add.component';
 import { MayaLifeEventsResultsComponent } from './maya-life-events-results/maya-life-events-results.component';
 import { MayaLifeEventsListComponent } from './maya-life-events-list/maya-life-events-list.component';
+import { EcsGalleryComponent } from './ecs-gallery/ecs-gallery.component';
 
 export const INTRO = {
   path: 'intro',
@@ -38,7 +39,7 @@ export const INTRO = {
               data: {
                 title: `Planning for your retirement doesn't have to be scary.`,
                 action: {
-                  href: routes.createLifeEventsRoute(),
+                  href: routes.createMayaOnboarding(),
                   text: `Find out how`,
                   primary: true,
                 }
@@ -82,7 +83,6 @@ export const INTRO = {
       children: [
         {
           path: '',
-
           component: MayaFeatureImageComponent,
           data: {
             src: `assets/images/deck.jpg`
@@ -109,8 +109,6 @@ The unknown. Just like the cards in a deck, the future is unknown. We can't know
 The possibility of different outcomes. Just like a deck of cards can be shuffled to create different hands, the future can unfold in different ways. There are many possible outcomes, and we can't know for sure which one will happen.
 The potential for good or bad. Just like a deck of cards can contain both good and bad cards, the future can contain both positive and negative outcomes. We don't know what we're going to get, but we know that there is both the potential for good and the potential for bad."
              */
-
-
           }
         }
       ]
@@ -185,6 +183,13 @@ export const LIFE_EVENTS = [
   },
 ]
 
+const ECS_GALLERY = [
+  {
+    path: 'ecs/gallery',
+    component: EcsGalleryComponent
+  }
+];
+
 export const MAYA_ROUTES: Routes = [
   {
     path: 'm/0',
@@ -196,6 +201,7 @@ export const MAYA_ROUTES: Routes = [
       EDUCATION,
       ...LIFE_EVENTS,
       ...CALCULATOR,
+      ...ECS_GALLERY,
       { path: '**', redirectTo: 'intro' }
     ]
   }

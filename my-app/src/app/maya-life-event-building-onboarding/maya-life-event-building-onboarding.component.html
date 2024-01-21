@@ -1,0 +1,32 @@
+<form ngForm (submit)="saveForm($event)">
+<div class="inputs">
+<section class="income">
+  <mat-form-field >
+    <mat-label>Annual Savings</mat-label>
+    <input matInput name="savings" [formControl]="controls.savings" type="number" /><br/>
+  </mat-form-field>
+
+  <mat-form-field >
+    <mat-label>Annual Take Home Income</mat-label>
+    <input matInput name="income" [formControl]="controls.income" type="number" /><br/>
+  </mat-form-field>
+</section>
+
+<section class="retirement">
+<mat-form-field >
+  <mat-label>Target Retirement</mat-label>
+  <input matInput name="retirement" [formControl]="controls.retirement" type="number" /><br/>
+</mat-form-field>
+</section>
+
+<section class="investments">
+  <mat-form-field >
+    <mat-label>Retirement Investments</mat-label>
+    <input matInput name="investments" [formControl]="controls.investments" type="number" /><br/>
+  </mat-form-field>
+</section>
+
+
+</div>
+<button mat-flat-button color="primary">Next, Nest Egg</button>
+</form>
