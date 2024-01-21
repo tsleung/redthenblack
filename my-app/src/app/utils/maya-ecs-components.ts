@@ -53,13 +53,14 @@ export enum ComponentKey {
   SocialSecurityIncome='SocialSecurityIncome',
 }
 export enum ComponentType {
-  Value,
-  VolatileAsset,
-  CashFlow,
-  AmortizedLoan,
-  Milestone,
-  Choices,
-  Trade,
+  Value, // An asset which doesn't change, constant
+  VolatileAsset, // an asset which is multiplied each period
+  CashFlow, // directly effect the cash balance
+  Contribution, // add value to a component type
+  AmortizedLoan, // a loan which follows the amortization schedule
+  Milestone, // TBD (not used)
+  Choices, // TBD (not used)
+  Trade, // TBD (not used, to deprecate)
 }
 
 export interface Component {
@@ -177,24 +178,39 @@ export class SavingsAccount extends VolatileAsset {
   }
 }
 
+export interface ContributionComponent extends DelayedStartComponent{
+  contribution: number;
+  periods: number;
+  target: ComponentKey;
+}
 
+// Should this be the base of cash flow? inverse is deduction
+export class Contribution implements ContributionComponent {
+  key: ComponentKey;
+  type = ComponentType.Contribution;
+  startPeriod = NamedPeriods.StartPeriod;
+  target = ComponentKey.Cash;
+  
+  constructor(public contribution, public periods: number = NamedPeriods.SinglePeriod, target=ComponentKey.Cash) {
+  }
+}
+
+export interface CashFlowComponent extends ContributionComponent{
+  
+}
 export class Cash implements ValueComponent {
   key = ComponentKey.Cash;
   type = ComponentType.Value;
   constructor(public value) {}
 }
 
-export interface CashFlowComponent extends DelayedStartComponent{
-  cashFlow: number;
-  periods: number;
-}
-
-export class CashFlow implements CashFlowComponent {
+export class CashFlow extends Contribution implements CashFlowComponent {
   key: ComponentKey;
   type = ComponentType.CashFlow;
   startPeriod = NamedPeriods.StartPeriod;
   
-  constructor(public cashFlow, public periods: number = NamedPeriods.SinglePeriod) {
+  constructor(public contribution, public periods: number = NamedPeriods.SinglePeriod) {
+    super(contribution, periods, ComponentKey.Cash);
   }
 }
 

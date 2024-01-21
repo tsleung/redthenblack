@@ -64,7 +64,8 @@ export class EcsGalleryComponent {
         name: lifeEvent.name,
         component,
         chartData,
-      }
+      };
+
       setTimeout(() => {
         const chartData: c3.Data = {
           columns: [],
@@ -76,7 +77,7 @@ export class EcsGalleryComponent {
     
         exhibit.chartData = chartData;
     
-      }, Math.random() * 9000)
+      }, Math.random() * 2000)
     
 
       // console.log('adding chart data',chartData)

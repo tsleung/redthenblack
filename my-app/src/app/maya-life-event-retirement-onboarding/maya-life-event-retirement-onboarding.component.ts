@@ -32,7 +32,7 @@ export class MayaLifeEventRetirementOnboardingComponent {
       const retirementSpend = new RetirementSpend();
       retirementSpend.startPeriod = this.muxs.periodsUntilRetirement;
       retirementSpend.periods = this.controls.retirement.value;
-      retirementSpend.cashFlow = annualRetirementSpend * -1;
+      retirementSpend.contribution = annualRetirementSpend * -1;
       this.muxs.addComponent.next(retirementSpend);
 
       

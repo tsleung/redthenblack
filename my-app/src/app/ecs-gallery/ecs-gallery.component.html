@@ -1,7 +1,12 @@
-<p>ecs-gallery works!</p>
+<h1>Model Gallery</h1>
+<p>
+  A visualization of Life Event Models with default parameters and there effect on Cash.
+</p>
 <div class="exhibits">
 <div class="exhibit" *ngFor="let exhibit of exhibits; let i = index">
   {{exhibit.name}}
-  <app-bar-chart [chartData]="exhibit.chartData" [legendOptions]="{show: false}"></app-bar-chart>
+  <ng-container *ngIf="exhibit.chartData.columns.length">
+    <app-bar-chart [chartData]="exhibit.chartData" [legendOptions]="{show: false}"></app-bar-chart>
+</ng-container>
 </div>
 </div>

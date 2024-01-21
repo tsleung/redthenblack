@@ -36,7 +36,7 @@ export class CashFlowSystem implements System{
       .filter(cashFlow => currentPeriod >= cashFlow.startPeriod)
       .filter(cashFlow => currentPeriod < cashFlow.startPeriod + cashFlow.periods)
       .forEach((cashFlow: CashFlow) => {
-        cash.value = cash.value + cashFlow.cashFlow;
+        cash.value = cash.value + cashFlow.contribution;
       });
     }
   }

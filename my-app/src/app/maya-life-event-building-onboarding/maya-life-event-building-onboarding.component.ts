@@ -32,12 +32,12 @@ export class MayaLifeEventBuildingOnboardingComponent {
       this.muxs.periodsUntilRetirement = this.controls.retirement.value;
 
       const job = new Job();
-      job.cashFlow = this.controls.income.value;
+      job.contribution = this.controls.income.value;
       job.periods = this.controls.retirement.value;
       this.muxs.addComponent.next(job);
 
       const col = new CostOfLiving();
-      col.cashFlow = -1 * (this.controls.income.value - this.controls.savings.value);
+      col.contribution = -1 * (this.controls.income.value - this.controls.savings.value);
       col.periods = this.controls.retirement.value;
       this.muxs.addComponent.next(col);
 

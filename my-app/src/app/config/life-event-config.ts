@@ -88,10 +88,10 @@ function createCashFlowFields(): Field[] {
       name: 'Annual Cash Flow',
       value: '0',
       readFrom: (component: CashFlowComponent, field: Field) => {
-        field.value = component.cashFlow;
+        field.value = component.contribution;
       },
       updateTo: (component: CashFlowComponent, field: Field) => {
-        component.cashFlow = Number(field.value) || 0;
+        component.contribution = Number(field.value) || 0;
       }
     },
     {
@@ -264,10 +264,10 @@ const fieldsMap = {
       name: 'Annual spend on child',
       value: '15000',
       readFrom: (component: ChildCare, field: Field) => {
-        field.value = component.cashFlow;
+        field.value = component.contribution;
       },
       updateTo: (component: ChildCare, field: Field) => {
-        component.cashFlow = Number(field.value) || 0;
+        component.contribution = Number(field.value) || 0;
       }
     },
     ...createStartPeriodFields()
