@@ -142,6 +142,48 @@ The potential for good or bad. Just like a deck of cards can contain both good a
       ]
     }
     */
+    {
+      path: '',
+      outlet: 'calculator',
+      component: MayaLayoutTwoColumnComponent,
+      children: [
+        {
+          path: '',
+          component: MayaLayoutTwoRowComponent,
+          children: [
+            {
+              path: '',
+              component: MayaTitledContentComponent,
+              data: {
+                caption: `Demystifying Finance with Transparency.`,
+                action: {
+                  href: routes.createEcsGalleryRoute(),
+                  text: `Learn more`,
+                  primary: true,
+                }
+              }
+            },
+            {
+              path: '',
+              outlet: 'below',
+              component: MayaTitledContentComponent,
+              data: {
+                content: `Transparency plays a crucial role in fostering trust and understanding among users. By making all models and systems within the simulator open and transparent, we aim to eliminate the opaque nature often associated with finance.`,
+                
+              }
+            }
+          ]
+        },
+        {
+          path: '',
+          outlet: 'secondary',
+          component: MayaFeatureImageComponent,
+          data: {
+            src: `assets/images/life-events-splash.png`
+          }
+        }
+      ]
+    },
   ]
 };
 export const DASHBOARD = {

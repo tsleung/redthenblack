@@ -22,6 +22,8 @@ export class BarChartComponent {
 
   @Input() legendOptions:c3.LegendOptions = {
   }
+  @Input() zoomOptions:c3.ZoomOptions = {
+  }
 
   chartId;
   chart: c3.ChartAPI;
@@ -54,7 +56,10 @@ export class BarChartComponent {
         y2: {
             show: true
         }
-      }
+      },
+      zoom: this.zoomOptions ?? {
+        enabled: true
+      },
     });
   }
 

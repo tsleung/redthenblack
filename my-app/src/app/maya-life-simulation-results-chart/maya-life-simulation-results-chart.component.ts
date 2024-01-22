@@ -22,6 +22,31 @@ export class MayaLifeSimulationResultsChartComponent {
     return chartData;
   }));
 
+  thresholdsChartData = this.muxs.percentileSortedSimulations.pipe(map(results => {
+
+    const chartData: c3.Data = {
+      columns: [],
+      type: 'line'
+    };  
+    
+    const thresholds = [
+      .025, .16, .25, .5, .75, .84, .975
+    ];
+    results = thresholds.map(threshold => {
+      const index = Math.floor(results.length * threshold);
+      return results[index];
+    });
+
+    results.forEach((simulation, i) => {
+      chartData.columns.push([`${thresholds[i]} percentile`, ...simulation])
+    });
+
+    console.log('adding chart data',chartData)
+    // create an observable that looks at the thresholds, do median for now
+    return chartData;
+    
+  }));
+
   gridOptions: c3.GridOptions = {};
   constructor(private muxs: MayaUserExperienceService) { }
 }

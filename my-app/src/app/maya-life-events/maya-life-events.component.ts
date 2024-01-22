@@ -9,6 +9,7 @@ import { MayaLifeEventsResultsComponent } from '../maya-life-events-results/maya
 import { RoutingService } from '../services/routing.service';
 import { MayaUserExperienceService } from '../services/maya-user-experience.service';
 import { ImageAssetService } from '../services/image-asset.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-maya-life-events',
@@ -41,15 +42,21 @@ export class MayaLifeEventsComponent {
     
     
     ngAfterViewInit() {
+      this.muxs.components.pipe(first()).subscribe(components => {
+        console.log('components', components)
+        if(!runOnce && components.size <= 1) {
+          console.log('adding life evnts')
+  
+          runOnce = true;
+          this.lifeEventsService.availableLifeEvents.slice(0,6).forEach(lifeEvent => {
+            
+            this.muxs.addComponent.next(lifeEvent.createComponent());
+            // this.lifeEventsService.addLifeEvent(lifeEvent);
+          });
+          
+        }
+      });
       
-      if(!runOnce && false) {
-        console.log('adding life evnts')
-        runOnce = true;
-        this.lifeEventsService.availableLifeEvents.slice(0,2).forEach(lifeEvent => {
-          this.lifeEventsService.addLifeEvent(lifeEvent);
-        });
-        
-      }
       
     } 
 }

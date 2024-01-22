@@ -119,6 +119,15 @@ export function createMillionaireArticleRoute() {
   return createArticlesRoute() + '/millionaire';
 }
 
+
+export function createEcsRoute() {
+  return createMayaRoute() + '/ecs';
+}
+
+export function createEcsGalleryRoute() {
+  return createEcsRoute() + '/gallery';
+}
+
 export function createLifeEventsRoute() {
   return createMayaRoute() + '/life-events';
 }

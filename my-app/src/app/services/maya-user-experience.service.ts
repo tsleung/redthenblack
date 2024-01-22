@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SimulationManager, Snapshot } from '../utils/maya-ecs';
-import { Cash, Component, ComponentKey, Job, SavingsAccount, Stocks, ValueComponent } from '../utils/maya-ecs-components';
+import { Cash, Component, ComponentKey, Job, SavingsAccount, Stocks, Traditional401k, ValueComponent } from '../utils/maya-ecs-components';
 import { getComponent, setComponent } from '../utils/maya-ecs-entities';
 import { BehaviorSubject, Observable, Subject, asyncScheduler, merge } from 'rxjs';
 import { map, publishReplay, refCount, scan, shareReplay, startWith, tap, throttleTime } from 'rxjs/operators';
@@ -68,6 +68,10 @@ export class MayaUserExperienceService {
   periodsUntilRetirement = 30;
   periodsOfRetirement = 30;
 
+  calculateTotalNumberOfPeriods() {
+    return this.periodsOfRetirement + this.periodsUntilRetirement;
+  }
+
   numberOfSimulations = 200;
   // numberOfSimulations = 1;
   simulations =  this.components.pipe(map(components => {
@@ -87,8 +91,11 @@ export class MayaUserExperienceService {
     publishReplay(),
     refCount(),
   );
-    
 
+  
+
+
+  
   simulationsBalances = this.simulations.pipe(map(simulations => {
       const simulationsCashValue = simulations.map(simulation => {
         return simulation.map(period => {
@@ -97,15 +104,43 @@ export class MayaUserExperienceService {
             // should this be explicit? maybe even a toggle of which to include in the 'value' summation? maybe list all components included, have an include/exclude list
             const cash = getComponent<Cash>(entity, ComponentKey.Cash);
             const stocks = getComponent<Stocks>(entity, ComponentKey.Stocks);
+            const traditional401k = getComponent<Traditional401k>(entity, ComponentKey.Traditional401k);
             const savingsAccount = getComponent<SavingsAccount>(entity, ComponentKey.SavingsAccount);
   
-            return value(cash) + value(stocks) + value(savingsAccount);
+            return Math.round(value(cash) + value(traditional401k) + value(stocks) + value(savingsAccount));
   
           },0);
         });
       });
 
       return simulationsCashValue;
+    }));
+
+    percentileSortedSimulations:Observable<number[][]> = this.simulationsBalances.pipe(map(simulations => {
+      const thresholds = new Array(this.calculateTotalNumberOfPeriods())
+        .fill(0).map((v, thresholdArrayIndex) => {
+          // go through all simulations and grab the index 
+          const simResultsAtIndex = simulations.map(simulation => {
+            return simulation[thresholdArrayIndex];
+          });
+          console.log('sim at index', thresholdArrayIndex, simResultsAtIndex)
+          simResultsAtIndex.sort((a,b) => a-b);
+          console.log('sorted sim at index', thresholdArrayIndex, simResultsAtIndex)
+          return simResultsAtIndex;
+        });
+
+      const percentileSortedSimulations = new Array(simulations.length)
+        .fill(0)
+        .map((v,i) => {
+          return thresholds.map(threshold => {
+            return threshold[i];
+          });
+        });
+
+
+      return percentileSortedSimulations;
+
+      
     }));
  
     /**

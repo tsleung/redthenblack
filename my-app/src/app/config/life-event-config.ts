@@ -388,7 +388,7 @@ const shorthand: Array<[string, ComponentKey, () => Component]> = [
   ['PropertyTax', ComponentKey.PropertyTax, () => new PropertyTax()],
   ['Kids College Fund', ComponentKey.KidsCollegeFund, () => new KidsCollegeFund()],
   ['Rental Income', ComponentKey.RentalIncome, () => new RentalIncome()],
-  ['Retirement', ComponentKey.Retirement, () => new Retirement(15)],
+  // ['Retirement', ComponentKey.Retirement, () => new Retirement(15)],
   
 ];
 
