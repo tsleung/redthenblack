@@ -3,7 +3,7 @@ import { MayaUserExperienceService } from '../services/maya-user-experience.serv
 import { RoutingService } from '../services/routing.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CostOfLiving, Job, Traditional401k, Traditional401kContribution } from '../utils/maya-ecs-components';
+import { ComponentKey, CostOfLiving, Job, Traditional401k, Traditional401kContribution } from '../utils/maya-ecs-components';
 
 @Component({
   selector: 'app-maya-life-event-building-onboarding',
@@ -41,14 +41,15 @@ export class MayaLifeEventBuildingOnboardingComponent {
       col.periods = this.controls.retirement.value;
       this.muxs.addComponent.next(col);
 
-      const traditional401k = new Traditional401k(this.controls.investments.value, [1.1]);
+      const traditional401k = new Traditional401k(this.controls.investments.value, [...new Array(4).fill(1.1), .75]);
       this.muxs.addComponent.next(traditional401k);
 
       const traditional401kContribution = new Traditional401kContribution(
         this.controls.investments.value,
         this.controls.retirement.value,
       );
-      // this.muxs.addComponent.next(traditional401kContribution);
+      traditional401kContribution.target = ComponentKey.Traditional401k;
+      this.muxs.addComponent.next(traditional401kContribution);
 
       
       console.log('building data', this.form.value)

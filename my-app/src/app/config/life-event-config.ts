@@ -1,5 +1,5 @@
 
-import { AmortizedLoan, AutoLoan, Bereavement, Cash, CashFlowComponent, ChildCare, Children, Component, ComponentKey, CostOfLiving, DelayedStartComponent, Entrepreneurship, FancyCar, Fertility, FertilityBirth, FertilityIVF, Gifts, Inheritance, Insurance, Job, KidCollegeTuition, KidsCollegeFund, Medical, Mortgage, NiceBigHouse, PropertyTax, RenovationAndRepairs, Rental, RentalIncome, Retirement, RetirementSpend, SavingsAccount, SbaLoan, School, SeniorCare, SocialSecurityIncome, Stocks, StudentLoan, TimeBoundComponent, Traditional401k, Traditional401kContribution, Travel, VolatileAsset, Wedding } from '../utils/maya-ecs-components';
+import { AmortizedLoan, AnniversaryCelebration, AutoLoan, Bereavement, BigTrip, BirthdayCelebration, Cash, CashFlowComponent, ChildCare, Children, CommercialRealEstate, Component, ComponentKey, CostOfLiving, DelayedStartComponent, Entrepreneurship, FancyCar, Fertility, FertilityBirth, FertilityIVF, FineDining, Gifts, Inheritance, Insurance, Job, KidCollegeTuition, KidsCollegeFund, LongVacation, Medical, Mortgage, NiceBigHouse, PropertyTax, RenovationAndRepairs, Rental, RentalIncome, ResidentialRealEstate, Retirement, RetirementSpend, Sabbatical, SavingsAccount, SbaLoan, School, SeniorCare, SocialSecurityIncome, Stocks, StudentLoan, TimeBoundComponent, Traditional401k, Traditional401kContribution, Travel, VolatileAsset, Wedding } from '../utils/maya-ecs-components';
 import { Field } from '../utils/life-event-utils';
 
 /** This may be better to reverse, icon as key and tags as matches */
@@ -200,11 +200,16 @@ const fieldsMap = {
   'Cost Of Living': [
     ...createCashFlowFields(),
   ],
-
+  'Traditional401k': [
+    ...createVolatileAssetFields(),
+  ],
   'Stocks': [
     ...createVolatileAssetFields(),
   ],
-  'Traditional401k': [
+  'ResidentialRealEstate': [
+    ...createVolatileAssetFields(),
+  ],
+  'CommercialRealEstate': [
     ...createVolatileAssetFields(),
   ],
 
@@ -347,6 +352,27 @@ const fieldsMap = {
   'RetirementSpend': [
     ...createCashFlowFields(),
   ],
+  'Traditional401kContribution': [
+    ...createCashFlowFields(),
+  ],
+  'BigTrip': [
+    ...createCashFlowFields(),
+  ],
+  'LongVacation': [
+    ...createCashFlowFields(),
+  ],
+  'Sabbatical': [
+    ...createCashFlowFields(),
+  ],
+  'FineDining': [
+    ...createCashFlowFields(),
+  ],
+  'BirthdayCelebration': [
+    ...createCashFlowFields(),
+  ],
+  'AnniversaryCelebration': [
+    ...createCashFlowFields(),
+  ],
   
 };
 
@@ -356,7 +382,7 @@ const shorthand: Array<[string, ComponentKey, () => Component]> = [
   ['Retirement Spend', ComponentKey.RetirementSpend, () => new RetirementSpend()],
   ['Job', ComponentKey.Job, () => new Job()],
   ['Traditional 401k', ComponentKey.Traditional401k, () => new Traditional401k(4e5, [...new Array(4).fill(1.1), .75])],
-  // ['Traditional 401k Contribution', ComponentKey.Traditional401kContribution, () => new Traditional401kContribution(4e5, 30)],
+  ['Traditional 401k Contribution', ComponentKey.Traditional401kContribution, () => new Traditional401kContribution(4e5, 30)],
   ['Stocks', ComponentKey.Stocks, () => new Stocks(4e5, [...new Array(4).fill(1.1), .75])],
   ['Fancy Car', ComponentKey.FancyCar, () => new FancyCar()],
   ['Nice Big House', ComponentKey.NiceBigHouse, () => new NiceBigHouse()],
@@ -387,7 +413,14 @@ const shorthand: Array<[string, ComponentKey, () => Component]> = [
   ['HOA', ComponentKey.HOA, () => new Entrepreneurship()],
   ['PropertyTax', ComponentKey.PropertyTax, () => new PropertyTax()],
   ['Kids College Fund', ComponentKey.KidsCollegeFund, () => new KidsCollegeFund()],
-  ['Rental Income', ComponentKey.RentalIncome, () => new RentalIncome()],
+  ['Big Trip', ComponentKey.BigTrip, () => new BigTrip()],
+  ['Long Vacation', ComponentKey.LongVacation, () => new LongVacation()],
+  ['Sabbatical', ComponentKey.Sabbatical, () => new Sabbatical()],
+  ['Fine Dining', ComponentKey.FineDining, () => new FineDining()],
+  ['Birthday Celebration', ComponentKey.BirthdayCelebration, () => new BirthdayCelebration()],
+  ['Anniversary Celebration', ComponentKey.AnniversaryCelebration, () => new AnniversaryCelebration()],
+  ['Residential Real Estate', ComponentKey.ResidentialRealEstate, () => new ResidentialRealEstate(500e3, [1.04,1.04,1.04,1.04,1.04,.85])],
+  ['Commercial Real Estate', ComponentKey.CommercialRealEstate, () => new CommercialRealEstate(1e6, [1.04,1.04,1.04,1.04,1.04,.85])],
   // ['Retirement', ComponentKey.Retirement, () => new Retirement(15)],
   
 ];

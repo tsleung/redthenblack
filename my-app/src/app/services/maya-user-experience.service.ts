@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SimulationManager, Snapshot } from '../utils/maya-ecs';
-import { Cash, Component, ComponentKey, Job, SavingsAccount, Stocks, Traditional401k, ValueComponent } from '../utils/maya-ecs-components';
+import { AmortizedLoan, Cash, Component, ComponentKey, ComponentType, Job, SavingsAccount, Stocks, Traditional401k, ValueComponent, VolatileAsset } from '../utils/maya-ecs-components';
 import { getComponent, setComponent } from '../utils/maya-ecs-entities';
 import { BehaviorSubject, Observable, Subject, asyncScheduler, merge } from 'rxjs';
 import { map, publishReplay, refCount, scan, shareReplay, startWith, tap, throttleTime } from 'rxjs/operators';
@@ -72,7 +72,7 @@ export class MayaUserExperienceService {
     return this.periodsOfRetirement + this.periodsUntilRetirement;
   }
 
-  numberOfSimulations = 200;
+  numberOfSimulations = 500;
   // numberOfSimulations = 1;
   simulations =  this.components.pipe(map(components => {
       const rootSnapshot = new Snapshot();
@@ -103,11 +103,20 @@ export class MayaUserExperienceService {
             
             // should this be explicit? maybe even a toggle of which to include in the 'value' summation? maybe list all components included, have an include/exclude list
             const cash = getComponent<Cash>(entity, ComponentKey.Cash);
-            const stocks = getComponent<Stocks>(entity, ComponentKey.Stocks);
-            const traditional401k = getComponent<Traditional401k>(entity, ComponentKey.Traditional401k);
-            const savingsAccount = getComponent<SavingsAccount>(entity, ComponentKey.SavingsAccount);
-  
-            return Math.round(value(cash) + value(traditional401k) + value(stocks) + value(savingsAccount));
+            
+            // cash + volatile assets - loans
+            const volatileAssets = Array.from(entity.components.values())
+              .filter(suspect => suspect.type === ComponentType.VolatileAsset)
+              .map(component => component as VolatileAsset)
+              .reduce((total, asset) => asset.value + total,0)
+
+            const amorizedLoans = Array.from(entity.components.values())
+              .filter(suspect => suspect.type === ComponentType.AmortizedLoan)
+              .map(component => component as AmortizedLoan)
+              .reduce((total, loan) => loan.principal + total,0)
+
+
+            return Math.round(value(cash) + volatileAssets - amorizedLoans);
   
           },0);
         });

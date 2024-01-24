@@ -1,7 +1,7 @@
 
 // Systems
 
-import { AmortizedLoan, Cash, CashFlow, ComponentKey, ComponentType, CostOfLiving, Job, Retirement, SavingsAccount, Stocks, Trade, VolatileAsset } from "./maya-ecs-components";
+import { AmortizedLoan, Cash, CashFlow, ComponentKey, ComponentType, Contribution, CostOfLiving, Job, Retirement, SavingsAccount, Stocks, ValueComponent, VolatileAsset } from "./maya-ecs-components";
 import { Entity, getComponent } from "./maya-ecs-entities";
 
 
@@ -24,6 +24,29 @@ export class VolatileAssetSystem implements System{
   }
 }
 
+
+export class ContributionSystem implements System{
+  name = 'ContributionSystem';
+  update(entities: Entity[], currentPeriod: number) {
+    for (const entity of entities) {
+      const cash = getComponent<Cash>(entity, ComponentKey.Cash);
+
+      Array.from(entity.components.values())
+      .filter(suspect => suspect.type === ComponentType.Contribution)
+      .map(contribution => contribution as Contribution)
+      .filter(contribution => currentPeriod >= contribution.startPeriod)
+      .filter(contribution => currentPeriod < contribution.startPeriod + contribution.periods)
+      .forEach((contribution: Contribution) => {
+        const valueComponent = getComponent<ValueComponent>(entity, contribution.target);
+        if(valueComponent) { // need to indicate when a contribution doesn't land anywhere
+          valueComponent.value = (valueComponent.value ?? 0) + (contribution.contribution ?? 0);
+        }
+        
+      });
+    }
+  }
+}
+
 export class CashFlowSystem implements System{
   name = 'CashFlowSystem';
   update(entities: Entity[], currentPeriod: number) {
@@ -37,20 +60,6 @@ export class CashFlowSystem implements System{
       .filter(cashFlow => currentPeriod < cashFlow.startPeriod + cashFlow.periods)
       .forEach((cashFlow: CashFlow) => {
         cash.value = cash.value + cashFlow.contribution;
-      });
-    }
-  }
-}
-
-export class TradeSystem implements System{
-  name = 'TradeSystem';
-  update(entities: Entity[]) {
-    for (const entity of entities) {
-      Array.from(entity.components.values())
-      .filter(suspect => suspect.type === ComponentType.Trade)
-      .map(trade => trade as Trade)
-      .forEach((trade: Trade) => {
-        trade.transaction(entity);
       });
     }
   }

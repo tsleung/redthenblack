@@ -38,7 +38,7 @@ export class MayaLifeSimulationResultsChartComponent {
     });
 
     results.forEach((simulation, i) => {
-      chartData.columns.push([`${thresholds[i]} percentile`, ...simulation])
+      chartData.columns.push([`${thresholds[i]* 100} percentile`, ...simulation])
     });
 
     console.log('adding chart data',chartData)

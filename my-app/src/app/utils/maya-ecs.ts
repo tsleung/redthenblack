@@ -1,5 +1,5 @@
 import { Entity } from "./maya-ecs-entities";
-import { CashFlowSystem, LoanSystem, VolatileAssetSystem, System, TradeSystem } from "./maya-ecs-systems";
+import { CashFlowSystem, LoanSystem, VolatileAssetSystem, System, ContributionSystem } from "./maya-ecs-systems";
 
 class EntityManager {
   public readonly entities: Entity[] = [];
@@ -23,7 +23,7 @@ export class Snapshot {
 }
 
 export class SimulationManager {
-  private readonly systems: System[] = [new TradeSystem(), new CashFlowSystem(), new LoanSystem(), new VolatileAssetSystem(), /* ... */];
+  private readonly systems: System[] = [new ContributionSystem(), new LoanSystem(), new VolatileAssetSystem(), /* ... */];
 
   constructor() { }
 

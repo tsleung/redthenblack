@@ -15,15 +15,16 @@ export class BarChartComponent {
   }
   
   @Input() gridOptions:c3.GridOptions = {
-  }
+  };
 
   @Input() axesOptions:c3.AxesOptions = {
-  }
+  };
 
   @Input() legendOptions:c3.LegendOptions = {
-  }
+  };
   @Input() zoomOptions:c3.ZoomOptions = {
-  }
+    enabled: true
+  };
 
   chartId;
   chart: c3.ChartAPI;

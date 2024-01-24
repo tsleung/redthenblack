@@ -56,9 +56,8 @@ export class MayaLifeEventsComponent {
           
         }
       });
-      
-      
+           
     } 
 }
 
-let runOnce = false;
+let runOnce = window.location.href !== 'http://localhost:4200/m/0/life-events';
