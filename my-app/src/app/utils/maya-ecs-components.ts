@@ -113,6 +113,20 @@ export class Timebound implements TimeBoundComponent {
 export interface ValueComponent extends Component{
   value: number;
 }
+export class Value implements ValueComponent{
+  value: number;
+  key: ComponentKey;
+  type = ComponentType.Value;
+}
+
+export class Cash extends Value {
+  key = ComponentKey.Cash;
+  type = ComponentType.Value;
+  constructor(public value) {
+    super();
+  }
+}
+
 
 export interface VolatileAssetComponent extends ValueComponent{
   annualMultiplier: number[];
@@ -197,11 +211,6 @@ export class Traditional401kContribution extends Contribution {
 
 export interface CashFlowComponent extends ContributionComponent{
   
-}
-export class Cash implements ValueComponent {
-  key = ComponentKey.Cash;
-  type = ComponentType.Value;
-  constructor(public value) {}
 }
 
 export class CashFlow extends Contribution implements CashFlowComponent {

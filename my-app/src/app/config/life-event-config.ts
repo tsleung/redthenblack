@@ -1,5 +1,5 @@
 
-import { AmortizedLoan, AnniversaryCelebration, AutoLoan, Bereavement, BigTrip, BirthdayCelebration, Cash, CashFlowComponent, ChildCare, Children, CommercialRealEstate, Component, ComponentKey, ComponentType, CostOfLiving, DelayedStartComponent, Entrepreneurship, FancyCar, Fertility, FertilityBirth, FertilityIVF, FineDining, Gifts, Inheritance, Insurance, Job, KidCollegeTuition, KidsCollegeFund, LongVacation, Medical, Mortgage, NiceBigHouse, PropertyTax, RenovationAndRepairs, Rental, RentalIncome, ResidentialRealEstate, Retirement, RetirementSpend, Sabbatical, SavingsAccount, SbaLoan, School, SeniorCare, SocialSecurityIncome, Stocks, StudentLoan, TimeBoundComponent, Traditional401k, Traditional401kContribution, Travel, VolatileAsset, Wedding } from '../utils/maya-ecs-components';
+import { AmortizedLoan, AnniversaryCelebration, AutoLoan, Bereavement, BigTrip, BirthdayCelebration, Cash, CashFlow, CashFlowComponent, ChildCare, Children, CommercialRealEstate, Component, ComponentKey, ComponentType, Contribution, CostOfLiving, DelayedStartComponent, Entrepreneurship, FancyCar, Fertility, FertilityBirth, FertilityIVF, FineDining, Gifts, Inheritance, Insurance, Job, KidCollegeTuition, KidsCollegeFund, LongVacation, Medical, Mortgage, NiceBigHouse, PropertyTax, RenovationAndRepairs, Rental, RentalIncome, ResidentialRealEstate, Retirement, RetirementSpend, Sabbatical, SavingsAccount, SbaLoan, School, SeniorCare, SocialSecurityIncome, Stocks, StudentLoan, TimeBoundComponent, Traditional401k, Traditional401kContribution, Travel, Value, VolatileAsset, Wedding } from '../utils/maya-ecs-components';
 import { Field, LifeEvent } from '../utils/life-event-utils';
 import { createLifeEventsAddTypeRoute, createLoanTypeRoute } from '../utils/route_mapper';
 
@@ -441,7 +441,13 @@ export const availableLifeEvents:LifeEvent[] = shorthand.map(([name,IGNORE, crea
   const editHref = createAddEditHref(componentType, componentKey);
 
   const createFriendlyFieldDescription = () => {
-    return fields.map(field => `${field.name}: ${field.value}`).join(', ');
+    const highlight = createHighlightNumber(
+      componentType,
+      componentKey,
+      componentPrototype,
+    );
+
+    return highlight ?? fields.map(field => `${field.name}: ${field.value}`).join(', ');
   };
 
   return {
@@ -458,6 +464,30 @@ export const availableLifeEvents:LifeEvent[] = shorthand.map(([name,IGNORE, crea
     calculators: [],
   };
 });
+
+function createHighlightNumber(componentType: ComponentType, componentKey: ComponentKey, component: Component ) {
+  switch(componentType){
+    case ComponentType.Contribution:
+      return createContributionHighlight(component as Contribution);
+    case ComponentType.VolatileAsset:
+      return createVolatileAssetHighlight(component as VolatileAsset);
+    case ComponentType.Value:
+      return createValueHighlight(component as Value);
+    default:
+      return;
+      
+  }
+  function createValueHighlight(component: Value) {
+    return component.value;
+  }
+  function createContributionHighlight(component: Contribution) {
+    return component.contribution;
+  }
+  function createVolatileAssetHighlight(component: VolatileAsset) {
+    return component.value;
+  }
+}
+
 
 
 

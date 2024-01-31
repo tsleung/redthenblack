@@ -2,9 +2,10 @@
   <mat-card-content>
     {{lifeEvent.name}}
     <br>
-    <br>
-    
     <p>
+      <figure>
+        <mat-icon [fontIcon]="lifeEvent.icon"></mat-icon>
+      </figure>
       {{lifeEvent.createFriendlyFieldDescription()}}
     </p>
     

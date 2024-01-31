@@ -25,6 +25,11 @@
   text-align: center;
   text-decoration: none;
 }
+figure mat-icon {
+  font-size: 4rem;
+  height: auto;
+  width: auto;
+}
 
 mat-card-content {
   margin: auto;
@@ -33,7 +38,11 @@ mat-card-content {
     height: 10rem;
     display: flex;
     flex: 1;
-    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    
+    font-size: 28px;
+    font-weight: 800;
   }
 
   button {
