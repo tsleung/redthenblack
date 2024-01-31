@@ -132,9 +132,9 @@ export class MayaUserExperienceService {
           const simResultsAtIndex = simulations.map(simulation => {
             return simulation[thresholdArrayIndex];
           });
-          console.log('sim at index', thresholdArrayIndex, simResultsAtIndex)
+          
           simResultsAtIndex.sort((a,b) => a-b);
-          console.log('sorted sim at index', thresholdArrayIndex, simResultsAtIndex)
+          
           return simResultsAtIndex;
         });
 

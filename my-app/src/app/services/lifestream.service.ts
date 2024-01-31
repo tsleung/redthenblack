@@ -40,15 +40,15 @@ function snapshot() {
 
 }
 
-export interface LifeEvent {
+ interface LifeEvent {
 
 }
 
-export interface Duration{
+ interface Duration{
   i: number;
 }
 
-export interface Timespan {
+ interface Timespan {
   start: number;
   end: number;
   duration: number;
@@ -57,7 +57,7 @@ export interface Timespan {
 /**
  * A stream is a sequence of draws, per period, from a deck
  */
-export interface Stream {
+ interface Stream {
   timespan: Timespan;
   name: string;
 }

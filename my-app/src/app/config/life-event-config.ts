@@ -1,6 +1,7 @@
 
-import { AmortizedLoan, AnniversaryCelebration, AutoLoan, Bereavement, BigTrip, BirthdayCelebration, Cash, CashFlowComponent, ChildCare, Children, CommercialRealEstate, Component, ComponentKey, CostOfLiving, DelayedStartComponent, Entrepreneurship, FancyCar, Fertility, FertilityBirth, FertilityIVF, FineDining, Gifts, Inheritance, Insurance, Job, KidCollegeTuition, KidsCollegeFund, LongVacation, Medical, Mortgage, NiceBigHouse, PropertyTax, RenovationAndRepairs, Rental, RentalIncome, ResidentialRealEstate, Retirement, RetirementSpend, Sabbatical, SavingsAccount, SbaLoan, School, SeniorCare, SocialSecurityIncome, Stocks, StudentLoan, TimeBoundComponent, Traditional401k, Traditional401kContribution, Travel, VolatileAsset, Wedding } from '../utils/maya-ecs-components';
-import { Field } from '../utils/life-event-utils';
+import { AmortizedLoan, AnniversaryCelebration, AutoLoan, Bereavement, BigTrip, BirthdayCelebration, Cash, CashFlowComponent, ChildCare, Children, CommercialRealEstate, Component, ComponentKey, ComponentType, CostOfLiving, DelayedStartComponent, Entrepreneurship, FancyCar, Fertility, FertilityBirth, FertilityIVF, FineDining, Gifts, Inheritance, Insurance, Job, KidCollegeTuition, KidsCollegeFund, LongVacation, Medical, Mortgage, NiceBigHouse, PropertyTax, RenovationAndRepairs, Rental, RentalIncome, ResidentialRealEstate, Retirement, RetirementSpend, Sabbatical, SavingsAccount, SbaLoan, School, SeniorCare, SocialSecurityIncome, Stocks, StudentLoan, TimeBoundComponent, Traditional401k, Traditional401kContribution, Travel, VolatileAsset, Wedding } from '../utils/maya-ecs-components';
+import { Field, LifeEvent } from '../utils/life-event-utils';
+import { createLifeEventsAddTypeRoute, createLoanTypeRoute } from '../utils/route_mapper';
 
 /** This may be better to reverse, icon as key and tags as matches */
 const iconMap = {
@@ -381,8 +382,8 @@ const shorthand: Array<[string, ComponentKey, () => Component]> = [
   ['Cost of Living', ComponentKey.CostOfLiving, () => new CostOfLiving()],
   ['Retirement Spend', ComponentKey.RetirementSpend, () => new RetirementSpend()],
   ['Job', ComponentKey.Job, () => new Job()],
-  ['Traditional 401k', ComponentKey.Traditional401k, () => new Traditional401k(4e5, [...new Array(4).fill(1.1), .75])],
-  ['Traditional 401k Contribution', ComponentKey.Traditional401kContribution, () => new Traditional401kContribution(4e5, 30)],
+  ['Traditional 401k', ComponentKey.Traditional401k, () => new Traditional401k(20e3, [...new Array(4).fill(1.1), .75])],
+  ['Traditional 401k Contribution', ComponentKey.Traditional401kContribution, () => new Traditional401kContribution(20e3, 30)],
   ['Stocks', ComponentKey.Stocks, () => new Stocks(4e5, [...new Array(4).fill(1.1), .75])],
   ['Fancy Car', ComponentKey.FancyCar, () => new FancyCar()],
   ['Nice Big House', ComponentKey.NiceBigHouse, () => new NiceBigHouse()],
@@ -425,12 +426,23 @@ const shorthand: Array<[string, ComponentKey, () => Component]> = [
   
 ];
 
-export const availableLifeEvents = shorthand.map(([name, componentKey, createComponent,]) => {
+export const availableLifeEvents:LifeEvent[] = shorthand.map(([name,IGNORE, createComponent,]) => {
+  const componentPrototype = createComponent();
+  const componentKey = componentPrototype.key;
+  const componentType = componentPrototype.type;
+
   const icon = iconMap[componentKey] ?? 'question_mark';
   const fields: Field[] = fieldsMap[componentKey] ?? [];
   const optional = ![
     ComponentKey.Cash, ComponentKey.Cash
   ].includes(componentKey);
+
+  const addHref = createAddEditHref(componentType, componentKey);
+  const editHref = createAddEditHref(componentType, componentKey);
+
+  const createFriendlyFieldDescription = () => {
+    return fields.map(field => `${field.name}: ${field.value}`).join(', ');
+  };
 
   return {
     name,
@@ -439,5 +451,17 @@ export const availableLifeEvents = shorthand.map(([name, componentKey, createCom
     fields,
     optional,
     componentKey,
+    componentType,
+    addHref,
+    editHref,
+    createFriendlyFieldDescription,
+    calculators: [],
   };
 });
+
+
+
+function createAddEditHref(componentType: ComponentType, componentKey: ComponentKey) {
+  return componentType === ComponentType.AmortizedLoan ? createLoanTypeRoute(componentKey) :
+    createLifeEventsAddTypeRoute(componentKey); 
+}

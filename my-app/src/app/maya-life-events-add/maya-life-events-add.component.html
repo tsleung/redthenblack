@@ -8,7 +8,7 @@
     <figure>
       <app-maya-life-event-card [lifeEvent]="lifeEvent"></app-maya-life-event-card>
     </figure>
-    <aside *ngIf="lifeEvent.calculators">
+    <aside *ngIf="lifeEvent.calculators && lifeEvent.calculators.length > 0">
       <h3>Helpful Calculators</h3>
       <ng-container *ngFor="let calculator of lifeEvent.calculators">
         <h4>

@@ -1,4 +1,4 @@
-import { Component, ComponentKey } from "./maya-ecs-components";
+import { Component, ComponentKey, ComponentType } from "./maya-ecs-components";
 
 export interface Field {
   name: string;
@@ -24,6 +24,7 @@ export interface LifeEvent {
   editHref: string;
   fields: Field[];
   componentKey: ComponentKey;
+  componentType: ComponentType;
   createComponent: () => Component;
   createFriendlyFieldDescription: () => string;
   calculators: Calculator[];

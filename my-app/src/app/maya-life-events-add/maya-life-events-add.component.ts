@@ -23,7 +23,7 @@ import { LifeEvent } from '../utils/life-event-utils';
 })
 export class MayaLifeEventsAddComponent {
 
-  parameters = this.route.data;
+  
   lifeEvent = this.route.params.pipe(map((params) => {
     const componentKey = params.type ?? 'custom';
     const lifeEvent: LifeEvent = this.lifeEventsService.availableLifeEvents.find(suspect => {

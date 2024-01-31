@@ -119,7 +119,6 @@ export function createMillionaireArticleRoute() {
   return createArticlesRoute() + '/millionaire';
 }
 
-
 export function createEcsRoute() {
   return createMayaRoute() + '/ecs';
 }
@@ -138,6 +137,10 @@ export function createLifeEventsListRoute() {
 
 export function createLifeEventsAddTypeRoute(type: string) {
   return createLifeEventsRoute() + `/add/${type}`;
+}
+
+export function createLoanTypeRoute(type: string) {
+  return createLifeEventsAddTypeRoute(type) + `/loan`;
 }
 
 export function createLifeEventsEditTypeRoute(type: string) {

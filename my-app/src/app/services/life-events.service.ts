@@ -18,8 +18,7 @@ import { LifeEvent } from '../utils/life-event-utils';
 })
 export class LifeEventsService {
 
-  readonly availableLifeEvents:LifeEvent[] = availableLifeEvents
-    .map(v => generateDerivativeFields(v));
+  readonly availableLifeEvents:LifeEvent[] = availableLifeEvents;
 
   selectedLifeEvents: Observable<LifeEvent[]> = this.muxs.components.pipe(map(components => {
 
@@ -32,7 +31,6 @@ export class LifeEventsService {
       lifeEvent.fields.forEach(field => {
         field.readFrom(component, field);
       });
-
       return lifeEvent;
     }).filter(Boolean);
   }),
@@ -75,22 +73,4 @@ export class LifeEventsService {
   constructor(
     private muxs: MayaUserExperienceService,
   ) { }
-}
-
-function generateDerivativeFields(v: Partial<LifeEvent>): LifeEvent {
-  // auto generate derivative fields
-
-  const addHref = createLifeEventsAddTypeRoute(v.componentKey);
-  const editHref = createLifeEventsEditTypeRoute(v.componentKey);
-  const createFriendlyFieldDescription = () => {
-    return lifeEvent.fields.map(field => `${field.name}: ${field.value}`).join(', ');
-  };
-  const lifeEvent = {
-    ...v,
-    addHref,
-    editHref,
-    createFriendlyFieldDescription,
-  } as LifeEvent;
-
-  return lifeEvent;
 }

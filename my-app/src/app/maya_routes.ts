@@ -19,6 +19,7 @@ import { MayaLifeEventsAddComponent } from './maya-life-events-add/maya-life-eve
 import { MayaLifeEventsResultsComponent } from './maya-life-events-results/maya-life-events-results.component';
 import { MayaLifeEventsListComponent } from './maya-life-events-list/maya-life-events-list.component';
 import { EcsGalleryComponent } from './ecs-gallery/ecs-gallery.component';
+import { AddLoanLifeEventComponent } from './add-loan-life-event/add-loan-life-event.component';
 
 export const INTRO = {
   path: 'intro',
@@ -189,6 +190,15 @@ export const EDUCATION = {
 };
 
 export const LIFE_EVENTS = [
+  {
+    path: 'life-events/add/:type/loan',
+    component: AddLoanLifeEventComponent,
+  },
+  {
+    path: 'life-events/edit/:type/loan',
+    component: AddLoanLifeEventComponent,
+  },
+  
   {
     path: 'life-events/add/:type',
     component: MayaLifeEventsAddComponent,

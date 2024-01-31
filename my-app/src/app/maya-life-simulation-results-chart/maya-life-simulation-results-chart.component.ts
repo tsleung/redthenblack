@@ -8,6 +8,14 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./maya-life-simulation-results-chart.component.scss']
 })
 export class MayaLifeSimulationResultsChartComponent {
+  
+  gridOptions: c3.GridOptions = {
+    y: {
+      lines: [
+          {value: 0},
+      ]
+    }
+  };
   chartData = this.muxs.simulationsBalances.pipe(map(results => {
     const chartData: c3.Data = {
       columns: [],
@@ -47,6 +55,6 @@ export class MayaLifeSimulationResultsChartComponent {
     
   }));
 
-  gridOptions: c3.GridOptions = {};
+  
   constructor(private muxs: MayaUserExperienceService) { }
 }

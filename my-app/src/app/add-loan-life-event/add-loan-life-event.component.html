@@ -1,0 +1,67 @@
+<ng-container *ngIf="lifeEvent | async as lifeEvent">
+  <header>
+    <div class="subtitle ">Life Events</div>
+    <h1 class="title">{{lifeEvent.name}}</h1>  
+  </header>
+  <form ngForm (submit)="lifeEvent.saveLoan()">
+  <main>
+    <figure>
+      <app-maya-life-event-card [lifeEvent]="lifeEvent"></app-maya-life-event-card>
+    </figure>
+    <aside *ngIf="lifeEvent.calculators && lifeEvent.calculators.length > 0">
+      <h3>Helpful Calculators</h3>
+      <ng-container *ngFor="let calculator of lifeEvent.calculators">
+        <h4>
+          <a [routerLink]="calculator.href">{{calculator.title}}</a>
+        </h4>
+        <p>
+          {{calculator.description}}
+        </p>
+      </ng-container>
+    </aside>
+    
+      <article>
+      
+        <mat-form-field>
+          <mat-label>Start Period</mat-label>
+          <input matInput [formControl]="controls.startPeriod" type="number" /><br/>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Loan Amount</mat-label>
+          <input matInput [formControl]="controls.loanAmount" type="number" /><br/>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Loan Term</mat-label>
+          <input matInput [formControl]="controls.loanTerm" type="number" /><br/>
+        </mat-form-field>
+        
+        <mat-form-field>
+          <mat-label>Interest Rate</mat-label>
+          <input matInput [formControl]="controls.interestRate" type="number" /><br/>
+        </mat-form-field>
+
+
+        <mat-form-field *ngIf="calculatedLoanPayment | async as calculatedLoanPayment">
+          <mat-label>Calculated Monthly Loan Payment</mat-label>
+          <input disabled matInput #calPayment [value]="calculatedLoanPayment" type="number" /><br/>
+          <mat-hint align="end">{{calPayment.value * 12 | number : '1.0-2'}} annually</mat-hint>
+
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Monthly Loan Payment</mat-label>
+          <input matInput #payment [formControl]="controls.payment" type="number" /><br/>
+          <mat-hint align="end">{{payment.value * 12 | number : '1.0-2'}} annually</mat-hint>
+        </mat-form-field>        
+
+        
+    </article>
+          
+  </main>
+  <footer>
+    <button color="primary" mat-flat-button>Save</button>
+  </footer>
+  </form>  
+</ng-container>
