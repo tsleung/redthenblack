@@ -14,10 +14,13 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
+        "optimization": {
+          "fonts": false
+        },
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "../docs",
+            "outputPath": "dist/my-app/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -128,6 +131,82 @@
               "devServerTarget": "my-app:serve:production"
             }
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/my-app/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "buildOptimizer": true,
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "sourceMap": false,
+              "extractLicenses": true,
+              "vendorChunk": false
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@angular-devkit/build-angular:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "my-app:build:development",
+              "serverTarget": "my-app:server:development"
+            },
+            "production": {
+              "browserTarget": "my-app:build:production",
+              "serverTarget": "my-app:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@angular-devkit/build-angular:prerender",
+          "options": {
+            "routes": [
+              "/",
+              "/m/0/life-events",
+              "/m/0/life-events/list",
+              "/m/0/life-events/add/Mortgage/loan",
+              "/m/0/ecs/gallery",
+              "/m/0/calculators/list",
+              "/m/0/calculators/savings",
+              "/m/0/calculators/indexing",
+              "/m/0/calculators/amortization",
+              "/m/0/calculators/perpetuity",
+              "/m/0/calculators/frontload-dca-401k",
+              "/m/0/calculators/retirement-withdrawal",
+              "/m/0/calculators/kids-college-fund",
+              "/m/0/calculators/rent-or-buy",
+              "/m/0/onboarding/newbie",
+              "/m/0/onboarding/dipper",
+              "/m/0/onboarding/financier",
+              "/m/0/onboarding/nest-egg",
+              "/m/0/onboarding/investing/additional"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "my-app:build:production",
+              "serverTarget": "my-app:server:production"
+            },
+            "development": {
+              "browserTarget": "my-app:build:development",
+              "serverTarget": "my-app:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }},
