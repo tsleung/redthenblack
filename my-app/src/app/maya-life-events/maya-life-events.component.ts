@@ -60,4 +60,4 @@ export class MayaLifeEventsComponent {
     } 
 }
 
-let runOnce = window.location.href !== 'http://localhost:4200/m/0/life-events';
+let runOnce = true || window.location.href !== 'http://localhost:4200/m/0/life-events';

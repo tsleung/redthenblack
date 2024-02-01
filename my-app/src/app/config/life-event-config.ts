@@ -441,13 +441,7 @@ export const availableLifeEvents:LifeEvent[] = shorthand.map(([name,IGNORE, crea
   const editHref = createAddEditHref(componentType, componentKey);
 
   const createFriendlyFieldDescription = () => {
-    const highlight = createHighlightNumber(
-      componentType,
-      componentKey,
-      componentPrototype,
-    );
-
-    return highlight ?? fields.map(field => `${field.name}: ${field.value}`).join(', ');
+    return fields.map(field => `${field.name}: ${field.value}`).join(', ');
   };
 
   return {
@@ -465,7 +459,14 @@ export const availableLifeEvents:LifeEvent[] = shorthand.map(([name,IGNORE, crea
   };
 });
 
-function createHighlightNumber(componentType: ComponentType, componentKey: ComponentKey, component: Component ) {
+
+function createAddEditHref(componentType: ComponentType, componentKey: ComponentKey) {
+  return componentType === ComponentType.AmortizedLoan ? createLoanTypeRoute(componentKey) :
+    createLifeEventsAddTypeRoute(componentKey); 
+}
+
+
+export function createHighlightNumber(componentType: ComponentType, componentKey: ComponentKey, component: Component ) {
   switch(componentType){
     case ComponentType.Contribution:
       return createContributionHighlight(component as Contribution);
@@ -489,9 +490,3 @@ function createHighlightNumber(componentType: ComponentType, componentKey: Compo
 }
 
 
-
-
-function createAddEditHref(componentType: ComponentType, componentKey: ComponentKey) {
-  return componentType === ComponentType.AmortizedLoan ? createLoanTypeRoute(componentKey) :
-    createLifeEventsAddTypeRoute(componentKey); 
-}

@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
@@ -230,6 +230,7 @@ import { AddLoanLifeEventComponent } from './add-loan-life-event/add-loan-life-e
     FindMyRetirementService,
     SuitabilityService,
     RoutingService,
+    provideClientHydration(),
   ],
   bootstrap: [AppComponent]
 })

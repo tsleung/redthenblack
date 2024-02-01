@@ -3,7 +3,10 @@
   margin-bottom: 3rem;
   margin-right: .5rem;
 }
-
+.auth {
+  display: flex;
+  flex-direction: row-reverse;
+}
 .subtitle {
   color: #FD5053;
   font-family: Manrope;

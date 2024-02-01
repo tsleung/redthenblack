@@ -14,6 +14,28 @@
   </p>
 </div>
 
+<div class="auth">
+  <button mat-button *ngIf="!lifeEventsService.firebaseService.auth.currentUser" 
+    (click)="lifeEventsService.loginAndSave()">
+    Login to Save <mat-icon>login</mat-icon>
+  </button>
+  
+  <button mat-button *ngIf="lifeEventsService.firebaseService.auth.currentUser" 
+    (click)="lifeEventsService.firebaseService.logout()">
+    Logout <mat-icon>logout</mat-icon>
+  </button>
+  <button mat-button *ngIf="lifeEventsService.firebaseService.auth.currentUser" 
+    (click)="lifeEventsService.save()">
+    Save <mat-icon>save</mat-icon>
+  </button>
+
+  <!-- <button (click)="lifeEventsService.save()">Save</button>
+  <button (click)="lifeEventsService.load()">Load</button>
+  <button (click)="lifeEventsService.firebaseService.login()">Login</button>
+  <button (click)="lifeEventsService.firebaseService.logout()">Logout</button>-->
+  
+  <!-- <span>{{lifeEventsService.firebaseService.auth.currentUser?.email}}</span>  -->
+</div>  
 
 <section class="cards" *ngIf="lifeEventsService.selectedLifeEvents | async as selectedLifeEvents">
   <ng-container *ngFor="let lifeEvent of selectedLifeEvents;let i = index">

@@ -4,6 +4,8 @@ import { AmortizedLoan, Cash, Component, ComponentKey, ComponentType, Job, Savin
 import { getComponent, setComponent } from '../utils/maya-ecs-entities';
 import { BehaviorSubject, Observable, Subject, asyncScheduler, merge } from 'rxjs';
 import { map, publishReplay, refCount, scan, shareReplay, startWith, tap, throttleTime } from 'rxjs/operators';
+import { FirebaseService } from './firebase.service';
+
 
 
 export enum ComponentActionType {
@@ -43,16 +45,16 @@ export class MayaUserExperienceService {
     ).pipe(
     scan((accum, val:ComponentAction) => {
       if(val.action === ComponentActionType.Add) {
-        console.log('ADDING', val)
+        // console.log('ADDING', val)
         accum.set(val.component.key, val.component);
       }
 
       if(val.action === ComponentActionType.Remove) {
-        console.log('removing', val)
+        // console.log('removing', val)
         accum.delete(val.component.key)
       }
 
-      console.log('accum components', accum);
+      // console.log('accum components', accum);
       return accum;
     }, new Map<ComponentKey,Component>()),
     shareReplay(),
@@ -61,8 +63,32 @@ export class MayaUserExperienceService {
   );
   
   alwaysOn = this.components.subscribe();
-  constructor() {
-    this.addComponent.next(new Cash(0))
+  constructor(
+    private firebaseService: FirebaseService
+  ) {
+    this.initializeComponents();
+  }
+  
+
+  async initializeComponents() {
+    const initializeAnonymousUser = () => {
+      this.addComponent.next(new Cash(0));
+      console.log('loaded anon component, cash only')
+    };
+    
+    const initializeLoggedInUser = async () => {
+      const components = (await this.firebaseService.loadActiveScenario()).components;
+      components.forEach(component => {
+        this.addComponent.next(component);
+      });
+      console.log('loaded from server', components)
+    }
+    
+    this.firebaseService.getUser().then(user => {
+      return user && user.email ? 
+        initializeLoggedInUser() : 
+        initializeAnonymousUser();
+    });
   }
 
   periodsUntilRetirement = 30;

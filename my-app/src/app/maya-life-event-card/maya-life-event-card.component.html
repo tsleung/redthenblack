@@ -8,11 +8,9 @@
       </figure>
       {{lifeEvent.createFriendlyFieldDescription()}}
     </p>
-    
     <a *ngIf="actionable" mat-button [routerLink]="lifeEvent.editHref">
       edit
     </a>
-
     <button *ngIf="actionable && lifeEvent.optional" mat-mini-fab color="accent" (click)="lifeEventsService.removeLifeEvent(lifeEvent)">
       <mat-icon>close</mat-icon>
     </button>
