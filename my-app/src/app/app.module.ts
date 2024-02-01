@@ -112,6 +112,7 @@ import { MayaLifeEventAssetsOnboardingComponent } from './maya-life-event-assets
 import { MayaLifeEventSavingsOnboardingComponent } from './maya-life-event-savings-onboarding/maya-life-event-savings-onboarding.component';
 import { EcsGalleryComponent } from './ecs-gallery/ecs-gallery.component';
 import { AddLoanLifeEventComponent } from './add-loan-life-event/add-loan-life-event.component';
+import { MayaCalloutContentComponent } from './maya-callout-content/maya-callout-content.component';
 
 
 @NgModule({
@@ -192,7 +193,7 @@ import { AddLoanLifeEventComponent } from './add-loan-life-event/add-loan-life-e
     MayaLifeEventSavingsOnboardingComponent,
     EcsGalleryComponent,
     AddLoanLifeEventComponent,
-
+    MayaCalloutContentComponent,
    
   ],
   imports: [

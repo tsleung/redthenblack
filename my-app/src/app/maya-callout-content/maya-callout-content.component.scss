@@ -1,0 +1,26 @@
+mat-card-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+figure {
+  margin: 0;
+  padding: 0;
+
+  img {
+    max-height: 240px;
+    display: block;
+  }
+}
+
+.actions {
+  display: flex;
+  flex: 1;
+  font-size: 18px;
+  padding: 1rem;
+
+  a {
+    white-space: nowrap;
+  }
+}

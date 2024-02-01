@@ -3,8 +3,6 @@ import { getFirestore, collection, addDoc, Firestore, setDoc, doc, getDocs, getD
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { Auth, GoogleAuthProvider, User, getAuth, signInWithCustomToken, signInWithPopup, signOut } from "firebase/auth";
 
-
-
 const firebaseConfig = {
   apiKey: "AIzaSyB9mymqUz2n07EjiMj37s3RXR1W_HkeIzc",
   authDomain: "red-then-black.firebaseapp.com",

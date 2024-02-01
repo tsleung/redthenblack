@@ -1,3 +1,14 @@
+<ng-container *ngIf="muxs.components | async as components">
+  <section *ngIf="components.size > 0">
+    <app-maya-callout-content
+      caption="Continue where you left off?"
+      content="We noticed you already have a plan in progress, you can pick up where you left off."
+      [image]="{src: imageAssetService.getAssetUrl('handshake_tight.png')}"
+      [action]="{primary: true, href:routingService.mapper.createLifeEventsRoute(), text:'Continue Plan'}"
+    ></app-maya-callout-content>
+  </section>
+</ng-container>
+
 <hgroup>
   <h2 class="subtitle">1. Define planning stage</h2>
   <h1 class="title">Which type are you?</h1>
@@ -6,7 +17,7 @@
   <a class="card" 
   [routerLink]="[routingService.mapper.createMayaOnboardingNewbie()]"
   >
-    <img src="assets/images/newbie.jpg" alt="">
+    <img [src]="imageAssetService.getAssetUrl('newbie.jpg')" alt="">
     <h3>
       Newbie
     </h3>
@@ -15,7 +26,7 @@
     </p>
   </a>
   <a class="card" [routerLink]="[routingService.mapper.createMayaOnboardingDipper()]">
-    <img src="assets/images/toe_dipper.jpg" alt="">
+    <img [src]="imageAssetService.getAssetUrl('toe_dipper.jpg')" alt="">
     <h3>
       Toe Dipper
     </h3>
@@ -24,7 +35,7 @@
     </p>
   </a>
   <a class="card" [routerLink]="[routingService.mapper.createMayaOnboardingFinancier()]">
-    <img src="assets/images/financier.jpg" alt="">
+    <img [src]="imageAssetService.getAssetUrl('financier.jpg')" alt="">
     <h3>
       Financier
     </h3>

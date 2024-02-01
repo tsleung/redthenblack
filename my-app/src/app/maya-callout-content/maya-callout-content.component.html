@@ -1,0 +1,31 @@
+<mat-card>
+<mat-card-content>
+  <main>
+    <hgroup>
+      <h2 class="subtitle" *ngIf="subtitle">
+        {{subtitle}}
+      </h2>
+      <h1 class="title" *ngIf="title">
+        {{title}}
+      </h1>
+      <h3 class="caption" *ngIf="caption">
+        {{caption}}
+      </h3>
+    </hgroup>
+    <p *ngIf="content">
+      {{content}}
+    </p>
+  </main>
+  <figure *ngIf="image">
+    <img [src]="image.src" alt="">
+  </figure>
+  <div class="actions" *ngIf="action">
+    <ng-container *ngIf="action && action.primary">
+      <a mat-flat-button color="primary" [routerLink]="[action.href]">{{action.text}}</a>
+    </ng-container>
+    <ng-container *ngIf="action && !action.primary">
+      <a mat-stroked-button [routerLink]="[action.href]">{{action.text}}</a>
+    </ng-container>
+  </div>
+</mat-card-content>
+</mat-card>

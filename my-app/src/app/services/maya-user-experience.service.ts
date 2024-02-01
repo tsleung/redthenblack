@@ -59,6 +59,9 @@ export class MayaUserExperienceService {
     }, new Map<ComponentKey,Component>()),
     shareReplay(),
     throttleTime(200, asyncScheduler, {trailing: true}),
+    tap(components => {
+      console.log('components', components);
+    }),
     startWith(new Map<ComponentKey,Component>()),
   );
   
@@ -118,10 +121,6 @@ export class MayaUserExperienceService {
     refCount(),
   );
 
-  
-
-
-  
   simulationsBalances = this.simulations.pipe(map(simulations => {
       const simulationsCashValue = simulations.map(simulation => {
         return simulation.map(period => {
