@@ -6,8 +6,9 @@ import { Observable } from 'rxjs';
 import { availableLifeEvents, createHighlightNumber } from '../config/life-event-config';
 import { LifeEvent } from '../utils/life-event-utils';
 import { FirebaseService } from './firebase.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-
+const SNACKBAR_DURATION = 2000;
 
 /**
  * All life events are kept in a single collection
@@ -86,7 +87,8 @@ export class LifeEventsService {
   }
   constructor(
     private muxs: MayaUserExperienceService,
-    public firebaseService: FirebaseService
+    readonly firebaseService: FirebaseService,
+    readonly snackbar: MatSnackBar,
   ) { }
 
   loginAndSave() {
@@ -99,6 +101,7 @@ export class LifeEventsService {
         console.log('saving components json', components);
         const json = structuredClone({components});
         this.firebaseService.signInAndSave(json);
+        this.snackbar.open('Logged in and saved', undefined ,{duration: SNACKBAR_DURATION});
     });
   }
   save() {
@@ -111,10 +114,20 @@ export class LifeEventsService {
         console.log('saving components json', components);
         const json = structuredClone({components});
         this.firebaseService.setActiveScenario(json);
+        this.snackbar.open('Saved', undefined ,{duration: SNACKBAR_DURATION});
     });
   }
   load() {
     this.muxs.initializeComponents();
+    this.snackbar.open('Loaded from last Saved', undefined ,{duration: SNACKBAR_DURATION});
+  }
+  login() {
+    this.firebaseService.login();
+    this.snackbar.open('Logged in', undefined ,{duration: SNACKBAR_DURATION});
+  }
+  logout() {
+    this.firebaseService.logout();
+    this.snackbar.open('Logged out', undefined ,{duration: SNACKBAR_DURATION});
   }
 }
 

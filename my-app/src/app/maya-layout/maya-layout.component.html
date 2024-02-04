@@ -15,7 +15,17 @@
     <div class="account">
       <span class="red rectangle"></span>
       <span class="tagline">Plan your future.</span>
-      <!-- Add the account here -->
+
+      <!-- <p>
+        <button mat-button *ngIf="!lifeEventsService.firebaseService.auth.currentUser" 
+          (click)="lifeEventsService.login()">
+          Login <mat-icon>login</mat-icon>
+        </button>
+        <button mat-button *ngIf="lifeEventsService.firebaseService.auth.currentUser" 
+          (click)="lifeEventsService.logout()">
+          Logout <mat-icon>logout</mat-icon>
+        </button>
+      </p> -->
     </div>
   </header>
   

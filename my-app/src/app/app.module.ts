@@ -2,6 +2,7 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 import { NgModule } from '@angular/core';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
@@ -222,6 +223,8 @@ import { MayaCalloutContentComponent } from './maya-callout-content/maya-callout
     HttpClientModule,
     ReactiveFormsModule,
     MatBottomSheetModule,
+    MatSnackBarModule,
+    
   ],
   providers: [
     ProfileService,

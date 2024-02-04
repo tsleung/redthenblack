@@ -62,6 +62,7 @@ export enum ComponentKey {
   AnniversaryCelebration='AnniversaryCelebration',
   ResidentialRealEstate='ResidentialRealEstate',
   CommercialRealEstate='CommercialRealEstate',
+  StocksAllocation='StocksAllocation',
 }
 export enum ComponentType {
   Value, // An asset which doesn't change, constant
@@ -69,6 +70,7 @@ export enum ComponentType {
   CashFlow, // directly effect the cash balance
   Contribution, // add value to a component type
   AmortizedLoan, // a loan which follows the amortization schedule
+  Allocation, // desired allocation of assets
   Milestone, // TBD (not used)
   Choices, // TBD (not used)
 }
@@ -206,8 +208,6 @@ export class Traditional401kContribution extends Contribution {
   key = ComponentKey.Traditional401kContribution;
   target = ComponentKey.Traditional401k;
 }
-
-
 
 export interface CashFlowComponent extends ContributionComponent{
   
@@ -491,6 +491,29 @@ export class Retirement extends Milestone implements MilestoneComponent{
   constructor(public period) {
     super();
   }
+}
+
+
+export interface AllocationComponent extends DelayedStartComponent{
+  allocation: number;
+  periods: number;
+  target: ComponentKey;
+}
+
+// Should this be the base of cash flow? inverse is deduction
+export class Allocation implements AllocationComponent {
+  key: ComponentKey;
+  type = ComponentType.Contribution;
+  startPeriod = NamedPeriods.StartPeriod;
+  target = ComponentKey.Cash;
+  
+  constructor(public allocation, public periods: number = NamedPeriods.SinglePeriod, target=ComponentKey.Cash) {
+  }
+}
+
+export class StocksAllocation extends Allocation {
+  key = ComponentKey.StocksAllocation;
+  target = ComponentKey.Stocks;
 }
 
 export interface AmortizedLoanComponent extends DelayedStartComponent{

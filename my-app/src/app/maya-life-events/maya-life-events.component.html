@@ -16,18 +16,23 @@
 
 <div class="auth">
   <button mat-button *ngIf="!lifeEventsService.firebaseService.auth.currentUser" 
-    (click)="lifeEventsService.firebaseService.login()">
+    (click)="lifeEventsService.login()">
     Login to Save <mat-icon>login</mat-icon>
   </button>
   
   <button mat-button *ngIf="lifeEventsService.firebaseService.auth.currentUser" 
-    (click)="lifeEventsService.firebaseService.logout()">
+    (click)="lifeEventsService.logout()">
     Logout <mat-icon>logout</mat-icon>
   </button>
   <button mat-button *ngIf="lifeEventsService.firebaseService.auth.currentUser" 
-    (click)="lifeEventsService.save()">
-    Save <mat-icon>save</mat-icon>
+    (click)="lifeEventsService.load()">
+    Load Plan<mat-icon>download</mat-icon>
   </button>
+  <button mat-button *ngIf="lifeEventsService.firebaseService.auth.currentUser" 
+    (click)="lifeEventsService.save()">
+    Save Plan Online<mat-icon>save</mat-icon>
+  </button>
+  
 
   <!-- <button (click)="lifeEventsService.save()">Save</button>
   <button (click)="lifeEventsService.load()">Load</button>

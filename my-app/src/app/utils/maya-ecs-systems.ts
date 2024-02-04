@@ -1,7 +1,7 @@
 
 // Systems
 
-import { AmortizedLoan, Cash, CashFlow, ComponentKey, ComponentType, Contribution, CostOfLiving, Job, Retirement, SavingsAccount, Stocks, ValueComponent, VolatileAsset } from "./maya-ecs-components";
+import { Allocation, AmortizedLoan, Cash, CashFlow, ComponentKey, ComponentType, Contribution, Job, Retirement, SavingsAccount, Stocks, ValueComponent, VolatileAsset } from "./maya-ecs-components";
 import { Entity, getComponent } from "./maya-ecs-entities";
 
 
@@ -19,6 +19,32 @@ export class VolatileAssetSystem implements System{
       .map(volatileAsset => volatileAsset as VolatileAsset)
       .forEach((volatileAsset: VolatileAsset) => {
         volatileAsset.value = volatileAsset.value * selectRandomFromList(volatileAsset.annualMultiplier) ?? 1;
+      });
+    }
+  }
+}
+
+/**
+ * Looks through items to rebalance. For when the rebalance is active, will act to move an asset class closer to its desired position.
+ * - Will sort all assets to be rebalanced based on its distance to desired target allocation.
+ * - Perform all sell actions on asset and add to cash
+ * - Perform all buy actions to subtract from cash and add to asset
+ * 
+ */
+export class AllocationSystem implements System{
+  name = 'AllocationSystem';
+  update(entities: Entity[], currentPeriod: number) {
+    for (const entity of entities) {
+      Array.from(entity.components.values())
+      .filter(suspect => suspect.type === ComponentType.Allocation)
+      .map(rebalance => rebalance as Allocation)
+      .forEach((rebalance: Allocation) => {
+        // allocation between 0-1
+        // get all the components and figure out their drift from target
+        
+
+
+
       });
     }
   }

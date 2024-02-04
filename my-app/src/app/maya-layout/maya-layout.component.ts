@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RoutingService } from '../services/routing.service';
+import { LifeEventsService } from '../services/life-events.service';
 
 @Component({
   selector: 'app-maya-layout',
@@ -8,7 +9,8 @@ import { RoutingService } from '../services/routing.service';
 })
 export class MayaLayoutComponent {
   constructor(
-    readonly routingService: RoutingService
+    readonly routingService: RoutingService,
+    readonly lifeEventsService: LifeEventsService
   ){
 
   }

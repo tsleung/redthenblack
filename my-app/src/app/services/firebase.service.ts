@@ -34,7 +34,7 @@ export class FirebaseService {
     signOut(this.auth).then(() => {
       console.log('logged out')
       // Sign-out successful.
-      window.location.reload();
+      // window.location.reload();
     }).catch((error) => {
       console.log('failed to logged out')
       // An error happened.

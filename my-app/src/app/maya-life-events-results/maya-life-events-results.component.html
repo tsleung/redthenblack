@@ -27,8 +27,11 @@
 
 <article>  
   <h1>
-    Your retirement confidence is fair
+    Your retirement confidence is fair.
   </h1>
+  <p>
+    This is just a simulation and not an absolute value. See the graph below to see how each one of your life events impacted your course towards retirement. 
+  </p>
   <figure>
     <app-maya-life-simulation-results-chart></app-maya-life-simulation-results-chart>
   </figure>
@@ -40,5 +43,11 @@
   </fieldset>
 </article>
 <section class="sign-up">
-  Sign up for an account
+  
+  <app-maya-callout-content
+      caption="Create an account to save your plan!"
+      content="You can return to your plan and track progress, adjust events and factors to keep on top of your plan."
+      [image]="{src: imageAssetService.getAssetUrl('handshake_tight.png')}"
+      [action]="{primary: true, href:routingService.mapper.createLifeEventsRoute(), text:'Create an account'}"
+  ></app-maya-callout-content>
 </section>
