@@ -2,6 +2,15 @@ mat-card-content {
   display: flex;
   flex-direction: row;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+main {
+  display: flex;
+  flex: 4;
+  flex-direction: column;
+
 }
 
 figure {
@@ -11,16 +20,21 @@ figure {
   img {
     max-height: 240px;
     display: block;
+    max-width: 100%;
   }
 }
 
 .actions {
   display: flex;
   flex: 1;
-  font-size: 18px;
-  padding: 1rem;
 
   a {
     white-space: nowrap;
+    display: flex;
+    flex: 1;
+    font-size: 18px;
+    line-height: 25px;
+    font-weight: 800;
+    padding: 14px 40px;
   }
 }
