@@ -75,7 +75,7 @@ export class FirebaseService {
         // IdP data available using getAdditionalUserInfo(result)
         console.log('user', user)
         // ...
-        window.location.reload();
+        
       }).catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;

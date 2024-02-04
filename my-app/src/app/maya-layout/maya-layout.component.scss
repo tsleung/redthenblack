@@ -4,6 +4,35 @@
   img {
     height: 68px;
   }
+  .spacer {
+    display: flex;
+    flex: 1;
+  }
+  header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .account {
+    display: flex;
+    align-items: center;
+  }
+  .rectangle {
+    display: block;
+    width: 29.5px;
+    height: 33.6px;
+    background: #FD5053;
+    rotate: 9deg;
+    position: relative;
+    left: 20px;
+  }
+
+  .tagline {
+    position: relative;
+    font-weight: 700;
+    font-size: 20.05px;
+    line-height: 27.39px;
+  }
 
   mat-toolbar {
     margin-bottom: 1rem;

@@ -5,9 +5,18 @@
 
 <div class="main">
   <header>
-    <a [routerLink]="routingService.mapper.createMayaRoute()">
+    <a class="logo" [routerLink]="routingService.mapper.createMayaRoute()">
       <img src="assets/images/logo.jpg" alt="R/B">
     </a>
+
+    <div class="spacer"></div>
+    
+
+    <div class="account">
+      <span class="red rectangle"></span>
+      <span class="tagline">Plan your future.</span>
+      <!-- Add the account here -->
+    </div>
   </header>
   
   <router-outlet></router-outlet>
