@@ -27,6 +27,7 @@ export interface LifeEvent {
   componentType: ComponentType;
   createComponent: () => Component;
   createFriendlyFieldDescription: () => string;
+  createSupplementary: () => string;
   calculators: Calculator[];
   optional: boolean;
 }

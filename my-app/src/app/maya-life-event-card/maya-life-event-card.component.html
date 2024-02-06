@@ -2,12 +2,17 @@
   <mat-card-content>
     {{lifeEvent.name}}
     <br>
-    <p>
-      <figure>
-        <mat-icon [fontIcon]="lifeEvent.icon"></mat-icon>
-      </figure>
+    
+    <figure>
+      <mat-icon [fontIcon]="lifeEvent.icon"></mat-icon>
+    </figure>
+    <div class="highlight">
       {{lifeEvent.createFriendlyFieldDescription()}}
-    </p>
+    </div>
+    <div class="supplementary">
+      {{lifeEvent.createSupplementary()}}
+    </div>
+    
     <a *ngIf="actionable" mat-button [routerLink]="lifeEvent.editHref">
       edit
     </a>

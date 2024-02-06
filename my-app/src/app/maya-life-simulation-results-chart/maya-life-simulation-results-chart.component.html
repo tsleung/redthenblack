@@ -1,8 +1,15 @@
 
 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" preserveContent>
-  <mat-tab label="Percentiles">
+  <mat-tab label="Thresholds">
     <ng-template matTabContent>
       <ng-container *ngIf="thresholdsChartData | async as chartData">
+        <app-bar-chart [chartData]="chartData" [legendOptions]="{show: false}" [gridOptions]="gridOptions" ></app-bar-chart>
+      </ng-container>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Percentiles">
+    <ng-template matTabContent>
+      <ng-container *ngIf="percentilesChartData | async as chartData">
         <app-bar-chart [chartData]="chartData" [legendOptions]="{show: false}" [gridOptions]="gridOptions" ></app-bar-chart>
       </ng-container>
     </ng-template>

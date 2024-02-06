@@ -45,7 +45,7 @@
   
   <!-- <span>{{lifeEventsService.firebaseService.auth.currentUser?.email}}</span>  -->
 </div>  
-
+<div class="label">Your current life events</div>
 <section class="cards" *ngIf="lifeEventsService.selectedLifeEvents | async as selectedLifeEvents">
   <ng-container *ngFor="let lifeEvent of selectedLifeEvents;let i = index">
       <app-maya-life-event-card actionable="true" [lifeEvent]="lifeEvent"></app-maya-life-event-card>

@@ -99,7 +99,7 @@ export class FirebaseService {
     }
 
     try {
-      await setDoc(doc(this.db, "ActiveScenario", currentUser.email), json);
+      await setDoc(doc(this.db, "ActiveScenario", currentUser.uid), json);
       console.log("Document written with ID: ", json);
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -113,7 +113,7 @@ export class FirebaseService {
       return;
     }
 
-    const docRef = doc(this.db, "ActiveScenario", currentUser.email);
+    const docRef = doc(this.db, "ActiveScenario", currentUser.uid);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {

@@ -4,6 +4,7 @@
   margin-right: .5rem;
 }
 .auth {
+  clear: both;
   display: flex;
   flex-direction: row-reverse;
 }
@@ -70,6 +71,11 @@ figure {
   }
 }
 
+.label {
+  font-weight: bold;
+  text-align: left;
+}
+
 .cards {
   clear: both;
   display: flex;
@@ -77,16 +83,16 @@ figure {
   flex: 1 0 25%;
   flex-wrap: wrap;
   position: relative;
-  margin: 3rem -1rem;
+  margin: 1rem -1rem;
 
   &:before {
-    content: 'Your current life events';
-    display: block;
-    font-weight: bold;
-    text-align: left;
-    position: absolute;
-    bottom: 100%;
-    left: 1rem;
+    // content: 'Your current life events';
+    // display: block;
+    // font-weight: bold;
+    // text-align: left;
+    // position: absolute;
+    // bottom: 100%;
+    // left: 1rem;
   }
 
   app-maya-life-event-card {

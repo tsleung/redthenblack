@@ -32,19 +32,55 @@
   <p>
     This is just a simulation and not an absolute value. See the graph below to see how each one of your life events impacted your course towards retirement. 
   </p>
-  <figure>
-    <app-maya-life-simulation-results-chart></app-maya-life-simulation-results-chart>
+  <figure *ngIf="thresholds | async as thresholds">
+    <app-maya-life-simulation-results-chart [thresholds]="thresholds"></app-maya-life-simulation-results-chart>
   </figure>
-  <fieldset>
+  <div class="thresholds">
     <h3>Defining your thresholds</h3>
     <p>
       Retirement is inherently personal, and there are always personal thresholds for what is goal “safe”, “target” and “reach” goal. Use the sliders to adjust the thresholds for your Target, Safety and Reach goals.
     </p>
-  </fieldset>
+    <div class="config">
+      <div class="target">
+        <div class="toggle">
+          <span>Target</span>
+        </div>
+        <mat-slider
+        [max]="1"
+        [min]="0"
+        [step]=".01">
+        <input matSliderThumb [formControl]="controls.target" type="range">
+      </mat-slider>
+      </div>
+      <div class="safety">
+        <div class="toggle">
+          <span>Safety</span>
+        </div>
+        <mat-slider
+        [max]="1"
+        [min]="0"
+        [step]=".01">
+        <input matSliderThumb [formControl]="controls.safety" type="range">
+      </mat-slider>
+      </div>
+      <div class="reach">
+        <div class="toggle">
+          <span>Reach</span>
+        </div>
+        <mat-slider
+        [max]="1"
+        [min]="0"
+        [step]=".01">
+        <input matSliderThumb [formControl]="controls.reach" type="range">
+      </mat-slider>
+      </div>
+    </div>
+
+  </div>
 </article>
 <section class="sign-up">
   
-  <app-maya-callout-content
+  <app-maya-callout-content *ngIf="!lifeEventsService.firebaseService.auth.currentUser"
       caption="Create an account to save your plan!"
       content="You can return to your plan and track progress, adjust events and factors to keep on top of your plan."
       [image]="{src: imageAssetService.getAssetUrl('handshake_tight.png')}"

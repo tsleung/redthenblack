@@ -444,6 +444,10 @@ export const availableLifeEvents:LifeEvent[] = shorthand.map(([name,IGNORE, crea
     return fields.map(field => `${field.name}: ${field.value}`).join(', ');
   };
 
+  const createSupplementary = () => {
+    return '';
+  };
+
   return {
     name,
     icon,
@@ -455,6 +459,7 @@ export const availableLifeEvents:LifeEvent[] = shorthand.map(([name,IGNORE, crea
     addHref,
     editHref,
     createFriendlyFieldDescription,
+    createSupplementary,
     calculators: [],
   };
 });

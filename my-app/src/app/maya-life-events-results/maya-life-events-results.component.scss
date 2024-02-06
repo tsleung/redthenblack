@@ -97,7 +97,6 @@ header {
   clear: both;
 }
 
-
 .hollow-circle {
   position: absolute;
   width: 80px;
@@ -105,4 +104,106 @@ header {
   border-radius: 50%; /* Make it a circle */
   border: 10px solid #f3f4f7; /* Create the hollow outline */
   background-color: transparent; /* Ensure it's hollow */
+}
+
+article {
+  margin: 0 1rem;
+}
+
+.thresholds {
+  h3 {
+    font-family: Manrope;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0em;
+    text-align: left;    
+  }
+
+  p {
+    font-family: Manrope;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 25px;
+    letter-spacing: 0em;
+    text-align: left;    
+  }
+}
+
+@mixin slider-color($color) {
+  --mdc-slider-handle-color: #{$color};  
+  --mdc-slider-focus-handle-color: #{$color};  
+  --mdc-slider-hover-handle-color: #{$color};  
+  --mdc-slider-ripple-color: #{$color};  
+  --mdc-slider-active-track-color: #{$color};
+  --mdc-slider-inactive-track-color: #{$color};
+  --mdc-slider-with-tick-marks-inactive-container-color: #{$color};
+  
+  --mat-slider-hover-state-layer-color: rgba(#{$color},.2);
+  --mat-slider-focus-state-layer-color: rgba(#{$color},.2);
+
+  --mat-slider-ripple-color: #{$color};
+  --mat-slider-header-selected-state-icon-background-color: #{$color};
+  --mat-slider-header-done-state-icon-background-color: #{$color};
+  --mat-slider-header-edit-state-icon-background-color: #{$color};
+  --mat-slider-header-error-state-label-text-color: #{$color};
+  --mat-slider-header-error-state-icon-foreground-color: #{$color};
+}
+
+.thresholds {
+  .config {
+    display: flex;
+    flex-direction: row;
+    
+    & > div {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+    }
+
+    .toggle span {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 25px;
+      letter-spacing: 0em;
+      text-align: left;
+    }
+  }
+  
+
+  .target {
+    
+
+    mat-slider-visual-thumb,
+    mat-slider { 
+      --mdc-slider-handle-color: #96BAFA;  
+      --mdc-slider-focus-handle-color: #96BAFA;  
+      --mdc-slider-hover-handle-color: #96BAFA;  
+      --mdc-slider-ripple-color: #96BAFA;  
+      --mdc-slider-active-track-color: #96BAFA;
+      --mdc-slider-inactive-track-color: #96BAFA;
+      --mdc-slider-with-tick-marks-inactive-container-color: #96BAFA;  
+      
+      --mat-slider-hover-state-layer-color: rgba(#96BAFA,.2);
+      --mat-slider-focus-state-layer-color: rgba(#96BAFA,.2);
+
+      --mat-slider-ripple-color: #96BAFA;
+      --mat-slider-header-selected-state-icon-background-color: #96BAFA;
+      --mat-slider-header-done-state-icon-background-color: #96BAFA;
+      --mat-slider-header-edit-state-icon-background-color: #96BAFA;
+      --mat-slider-header-error-state-label-text-color: #96BAFA;
+      --mat-slider-header-error-state-icon-foreground-color: #96BAFA;
+    }
+  }
+  .safety {
+    mat-slider{ 
+      @include slider-color(#6CD851)
+    }
+  }
+  .reach {
+    mat-slider{ 
+      @include slider-color(#FD5053)
+    }
+  }
+
 }
