@@ -17,20 +17,20 @@ enum NamedPeriods {
 export enum ComponentKey {
   Cash='Cash',
   CostOfLiving='Cost Of Living',
-  RetirementSpend='RetirementSpend',
+  RetirementSpend='Retirement Spend',
   Stocks='Stocks',
-  Traditional401k='Traditional401k',
-  Traditional401kContribution='Traditional401kContribution',
+  Traditional401k='Traditional 401k',
+  Traditional401kContribution='Traditional 401k Contribution',
   SavingsAccount='Savings Account',
   Job='Job',
   Retirement='Retirement',
   Mortgage='Mortgage',
-  StudentLoan='StudentLoan',
-  AutoLoan='AutoLoan',
-  SbaLoan='SbaLoan',
-  MyAllocationChoices='MyAllocationChoices',
-  ChildCare='ChildCare',
-  SeniorCare='SeniorCare',
+  StudentLoan='Student Loan',
+  AutoLoan='Auto Loan',
+  SbaLoan='SBA Loan',
+  MyAllocationChoices='My Allocation Choices',
+  ChildCare='Child Care',
+  SeniorCare='Senior Care',
   Wedding='Wedding',
   School='School',
   Travel='Travel',
@@ -43,26 +43,26 @@ export enum ComponentKey {
   Gifts='Gifts',
   Insurance='Insurance',
   Entrepreneurship='Entrepreneurship',
-  FertilityIVF='FertilityIVF',
-  FertilityBirth='FertilityBirth',
+  FertilityIVF='Fertility IVF',
+  FertilityBirth='Fertility Birth',
   Rental='Rental',
   HOA='HOA',
-  PropertyTax='PropertyTax',
-  RentalIncome='RentalIncome',
-  KidCollegeTuition='KidCollegeTuition',
-  KidsCollegeFund='KidsCollegeFund',
-  NiceBigHouse='NiceBigHouse',
-  FancyCar='FancyCar',
-  SocialSecurityIncome='SocialSecurityIncome',
-  BigTrip='BigTrip',
-  LongVacation='LongVacation',
+  PropertyTax='Property Tax',
+  RentalIncome='Rental Income',
+  KidCollegeTuition='Kid College Tuition',
+  KidsCollegeFund='Kids College Fund',
+  NiceBigHouse='Nice Big House',
+  FancyCar='Fancy Car',
+  SocialSecurityIncome='Social Security Income',
+  BigTrip='Big Trip',
+  LongVacation='Long Vacation',
   Sabbatical='Sabbatical',
-  FineDining='FineDining',
-  BirthdayCelebration='BirthdayCelebration',
-  AnniversaryCelebration='AnniversaryCelebration',
-  ResidentialRealEstate='ResidentialRealEstate',
-  CommercialRealEstate='CommercialRealEstate',
-  StocksAllocation='StocksAllocation',
+  FineDining='Fine Dining',
+  BirthdayCelebration='Birthday Celebration',
+  AnniversaryCelebration='Anniversary Celebration',
+  ResidentialRealEstate='Residential Real Estate',
+  CommercialRealEstate='Commercial Real Estate',
+  StocksAllocation='Stocks Allocation',
 }
 export enum ComponentType {
   Value, // An asset which doesn't change, constant
@@ -98,18 +98,6 @@ export class EarlyEnd implements EarlyEndComponent{
   endPeriod = NamedPeriods.EndPeriod;
   type: ComponentType
   key: ComponentKey;
-}
-
-export interface TimeBoundComponent extends Component, DelayedStartComponent, EarlyEndComponent{
-  startPeriod: number;
-  endPeriod: number;
-}
-
-export class Timebound implements TimeBoundComponent {
-  type: ComponentType
-  key: ComponentKey;
-  startPeriod = NamedPeriods.StartPeriod;
-  endPeriod = NamedPeriods.EndPeriod;
 }
 
 export interface ValueComponent extends Component{

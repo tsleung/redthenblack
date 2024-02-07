@@ -213,6 +213,8 @@ export class MayaUserExperienceService {
    * Find any simulations that have hit below 0, meaning ran out of money
    */
   retirementConfidence = this.simulationsBalances.pipe(map(simulations => {
+    // Optional: Will lock the simulation at zero if it dips to avoid confusion
+
     const minimumValue = simulations.map(simulation => {
       const minimumValue = Math.min(...simulation);
       return minimumValue;

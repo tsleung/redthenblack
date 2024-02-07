@@ -20,6 +20,7 @@ import { MayaLifeEventsResultsComponent } from './maya-life-events-results/maya-
 import { MayaLifeEventsListComponent } from './maya-life-events-list/maya-life-events-list.component';
 import { EcsGalleryComponent } from './ecs-gallery/ecs-gallery.component';
 import { AddLoanLifeEventComponent } from './add-loan-life-event/add-loan-life-event.component';
+import { LifeEventTimelineComponent } from './life-event-timeline/life-event-timeline.component';
 
 export const INTRO = {
   path: 'intro',
@@ -214,6 +215,10 @@ export const LIFE_EVENTS = [
   {
     path: 'life-events/results',
     component: MayaLifeEventsResultsComponent,
+  },
+  {
+    path: 'life-events/timeline',
+    component: LifeEventTimelineComponent,
   },
   {
     path: 'life-events',

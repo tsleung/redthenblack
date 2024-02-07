@@ -1,6 +1,7 @@
 
 // Systems
 
+import { fetchAllByType } from "./life-event-utils";
 import { Allocation, AmortizedLoan, Cash, CashFlow, ComponentKey, ComponentType, Contribution, Job, Retirement, SavingsAccount, Stocks, ValueComponent, VolatileAsset } from "./maya-ecs-components";
 import { Entity, getComponent } from "./maya-ecs-entities";
 
@@ -14,9 +15,7 @@ export class VolatileAssetSystem implements System{
   name = 'VolatileAssetSystem';
   update(entities: Entity[], currentPeriod: number) {
     for (const entity of entities) {
-      Array.from(entity.components.values())
-      .filter(suspect => suspect.type === ComponentType.VolatileAsset)
-      .map(volatileAsset => volatileAsset as VolatileAsset)
+      fetchAllByType<VolatileAsset>(entity.components, ComponentType.VolatileAsset)
       .forEach((volatileAsset: VolatileAsset) => {
         volatileAsset.value = volatileAsset.value * selectRandomFromList(volatileAsset.annualMultiplier) ?? 1;
       });
@@ -35,9 +34,8 @@ export class AllocationSystem implements System{
   name = 'AllocationSystem';
   update(entities: Entity[], currentPeriod: number) {
     for (const entity of entities) {
-      Array.from(entity.components.values())
-      .filter(suspect => suspect.type === ComponentType.Allocation)
-      .map(rebalance => rebalance as Allocation)
+
+      fetchAllByType<Allocation>(entity.components, ComponentType.Allocation)
       .forEach((rebalance: Allocation) => {
         // allocation between 0-1
         // get all the components and figure out their drift from target
@@ -127,7 +125,6 @@ export class LoanSystem implements System{
         
         // Open the loan and receive principal at start
         if(currentPeriod === amortizedLoan.startPeriod) {
-          console.log('LOAN adding cash balance', currentPeriod, amortizedLoan.startPeriod, amortizedLoan.principal)
           cash.value = cash.value + amortizedLoan.principal;
         }
 

@@ -4,7 +4,7 @@ import { MayaUserExperienceService } from '../services/maya-user-experience.serv
 import { ImageAssetService } from '../services/image-asset.service';
 import { RoutingService } from '../services/routing.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import { map, startWith } from 'rxjs/operators';
+import { debounceTime, map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-maya-life-events-results',
@@ -24,6 +24,7 @@ export class MayaLifeEventsResultsComponent {
     map(() => {
       return this.computeThresholds();
     }),
+    debounceTime(200),
     startWith(this.computeThresholds())
   );
 

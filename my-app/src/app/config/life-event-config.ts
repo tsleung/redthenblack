@@ -1,5 +1,5 @@
 
-import { AmortizedLoan, AnniversaryCelebration, AutoLoan, Bereavement, BigTrip, BirthdayCelebration, Cash, CashFlow, CashFlowComponent, ChildCare, Children, CommercialRealEstate, Component, ComponentKey, ComponentType, Contribution, CostOfLiving, DelayedStartComponent, Entrepreneurship, FancyCar, Fertility, FertilityBirth, FertilityIVF, FineDining, Gifts, Inheritance, Insurance, Job, KidCollegeTuition, KidsCollegeFund, LongVacation, Medical, Mortgage, NiceBigHouse, PropertyTax, RenovationAndRepairs, Rental, RentalIncome, ResidentialRealEstate, Retirement, RetirementSpend, Sabbatical, SavingsAccount, SbaLoan, School, SeniorCare, SocialSecurityIncome, Stocks, StudentLoan, TimeBoundComponent, Traditional401k, Traditional401kContribution, Travel, Value, VolatileAsset, Wedding } from '../utils/maya-ecs-components';
+import { AmortizedLoan, AnniversaryCelebration, AutoLoan, Bereavement, BigTrip, BirthdayCelebration, Cash, CashFlow, CashFlowComponent, ChildCare, Children, CommercialRealEstate, Component, ComponentKey, ComponentType, Contribution, CostOfLiving, DelayedStartComponent, Entrepreneurship, FancyCar, Fertility, FertilityBirth, FertilityIVF, FineDining, Gifts, Inheritance, Insurance, Job, KidCollegeTuition, KidsCollegeFund, LongVacation, Medical, Mortgage, NiceBigHouse, PropertyTax, RenovationAndRepairs, Rental, RentalIncome, ResidentialRealEstate, Retirement, RetirementSpend, Sabbatical, SavingsAccount, SbaLoan, School, SeniorCare, SocialSecurityIncome, Stocks, StudentLoan, Traditional401k, Traditional401kContribution, Travel, Value, VolatileAsset, Wedding } from '../utils/maya-ecs-components';
 import { Field, LifeEvent } from '../utils/life-event-utils';
 import { createLifeEventsAddTypeRoute, createLoanTypeRoute } from '../utils/route_mapper';
 
@@ -56,31 +56,6 @@ function createStartPeriodFields():Field[] {
       }
     },
   ];
-}
-
-function createTimeboundFields(): Field[] {
- return [
-  {
-    name: 'Start Period',
-    value: '0',
-    readFrom: (component: TimeBoundComponent, field: Field) => {
-      field.value = component.startPeriod;
-    },
-    updateTo: (component: TimeBoundComponent, field: Field) => {
-      component.startPeriod = Number(field.value) || 0;
-    }
-  },
-  {
-    name: 'End Period',
-    value: '120',
-    readFrom: (component: TimeBoundComponent, field: Field) => {
-      field.value = component.endPeriod;
-    },
-    updateTo: (component: TimeBoundComponent, field: Field) => {
-      component.endPeriod = Number(field.value) || 0;
-    }
-  },
-];
 }
 
 function createCashFlowFields(): Field[] {
@@ -477,6 +452,8 @@ export function createHighlightNumber(componentType: ComponentType, componentKey
       return createContributionHighlight(component as Contribution);
     case ComponentType.VolatileAsset:
       return createVolatileAssetHighlight(component as VolatileAsset);
+    case ComponentType.AmortizedLoan:
+      return createAmortizedLoanHighlight(component as AmortizedLoan);
     case ComponentType.Value:
       return createValueHighlight(component as Value);
     default:
@@ -491,6 +468,9 @@ export function createHighlightNumber(componentType: ComponentType, componentKey
   }
   function createVolatileAssetHighlight(component: VolatileAsset) {
     return component.value;
+  }
+  function createAmortizedLoanHighlight(component: AmortizedLoan) {
+    return component.principal;
   }
 }
 

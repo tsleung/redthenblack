@@ -26,11 +26,11 @@
 </header>
 
 <article>  
-  <h1>
-    Your retirement confidence is fair.
+  <h1 *ngIf="muxs.retirementConfidence | async as retirementConfidence" >
+    Your retirement confidence is {{retirementConfidence}}%
   </h1>
   <p>
-    This is just a simulation and not an absolute value. See the graph below to see how each one of your life events impacted your course towards retirement. 
+    This is just a simulation and not an absolute value given the plan and assumptions provided. See the graph below to see how each one of your life events impacted your course towards retirement. 
   </p>
   <figure *ngIf="thresholds | async as thresholds">
     <app-maya-life-simulation-results-chart [thresholds]="thresholds"></app-maya-life-simulation-results-chart>
@@ -43,9 +43,9 @@
     <div class="config">
       <div class="target">
         <div class="toggle">
-          <span>Target</span>
+          <span>Target ({{controls.target.value}})</span>
         </div>
-        <mat-slider
+        <mat-slider discrete
         [max]="1"
         [min]="0"
         [step]=".01">
@@ -54,7 +54,7 @@
       </div>
       <div class="safety">
         <div class="toggle">
-          <span>Safety</span>
+          <span>Safety ({{controls.safety.value}})</span>
         </div>
         <mat-slider
         [max]="1"
@@ -65,7 +65,7 @@
       </div>
       <div class="reach">
         <div class="toggle">
-          <span>Reach</span>
+          <span>Reach ({{controls.reach.value}})</span>
         </div>
         <mat-slider
         [max]="1"

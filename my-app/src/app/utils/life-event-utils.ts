@@ -31,3 +31,12 @@ export interface LifeEvent {
   calculators: Calculator[];
   optional: boolean;
 }
+
+export function fetchAllByType<T>(
+  collection: Map<ComponentKey,Component>, 
+  componentType: ComponentType
+):T[] {
+  return Array.from(collection.values())
+  .filter(suspect => suspect.type === componentType)
+  .map(component => component as T);
+}

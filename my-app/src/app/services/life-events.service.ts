@@ -47,7 +47,10 @@ export class LifeEventsService {
       lifeEvent.createFriendlyFieldDescription = createFriendlyFieldDescription;
 
       return lifeEvent;
-    }).filter(Boolean);
+    }).filter(Boolean)
+    .sort((a,b) => {
+      return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
+    });
   }),
   shareReplay(),
   );
