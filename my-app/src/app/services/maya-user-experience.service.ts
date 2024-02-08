@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { SimulationManager, Snapshot } from '../utils/maya-ecs';
 import { AmortizedLoan, Cash, Component, ComponentKey, ComponentType, Job, SavingsAccount, Stocks, Traditional401k, ValueComponent, VolatileAsset } from '../utils/maya-ecs-components';
 import { getComponent, setComponent } from '../utils/maya-ecs-entities';
-import { BehaviorSubject, Observable, Subject, asyncScheduler, merge } from 'rxjs';
-import { map, publishReplay, refCount, scan, shareReplay, startWith, tap, throttleTime } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, asyncScheduler, merge, of } from 'rxjs';
+import { catchError, debounceTime, filter, map, publishReplay, refCount, scan, shareReplay, startWith, tap, throttleTime } from 'rxjs/operators';
 import { FirebaseService } from './firebase.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -58,7 +59,8 @@ export class MayaUserExperienceService {
       return accum;
     }, new Map<ComponentKey,Component>()),
     shareReplay(),
-    throttleTime(200, asyncScheduler, {trailing: true}),
+    // throttleTime(200, asyncScheduler, {trailing: true}),
+    debounceTime(200),
     tap(components => {
       console.log('components', components);
     }),
@@ -67,7 +69,9 @@ export class MayaUserExperienceService {
   
   alwaysOn = this.components.subscribe();
   constructor(
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    readonly snackbar: MatSnackBar
+
   ) {
     this.initializeComponents();
   }
@@ -103,10 +107,12 @@ export class MayaUserExperienceService {
 
   numberOfSimulations = 500;
   // numberOfSimulations = 1;
-  simulations =  this.components.pipe(map(components => {
+  simulations:Observable<Snapshot[][]> = this.components.pipe(
+    filter(components => components.size > 0),
+    map(components => {
       const rootSnapshot = new Snapshot();
       const entity = rootSnapshot.entityManager.createEntity();
-      
+
       components.forEach(component => {
         setComponent(entity, component);
       });
@@ -116,6 +122,11 @@ export class MayaUserExperienceService {
         this.numberOfSimulations, 
         this.periodsUntilRetirement + this.periodsOfRetirement);
       return simulations;
+    }),
+    catchError(error => {
+      console.log('error', error);
+      this.snackbar.open(error, 'Done', {duration: 30e3});
+      return of([]);
     }),
     publishReplay(),
     refCount(),
@@ -170,11 +181,7 @@ export class MayaUserExperienceService {
             return threshold[i];
           });
         });
-
-
       return percentileSortedSimulations;
-
-      
     }));
  
     /**

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MayaUserExperienceService } from '../services/maya-user-experience.service';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -15,7 +15,9 @@ export class MayaLifeSimulationResultsChartComponent {
   ngOnChanges() {
 
     // maybe this should come from muxs or lifeeventservice, local for now
-    this.thresholdsChartData = this.muxs.percentileSortedSimulations.pipe(map(results => {
+    this.thresholdsChartData = this.muxs.percentileSortedSimulations.pipe(
+      filter(results => results.length > 0),
+      map(results => {
 
       const chartData: c3.Data = {
         columns: [],
@@ -64,7 +66,9 @@ export class MayaLifeSimulationResultsChartComponent {
     return chartData;
   }));
 
-  percentilesChartData = this.muxs.percentileSortedSimulations.pipe(map(results => {
+  percentilesChartData = this.muxs.percentileSortedSimulations.pipe(
+    filter(results => results.length > 0),
+    map(results => {
 
     const chartData: c3.Data = {
       columns: [],

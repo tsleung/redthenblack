@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { getFirestore, collection, addDoc, Firestore, setDoc, doc, getDocs, getDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, Firestore, setDoc, doc, getDocs, getDoc, deleteDoc } from "firebase/firestore";
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { Auth, GoogleAuthProvider, User, getAuth, signInWithCustomToken, signInWithPopup, signOut } from "firebase/auth";
 
@@ -105,6 +105,15 @@ export class FirebaseService {
       console.error("Error adding document: ", e);
     }
 
+  }
+
+  async deleteActiveScenario() {
+    const currentUser = this.auth.currentUser;
+    if (currentUser.isAnonymous) {
+      return;
+    }
+
+    await deleteDoc(doc(this.db, "ActiveScenario", currentUser.uid));
   }
 
   async loadActiveScenario() {

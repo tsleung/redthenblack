@@ -1,5 +1,5 @@
 import { Entity } from "./maya-ecs-entities";
-import { CashFlowSystem, LoanSystem, VolatileAssetSystem, System, ContributionSystem } from "./maya-ecs-systems";
+import { LoanSystem, VolatileAssetSystem, System, ContributionSystem } from "./maya-ecs-systems";
 
 class EntityManager {
   public readonly entities: Entity[] = [];

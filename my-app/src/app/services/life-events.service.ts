@@ -120,6 +120,10 @@ export class LifeEventsService {
         this.snackbar.open('Saved', undefined ,{duration: SNACKBAR_DURATION});
     });
   }
+  delete() {
+    this.firebaseService.deleteActiveScenario();
+    this.snackbar.open('Delete saved plan', undefined ,{duration: SNACKBAR_DURATION});
+  }
   load() {
     this.muxs.initializeComponents();
     this.snackbar.open('Loaded from last Saved', undefined ,{duration: SNACKBAR_DURATION});

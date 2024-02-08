@@ -3,7 +3,7 @@ import { MayaUserExperienceService } from '../services/maya-user-experience.serv
 import { RoutingService } from '../services/routing.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
-import { SavingsAccount, Stocks } from '../utils/maya-ecs-components';
+import { Cash, SavingsAccount, Stocks } from '../utils/maya-ecs-components';
 
 @Component({
   selector: 'app-maya-life-event-assets-onboarding',
@@ -28,8 +28,8 @@ export class MayaLifeEventAssetsOnboardingComponent {
       e.stopPropagation();
 
 
-      const savingsAccount = new SavingsAccount(this.controls.cash.value, [1.05]);
-      this.muxs.addComponent.next(savingsAccount);
+      const cash = new Cash(this.controls.cash.value);
+      this.muxs.addComponent.next(cash);
 
       const stocks = new Stocks(this.controls.assets.value, [1.1,1.1,1.1,1.1,.75]);
       this.muxs.addComponent.next(stocks);

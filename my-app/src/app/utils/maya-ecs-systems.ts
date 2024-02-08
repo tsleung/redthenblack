@@ -3,7 +3,7 @@
 
 import { fetchAllByType } from "./life-event-utils";
 import { Allocation, AmortizedLoan, Cash, CashFlow, ComponentKey, ComponentType, Contribution, Job, Retirement, SavingsAccount, Stocks, ValueComponent, VolatileAsset } from "./maya-ecs-components";
-import { Entity, getComponent } from "./maya-ecs-entities";
+import { Entity, getComponent, getMandatoryComponentOrError } from "./maya-ecs-entities";
 
 
 export interface System {
@@ -53,8 +53,6 @@ export class ContributionSystem implements System{
   name = 'ContributionSystem';
   update(entities: Entity[], currentPeriod: number) {
     for (const entity of entities) {
-      const cash = getComponent<Cash>(entity, ComponentKey.Cash);
-
       Array.from(entity.components.values())
       .filter(suspect => suspect.type === ComponentType.Contribution)
       .map(contribution => contribution as Contribution)
@@ -71,11 +69,11 @@ export class ContributionSystem implements System{
   }
 }
 
-export class CashFlowSystem implements System{
+class CashFlowSystem implements System{
   name = 'CashFlowSystem';
   update(entities: Entity[], currentPeriod: number) {
     for (const entity of entities) {
-      const cash = getComponent<Cash>(entity, ComponentKey.Cash);
+      const cash = getMandatoryComponentOrError<Cash>(entity, ComponentKey.Cash);
 
       Array.from(entity.components.values())
       .filter(suspect => suspect.type === ComponentType.CashFlow)
@@ -93,7 +91,7 @@ export class RetirementSystem implements System{
   name = 'RetirementSystem';
   update(entities: Entity[]) {
     for (const entity of entities) {
-      const job = getComponent<Job>(entity, ComponentKey.Job);
+      const job = getMandatoryComponentOrError<Job>(entity, ComponentKey.Job);
       if(job) {
         job.periods = job.periods - 1;
       }
@@ -115,7 +113,7 @@ export class LoanSystem implements System{
   update(entities: Entity[], currentPeriod: number) {
     for (const entity of entities) {
 
-      const cash = getComponent<Cash>(entity, ComponentKey.Cash);
+      const cash = getMandatoryComponentOrError<Cash>(entity, ComponentKey.Cash);
 
       Array.from(entity.components.values())
       .filter(suspect => suspect.type === ComponentType.AmortizedLoan)
@@ -170,7 +168,6 @@ export class LoanSystem implements System{
     return monthlyInterestPayment;
   }
 }
-
 
 // IncomeSystem, ExpenseSystem, LifeMilestoneSystem, CareerSystem (similar structure)
 

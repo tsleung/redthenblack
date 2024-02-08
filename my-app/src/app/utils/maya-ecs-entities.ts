@@ -17,3 +17,11 @@ export function getComponent<T>(entity: Entity, key: ComponentKey): T | undefine
 
   return value as T | undefined;
 }
+
+export function getMandatoryComponentOrError<T>(entity:Entity, componentKey: ComponentKey) {
+  const component = getComponent<T>(entity, componentKey);
+  if (!component) {
+    throw new Error(`Missing '${componentKey}'. Have you tried adding it to your plan? Please contact for help!`);
+  }
+  return component;
+}

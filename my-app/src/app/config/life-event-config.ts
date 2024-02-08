@@ -353,7 +353,7 @@ const fieldsMap = {
 };
 
 const shorthand: Array<[string, ComponentKey, () => Component]> = [
-  ['Starting Cash', ComponentKey.Cash, () => new Cash(5e3)],
+  ['Cash', ComponentKey.Cash, () => new Cash(5e3)],
   ['Cost of Living', ComponentKey.CostOfLiving, () => new CostOfLiving()],
   ['Retirement Spend', ComponentKey.RetirementSpend, () => new RetirementSpend()],
   ['Job', ComponentKey.Job, () => new Job()],

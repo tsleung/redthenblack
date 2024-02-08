@@ -25,6 +25,10 @@
     Logout <mat-icon>logout</mat-icon>
   </button>
   <button mat-button *ngIf="lifeEventsService.firebaseService.auth.currentUser" 
+    (click)="lifeEventsService.delete()">
+    Delete Plan<mat-icon>delete_forever</mat-icon>
+  </button>
+  <button mat-button *ngIf="lifeEventsService.firebaseService.auth.currentUser" 
     (click)="lifeEventsService.load()">
     Load Plan<mat-icon>download</mat-icon>
   </button>
