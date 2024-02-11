@@ -62,7 +62,8 @@ export enum ComponentKey {
   AnniversaryCelebration='Anniversary Celebration',
   ResidentialRealEstate='Residential Real Estate',
   CommercialRealEstate='Commercial Real Estate',
-  StocksAllocation='Stocks Allocation',
+  FixedStocksAllocation='Fixed Stocks Allocation',
+  DecreasingStocksAllocation='Decreasing Stocks Allocation',
 }
 export enum ComponentType {
   Value, // An asset which doesn't change, constant
@@ -70,7 +71,8 @@ export enum ComponentType {
   CashFlow, // directly effect the cash balance
   Contribution, // add value to a component type
   AmortizedLoan, // a loan which follows the amortization schedule
-  Allocation, // desired allocation of assets
+  FixedAllocation, // desired allocation of assets
+  DecreasingAllocation, // desired allocation of assets
   Milestone, // TBD (not used)
   Choices, // TBD (not used)
 }
@@ -482,25 +484,48 @@ export class Retirement extends Milestone implements MilestoneComponent{
 }
 
 
-export interface AllocationComponent extends DelayedStartComponent{
-  allocation: number;
+export interface FixedAllocationComponent extends DelayedStartComponent{
+  percentage: number;
   periods: number;
   target: ComponentKey;
 }
 
 // Should this be the base of cash flow? inverse is deduction
-export class Allocation implements AllocationComponent {
+export class FixedAllocation implements FixedAllocationComponent {
   key: ComponentKey;
-  type = ComponentType.Contribution;
+  type = ComponentType.FixedAllocation;
   startPeriod = NamedPeriods.StartPeriod;
   target = ComponentKey.Cash;
   
-  constructor(public allocation, public periods: number = NamedPeriods.SinglePeriod, target=ComponentKey.Cash) {
+  constructor(public percentage, public periods: number = NamedPeriods.SinglePeriod, target=ComponentKey.Cash) {
   }
 }
 
-export class StocksAllocation extends Allocation {
-  key = ComponentKey.StocksAllocation;
+export class FixedStocksAllocation extends FixedAllocation {
+  key = ComponentKey.FixedStocksAllocation;
+  target = ComponentKey.Stocks;
+}
+
+
+export interface DecreasingAllocationComponent extends DelayedStartComponent{
+  startPercentage: number;
+  endPercentage: number;
+  periods: number;
+  target: ComponentKey;
+}
+
+// Should this be the base of cash flow? inverse is deduction
+export class DecreasingAllocation implements DecreasingAllocationComponent {
+  key: ComponentKey;
+  type = ComponentType.DecreasingAllocation;
+  startPeriod = NamedPeriods.StartPeriod;
+  target = ComponentKey.Cash;
+  
+  constructor(public startPercentage, public endPercentage, public periods: number = NamedPeriods.SinglePeriod, target=ComponentKey.Cash) {
+  }
+}
+export class DecreasingStocksAllocation extends DecreasingAllocation {
+  key = ComponentKey.DecreasingStocksAllocation;
   target = ComponentKey.Stocks;
 }
 

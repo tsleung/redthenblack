@@ -1,6 +1,7 @@
 :host{
   display: block;
   margin: -1rem; 
+  min-height: 100vh;
 }
 header {
   display: flex;
@@ -151,6 +152,8 @@ article {
 }
 
 .thresholds {
+  min-height: 40vh;
+  
   .config {
     display: flex;
     flex-direction: row;

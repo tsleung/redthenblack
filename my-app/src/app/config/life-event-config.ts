@@ -1,14 +1,14 @@
 
-import { AmortizedLoan, AnniversaryCelebration, AutoLoan, Bereavement, BigTrip, BirthdayCelebration, Cash, CashFlow, CashFlowComponent, ChildCare, Children, CommercialRealEstate, Component, ComponentKey, ComponentType, Contribution, CostOfLiving, DelayedStartComponent, Entrepreneurship, FancyCar, Fertility, FertilityBirth, FertilityIVF, FineDining, Gifts, Inheritance, Insurance, Job, KidCollegeTuition, KidsCollegeFund, LongVacation, Medical, Mortgage, NiceBigHouse, PropertyTax, RenovationAndRepairs, Rental, RentalIncome, ResidentialRealEstate, Retirement, RetirementSpend, Sabbatical, SavingsAccount, SbaLoan, School, SeniorCare, SocialSecurityIncome, Stocks, StudentLoan, Traditional401k, Traditional401kContribution, Travel, Value, VolatileAsset, Wedding } from '../utils/maya-ecs-components';
+import { AmortizedLoan, AnniversaryCelebration, AutoLoan, Bereavement, BigTrip, BirthdayCelebration, Cash, CashFlow, CashFlowComponent, ChildCare, Children, CommercialRealEstate, Component, ComponentKey, ComponentType, Contribution, CostOfLiving, DelayedStartComponent, Entrepreneurship, FancyCar, Fertility, FertilityBirth, FertilityIVF, FineDining, FixedAllocation, FixedAllocationComponent, FixedStocksAllocation, Gifts, Inheritance, Insurance, Job, KidCollegeTuition, KidsCollegeFund, LongVacation, Medical, Mortgage, NiceBigHouse, PropertyTax, RenovationAndRepairs, Rental, RentalIncome, ResidentialRealEstate, Retirement, RetirementSpend, Sabbatical, SavingsAccount, SbaLoan, School, SeniorCare, SocialSecurityIncome, Stocks, StudentLoan, Traditional401k, Traditional401kContribution, Travel, Value, VolatileAsset, Wedding } from '../utils/maya-ecs-components';
 import { Field, LifeEvent } from '../utils/life-event-utils';
 import { createLifeEventsAddTypeRoute, createLoanTypeRoute } from '../utils/route_mapper';
 
 /** This may be better to reverse, icon as key and tags as matches */
 const iconMap = {
   Car: 'directions_car',
-  FancyCar: 'directions_car',
+  'Fancy Car': 'directions_car',
   Housing: 'home',
-  SeniorCare: 'home',
+  'SeniorCare': 'home',
   Travel: 'flight_takeoff',
   Wedding: 'favorite',
   School: 'school',
@@ -16,8 +16,8 @@ const iconMap = {
   ChildCare: 'child_care',
   Medical: 'medical_services',
   Fertility: 'baby_changing_station',
-  FertilityIVF: 'baby_changing_station',
-  FertilityBirth: 'baby_changing_station',
+  'Fertility IVF': 'baby_changing_station',
+  'Fertility Birth': 'baby_changing_station',
   Insurance: 'restore_page',
   Gifts: 'redeem',
   Inheritance: 'next_plan',
@@ -26,21 +26,24 @@ const iconMap = {
   Savings: 'account_balance',
   Job: 'work',
   Investment: 'trending_up',
-  RenovationAndRepairs: 'construction',
-  StudentLoan: 'school',
-  KidsCollegeFund: 'school',
-  KidCollegeTuition: 'school',
-  Stock: 'ssid_chart',
-  AutoLoan: 'car_crash',
+  'Renovation And Repairs': 'construction',
+  'Student Loan': 'school',
+  'Kids College Fund': 'school',
+  'Kid College Tuition': 'school',
+  Stocks: 'ssid_chart',
+  'Auto Loan': 'car_crash',
   Mortgage: 'home',
   Retirement: 'elderly',
-  SocialSecurityIncome: 'elderly',
-  'cost of living': 'living',
+  'Social Security Income': 'elderly',
+  'Cost Of Living': 'living',
   'SbaLoan': 'credit_score',
   'HOA': 'add_business',
   'PropertyTax' : 'home_work',
   'Rental': 'apartment',
   'RentalIncome': 'domain_add',
+  'Fixed Stocks Allocation': 'balance',
+  'Nice Big House': 'villa',
+  'Retirement Spend': 'holiday_village'
 }
 
 function createStartPeriodFields():Field[] {
@@ -53,6 +56,42 @@ function createStartPeriodFields():Field[] {
       },
       updateTo: (component: DelayedStartComponent, field: Field) => {
         component.startPeriod = Number(field.value) || 0;
+      }
+    },
+  ];
+}
+
+
+function createFixedAllocationFields():Field[] {
+  return [
+    {
+      name: 'Proportion of Assets',
+      value: '0',
+      readFrom: (component: FixedAllocationComponent, field: Field) => {
+        field.value = component.percentage;
+      },
+      updateTo: (component: FixedAllocationComponent, field: Field) => {
+        component.percentage = Number(field.value) || 0;
+      }
+    },
+    {
+      name: 'Start Period',
+      value: '0',
+      readFrom: (component: FixedAllocationComponent, field: Field) => {
+        field.value = component.startPeriod;
+      },
+      updateTo: (component: FixedAllocationComponent, field: Field) => {
+        component.startPeriod = Number(field.value) || 0;
+      }
+    },
+    {
+      name: 'Periods',
+      value: '1',
+      readFrom: (component: FixedAllocationComponent, field: Field) => {
+        field.value = component.periods;
+      },
+      updateTo: (component: FixedAllocationComponent, field: Field) => {
+        component.periods = Number(field.value) || 0;
       }
     },
   ];
@@ -157,6 +196,7 @@ function addAmortizedLoanFields():Field[] {
   ];
   return amortizedLoanFields;
 }
+
 
 
 const fieldsMap = {
@@ -349,6 +389,9 @@ const fieldsMap = {
   'AnniversaryCelebration': [
     ...createCashFlowFields(),
   ],
+  'Fixed Stocks Allocation': [
+    ...createFixedAllocationFields(),
+  ],
   
 };
 
@@ -360,6 +403,7 @@ const shorthand: Array<[string, ComponentKey, () => Component]> = [
   ['Traditional 401k', ComponentKey.Traditional401k, () => new Traditional401k(20e3, [...new Array(4).fill(1.1), .75])],
   ['Traditional 401k Contribution', ComponentKey.Traditional401kContribution, () => new Traditional401kContribution(20e3, 30)],
   ['Stocks', ComponentKey.Stocks, () => new Stocks(4e5, [...new Array(4).fill(1.1), .75])],
+  ['Fixed Stocks Allocation', ComponentKey.FixedStocksAllocation, () => new FixedStocksAllocation(0,60,ComponentKey.Stocks)],
   ['Fancy Car', ComponentKey.FancyCar, () => new FancyCar()],
   ['Nice Big House', ComponentKey.NiceBigHouse, () => new NiceBigHouse()],
   ['Kids College Tuition', ComponentKey.KidCollegeTuition, () => new KidCollegeTuition()],
@@ -456,9 +500,15 @@ export function createHighlightNumber(componentType: ComponentType, componentKey
       return createAmortizedLoanHighlight(component as AmortizedLoan);
     case ComponentType.Value:
       return createValueHighlight(component as Value);
+    case ComponentType.FixedAllocation:
+      return createFixedAllocationHighlight(component as FixedAllocation);
     default:
       return;
       
+  }
+
+  function createFixedAllocationHighlight(component: FixedAllocation) {
+    return component.percentage;
   }
   function createValueHighlight(component: Value) {
     return component.value;

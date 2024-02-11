@@ -2,7 +2,7 @@
 // Systems
 
 import { fetchAllByType } from "./life-event-utils";
-import { Allocation, AmortizedLoan, Cash, CashFlow, ComponentKey, ComponentType, Contribution, Job, Retirement, SavingsAccount, Stocks, ValueComponent, VolatileAsset } from "./maya-ecs-components";
+import { AmortizedLoan, Cash, CashFlow, ComponentKey, ComponentType, Contribution, FixedAllocation, Job, Retirement, SavingsAccount, Stocks, ValueComponent, VolatileAsset } from "./maya-ecs-components";
 import { Entity, getComponent, getMandatoryComponentOrError } from "./maya-ecs-entities";
 
 
@@ -28,20 +28,44 @@ export class VolatileAssetSystem implements System{
  * - Will sort all assets to be rebalanced based on its distance to desired target allocation.
  * - Perform all sell actions on asset and add to cash
  * - Perform all buy actions to subtract from cash and add to asset
- * 
+ * - R^2 percentage difference for getting as close to target allocation
  */
-export class AllocationSystem implements System{
-  name = 'AllocationSystem';
+export class FixedAllocationSystem implements System{
+  name = 'FixedAllocationSystem';
   update(entities: Entity[], currentPeriod: number) {
     for (const entity of entities) {
 
-      fetchAllByType<Allocation>(entity.components, ComponentType.Allocation)
-      .forEach((rebalance: Allocation) => {
+      const cash = getMandatoryComponentOrError<Cash>(entity, ComponentKey.Cash);
+      
+      const volatileAssets = fetchAllByType<VolatileAsset>(
+        entity.components, 
+        ComponentType.VolatileAsset
+      );
+
+      const volatileAssetsValue = volatileAssets.reduce((total, asset) => asset.value + total,0);
+      const totalPortfolioValue = Math.floor(cash.value + volatileAssetsValue);
+
+      fetchAllByType<FixedAllocation>(entity.components, ComponentType.FixedAllocation)
+      .forEach((allocation: FixedAllocation) => {
         // allocation between 0-1
         // get all the components and figure out their drift from target
+
+        const target = allocation.target;
+        const percentage = allocation.percentage;
+        const desiredPosition = percentage * totalPortfolioValue;
         
 
+        const volatileAsset = getMandatoryComponentOrError<VolatileAsset>(entity, target);
+        if(!volatileAsset) {
+          return volatileAsset;
+        }
+        const currentPosition = volatileAsset.value;
 
+        // TODO: This definitely needs a unit test and third party module
+        const contribution = desiredPosition - currentPosition;
+
+        volatileAsset.value = volatileAsset.value + contribution;
+        cash.value = cash.value - contribution;
 
       });
     }
