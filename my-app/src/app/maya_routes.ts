@@ -21,6 +21,7 @@ import { MayaLifeEventsListComponent } from './maya-life-events-list/maya-life-e
 import { EcsGalleryComponent } from './ecs-gallery/ecs-gallery.component';
 import { AddLoanLifeEventComponent } from './add-loan-life-event/add-loan-life-event.component';
 import { LifeEventTimelineComponent } from './life-event-timeline/life-event-timeline.component';
+import { ProfileAlternativeScenariosComponent } from './profile-alternative-scenarios/profile-alternative-scenarios.component';
 
 export const INTRO = {
   path: 'intro',
@@ -233,6 +234,18 @@ const ECS_GALLERY = [
   }
 ];
 
+const PROFILE = [
+  {
+    path: 'profile',
+    children: [
+      {
+        path: 'alternative-scenarios',
+        component: ProfileAlternativeScenariosComponent,
+      }
+    ]
+  }
+]
+
 export const MAYA_ROUTES: Routes = [
   {
     path: 'm/0',
@@ -245,6 +258,7 @@ export const MAYA_ROUTES: Routes = [
       ...LIFE_EVENTS,
       ...CALCULATOR,
       ...ECS_GALLERY,
+      ...PROFILE,
       { path: '**', redirectTo: 'intro' }
     ]
   }

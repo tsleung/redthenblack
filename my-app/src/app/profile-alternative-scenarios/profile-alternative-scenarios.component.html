@@ -1,0 +1,32 @@
+
+<div class="active-scenario">
+  <h2>Active Scenario</h2>
+  <fieldset *ngIf="activeScenario | async as activeScenario">
+    {{activeScenario | json}}
+
+  </fieldset>
+  <button (click)="firebaseService.convertSavedActiveScenarioToAlternativeScenario()"
+    color="primary"
+    mat-flat-button>Save to Alternatives</button>
+</div>
+<div class="alternative-scenarios">
+  <h2>Alternative Scenarios</h2>
+
+  <ul *ngIf="alternativeScenarios | async as docs">
+    <li *ngFor="let doc of docs">
+      
+      <fieldset>
+        <legend>{{doc.id}}</legend>
+        {{doc.data() | json}}
+        <br>
+        <button (click)="firebaseService.convertAlternativeScenarioToActiveScenario(doc.id)"
+        color="primary"
+          mat-flat-button>Set Active</button>
+        <button (click)="firebaseService.deleteAlternativeScenario(doc.id)"
+          color="accent"
+          mat-flat-button>Delete</button>
+      </fieldset>
+      
+    </li>
+  </ul>
+</div>

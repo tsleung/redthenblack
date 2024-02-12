@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { getFirestore, collection, addDoc, Firestore, setDoc, doc, getDocs, getDoc, deleteDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, Firestore, setDoc, doc, getDocs, getDoc, deleteDoc, query, where, DocumentData } from "firebase/firestore";
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { Auth, GoogleAuthProvider, User, getAuth, signInWithCustomToken, signInWithPopup, signOut } from "firebase/auth";
 
@@ -116,13 +116,97 @@ export class FirebaseService {
     await deleteDoc(doc(this.db, "ActiveScenario", currentUser.uid));
   }
 
-  async loadActiveScenario() {
+  async loadActiveScenario(): Promise<DocumentData> {
+    const promise = new Promise(resolve => {
+      this.auth.onAuthStateChanged(async currentUser => {
+        
+        if (currentUser.isAnonymous) {
+          return;
+        }
+
+        const docRef = doc(this.db, "ActiveScenario", currentUser.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          console.log("Document data:", docSnap.data());
+        } else {
+          // docSnap.data() will be undefined in this case
+          console.log("No such document!");
+        }
+
+        resolve( docSnap.data());
+      });
+      
+    });
+    
+    return promise;
+    
+  }
+
+  async saveAlternativeScenario(title: string, json: object) {
+    const currentUser = this.auth.currentUser;
+    if (currentUser.isAnonymous) {
+      return;
+    }
+    try {
+      const docRef = await addDoc(collection(this.db, "AlternativeScenario"), {
+        ...json,
+        'uid': currentUser.uid,
+        'title': title,
+      });
+      
+      console.log("Document written with ID: ", json);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
+
+  async loadAlternativeScenariosForCurrentUser() {
+    const promise = new Promise(resolve => {
+      this.auth.onAuthStateChanged(async currentUser => {
+        console.log('current user', currentUser)
+        if (currentUser.isAnonymous) {
+          return;
+        }
+        const dbRef = collection(this.db, "AlternativeScenario");
+    
+        const q = query(dbRef, where("uid", "==", currentUser.uid));
+    
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+        });
+    
+        console.log('query snapshot', querySnapshot)
+        resolve( querySnapshot.docs);
+      });
+      
+    });
+    
+    return promise;
+  }
+
+  convertSavedActiveScenarioToAlternativeScenario() {
+    this.loadActiveScenario().then(activeScenario => {
+      const title = window.prompt('Title');
+      this.saveAlternativeScenario(title, activeScenario);
+    });
+  }
+
+  convertAlternativeScenarioToActiveScenario(id: string) {
+    this.loadAlternativeScenario(id).then(scenario => {
+      this.setActiveScenario(scenario);
+    });
+  }
+
+  async loadAlternativeScenario(id: string) {
     const currentUser = this.auth.currentUser;
     if (currentUser.isAnonymous) {
       return;
     }
 
-    const docRef = doc(this.db, "ActiveScenario", currentUser.uid);
+    const docRef = doc(this.db, "AlternativeScenario", id);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -134,4 +218,14 @@ export class FirebaseService {
 
     return docSnap.data();
   }
+
+  async deleteAlternativeScenario(id: string) {
+    const currentUser = this.auth.currentUser;
+    if (currentUser.isAnonymous) {
+      return;
+    }
+
+    await deleteDoc(doc(this.db, "AlternativeScenario", id));
+  }
+
 }

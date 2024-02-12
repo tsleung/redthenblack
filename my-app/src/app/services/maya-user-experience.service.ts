@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SimulationManager, Snapshot } from '../utils/maya-ecs';
 import { AmortizedLoan, Cash, Component, ComponentKey, ComponentType, Job, SavingsAccount, Stocks, Traditional401k, ValueComponent, VolatileAsset } from '../utils/maya-ecs-components';
 import { getComponent, setComponent } from '../utils/maya-ecs-entities';
-import { BehaviorSubject, Observable, Subject, asyncScheduler, merge, of } from 'rxjs';
+import { Observable, Subject, merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, publishReplay, refCount, scan, shareReplay, startWith, tap, throttleTime } from 'rxjs/operators';
 import { FirebaseService } from './firebase.service';
 import { MatSnackBar } from '@angular/material/snack-bar';

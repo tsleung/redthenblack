@@ -3,8 +3,8 @@ import { LifeEventsService } from '../services/life-events.service';
 import { MayaUserExperienceService } from '../services/maya-user-experience.service';
 import { map } from 'rxjs/operators';
 import { ComponentType, Contribution } from '../utils/maya-ecs-components';
-import { fetchAllByType } from '../utils/life-event-utils';
 import { Observable } from 'rxjs';
+import { fetchAllByType } from '../utils/maya-ecs-utils';
 
 interface Timeline {
   items: TimelineItem[];

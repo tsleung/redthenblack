@@ -1,9 +1,8 @@
 
 // Systems
-
-import { fetchAllByType } from "./life-event-utils";
 import { AmortizedLoan, Cash, CashFlow, ComponentKey, ComponentType, Contribution, FixedAllocation, Job, Retirement, SavingsAccount, Stocks, ValueComponent, VolatileAsset } from "./maya-ecs-components";
 import { Entity, getComponent, getMandatoryComponentOrError } from "./maya-ecs-entities";
+import { executeReallocation, fetchAllByType, totalCashValue, totalVolatileAssetValue } from "./maya-ecs-utils";
 
 
 export interface System {
@@ -37,13 +36,12 @@ export class FixedAllocationSystem implements System{
 
       const cash = getMandatoryComponentOrError<Cash>(entity, ComponentKey.Cash);
       
-      const volatileAssets = fetchAllByType<VolatileAsset>(
-        entity.components, 
-        ComponentType.VolatileAsset
-      );
+      const volatileAssetsValue = totalVolatileAssetValue(entity);
 
-      const volatileAssetsValue = volatileAssets.reduce((total, asset) => asset.value + total,0);
-      const totalPortfolioValue = Math.floor(cash.value + volatileAssetsValue);
+      const totalPortfolioValue = Math.floor(
+        totalCashValue(entity) +
+        volatileAssetsValue
+      );
 
       fetchAllByType<FixedAllocation>(entity.components, ComponentType.FixedAllocation)
       .forEach((allocation: FixedAllocation) => {
@@ -52,26 +50,19 @@ export class FixedAllocationSystem implements System{
 
         const target = allocation.target;
         const percentage = allocation.percentage;
-        const desiredPosition = percentage * totalPortfolioValue;
         
-
         const volatileAsset = getMandatoryComponentOrError<VolatileAsset>(entity, target);
-        if(!volatileAsset) {
-          return volatileAsset;
-        }
-        const currentPosition = volatileAsset.value;
+        const desiredPosition = percentage * totalPortfolioValue;
 
-        // TODO: This definitely needs a unit test and third party module
-        const contribution = desiredPosition - currentPosition;
-
-        volatileAsset.value = volatileAsset.value + contribution;
-        cash.value = cash.value - contribution;
-
+        executeReallocation(
+          cash,
+          volatileAsset,
+          desiredPosition,
+        );
       });
     }
   }
 }
-
 
 export class ContributionSystem implements System{
   name = 'ContributionSystem';
@@ -83,51 +74,9 @@ export class ContributionSystem implements System{
       .filter(contribution => currentPeriod >= contribution.startPeriod)
       .filter(contribution => currentPeriod < contribution.startPeriod + contribution.periods)
       .forEach((contribution: Contribution) => {
-        const valueComponent = getComponent<ValueComponent>(entity, contribution.target);
-        if(valueComponent) { // need to indicate when a contribution doesn't land anywhere
-          valueComponent.value = (valueComponent.value ?? 0) + (contribution.contribution ?? 0);
-        }
-        
+        const valueComponent = getMandatoryComponentOrError<ValueComponent>(entity, contribution.target);
+        valueComponent.value = (valueComponent.value ?? 0) + (contribution.contribution ?? 0);
       });
-    }
-  }
-}
-
-class CashFlowSystem implements System{
-  name = 'CashFlowSystem';
-  update(entities: Entity[], currentPeriod: number) {
-    for (const entity of entities) {
-      const cash = getMandatoryComponentOrError<Cash>(entity, ComponentKey.Cash);
-
-      Array.from(entity.components.values())
-      .filter(suspect => suspect.type === ComponentType.CashFlow)
-      .map(cashFlow => cashFlow as CashFlow)
-      .filter(cashFlow => currentPeriod >= cashFlow.startPeriod)
-      .filter(cashFlow => currentPeriod < cashFlow.startPeriod + cashFlow.periods)
-      .forEach((cashFlow: CashFlow) => {
-        cash.value = cash.value + cashFlow.contribution;
-      });
-    }
-  }
-}
-
-export class RetirementSystem implements System{
-  name = 'RetirementSystem';
-  update(entities: Entity[]) {
-    for (const entity of entities) {
-      const job = getMandatoryComponentOrError<Job>(entity, ComponentKey.Job);
-      if(job) {
-        job.periods = job.periods - 1;
-      }
-      
-      const retirement = getComponent<Retirement>(entity, ComponentKey.Retirement);
-      if(retirement) {
-        retirement.period = retirement.period - 1;
-        
-        if(retirement.period <=0) {
-          job.periods = 0;
-        }
-      }
     }
   }
 }
