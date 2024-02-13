@@ -24,6 +24,9 @@
     (click)="lifeEventsService.logout()">
     Logout <mat-icon>logout</mat-icon>
   </button>
+  <a mat-button [routerLink]="routingService.mapper.createAlternativeScenariosRoute()">
+    Manage Saved Scenarios <mat-icon>folder_managed</mat-icon>
+  </a>
   <button mat-button *ngIf="lifeEventsService.firebaseService.auth.currentUser" 
     (click)="lifeEventsService.delete()">
     Delete Plan<mat-icon>delete_forever</mat-icon>

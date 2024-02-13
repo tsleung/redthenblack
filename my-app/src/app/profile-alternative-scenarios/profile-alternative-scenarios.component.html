@@ -1,24 +1,38 @@
+<a class="back" [routerLink]="routingService.mapper.createLifeEventsRoute()">
+  <mat-icon>keyboard_backspace</mat-icon> Life Events
+</a>
+<br>
 
 <div class="active-scenario">
   <h2>Active Scenario</h2>
-  <fieldset *ngIf="activeScenario | async as activeScenario">
-    {{activeScenario | json}}
-
-  </fieldset>
-  <button (click)="firebaseService.convertSavedActiveScenarioToAlternativeScenario()"
-    color="primary"
-    mat-flat-button>Save to Alternatives</button>
+  <ng-container *ngIf="activeScenario | async as activeScenario">
+    
+    <span *ngFor="let component of activeScenario.components;let isLast=last">
+      {{component.key}}{{isLast ? '' : ', '}}
+    </span>
+    <br><br>
+    <button (click)="firebaseService.convertSavedActiveScenarioToAlternativeScenario()"
+      color="primary"
+      mat-flat-button>Save to Alternatives</button>
+  </ng-container>
+  
 </div>
+<br>
 <div class="alternative-scenarios">
   <h2>Alternative Scenarios</h2>
 
-  <ul *ngIf="alternativeScenarios | async as docs">
-    <li *ngFor="let doc of docs">
+  <ng-container *ngIf="alternativeScenarios | async as docs">
+    <ng-container *ngFor="let doc of docs">
       
       <fieldset>
-        <legend>{{doc.id}}</legend>
-        {{doc.data() | json}}
-        <br>
+        <legend title="{{doc.id}}">
+          <b>{{doc.data().title}}</b>
+        </legend>
+        <span *ngFor="let component of doc.data().components;let isLast=last">
+          {{component.key}}{{isLast ? '' : ', '}}
+        </span>
+        
+        <br><br>
         <button (click)="firebaseService.convertAlternativeScenarioToActiveScenario(doc.id)"
         color="primary"
           mat-flat-button>Set Active</button>
@@ -27,6 +41,6 @@
           mat-flat-button>Delete</button>
       </fieldset>
       
-    </li>
-  </ul>
+    </ng-container>
+  </ng-container>
 </div>

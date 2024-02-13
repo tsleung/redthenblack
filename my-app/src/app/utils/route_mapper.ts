@@ -119,6 +119,13 @@ export function createMillionaireArticleRoute() {
   return createArticlesRoute() + '/millionaire';
 }
 
+export function createProfileRoute() {
+  return createMayaRoute() + '/profile';
+}
+export function createAlternativeScenariosRoute() {
+  return createProfileRoute() + '/alternative-scenarios';
+}
+
 export function createEcsRoute() {
   return createMayaRoute() + '/ecs';
 }
