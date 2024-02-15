@@ -2,8 +2,42 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<mat-drawer-container>
+<mat-drawer #drawer mode="over" position="end">
+  <mat-list>
+    <a mat-list-item [routerLink]="routingService.mapper.createLifeEventsRoute()"
+    [routerLinkActive]="['is-active']">
+      <span matListItemTitle>Life Events</span>
+      <span>Life events currently being planned</span>
+    </a>
 
-<div class="main">
+    <a mat-list-item [routerLink]="routingService.mapper.createAlternativeScenariosRoute()"
+    [routerLinkActive]="['is-active']">
+      <span matListItemTitle>Profile</span>
+      <span matListItemLine>Active Scenario, Saved Scenarios</span>
+    </a>
+
+    <a mat-list-item [routerLink]="routingService.mapper.createEcsGalleryRoute()"
+    [routerLinkActive]="['is-active']">
+      <span matListItemTitle>Gallery</span>
+      <span>Visual representating of each model</span>
+    </a>
+
+    <a mat-list-item [routerLink]="routingService.mapper.createMayaCalculatorList()"
+    [routerLinkActive]="['is-active']">
+      <span matListItemTitle>Articles</span>
+      <span matListItemLine>Articles for how the models work</span>
+    </a>
+<!-- 
+    <a mat-list-item [routerLink]="routingService.mapper.createLearnRoute()"
+    [routerLinkActive]="['is-active']">
+      <span matListItemTitle>Philosophy</span>
+      <span matListItemLine>Introduction for our approach to retirement</span>
+    </a> -->
+  </mat-list>
+  
+</mat-drawer>
+<mat-drawer-content class="main">
   <header>
     <a class="logo" [routerLink]="routingService.mapper.createMayaRoute()">
       <img src="assets/images/logo.jpg" alt="R/B">
@@ -12,9 +46,13 @@
     <div class="spacer"></div>
     
 
-    <div class="account">
-      <span class="red rectangle"></span>
-      <span class="tagline">Plan your future.</span>
+    <button class="nav" mat-flat-button (click)="drawer.toggle()">
+      <span class="label">
+        <span class="red rectangle"></span>
+        <span class="tagline">Plan your future.</span>
+      </span>
+      
+      
 
       <!-- <p>
         <button mat-button *ngIf="!lifeEventsService.firebaseService.auth.currentUser" 
@@ -26,11 +64,11 @@
           Logout <mat-icon>logout</mat-icon>
         </button>
       </p> -->
-    </div>
+    </button>
   </header>
   
   <router-outlet></router-outlet>
-</div>
+</mat-drawer-content>>
 <footer>
   <details>
     <summary>Legacy Links</summary>
@@ -43,3 +81,4 @@
     </ul>    
   </details>
 </footer>
+</mat-drawer-container>

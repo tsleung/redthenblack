@@ -1,6 +1,7 @@
 :host {
   padding: .5rem 0;
   
+  
   img {
     height: 68px;
   }
@@ -13,7 +14,11 @@
     flex-direction: row;
     align-items: center;
   }
-  .account {
+  .nav {
+    padding: 2rem 0.5rem;
+  }
+  .nav, 
+  .label {
     display: flex;
     align-items: center;
   }
@@ -46,7 +51,7 @@
     height: auto;
   }
 
-  > .main {
+  .main {
     margin: 0 auto;
     max-width: 1200px;
     padding: 1rem;
@@ -57,4 +62,24 @@
     margin: 0 auto;
     max-width: 1200px;
   }
+
+  mat-drawer-content {
+    background-color: #fff;
+  }
+
+  .mat-drawer-container {
+    min-height: 100vh;
+  }
+
+  .mdc-list-item.is-active span{
+    font-weight: bold;
+  }
+  .mdc-list-item:hover {
+    background-color: #eeeß;
+  }
+  .mdc-list-item {
+    
+    cursor: pointer;
+  }
+
 }

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { LifeEventsService } from '../services/life-events.service';
 import { SimulationManager, Snapshot } from '../utils/maya-ecs';
 import { setComponent } from '../utils/maya-ecs-entities';
-import { Cash, ValueComponent } from '../utils/maya-ecs-components';
+import { Cash, Stocks, Traditional401k, ValueComponent } from '../utils/maya-ecs-components';
 
 interface Exhibit {
   name: string;
@@ -30,8 +30,13 @@ export class EcsGalleryComponent {
       const simulationManager = new SimulationManager();
       const snapshot = new Snapshot();
       const entity = snapshot.entityManager.createEntity();
+
+      // initialize dependencies
       setComponent(entity, new Cash(0));
+      setComponent(entity, new Traditional401k(0,[1]));
+      setComponent(entity, new Stocks(0,[1]));
       setComponent(entity, component);
+
     
       // run simulator
       const simulations = simulationManager.createSimulations(
