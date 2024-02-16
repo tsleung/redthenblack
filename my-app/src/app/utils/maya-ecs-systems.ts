@@ -52,6 +52,46 @@ export class FixedAllocationSystem implements System{
         const percentage = allocation.percentage;
         
         const volatileAsset = getMandatoryComponentOrError<VolatileAsset>(entity, target);
+
+        // this might need a module for a constant fixed allocation
+        const desiredPosition = percentage * totalPortfolioValue;
+
+        executeReallocation(
+          cash,
+          volatileAsset,
+          desiredPosition,
+        );
+      });
+    }
+  }
+}
+
+export class PolynomialAllocationSystem implements System{
+  name = 'PolynomialAllocationSystem';
+  update(entities: Entity[], currentPeriod: number) {
+    for (const entity of entities) {
+
+      const cash = getMandatoryComponentOrError<Cash>(entity, ComponentKey.Cash);
+      
+      const volatileAssetsValue = totalVolatileAssetValue(entity);
+
+      const totalPortfolioValue = Math.floor(
+        totalCashValue(entity) +
+        volatileAssetsValue
+      );
+
+      fetchAllByType<FixedAllocation>(entity.components, ComponentType.FixedAllocation)
+      .forEach((allocation: FixedAllocation) => {
+        // allocation between 0-1
+        // get all the components and figure out their drift from target
+
+        const target = allocation.target;
+        const percentage = allocation.percentage;
+        
+        const volatileAsset = getMandatoryComponentOrError<VolatileAsset>(entity, target);
+
+        // this might need a module for calculating the new allocation given variables
+        // should do linear and 2nd degree for each factor, period, and distance to target
         const desiredPosition = percentage * totalPortfolioValue;
 
         executeReallocation(

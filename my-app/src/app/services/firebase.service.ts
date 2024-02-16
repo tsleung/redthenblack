@@ -148,17 +148,22 @@ export class FirebaseService {
     if (currentUser.isAnonymous) {
       return;
     }
-    try {
-      const docRef = await addDoc(collection(this.db, "AlternativeScenario"), {
-        ...json,
-        'uid': currentUser.uid,
-        'title': title,
-      });
-      
-      console.log("Document written with ID: ", json);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
+    return new Promise(async (resolve, reject) => {
+      try {
+        const docRef = await addDoc(collection(this.db, "AlternativeScenario"), {
+          ...json,
+          'uid': currentUser.uid,
+          'title': title,
+        });
+        
+        console.log("Document written with ID: ", json);
+        resolve(docRef);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+        reject('error adding document');
+      }
+    });
+    
   }
 
   async loadAlternativeScenariosForCurrentUser() {
@@ -188,15 +193,15 @@ export class FirebaseService {
   }
 
   convertSavedActiveScenarioToAlternativeScenario() {
-    this.loadActiveScenario().then(activeScenario => {
+    return this.loadActiveScenario().then(activeScenario => {
       const title = window.prompt('Title');
-      this.saveAlternativeScenario(title, activeScenario);
+      return this.saveAlternativeScenario(title, activeScenario);
     });
   }
 
   convertAlternativeScenarioToActiveScenario(id: string) {
-    this.loadAlternativeScenario(id).then(scenario => {
-      this.setActiveScenario(scenario);
+    return this.loadAlternativeScenario(id).then(scenario => {
+      return this.setActiveScenario(scenario);
     });
   }
 

@@ -11,7 +11,7 @@
       {{component.key}}{{isLast ? '' : ', '}}
     </span>
     <br><br>
-    <button (click)="firebaseService.convertSavedActiveScenarioToAlternativeScenario()"
+    <button (click)="convertSavedActiveScenarioToAlternativeScenario()"
       color="primary"
       mat-flat-button>Save to Alternatives</button>
   </ng-container>
@@ -33,10 +33,10 @@
         </span>
         
         <br><br>
-        <button (click)="firebaseService.convertAlternativeScenarioToActiveScenario(doc.id)"
+        <button (click)="convertAlternativeScenarioToActiveScenario(doc.id)"
         color="primary"
           mat-flat-button>Set Active</button>
-        <button (click)="firebaseService.deleteAlternativeScenario(doc.id)"
+        <button (click)="deleteAlternativeScenario(doc.id)"
           color="accent"
           mat-flat-button>Delete</button>
       </fieldset>

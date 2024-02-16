@@ -27,4 +27,24 @@ export class ProfileAlternativeScenariosComponent {
     ) {
 
   }
+
+  convertSavedActiveScenarioToAlternativeScenario() {
+    this.firebaseService.convertSavedActiveScenarioToAlternativeScenario().then(() => {
+      window.location.reload();
+    });
+  }
+
+  convertAlternativeScenarioToActiveScenario(id: string) {
+    this.firebaseService.convertAlternativeScenarioToActiveScenario(id).then(() => {
+      window.location.reload();
+    })
+  }
+
+  deleteAlternativeScenario(id: string) {
+    this.firebaseService.deleteAlternativeScenario(id).then(() => {
+      window.location.reload();
+    })
+  }
+
+
 }
