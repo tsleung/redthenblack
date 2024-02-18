@@ -3,6 +3,8 @@ import { FirebaseService } from '../services/firebase.service';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RoutingService } from '../services/routing.service';
+import { MayaUserExperienceService } from '../services/maya-user-experience.service';
+import { createLifeEventsRoute } from '../utils/route_mapper';
 
 @Component({
   selector: 'app-profile-alternative-scenarios',
@@ -24,6 +26,7 @@ export class ProfileAlternativeScenariosComponent {
   constructor(
     readonly firebaseService: FirebaseService,
     readonly routingService: RoutingService,
+    readonly muxs: MayaUserExperienceService
     ) {
 
   }
@@ -36,7 +39,7 @@ export class ProfileAlternativeScenariosComponent {
 
   convertAlternativeScenarioToActiveScenario(id: string) {
     this.firebaseService.convertAlternativeScenarioToActiveScenario(id).then(() => {
-      window.location.reload();
+      this.routingService.navigate(createLifeEventsRoute());
     })
   }
 

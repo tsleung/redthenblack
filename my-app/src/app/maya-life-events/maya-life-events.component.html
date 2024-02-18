@@ -29,7 +29,7 @@
   </a>
   <button mat-button *ngIf="lifeEventsService.firebaseService.auth.currentUser" 
     (click)="lifeEventsService.delete()">
-    Delete Plan<mat-icon>delete_forever</mat-icon>
+    Delete Active Scenario<mat-icon>delete_forever</mat-icon>
   </button>
   <button mat-button *ngIf="lifeEventsService.firebaseService.auth.currentUser" 
     (click)="lifeEventsService.load()">
@@ -39,18 +39,6 @@
     (click)="lifeEventsService.save()">
     Save Plan Online<mat-icon>save</mat-icon>
   </button>
-  
-
-  <!-- <button (click)="lifeEventsService.save()">Save</button>
-  <button (click)="lifeEventsService.load()">Load</button>
-  <button mat-button *ngIf="!lifeEventsService.firebaseService.auth.currentUser" 
-    (click)="lifeEventsService.loginAndSave()">
-    Login to Save <mat-icon>login</mat-icon>
-  </button>
-  <button (click)="lifeEventsService.firebaseService.login()">Login</button>
-  <button (click)="lifeEventsService.firebaseService.logout()">Logout</button>-->
-  
-  <!-- <span>{{lifeEventsService.firebaseService.auth.currentUser?.email}}</span>  -->
 </div>  
 <div class="label">Your current life events</div>
 <section class="cards" *ngIf="lifeEventsService.selectedLifeEvents | async as selectedLifeEvents">

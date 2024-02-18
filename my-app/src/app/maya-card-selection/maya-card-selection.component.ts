@@ -15,12 +15,7 @@ export class MayaCardSelectionComponent {
   constructor(readonly routingService: RoutingService,
     protected muxs: MayaUserExperienceService,
     protected imageAssetService: ImageAssetService,
-  ) {
-    this.checkIfAlreadyOnboarded();
-  }
-
-  checkIfAlreadyOnboarded() {
-    // check if there are currently components, if so, 
+  ) { 
   }
 }
 

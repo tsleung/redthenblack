@@ -1,0 +1,20 @@
+
+<a class="back" [routerLink]="routingService.mapper.createLifeEventsRoute()">
+  <mat-icon>keyboard_backspace</mat-icon> Life Events
+</a>
+<br>
+
+<div class="active-scenario">
+  <h2>Scenario</h2>
+  <ng-container *ngIf="scenario | async as activeScenario">
+    
+    <span *ngFor="let component of activeScenario.data().components;let isLast=last">
+      {{component.key}}{{isLast ? '' : ', '}}
+    </span>
+    <br><br>
+    <button (click)="convertAlternativeScenarioToActiveScenario(activeScenario.id)"
+      color="primary"
+      mat-flat-button>Activate</button>
+  </ng-container>
+  
+</div>

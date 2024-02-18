@@ -22,6 +22,7 @@ import { EcsGalleryComponent } from './ecs-gallery/ecs-gallery.component';
 import { AddLoanLifeEventComponent } from './add-loan-life-event/add-loan-life-event.component';
 import { LifeEventTimelineComponent } from './life-event-timeline/life-event-timeline.component';
 import { ProfileAlternativeScenariosComponent } from './profile-alternative-scenarios/profile-alternative-scenarios.component';
+import { ShareScenarioComponent } from './share-scenario/share-scenario.component';
 
 export const INTRO = {
   path: 'intro',
@@ -246,6 +247,19 @@ const PROFILE = [
   }
 ]
 
+
+const SHARE = [
+  {
+    path: 'share',
+    children: [
+      {
+        path: 'scenario/:id',
+        component: ShareScenarioComponent,
+      }
+    ]
+  }
+]
+
 export const MAYA_ROUTES: Routes = [
   {
     path: 'm/0',
@@ -259,6 +273,7 @@ export const MAYA_ROUTES: Routes = [
       ...CALCULATOR,
       ...ECS_GALLERY,
       ...PROFILE,
+      ...SHARE,
       { path: '**', redirectTo: 'intro' }
     ]
   }

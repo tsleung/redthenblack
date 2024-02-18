@@ -114,10 +114,6 @@ export class AddLoanLifeEventComponent {
       field.value = data.get(field.name).valueOf() as string;
     });
 
-
-
-
-
     this.lifeEventsService.updateLifeEvent(lifeEvent);
     this.router.navigate([createLifeEventsRoute()]);
     return false;

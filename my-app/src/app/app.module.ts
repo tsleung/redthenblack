@@ -116,6 +116,7 @@ import { AddLoanLifeEventComponent } from './add-loan-life-event/add-loan-life-e
 import { MayaCalloutContentComponent } from './maya-callout-content/maya-callout-content.component';
 import { LifeEventTimelineComponent } from './life-event-timeline/life-event-timeline.component';
 import { ProfileAlternativeScenariosComponent } from './profile-alternative-scenarios/profile-alternative-scenarios.component';
+import { ShareScenarioComponent } from './share-scenario/share-scenario.component';
 
 
 @NgModule({
@@ -199,6 +200,7 @@ import { ProfileAlternativeScenariosComponent } from './profile-alternative-scen
     MayaCalloutContentComponent,
     LifeEventTimelineComponent,
     ProfileAlternativeScenariosComponent,
+    ShareScenarioComponent,
   ],
   imports: [
     BrowserModule,

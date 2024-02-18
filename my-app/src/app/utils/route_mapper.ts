@@ -125,7 +125,12 @@ export function createProfileRoute() {
 export function createAlternativeScenariosRoute() {
   return createProfileRoute() + '/alternative-scenarios';
 }
-
+export function createShareRoute() {
+  return createMayaRoute() + '/share';
+}
+export function createShareScenarioRoute(id:string) {
+  return createShareRoute() + `/scenario/${id}`;
+}
 export function createEcsRoute() {
   return createMayaRoute() + '/ecs';
 }

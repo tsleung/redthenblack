@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { createLifeEventsAddTypeRoute, createLifeEventsEditTypeRoute } from '../utils/route_mapper';
+import { createLifeEventsAddTypeRoute, createLifeEventsEditTypeRoute, createMayaOnboarding } from '../utils/route_mapper';
 import { MayaUserExperienceService } from './maya-user-experience.service';
 import { filter, first, map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -7,6 +7,7 @@ import { availableLifeEvents, createHighlightNumber } from '../config/life-event
 import { LifeEvent } from '../utils/life-event-utils';
 import { FirebaseService } from './firebase.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RoutingService } from './routing.service';
 
 const SNACKBAR_DURATION = 2000;
 
@@ -52,7 +53,7 @@ export class LifeEventsService {
       return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
     });
   }),
-  shareReplay(),
+  // shareReplay(),
   );
   
   addLifeEvent(lifeEvent: LifeEvent) {
@@ -92,7 +93,10 @@ export class LifeEventsService {
     private muxs: MayaUserExperienceService,
     readonly firebaseService: FirebaseService,
     readonly snackbar: MatSnackBar,
-  ) { }
+    readonly routingService: RoutingService,
+  ) {
+    console.log('les.constructor')
+  }
 
   loginAndSave() {
     this.muxs.components.pipe(
@@ -121,11 +125,17 @@ export class LifeEventsService {
     });
   }
   delete() {
-    this.firebaseService.deleteActiveScenario();
-    this.snackbar.open('Delete saved plan', undefined ,{duration: SNACKBAR_DURATION});
+    this.firebaseService.deleteActiveScenario().then(() => {
+      this.muxs.resetComponents();
+      this.snackbar.open('Deleted Active Scenario', undefined ,{duration: SNACKBAR_DURATION});
+
+      this.routingService.navigate(createMayaOnboarding());
+      
+    });
+    
   }
   load() {
-    this.muxs.initializeComponents();
+    this.muxs.resetComponents();
     this.snackbar.open('Loaded from last Saved', undefined ,{duration: SNACKBAR_DURATION});
   }
   login() {

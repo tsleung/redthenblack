@@ -32,13 +32,18 @@
           {{component.key}}{{isLast ? '' : ', '}}
         </span>
         
-        <br><br>
-        <button (click)="convertAlternativeScenarioToActiveScenario(doc.id)"
-        color="primary"
-          mat-flat-button>Set Active</button>
-        <button (click)="deleteAlternativeScenario(doc.id)"
-          color="accent"
-          mat-flat-button>Delete</button>
+        <br>
+        <div class="actions">
+          <a mat-button [routerLink]="routingService.mapper.createShareScenarioRoute(doc.id)"
+            mat-stroked-button>Share</a>
+          <button (click)="convertAlternativeScenarioToActiveScenario(doc.id)"
+          color="primary"
+            mat-stroked-button>Set Active</button>
+            
+          <button (click)="deleteAlternativeScenario(doc.id)"
+            color="accent"
+            mat-stroked-button>Delete</button>
+        </div>
       </fieldset>
       
     </ng-container>

@@ -2,12 +2,10 @@ import { Injectable } from '@angular/core';
 import { SimulationManager, Snapshot } from '../utils/maya-ecs';
 import { AmortizedLoan, Cash, Component, ComponentKey, ComponentType, Job, SavingsAccount, Stocks, Traditional401k, ValueComponent, VolatileAsset } from '../utils/maya-ecs-components';
 import { getComponent, setComponent } from '../utils/maya-ecs-entities';
-import { Observable, Subject, merge, of } from 'rxjs';
-import { catchError, debounceTime, filter, map, publishReplay, refCount, scan, shareReplay, startWith, tap, throttleTime } from 'rxjs/operators';
-import { FirebaseService } from './firebase.service';
+import { BehaviorSubject, Observable, Subject, combineLatest, merge, of } from 'rxjs';
+import { catchError, debounceTime, filter, map, publishReplay, refCount, scan, shareReplay, startWith, switchMap, tap, throttleTime } from 'rxjs/operators';
+import { FirebaseService, ServerMessageType } from './firebase.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-
 
 export enum ComponentActionType {
   Add,
@@ -32,7 +30,13 @@ export class MayaUserExperienceService {
   simulationManager = new SimulationManager();
   addComponent: Subject<Component> = new Subject<Component>(); 
   removeComponent: Subject<Component> = new Subject<Component>(); 
-  
+  componentsMap: Subject<Map<ComponentKey,Component>> = new BehaviorSubject<Map<ComponentKey,Component>>(
+    new Map<ComponentKey,Component>()
+  );
+
+  resetComponents() {
+    this.componentsMap.next(new Map<ComponentKey,Component>());
+  }
 
   private addComponentAction:Observable<ComponentAction> = this.addComponent.pipe(map(component => {
     return {component, action: ComponentActionType.Add} as ComponentAction;
@@ -41,57 +45,83 @@ export class MayaUserExperienceService {
     return {component, action: ComponentActionType.Remove} as ComponentAction;
   }));
 
-  components: Observable<Map<ComponentKey,Component>> = merge(
-    this.addComponentAction, this.removeComponentAction
-    ).pipe(
-    scan((accum, val:ComponentAction) => {
-      if(val.action === ComponentActionType.Add) {
-        // console.log('ADDING', val)
-        accum.set(val.component.key, val.component);
-      }
+  components: Observable<Map<ComponentKey,Component>> = combineLatest([
+    this.componentsMap,
+    this.firebaseService.serverMessenger.pipe(
+      filter(({type}) => type !==ServerMessageType.READ),
+      startWith(ServerMessageType.INIT),
+      debounceTime(200)
+    )
+  ]).pipe(  
+    switchMap(([components]) => {
+      console.log('building components');
+      return this.buildComponents(components);
+    }),
+    switchMap(components => {
+      console.log('creating new merge in switch', components);
+      
+      return merge(
+        this.addComponentAction, this.removeComponentAction
+      ).pipe(
+        scan((accum, val:ComponentAction) => {
+          console.log('action', val)
+          if(val.action === ComponentActionType.Add) {
+            // console.log('ADDING', val)
+            accum.set(val.component.key, val.component);
+          }
 
-      if(val.action === ComponentActionType.Remove) {
-        // console.log('removing', val)
-        accum.delete(val.component.key)
-      }
+          if(val.action === ComponentActionType.Remove) {
+            // console.log('removing', val)
+            accum.delete(val.component.key)
+          }
 
-      // console.log('accum components', accum);
-      return accum;
-    }, new Map<ComponentKey,Component>()),
+          // console.log('accum components', accum);
+          return accum;
+        }, components),
+        startWith(components),
+      )
+    }),
     shareReplay(),
     // throttleTime(200, asyncScheduler, {trailing: true}),
     debounceTime(200),
     tap(components => {
       console.log('components', components);
     }),
-    startWith(new Map<ComponentKey,Component>()),
   );
   
-  alwaysOn = this.components.subscribe();
   constructor(
     private firebaseService: FirebaseService,
     readonly snackbar: MatSnackBar
-
   ) {
-    this.initializeComponents();
-  }
-  
+    console.log('muxs.constructor')
+  }  
 
-  async initializeComponents() {
-    const initializeAnonymousUser = () => {
-      this.addComponent.next(new Cash(0));
+  buildComponents(components = new Map<ComponentKey,Component>()) {
+    // should this clear first or take an input?
+
+    const initializeAnonymousUser = () => {  
+      const component = new Cash(0);
+      components.set(component.key, component);
       console.log('loaded anon component, cash only')
+      return components;
     };
-    
+
     const initializeLoggedInUser = async () => {
-      const components = (await this.firebaseService.loadActiveScenario()).components;
-      components.forEach(component => {
-        this.addComponent.next(component);
-      });
-      console.log('loaded from server', components)
+      const data = (await this.firebaseService.loadActiveScenario());
+      // guard if there is no saved data for logged in user
+      if(data && data.components) {
+        data.components.forEach(component => {
+          components.set(component.key, component);
+        });
+      } else {
+        // should logged in user have another default behavior?
+        const component = new Cash(0);
+        components.set(component.key, component);    
+      }
+      return components;
     }
-    
-    this.firebaseService.getUser().then(user => {
+
+    return this.firebaseService.getUser().then(user => {
       return user && user.email ? 
         initializeLoggedInUser() : 
         initializeAnonymousUser();

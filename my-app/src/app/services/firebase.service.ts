@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { getFirestore, collection, addDoc, Firestore, setDoc, doc, getDocs, getDoc, deleteDoc, query, where, DocumentData } from "firebase/firestore";
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { Auth, GoogleAuthProvider, User, getAuth, signInWithCustomToken, signInWithPopup, signOut } from "firebase/auth";
+import { BehaviorSubject, Subject } from 'rxjs';
 
 const firebaseConfig = {
   apiKey: "AIzaSyB9mymqUz2n07EjiMj37s3RXR1W_HkeIzc",
@@ -13,6 +14,17 @@ const firebaseConfig = {
   measurementId: "G-30KGKME2KS"
 };
 
+export enum ServerMessageType {
+  INIT,
+  CREATE,
+  READ,
+  DELETE,
+  UPDATE,
+}
+interface ServerMessage {
+  type: ServerMessageType
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,6 +32,9 @@ export class FirebaseService {
   app: FirebaseApp;
   db: Firestore;
   auth: Auth;
+
+  serverMessenger = new BehaviorSubject<ServerMessage>({type:ServerMessageType.INIT})
+
   constructor() {
 
     // Initialize Firebase
@@ -27,6 +42,7 @@ export class FirebaseService {
     this.db = getFirestore(this.app);
     this.auth = getAuth(this.app);
     console.log('auth', this.auth)
+    
   }
 
   logout() {
@@ -105,6 +121,7 @@ export class FirebaseService {
       console.error("Error adding document: ", e);
     }
 
+    this.serverMessenger.next({type: ServerMessageType.UPDATE});
   }
 
   async deleteActiveScenario() {
@@ -114,6 +131,7 @@ export class FirebaseService {
     }
 
     await deleteDoc(doc(this.db, "ActiveScenario", currentUser.uid));
+    this.serverMessenger.next({type: ServerMessageType.DELETE});
   }
 
   async loadActiveScenario(): Promise<DocumentData> {
@@ -135,6 +153,7 @@ export class FirebaseService {
         }
 
         resolve( docSnap.data());
+        this.serverMessenger.next({type: ServerMessageType.READ});
       });
       
     });
@@ -157,6 +176,7 @@ export class FirebaseService {
         });
         
         console.log("Document written with ID: ", json);
+        this.serverMessenger.next({type: ServerMessageType.CREATE});
         resolve(docRef);
       } catch (e) {
         console.error("Error adding document: ", e);
@@ -184,6 +204,7 @@ export class FirebaseService {
         });
     
         console.log('query snapshot', querySnapshot)
+        this.serverMessenger.next({type: ServerMessageType.READ});
         resolve( querySnapshot.docs);
       });
       
@@ -195,13 +216,15 @@ export class FirebaseService {
   convertSavedActiveScenarioToAlternativeScenario() {
     return this.loadActiveScenario().then(activeScenario => {
       const title = window.prompt('Title');
+      this.serverMessenger.next({type: ServerMessageType.CREATE});
       return this.saveAlternativeScenario(title, activeScenario);
     });
   }
 
   convertAlternativeScenarioToActiveScenario(id: string) {
-    return this.loadAlternativeScenario(id).then(scenario => {
-      return this.setActiveScenario(scenario);
+    return this.loadAlternativeScenario(id).then(doc => {
+      this.serverMessenger.next({type: ServerMessageType.UPDATE});
+      return this.setActiveScenario(doc.data());
     });
   }
 
@@ -221,7 +244,8 @@ export class FirebaseService {
       console.log("No such document!");
     }
 
-    return docSnap.data();
+    this.serverMessenger.next({type: ServerMessageType.READ});
+    return docSnap;
   }
 
   async deleteAlternativeScenario(id: string) {
@@ -231,6 +255,7 @@ export class FirebaseService {
     }
 
     await deleteDoc(doc(this.db, "AlternativeScenario", id));
+    this.serverMessenger.next({type: ServerMessageType.DELETE});
   }
 
 }
