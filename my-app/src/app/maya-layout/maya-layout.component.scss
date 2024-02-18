@@ -1,6 +1,6 @@
 :host {
   padding: .5rem 0;
-  
+  background: #fff;
   
   img {
     height: 68px;
@@ -63,7 +63,8 @@
     max-width: 1200px;
   }
 
-  mat-drawer-content {
+  mat-drawer-content,
+  .mat-drawer-container {
     background-color: #fff;
   }
 
@@ -75,7 +76,7 @@
     font-weight: bold;
   }
   .mdc-list-item:hover {
-    background-color: #eeeß;
+    background-color: #eee;
   }
   .mdc-list-item {
     

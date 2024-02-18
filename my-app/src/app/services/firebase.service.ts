@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { getFirestore, collection, addDoc, Firestore, setDoc, doc, getDocs, getDoc, deleteDoc, query, where, DocumentData } from "firebase/firestore";
+import { getFirestore, collection, addDoc, Firestore, setDoc, doc, getDocs, getDoc, deleteDoc, query, where, DocumentData, DocumentSnapshot } from "firebase/firestore";
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { Auth, GoogleAuthProvider, User, getAuth, signInWithCustomToken, signInWithPopup, signOut } from "firebase/auth";
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -42,7 +42,7 @@ export class FirebaseService {
     this.db = getFirestore(this.app);
     this.auth = getAuth(this.app);
     console.log('auth', this.auth)
-    
+
   }
 
   logout() {
@@ -103,8 +103,6 @@ export class FirebaseService {
         // ...
         console.error(error)
       });
-
-
   }
 
   async setActiveScenario(json: object) {
@@ -155,7 +153,6 @@ export class FirebaseService {
         resolve( docSnap.data());
         this.serverMessenger.next({type: ServerMessageType.READ});
       });
-      
     });
     
     return promise;
@@ -207,7 +204,6 @@ export class FirebaseService {
         this.serverMessenger.next({type: ServerMessageType.READ});
         resolve( querySnapshot.docs);
       });
-      
     });
     
     return promise;
@@ -228,24 +224,33 @@ export class FirebaseService {
     });
   }
 
-  async loadAlternativeScenario(id: string) {
-    const currentUser = this.auth.currentUser;
-    if (currentUser.isAnonymous) {
-      return;
-    }
-
-    const docRef = doc(this.db, "AlternativeScenario", id);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-    } else {
-      // docSnap.data() will be undefined in this case
-      console.log("No such document!");
-    }
-
-    this.serverMessenger.next({type: ServerMessageType.READ});
-    return docSnap;
+  async loadAlternativeScenario(id: string):
+    Promise<DocumentSnapshot<DocumentData, DocumentData>> {
+    const promise: Promise<DocumentSnapshot<DocumentData, DocumentData>> = new Promise((resolve, reject) => {
+      this.auth.onAuthStateChanged(async currentUser => {
+        console.log('current user', currentUser)
+        
+        if (currentUser.isAnonymous) {
+          reject();
+        }
+    
+        const docRef = doc(this.db, "AlternativeScenario", id);
+        const docSnap = await getDoc(docRef);
+    
+        if (docSnap.exists()) {
+          console.log("Document data:", docSnap.data());
+        } else {
+          // docSnap.data() will be undefined in this case
+          console.log("No such document!");
+        }
+    
+        this.serverMessenger.next({type: ServerMessageType.READ});
+        resolve(docSnap);
+      });
+      
+    });
+    
+    return promise;
   }
 
   async deleteAlternativeScenario(id: string) {
@@ -257,5 +262,4 @@ export class FirebaseService {
     await deleteDoc(doc(this.db, "AlternativeScenario", id));
     this.serverMessenger.next({type: ServerMessageType.DELETE});
   }
-
 }
