@@ -4,7 +4,7 @@
 <br>
 
 <div class="active-scenario">
-  <h2>Active Scenario</h2>
+  <h2>Active Scenario for Simulator</h2>
   <ng-container *ngIf="activeScenario | async as activeScenario">
     
     <span *ngFor="let component of activeScenario.components;let isLast=last">
@@ -35,10 +35,10 @@
         <br>
         <div class="actions">
           <a mat-button [routerLink]="routingService.mapper.createShareScenarioRoute(doc.id)"
-            mat-stroked-button>Share</a>
+            mat-stroked-button>To Shareable Page</a>
           <button (click)="convertAlternativeScenarioToActiveScenario(doc.id)"
           color="primary"
-            mat-stroked-button>Set Active</button>
+            mat-stroked-button>Set Active for Simulator</button>
             
           <button (click)="deleteAlternativeScenario(doc.id)"
             color="accent"
