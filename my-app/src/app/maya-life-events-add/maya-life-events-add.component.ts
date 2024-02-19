@@ -31,6 +31,9 @@ export class MayaLifeEventsAddComponent {
 
       return suspect.componentKey === componentKey;
     });
+    
+    lifeEvent.createFriendlyFieldDescription = () => '';
+    
     return lifeEvent;
   }),
     switchMap(lifeEvent => {

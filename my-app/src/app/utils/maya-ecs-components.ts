@@ -63,6 +63,7 @@ export enum ComponentKey {
   ResidentialRealEstate='Residential Real Estate',
   CommercialRealEstate='Commercial Real Estate',
   FixedStocksAllocation='Fixed Stocks Allocation',
+  PolynomialStocksAllocation='Polynomial Stocks Allocation',
   DecreasingStocksAllocation='Decreasing Stocks Allocation',
 }
 export enum ComponentType {
@@ -72,7 +73,8 @@ export enum ComponentType {
   Contribution, // add value to a component type
   AmortizedLoan, // a loan which follows the amortization schedule
   FixedAllocation, // desired allocation of assets
-  DecreasingAllocation, // desired allocation of assets
+  PolynomialAllocation, // polynomial allocation of assets
+  DecreasingAllocation, // decreaasing allocation of assets
   Milestone, // TBD (not used)
   Choices, // TBD (not used)
 }
@@ -496,9 +498,11 @@ export class FixedAllocation implements FixedAllocationComponent {
   type = ComponentType.FixedAllocation;
   startPeriod = NamedPeriods.StartPeriod;
   target = ComponentKey.Cash;
+  periods = NamedPeriods.Lifetime;
   
-  constructor(public percentage, public periods: number = NamedPeriods.SinglePeriod, target=ComponentKey.Cash) {
-  }
+  constructor(
+    public percentage
+  ) {}
 }
 
 export class FixedStocksAllocation extends FixedAllocation {
@@ -506,6 +510,40 @@ export class FixedStocksAllocation extends FixedAllocation {
   target = ComponentKey.Stocks;
 }
 
+
+// BEGIN POLYNOMIAL
+
+export interface PolynomialAllocationComponent extends DelayedStartComponent{
+  exponentialFactor: number;
+  linearFactor: number;
+  constant: number;
+  periods: number;
+  target: ComponentKey;
+}
+
+// Should this be the base of cash flow? inverse is deduction
+export class PolynomialAllocation implements PolynomialAllocationComponent {
+  key: ComponentKey;
+  type = ComponentType.PolynomialAllocation;
+  startPeriod = NamedPeriods.StartPeriod;
+  target = ComponentKey.Cash;
+  periods = NamedPeriods.Lifetime;
+
+  constructor(
+    public exponentialFactor,
+    public linearFactor,
+    public constant,
+  ) {
+  }
+}
+
+export class PolynomialStocksAllocation extends PolynomialAllocation {
+  key = ComponentKey.PolynomialStocksAllocation;
+  target = ComponentKey.Stocks;
+}
+
+
+// END POLYNOMIAL
 
 export interface DecreasingAllocationComponent extends DelayedStartComponent{
   startPercentage: number;

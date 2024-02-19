@@ -42,3 +42,7 @@ export function executeReallocation(
     cash.value = cash.value - contribution;
 
 }
+
+export function calculateDesiredPosition(percentage: number, totalPortfolioValue: number) {
+  return percentage * totalPortfolioValue;
+}

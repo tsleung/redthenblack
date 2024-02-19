@@ -117,6 +117,7 @@ import { MayaCalloutContentComponent } from './maya-callout-content/maya-callout
 import { LifeEventTimelineComponent } from './life-event-timeline/life-event-timeline.component';
 import { ProfileAlternativeScenariosComponent } from './profile-alternative-scenarios/profile-alternative-scenarios.component';
 import { ShareScenarioComponent } from './share-scenario/share-scenario.component';
+import { AddPolynomialAllocationLifeEventComponent } from './add-polynomial-allocation-life-event/add-polynomial-allocation-life-event.component';
 
 
 @NgModule({
@@ -201,6 +202,7 @@ import { ShareScenarioComponent } from './share-scenario/share-scenario.componen
     LifeEventTimelineComponent,
     ProfileAlternativeScenariosComponent,
     ShareScenarioComponent,
+    AddPolynomialAllocationLifeEventComponent,
   ],
   imports: [
     BrowserModule,

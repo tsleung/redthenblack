@@ -1,7 +1,7 @@
 
-import { AmortizedLoan, AnniversaryCelebration, AutoLoan, Bereavement, BigTrip, BirthdayCelebration, Cash, CashFlow, CashFlowComponent, ChildCare, Children, CommercialRealEstate, Component, ComponentKey, ComponentType, Contribution, CostOfLiving, DelayedStartComponent, Entrepreneurship, FancyCar, Fertility, FertilityBirth, FertilityIVF, FineDining, FixedAllocation, FixedAllocationComponent, FixedStocksAllocation, Gifts, Inheritance, Insurance, Job, KidCollegeTuition, KidsCollegeFund, LongVacation, Medical, Mortgage, NiceBigHouse, PropertyTax, RenovationAndRepairs, Rental, RentalIncome, ResidentialRealEstate, Retirement, RetirementSpend, Sabbatical, SavingsAccount, SbaLoan, School, SeniorCare, SocialSecurityIncome, Stocks, StudentLoan, Traditional401k, Traditional401kContribution, Travel, Value, VolatileAsset, Wedding } from '../utils/maya-ecs-components';
+import { AmortizedLoan, AnniversaryCelebration, AutoLoan, Bereavement, BigTrip, BirthdayCelebration, Cash, CashFlow, CashFlowComponent, ChildCare, Children, CommercialRealEstate, Component, ComponentKey, ComponentType, Contribution, CostOfLiving, DelayedStartComponent, Entrepreneurship, FancyCar, Fertility, FertilityBirth, FertilityIVF, FineDining, FixedAllocation, FixedAllocationComponent, FixedStocksAllocation, Gifts, Inheritance, Insurance, Job, KidCollegeTuition, KidsCollegeFund, LongVacation, Medical, Mortgage, NiceBigHouse, PolynomialAllocation, PolynomialAllocationComponent, PolynomialStocksAllocation, PropertyTax, RenovationAndRepairs, Rental, RentalIncome, ResidentialRealEstate, Retirement, RetirementSpend, Sabbatical, SavingsAccount, SbaLoan, School, SeniorCare, SocialSecurityIncome, Stocks, StudentLoan, Traditional401k, Traditional401kContribution, Travel, Value, VolatileAsset, Wedding } from '../utils/maya-ecs-components';
 import { Field, LifeEvent } from '../utils/life-event-utils';
-import { createLifeEventsAddTypeRoute, createLoanTypeRoute } from '../utils/route_mapper';
+import { createLifeEventsAddTypeRoute, createLoanTypeRoute, createPolynomialTypeRoute } from '../utils/route_mapper';
 
 /** This may be better to reverse, icon as key and tags as matches */
 const iconMap = {
@@ -42,6 +42,7 @@ const iconMap = {
   'Rental': 'apartment',
   'RentalIncome': 'domain_add',
   'Fixed Stocks Allocation': 'balance',
+  'Polynomial Stocks Allocation': 'balance',
   'Nice Big House': 'villa',
   'Retirement Spend': 'holiday_village'
 }
@@ -91,6 +92,61 @@ function createFixedAllocationFields():Field[] {
         field.value = component.periods;
       },
       updateTo: (component: FixedAllocationComponent, field: Field) => {
+        component.periods = Number(field.value) || 0;
+      }
+    },
+  ];
+}
+
+function createPolynomialAllocationFields():Field[] {
+  return [
+    {
+      name: 'Exponential Factor',
+      value: '0',
+      readFrom: (component: PolynomialAllocationComponent, field: Field) => {
+        field.value = component.exponentialFactor;
+      },
+      updateTo: (component: PolynomialAllocationComponent, field: Field) => {
+        component.exponentialFactor = Number(field.value) || 0;
+      }
+    },
+    {
+      name: 'Linear Factor',
+      value: '0',
+      readFrom: (component: PolynomialAllocationComponent, field: Field) => {
+        field.value = component.linearFactor;
+      },
+      updateTo: (component: PolynomialAllocationComponent, field: Field) => {
+        component.linearFactor = Number(field.value) || 0;
+      }
+    },
+    {
+      name: 'Constant',
+      value: '0',
+      readFrom: (component: PolynomialAllocationComponent, field: Field) => {
+        field.value = component.constant;
+      },
+      updateTo: (component: PolynomialAllocationComponent, field: Field) => {
+        component.constant = Number(field.value) || 0;
+      }
+    },
+    {
+      name: 'Start Period',
+      value: '0',
+      readFrom: (component: PolynomialAllocationComponent, field: Field) => {
+        field.value = component.startPeriod;
+      },
+      updateTo: (component: PolynomialAllocationComponent, field: Field) => {
+        component.startPeriod = Number(field.value) || 0;
+      }
+    },
+    {
+      name: 'Periods',
+      value: '1',
+      readFrom: (component: PolynomialAllocationComponent, field: Field) => {
+        field.value = component.periods;
+      },
+      updateTo: (component: PolynomialAllocationComponent, field: Field) => {
         component.periods = Number(field.value) || 0;
       }
     },
@@ -392,6 +448,9 @@ const fieldsMap = {
   'Fixed Stocks Allocation': [
     ...createFixedAllocationFields(),
   ],
+  'Polynomial Stocks Allocation': [
+    ...createPolynomialAllocationFields(),
+  ],
   
 };
 
@@ -403,7 +462,8 @@ const shorthand: Array<[string, ComponentKey, () => Component]> = [
   ['Traditional 401k', ComponentKey.Traditional401k, () => new Traditional401k(20e3, [...new Array(4).fill(1.1), .75])],
   ['Traditional 401k Contribution', ComponentKey.Traditional401kContribution, () => new Traditional401kContribution(20e3, 30)],
   ['Stocks', ComponentKey.Stocks, () => new Stocks(4e5, [...new Array(4).fill(1.1), .75])],
-  ['Fixed Stocks Allocation', ComponentKey.FixedStocksAllocation, () => new FixedStocksAllocation(0,60,ComponentKey.Stocks)],
+  ['Fixed Stocks Allocation', ComponentKey.FixedStocksAllocation, () => new FixedStocksAllocation(0)],
+  ['Polynomial Stocks Allocation', ComponentKey.PolynomialStocksAllocation, () => new PolynomialStocksAllocation(0,0,1)],
   ['Fancy Car', ComponentKey.FancyCar, () => new FancyCar()],
   ['Nice Big House', ComponentKey.NiceBigHouse, () => new NiceBigHouse()],
   ['Kids College Tuition', ComponentKey.KidCollegeTuition, () => new KidCollegeTuition()],
@@ -486,6 +546,7 @@ export const availableLifeEvents:LifeEvent[] = shorthand.map(([name,IGNORE, crea
 
 function createAddEditHref(componentType: ComponentType, componentKey: ComponentKey) {
   return componentType === ComponentType.AmortizedLoan ? createLoanTypeRoute(componentKey) :
+    componentType === ComponentType.PolynomialAllocation ? createPolynomialTypeRoute(componentKey) :
     createLifeEventsAddTypeRoute(componentKey); 
 }
 
@@ -502,6 +563,8 @@ export function createHighlightNumber(componentType: ComponentType, componentKey
       return createValueHighlight(component as Value);
     case ComponentType.FixedAllocation:
       return createFixedAllocationHighlight(component as FixedAllocation);
+    case ComponentType.PolynomialAllocation:
+      return createPolynomialAllocationHighlight(component as PolynomialAllocation);
     default:
       return;
       
@@ -509,6 +572,9 @@ export function createHighlightNumber(componentType: ComponentType, componentKey
 
   function createFixedAllocationHighlight(component: FixedAllocation) {
     return component.percentage;
+  }
+  function createPolynomialAllocationHighlight(component: PolynomialAllocation) {
+    return `${component.exponentialFactor}p^2 + ${component.linearFactor}p + ${component.constant}`
   }
   function createValueHighlight(component: Value) {
     return component.value;

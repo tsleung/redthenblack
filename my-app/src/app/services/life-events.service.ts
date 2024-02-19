@@ -130,7 +130,6 @@ export class LifeEventsService {
       this.snackbar.open('Deleted Active Scenario', undefined ,{duration: SNACKBAR_DURATION});
 
       this.routingService.navigate(createMayaOnboarding());
-      
     });
     
   }

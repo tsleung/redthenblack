@@ -1,5 +1,5 @@
 import { Entity } from "./maya-ecs-entities";
-import { LoanSystem, VolatileAssetSystem, System, ContributionSystem, FixedAllocationSystem } from "./maya-ecs-systems";
+import { LoanSystem, VolatileAssetSystem, System, ContributionSystem, FixedAllocationSystem, PolynomialAllocationSystem } from "./maya-ecs-systems";
 
 class EntityManager {
   public readonly entities: Entity[] = [];
@@ -28,6 +28,7 @@ export class SimulationManager {
     new LoanSystem(), 
     new VolatileAssetSystem(), 
     new FixedAllocationSystem(),
+    new PolynomialAllocationSystem(),
     /* ... */
   ];
 

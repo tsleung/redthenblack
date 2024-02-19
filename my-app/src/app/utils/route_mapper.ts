@@ -154,6 +154,9 @@ export function createLifeEventsAddTypeRoute(type: string) {
 export function createLoanTypeRoute(type: string) {
   return createLifeEventsAddTypeRoute(type) + `/loan`;
 }
+export function createPolynomialTypeRoute(type: string) {
+  return createLifeEventsAddTypeRoute(type) + `/polynomial`;
+}
 
 export function createLifeEventsEditTypeRoute(type: string) {
   return createLifeEventsRoute() + `/edit/${type}`;

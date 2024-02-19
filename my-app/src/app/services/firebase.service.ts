@@ -21,7 +21,7 @@ export enum ServerMessageType {
   DELETE,
   UPDATE,
 }
-interface ServerMessage {
+export interface ServerMessage {
   type: ServerMessageType
 }
 
@@ -156,7 +156,6 @@ export class FirebaseService {
     });
     
     return promise;
-    
   }
 
   async saveAlternativeScenario(title: string, json: object) {

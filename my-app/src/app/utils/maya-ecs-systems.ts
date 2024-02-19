@@ -1,8 +1,9 @@
 
 // Systems
-import { AmortizedLoan, Cash, CashFlow, ComponentKey, ComponentType, Contribution, FixedAllocation, Job, Retirement, SavingsAccount, Stocks, ValueComponent, VolatileAsset } from "./maya-ecs-components";
+import { calculatePolynomialAllocation } from "../third_party/models/allocation";
+import { AmortizedLoan, Cash, CashFlow, ComponentKey, ComponentType, Contribution, FixedAllocation, Job, PolynomialAllocation, Retirement, SavingsAccount, Stocks, ValueComponent, VolatileAsset } from "./maya-ecs-components";
 import { Entity, getComponent, getMandatoryComponentOrError } from "./maya-ecs-entities";
-import { executeReallocation, fetchAllByType, totalCashValue, totalVolatileAssetValue } from "./maya-ecs-utils";
+import { calculateDesiredPosition, executeReallocation, fetchAllByType, totalCashValue, totalVolatileAssetValue } from "./maya-ecs-utils";
 
 
 export interface System {
@@ -54,8 +55,9 @@ export class FixedAllocationSystem implements System{
         const volatileAsset = getMandatoryComponentOrError<VolatileAsset>(entity, target);
 
         // this might need a module for a constant fixed allocation
-        const desiredPosition = percentage * totalPortfolioValue;
+        const desiredPosition = calculateDesiredPosition(percentage, totalPortfolioValue);
 
+        // Standard realllocation
         executeReallocation(
           cash,
           volatileAsset,
@@ -80,20 +82,30 @@ export class PolynomialAllocationSystem implements System{
         volatileAssetsValue
       );
 
-      fetchAllByType<FixedAllocation>(entity.components, ComponentType.FixedAllocation)
-      .forEach((allocation: FixedAllocation) => {
+      fetchAllByType<PolynomialAllocation>(entity.components, ComponentType.PolynomialAllocation)
+      .forEach((allocation: PolynomialAllocation) => {
         // allocation between 0-1
         // get all the components and figure out their drift from target
 
         const target = allocation.target;
-        const percentage = allocation.percentage;
+        const exponentialFactor = allocation.exponentialFactor;
+        const linearFactor = allocation.linearFactor;
+        const constant = allocation.constant;
         
         const volatileAsset = getMandatoryComponentOrError<VolatileAsset>(entity, target);
 
         // this might need a module for calculating the new allocation given variables
         // should do linear and 2nd degree for each factor, period, and distance to target
-        const desiredPosition = percentage * totalPortfolioValue;
+        const percentage = calculatePolynomialAllocation(
+          exponentialFactor,
+          linearFactor,
+          constant,
+          currentPeriod,
+          
+        );
 
+        const desiredPosition = calculateDesiredPosition(percentage, totalPortfolioValue);
+        // Standard realllocation
         executeReallocation(
           cash,
           volatileAsset,

@@ -23,6 +23,7 @@ import { AddLoanLifeEventComponent } from './add-loan-life-event/add-loan-life-e
 import { LifeEventTimelineComponent } from './life-event-timeline/life-event-timeline.component';
 import { ProfileAlternativeScenariosComponent } from './profile-alternative-scenarios/profile-alternative-scenarios.component';
 import { ShareScenarioComponent } from './share-scenario/share-scenario.component';
+import { AddPolynomialAllocationLifeEventComponent } from './add-polynomial-allocation-life-event/add-polynomial-allocation-life-event.component';
 
 export const INTRO = {
   path: 'intro',
@@ -202,6 +203,16 @@ export const LIFE_EVENTS = [
     component: AddLoanLifeEventComponent,
   },
   
+  {
+    path: 'life-events/add/:type/polynomial',
+    component: AddPolynomialAllocationLifeEventComponent,
+  },
+  {
+    path: 'life-events/edit/:type/polynomial',
+    component: AddPolynomialAllocationLifeEventComponent,
+  },
+  
+
   {
     path: 'life-events/add/:type',
     component: MayaLifeEventsAddComponent,
