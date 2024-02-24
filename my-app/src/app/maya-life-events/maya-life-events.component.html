@@ -41,21 +41,30 @@
   </button>
 </div>  
 <div class="label">Your current life events</div>
-<section class="cards" *ngIf="lifeEventsService.selectedLifeEvents | async as selectedLifeEvents">
-  <ng-container *ngFor="let lifeEvent of selectedLifeEvents;let i = index">
-      <app-maya-life-event-card actionable="true" [lifeEvent]="lifeEvent"></app-maya-life-event-card>
-  </ng-container>
-  <mat-card class="card add">
-    <mat-card-content>
-      Add a life event
-      <br>
-      <br>
-      <a mat-fab color="primary" [routerLink]="routingService.mapper.createLifeEventsListRoute()">
-        <mat-icon>add</mat-icon>
-      </a>
-    </mat-card-content>
-  </mat-card>
-</section>
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" preserveContent>
+  <mat-tab label="Cards">
+    <section class="cards" *ngIf="lifeEventsService.selectedLifeEvents | async as selectedLifeEvents">
+      <ng-container *ngFor="let lifeEvent of selectedLifeEvents;let i = index">
+          <app-maya-life-event-card actionable="true" [lifeEvent]="lifeEvent"></app-maya-life-event-card>
+      </ng-container>
+      <mat-card class="card add">
+        <mat-card-content>
+          Add a life event
+          <br>
+          <br>
+          <a mat-fab color="primary" [routerLink]="routingService.mapper.createLifeEventsListRoute()">
+            <mat-icon>add</mat-icon>
+          </a>
+        </mat-card-content>
+      </mat-card>
+    </section>
+  </mat-tab>
+  <mat-tab label="Timeline">
+    <app-life-event-timeline></app-life-event-timeline>
+  </mat-tab>
+</mat-tab-group>
+
+
 <!-- <section>
   <button mat-button (click)="promptNumberOfYears()">Years</button> <button mat-button (click)="promptNumberOfSimulations()">Simulations</button>
 </section> -->

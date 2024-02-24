@@ -7,13 +7,23 @@
       {{item.highlight}}
     </div>
     <figure>
-      {{item.start}}
-      <mat-slider [min]="timeline.min" [max]="timeline.max">
-        <input [value]="item.start" matSliderStartThumb>
-        <input *ngIf="item.start+1 != item.end"
-        [value]="item.end" matSliderEndThumb >
-      </mat-slider>
-      {{item.end}}
+      <div class="slider">
+        <mat-slider [min]="timeline.min" [max]="timeline.max"
+          discrete
+          [disabled]="!item.enabled">
+          <input [value]="item.start" 
+            (dragEnd)="item.startChange($event.value)"
+            matSliderStartThumb>
+          <input *ngIf="item.start+1 != item.end"
+            [value]="item.end" 
+            (dragEnd)="item.endChange($event.value)"
+            matSliderEndThumb >
+        </mat-slider>
+      </div>
+      <div class="range">
+        {{item.start}} - {{item.end}}
+      </div>
+      
     </figure>
     
   </div>

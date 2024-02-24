@@ -1,9 +1,12 @@
-
+:host {
+  padding: .5rem;
+}
 .timeline {
   .item {
     display: flex;
     flex-direction: row;
     gap: 1rem;
+    align-items: center;
   }
   .label {
     display: flex;
@@ -15,7 +18,16 @@
   }
   figure {
     display: flex;
-    flex: 2;
+    flex: 3;
+    flex-direction: column;
+
+    .slider {
+      display: flex;
+      flex-direction: row;
+    }
+    .range {
+      text-align: center;
+    }
   }
   mat-slider {
     display: flex;

@@ -569,25 +569,23 @@ export function createHighlightNumber(componentType: ComponentType, componentKey
       return;
       
   }
-
-  function createFixedAllocationHighlight(component: FixedAllocation) {
-    return component.percentage;
-  }
-  function createPolynomialAllocationHighlight(component: PolynomialAllocation) {
-    return `${component.exponentialFactor}p^2 + ${component.linearFactor}p + ${component.constant}`
-  }
-  function createValueHighlight(component: Value) {
-    return component.value;
-  }
-  function createContributionHighlight(component: Contribution) {
-    return component.contribution;
-  }
-  function createVolatileAssetHighlight(component: VolatileAsset) {
-    return component.value;
-  }
-  function createAmortizedLoanHighlight(component: AmortizedLoan) {
-    return component.principal;
-  }
 }
 
-
+export function createFixedAllocationHighlight(component: FixedAllocation):string {
+  return component.percentage;
+}
+export function createPolynomialAllocationHighlight(component: PolynomialAllocation):string {
+  return `${component.exponentialFactor}p^2 + ${component.linearFactor}p + ${component.constant}`
+}
+export function createValueHighlight(component: Value):string {
+  return `${component.value}`;
+}
+export function createContributionHighlight(component: Contribution):string {
+  return `${component.contribution}`;
+}
+export function createVolatileAssetHighlight(component: VolatileAsset):string {
+  return `${component.value}`;
+}
+export function createAmortizedLoanHighlight(component: AmortizedLoan):string {
+  return `${component.principal}`;
+}

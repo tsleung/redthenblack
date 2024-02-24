@@ -83,7 +83,7 @@ export class MayaUserExperienceService {
     }),
     shareReplay(),
     // throttleTime(200, asyncScheduler, {trailing: true}),
-    debounceTime(200),
+    debounceTime(50),
     tap(components => {
       console.log('components', components);
     }),
