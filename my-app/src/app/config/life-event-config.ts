@@ -8,12 +8,12 @@ const iconMap = {
   Car: 'directions_car',
   'Fancy Car': 'directions_car',
   Housing: 'home',
-  'SeniorCare': 'home',
+  'Senior Care': 'home',
   Travel: 'flight_takeoff',
   Wedding: 'favorite',
   School: 'school',
   Children: 'child_care',
-  ChildCare: 'child_care',
+  'Child Care': 'child_care',
   Medical: 'medical_services',
   Fertility: 'baby_changing_station',
   'Fertility IVF': 'baby_changing_station',
@@ -272,16 +272,16 @@ const fieldsMap = {
   'Cost Of Living': [
     ...createCashFlowFields(),
   ],
-  'Traditional401k': [
+  'Traditional 401k': [
     ...createVolatileAssetFields(),
   ],
   'Stocks': [
     ...createVolatileAssetFields(),
   ],
-  'ResidentialRealEstate': [
+  'Residential Real Estate': [
     ...createVolatileAssetFields(),
   ],
-  'CommercialRealEstate': [
+  'Commercial Real Estate': [
     ...createVolatileAssetFields(),
   ],
 
@@ -329,9 +329,9 @@ const fieldsMap = {
   ],
 
   'Mortgage': [...addAmortizedLoanFields()] as Field[],
-  'StudentLoan': [...addAmortizedLoanFields()] as Field[],
-  'AutoLoan': [...addAmortizedLoanFields()] as Field[],
-  'SbaLoan': [...addAmortizedLoanFields()] as Field[],
+  'Student Loan': [...addAmortizedLoanFields()] as Field[],
+  'Auto Loan': [...addAmortizedLoanFields()] as Field[],
+  'Sba Loan': [...addAmortizedLoanFields()] as Field[],
 
 
 
@@ -400,49 +400,49 @@ const fieldsMap = {
   'HOA': [
     ...createCashFlowFields(),
   ],
-  'PropertyTax': [
+  'Property Tax': [
     ...createCashFlowFields(),
   ],
-  'RentalIncome': [
+  'Rental Income': [
     ...createCashFlowFields(),
   ],
-  'FancyCar': [
+  'Fancy Car': [
     ...createCashFlowFields(),
   ],
-  'NiceBigHouse': [
+  'Nice Big House': [
     ...createCashFlowFields(),
   ],
-  'KidCollegeTuition': [
+  'Kid College Tuition': [
     ...createCashFlowFields(),
   ],
-  'KidCollegeFund': [
+  'Kid College Fund': [
     ...createCashFlowFields(),
   ],
-  'SocialSecurityIncome': [
+  'Social Security Income': [
     ...createCashFlowFields(),
   ],
-  'RetirementSpend': [
+  'Retirement Spend': [
     ...createCashFlowFields(),
   ],
-  'Traditional401kContribution': [
+  'Traditional 401k Contribution': [
     ...createCashFlowFields(),
   ],
-  'BigTrip': [
+  'Big Trip': [
     ...createCashFlowFields(),
   ],
-  'LongVacation': [
+  'Long Vacation': [
     ...createCashFlowFields(),
   ],
   'Sabbatical': [
     ...createCashFlowFields(),
   ],
-  'FineDining': [
+  'Fine Dining': [
     ...createCashFlowFields(),
   ],
-  'BirthdayCelebration': [
+  'Birthday Celebration': [
     ...createCashFlowFields(),
   ],
-  'AnniversaryCelebration': [
+  'Anniversary Celebration': [
     ...createCashFlowFields(),
   ],
   'Fixed Stocks Allocation': [

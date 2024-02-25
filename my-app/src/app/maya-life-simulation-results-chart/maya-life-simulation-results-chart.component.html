@@ -12,6 +12,7 @@
       <ng-container *ngIf="percentilesChartData | async as chartData">
         <app-bar-chart [chartData]="chartData" [legendOptions]="{show: false}" [gridOptions]="gridOptions" ></app-bar-chart>
       </ng-container>
+      <app-life-event-timeline></app-life-event-timeline>
     </ng-template>
   </mat-tab>
   <mat-tab label="Simulations">
@@ -19,6 +20,7 @@
       <ng-container *ngIf="chartData | async as chartData">
         <app-bar-chart [chartData]="chartData" [legendOptions]="{show: false}" [gridOptions]="gridOptions"></app-bar-chart>
       </ng-container>
+      <app-life-event-timeline></app-life-event-timeline>
     </ng-template>
   </mat-tab>
 </mat-tab-group>

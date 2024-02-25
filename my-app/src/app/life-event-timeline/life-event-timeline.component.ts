@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { LifeEventsService } from '../services/life-events.service';
 import { MayaUserExperienceService } from '../services/maya-user-experience.service';
 import { map } from 'rxjs/operators';
-import { ComponentType, Contribution, ContributionComponent, PolynomialAllocation, Value, VolatileAsset } from '../utils/maya-ecs-components';
+import { AmortizedLoan, ComponentType, Contribution, ContributionComponent, PolynomialAllocation, Value, VolatileAsset } from '../utils/maya-ecs-components';
 import { Observable } from 'rxjs';
 import { fetchAllByType } from '../utils/maya-ecs-utils';
-import { createContributionHighlight, createPolynomialAllocationHighlight, createValueHighlight, createVolatileAssetHighlight } from '../config/life-event-config';
+import { createAmortizedLoanHighlight, createContributionHighlight, createPolynomialAllocationHighlight, createValueHighlight, createVolatileAssetHighlight } from '../config/life-event-config';
+import { createLifeEventsEditTypeRoute, createLoanTypeRoute, createPolynomialTypeRoute } from '../utils/route_mapper';
 
 interface Timeline {
   items: TimelineItem[];
@@ -19,6 +20,7 @@ interface TimelineItem {
   start: number;
   end: number;
   enabled?: boolean;
+  editHref: string;
   startChange?: (val:number) => void;
   endChange?: (val:number) => void;
 }
@@ -44,7 +46,7 @@ export class LifeEventTimelineComponent {
             start: contribution.startPeriod,
             end: contribution.startPeriod + contribution.periods,    
             enabled: true,
-            
+            editHref: createLifeEventsEditTypeRoute(component.key)
           };
           item.startChange = (val: number) => {
             const difference = contribution.startPeriod - val;
@@ -65,7 +67,7 @@ export class LifeEventTimelineComponent {
             highlight: createPolynomialAllocationHighlight(polynomial),
             start: polynomial.startPeriod,
             end: polynomial.startPeriod + polynomial.periods,    
-            
+            editHref: createPolynomialTypeRoute(component.key)
           }
         case ComponentType.VolatileAsset:
           const volatileAsset = component as VolatileAsset;
@@ -74,6 +76,7 @@ export class LifeEventTimelineComponent {
             highlight: createVolatileAssetHighlight(volatileAsset),
             start: volatileAsset.startPeriod,
             end: max,
+            editHref: createLifeEventsEditTypeRoute(component.key)
           }
         case ComponentType.Value:
           const value = component as Value;
@@ -82,6 +85,16 @@ export class LifeEventTimelineComponent {
             highlight: createValueHighlight(value),
             start: min,
             end: max,
+            editHref: createLifeEventsEditTypeRoute(component.key)
+          }
+        case ComponentType.AmortizedLoan:
+          const loan = component as AmortizedLoan;
+          return {
+            label: loan.key,
+            highlight: createAmortizedLoanHighlight(loan),
+            start: min,
+            end: max,
+            editHref: createLoanTypeRoute(component.key)
           }
         default:
           return {
@@ -89,6 +102,7 @@ export class LifeEventTimelineComponent {
             highlight: '',
             start: 0,
             end: 0,
+            editHref: createLifeEventsEditTypeRoute(component.key)
           }
       }
     });

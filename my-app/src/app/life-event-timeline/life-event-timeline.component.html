@@ -4,7 +4,10 @@
       {{item.label}}
     </div>
     <div class="label">
-      {{item.highlight}}
+      {{item.highlight}} 
+      <a mat-button [routerLink]="item.editHref">
+        <mat-icon>edit</mat-icon>
+      </a>
     </div>
     <figure>
       <div class="slider">
