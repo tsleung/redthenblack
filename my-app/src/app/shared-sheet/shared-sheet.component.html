@@ -1,0 +1,13 @@
+<div class="active-scenario" *ngIf="sharedSheet | async as sharedSheet">
+  <hgroup>
+    <h2>Shared Sheet</h2>
+    <h1>{{sharedSheet.title}}</h1>
+  </hgroup>
+  <ng-container *ngFor="let section of sharedSheet.sections;">
+    <h2>{{section.title}}</h2>
+    <h3 *ngIf="section.description">{{section.description}}</h3>
+    <span *ngFor="let component of section.components;let isLast=last">
+      {{component.key}}{{isLast ? '' : ', '}}
+    </span>
+  </ng-container>
+</div>
