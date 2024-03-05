@@ -4,7 +4,7 @@ import { MayaUserExperienceService } from './maya-user-experience.service';
 import { filter, first, map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { availableLifeEvents, createHighlightNumber } from '../config/life-event-config';
-import { LifeEvent } from '../utils/life-event-utils';
+import { LifeEvent, convertComponentsToLifeEvents } from '../utils/life-event-utils';
 import { FirebaseService } from './firebase.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoutingService } from './routing.service';
@@ -25,33 +25,10 @@ export class LifeEventsService {
 
   selectedLifeEvents: Observable<LifeEvent[]> = this.muxs.components.pipe(map(components => {
     console.log('les: loading selected life events',components)
-    return Array.from(components.values()).map(component => {
-      const lifeEvent = this.availableLifeEvents.find(suspect => suspect.componentKey === component.key);
-      if(!lifeEvent){
-        console.error('no life event for ' + component.key, component)
-      }
-      
-      lifeEvent.fields.forEach(field => {
-        field.readFrom(component, field);
-      });
-
-
-      const createFriendlyFieldDescription = () => {
-        const highlight = createHighlightNumber(
-          lifeEvent.componentType,
-          lifeEvent.componentKey,
-          component,
-        );
-    
-        return highlight ?? lifeEvent.fields.map(field => `${field.name}: ${field.value}`).join(', ');
-      };
-      lifeEvent.createFriendlyFieldDescription = createFriendlyFieldDescription;
-
-      return lifeEvent;
-    }).filter(Boolean)
-    .sort((a,b) => {
-      return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
-    });
+    return convertComponentsToLifeEvents(
+      Array.from(components.values()),
+      this.availableLifeEvents,
+    )
   }),
   // shareReplay(),
   );

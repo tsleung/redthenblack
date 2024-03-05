@@ -4,7 +4,7 @@
 <br>
 
 <div class="active-scenario">
-  <h2>Active Scenario for Simulator</h2>
+  <h2>Active Scenario for Life Events Simulator</h2>
   <ng-container *ngIf="activeScenario | async as activeScenario">
     
     <span *ngFor="let component of activeScenario.components;let isLast=last">
@@ -13,11 +13,12 @@
     <br><br>
     <button (click)="convertSavedActiveScenarioToAlternativeScenario()"
       color="primary"
-      mat-flat-button>Save to Alternatives</button>
+      mat-flat-button>Save for later as an Alternative Scenario</button>
   </ng-container>
   
 </div>
 <br>
+
 <div class="alternative-scenarios">
   <h2>Alternative Scenarios</h2>
 
@@ -34,15 +35,46 @@
         
         <br>
         <div class="actions">
-          <a mat-button [routerLink]="routingService.mapper.createShareScenarioRoute(doc.id)"
-            mat-stroked-button>To Shareable Page</a>
+          
           <button (click)="convertAlternativeScenarioToActiveScenario(doc.id)"
-          color="primary"
-            mat-stroked-button>Set Active for Simulator</button>
+            color="primary"
+            mat-flat-button>Activate Scenario for Life Events Simulator</button>
+          <button (click)="sharedSheetService.createSharedSheet(doc.id, doc.data())"
+            color="primary"
+            mat-stroked-button>Create a Public Sheet to Share <br/> (anyone with a link can see this sheet)</button>
             
+          <a mat-button [routerLink]="routingService.mapper.createShareScenarioRoute(doc.id)"
+            mat-stroked-button>Direct Link</a>  
           <button (click)="deleteAlternativeScenario(doc.id)"
             color="accent"
             mat-stroked-button>Delete</button>
+        </div>
+      </fieldset>
+      
+    </ng-container>
+  </ng-container>
+</div>
+
+<br>
+<div class="alternative-scenarios">
+  <h2>Shared Sheets</h2>
+
+  <ng-container *ngIf="sharedSheets | async as docs">
+    <ng-container *ngFor="let doc of docs">
+      
+      <fieldset>
+        <legend title="{{doc.id}}">
+          <b>{{doc.data().title}}</b>
+        </legend>
+        
+        <br>
+        <div class="actions">
+          <button (click)="sharedSheetService.promptRenameSheet(doc.id)"
+            color="primary"
+            mat-flat-button>Rename Sheet</button>
+          
+          <a mat-button [routerLink]="routingService.mapper.createSharedSheetRoute(doc.id)"
+            mat-stroked-button>Direct Link</a>
         </div>
       </fieldset>
       

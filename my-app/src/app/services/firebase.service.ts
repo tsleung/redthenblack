@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { getFirestore, collection, addDoc, Firestore, setDoc, doc, getDocs, getDoc, deleteDoc, query, where, DocumentData, DocumentSnapshot } from "firebase/firestore";
+import { getFirestore, collection, addDoc, Firestore, setDoc, doc, getDocs, getDoc, deleteDoc, query, where, DocumentData, DocumentSnapshot, Timestamp, DocumentReference } from "firebase/firestore";
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { Auth, GoogleAuthProvider, User, getAuth, signInWithCustomToken, signInWithPopup, signOut } from "firebase/auth";
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -31,6 +31,13 @@ export interface ServerMessage {
   type: ServerMessageType
 }
 
+export interface SavedDocument {
+  title: string;
+  uid: string;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -42,7 +49,6 @@ export class FirebaseService {
   serverMessenger = new BehaviorSubject<ServerMessage>({type:ServerMessageType.INIT})
 
   constructor() {
-
     // Initialize Firebase
     this.app = initializeApp(firebaseConfig);
     this.db = getFirestore(this.app);
@@ -52,7 +58,6 @@ export class FirebaseService {
   }
 
   logout() {
-
     signOut(this.auth).then(() => {
       console.log('logged out')
       // Sign-out successful.
@@ -142,22 +147,40 @@ export class FirebaseService {
   convertSavedActiveScenarioToAlternativeScenario() {
     return this.loadActiveScenario().then(activeScenario => {
       const title = window.prompt('Title');
-      this.serverMessenger.next({type: ServerMessageType.CREATE});
       return this.saveAlternativeScenario(title, activeScenario);
     });
   }
 
   convertAlternativeScenarioToActiveScenario(id: string) {
     return this.loadAlternativeScenario(id).then(doc => {
-      this.serverMessenger.next({type: ServerMessageType.UPDATE});
       return this.setActiveScenario(doc.data());
     });
   }
 
 
   // ShareSheet is a single page that is quick to setup, like gist or clip
-  createSharedSheet() {
+  createSharedSheet(title: string, json: object) {
+    return this.addDocument(
+      DocumentCollection.SharedSheet,
+      title,
+      json,
+    );
+  }
 
+  saveSharedSheet(json:object, id: string ) {
+    return this.saveForId(
+      DocumentCollection.SharedSheet,
+      json,
+      id,
+    )
+  }
+
+  listSharedSheetsForCurrentUser() {
+    return this.loadCollectionForCurrentUser(DocumentCollection.SharedSheet);
+  }
+
+  loadSharedSheet(id: string) {
+    return this.loadDocument(DocumentCollection.SharedSheet, id);
   }
 
   private async loadDocumentForCurrentUser(
@@ -191,17 +214,20 @@ export class FirebaseService {
     documentCollection: DocumentCollection, 
     title: string, 
     json: object
-  ){
+  ): Promise<DocumentReference<DocumentData, DocumentData>>{
     const currentUser = this.auth.currentUser;
     if (currentUser.isAnonymous) {
       return;
     }
     return new Promise(async (resolve, reject) => {
       try {
+        const timestamp = Timestamp.now();
         const docRef = await addDoc(collection(this.db, documentCollection), {
           ...json,
           'uid': currentUser.uid,
           'title': title,
+          createdAt: timestamp,
+          updatedAt: timestamp,
         });
         
         console.log("Document written with ID: ", json);
@@ -278,7 +304,48 @@ export class FirebaseService {
     }
 
     try {
-      await setDoc(doc(this.db, documentCollection, currentUser.uid), json);
+      const timestamp = Timestamp.now();
+      
+      const modifiedJson = {
+        createdAt: timestamp,
+        ...json,
+        updatedAt: timestamp,
+      };
+
+      await setDoc(
+        doc(this.db, documentCollection, currentUser.uid), 
+        modifiedJson
+      );
+      console.log("Document written with ID: ", json);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+
+    this.serverMessenger.next({type: ServerMessageType.UPDATE});
+  }
+
+  private async saveForId(documentCollection: DocumentCollection, 
+    json: object, id: string) {
+
+    const currentUser = this.auth.currentUser;
+    if (currentUser.isAnonymous) {
+      return;
+    }
+
+    try {
+      const timestamp = Timestamp.now();
+      
+      const modifiedJson = {
+        createdAt: timestamp,
+        ...json,
+        updatedAt: timestamp,
+      };
+      console.log('modifiedJson', modifiedJson)
+      
+      await setDoc(
+        doc(this.db, documentCollection, id), 
+        modifiedJson
+      );
       console.log("Document written with ID: ", json);
     } catch (e) {
       console.error("Error adding document: ", e);

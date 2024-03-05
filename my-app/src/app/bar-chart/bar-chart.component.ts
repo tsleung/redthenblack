@@ -23,7 +23,7 @@ export class BarChartComponent {
   @Input() legendOptions:c3.LegendOptions = {
   };
   @Input() zoomOptions:c3.ZoomOptions = {
-    enabled: true
+    enabled: false
   };
 
   chartId;

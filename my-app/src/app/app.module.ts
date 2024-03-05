@@ -118,6 +118,7 @@ import { LifeEventTimelineComponent } from './life-event-timeline/life-event-tim
 import { ProfileAlternativeScenariosComponent } from './profile-alternative-scenarios/profile-alternative-scenarios.component';
 import { ShareScenarioComponent } from './share-scenario/share-scenario.component';
 import { AddPolynomialAllocationLifeEventComponent } from './add-polynomial-allocation-life-event/add-polynomial-allocation-life-event.component';
+import { SharedSheetComponent } from './shared-sheet/shared-sheet.component';
 
 
 @NgModule({
@@ -203,6 +204,7 @@ import { AddPolynomialAllocationLifeEventComponent } from './add-polynomial-allo
     ProfileAlternativeScenariosComponent,
     ShareScenarioComponent,
     AddPolynomialAllocationLifeEventComponent,
+    SharedSheetComponent,
   ],
   imports: [
     BrowserModule,

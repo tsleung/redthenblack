@@ -3,6 +3,8 @@ import { LifeEventsService } from '../services/life-events.service';
 import { SimulationManager, Snapshot } from '../utils/maya-ecs';
 import { setComponent } from '../utils/maya-ecs-entities';
 import { Cash, Stocks, Traditional401k, ValueComponent } from '../utils/maya-ecs-components';
+import { EntityBuilder } from '../utils/life-event-utils';
+
 
 interface Exhibit {
   name: string;
@@ -23,20 +25,20 @@ export class EcsGalleryComponent {
 
     this.exhibits = this.lifeEventsService.availableLifeEvents
     .map(lifeEvent => {
-      // generate a default component
+
       const component = lifeEvent.createComponent();
       
       // Create an entity within the simulation manager and set component
-      const simulationManager = new SimulationManager();
       const snapshot = new Snapshot();
       const entity = snapshot.entityManager.createEntity();
+      
+      const builder = new EntityBuilder(entity)
+        .cash(new Cash(0))
+        .traditional401k(new Traditional401k(0,[1]))
+        .stocks(new Stocks(0,[1]))
+        .components([component]);
 
-      // initialize dependencies
-      setComponent(entity, new Cash(0));
-      setComponent(entity, new Traditional401k(0,[1]));
-      setComponent(entity, new Stocks(0,[1]));
-      setComponent(entity, component);
-
+      const simulationManager = builder.build();
     
       // run simulator
       const simulations = simulationManager.createSimulations(

@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { RoutingService } from '../services/routing.service';
 import { MayaUserExperienceService } from '../services/maya-user-experience.service';
 import { createLifeEventsRoute } from '../utils/route_mapper';
+import { PrompterService } from '../services/prompter.service';
+import { SharedSheetService } from '../services/shared-sheet.service';
 
 @Component({
   selector: 'app-profile-alternative-scenarios',
@@ -23,10 +25,13 @@ export class ProfileAlternativeScenariosComponent {
     return docs;
   }));
 
+  sharedSheets = this.sharedSheetService.sharedSheets;
+
   constructor(
     readonly firebaseService: FirebaseService,
     readonly routingService: RoutingService,
-    readonly muxs: MayaUserExperienceService
+    readonly muxs: MayaUserExperienceService,
+    readonly sharedSheetService: SharedSheetService
     ) {
 
   }

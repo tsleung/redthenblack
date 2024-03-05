@@ -128,6 +128,9 @@ export function createAlternativeScenariosRoute() {
 export function createShareRoute() {
   return createMayaRoute() + '/share';
 }
+export function createSharedSheetRoute(id:string) {
+  return createShareRoute() + `/sheet/${id}`;
+}
 export function createShareScenarioRoute(id:string) {
   return createShareRoute() + `/scenario/${id}`;
 }
