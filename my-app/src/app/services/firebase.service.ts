@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { getFirestore, collection, addDoc, Firestore, setDoc, doc, getDocs, getDoc, deleteDoc, query, where, DocumentData, DocumentSnapshot, Timestamp, DocumentReference } from "firebase/firestore";
+import { getFirestore, collection, addDoc, Firestore, setDoc, doc, getDocs, getDoc, deleteDoc, query, where, DocumentData, DocumentSnapshot, Timestamp, DocumentReference, QuerySnapshot, QueryDocumentSnapshot } from "firebase/firestore";
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { Auth, GoogleAuthProvider, User, getAuth, signInWithCustomToken, signInWithPopup, signOut } from "firebase/auth";
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -175,11 +175,11 @@ export class FirebaseService {
     )
   }
 
-  listSharedSheetsForCurrentUser() {
+  listSharedSheetsForCurrentUser(): Promise<QueryDocumentSnapshot<DocumentData, DocumentData>[]> {
     return this.loadCollectionForCurrentUser(DocumentCollection.SharedSheet);
   }
 
-  loadSharedSheet(id: string) {
+  loadSharedSheet(id: string): Promise<DocumentSnapshot<DocumentData, DocumentData>> {
     return this.loadDocument(DocumentCollection.SharedSheet, id);
   }
 
@@ -242,12 +242,12 @@ export class FirebaseService {
   }
   private async loadCollectionForCurrentUser(
     documentCollection: DocumentCollection, 
-  ) {
-    const promise = new Promise(resolve => {
+  ) :Promise<QueryDocumentSnapshot<DocumentData, DocumentData>[]>{
+    const promise = new Promise<QueryDocumentSnapshot<DocumentData, DocumentData>[]>((resolve, err) => {
       this.auth.onAuthStateChanged(async currentUser => {
         console.log('current user', currentUser)
         if (currentUser.isAnonymous) {
-          return;
+          err();
         }
         const dbRef = collection(this.db, documentCollection);
     

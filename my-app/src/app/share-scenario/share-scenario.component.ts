@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RoutingService } from '../services/routing.service';
 import { filter, map, switchMap } from 'rxjs/operators';
-import { FirebaseService } from '../services/firebase.service';
 import { createLifeEventsRoute } from '../utils/route_mapper';
+import { DatabaseService } from '../services/database.service';
 
 @Component({
   selector: 'app-share-scenario',
@@ -25,7 +25,7 @@ export class ShareScenarioComponent {
   constructor(
     private route: ActivatedRoute, 
     readonly routingService: RoutingService,
-    private firebaseService: FirebaseService,
+    private firebaseService: DatabaseService,
     ) {
 
   }

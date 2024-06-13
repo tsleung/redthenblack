@@ -25,6 +25,7 @@ import { ProfileAlternativeScenariosComponent } from './profile-alternative-scen
 import { ShareScenarioComponent } from './share-scenario/share-scenario.component';
 import { AddPolynomialAllocationLifeEventComponent } from './add-polynomial-allocation-life-event/add-polynomial-allocation-life-event.component';
 import { SharedSheetComponent } from './shared-sheet/shared-sheet.component';
+import { AddStocksLifeEventComponent } from './add-stocks-life-event/add-stocks-life-event.component';
 
 export const INTRO = {
   path: 'intro',
@@ -202,6 +203,14 @@ export const LIFE_EVENTS = [
   {
     path: 'life-events/edit/:type/loan',
     component: AddLoanLifeEventComponent,
+  },
+  {
+    path: 'life-events/add/:type/stocks',
+    component: AddStocksLifeEventComponent,
+  },
+  {
+    path: 'life-events/edit/:type/stocks',
+    component: AddStocksLifeEventComponent,
   },
   
   {

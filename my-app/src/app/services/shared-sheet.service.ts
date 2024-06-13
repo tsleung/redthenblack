@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { PrompterService } from './prompter.service';
-import { FirebaseService, ServerMessageType } from './firebase.service';
+import { ServerMessageType } from './firebase.service';
 import { filter, shareReplay, switchMap } from 'rxjs/operators';
 import { Component } from '../utils/maya-ecs-components';
 import { Scenario, ScenarioService } from './scenario.service';
 import { RoutingService } from './routing.service';
 import { createSharedSheetRoute } from '../utils/route_mapper';
+import { DatabaseService } from './database.service';
 
 
 interface SharedSheet {
@@ -28,7 +29,7 @@ export class SharedSheetService {
 
   constructor(
     readonly prompterService: PrompterService,
-    readonly firebaseService: FirebaseService,
+    readonly firebaseService: DatabaseService,
     readonly scenarioService: ScenarioService,
     readonly routingService: RoutingService,
   ) { }

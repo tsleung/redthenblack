@@ -15,27 +15,27 @@
 </div>
 
 <div class="auth">
-  <button mat-button *ngIf="!lifeEventsService.firebaseService.auth.currentUser" 
+  <button mat-button *ngIf="!lifeEventsService.databaseService.auth.currentUser" 
     (click)="lifeEventsService.login()">
     Login to Save <mat-icon>login</mat-icon>
   </button>
   
-  <button mat-button *ngIf="lifeEventsService.firebaseService.auth.currentUser" 
+  <button mat-button *ngIf="lifeEventsService.databaseService.auth.currentUser" 
     (click)="lifeEventsService.logout()">
     Logout <mat-icon>logout</mat-icon>
   </button>
   <a mat-button [routerLink]="routingService.mapper.createAlternativeScenariosRoute()">
     Manage Saved Scenarios <mat-icon>folder_managed</mat-icon>
   </a>
-  <button mat-button *ngIf="lifeEventsService.firebaseService.auth.currentUser" 
+  <button mat-button *ngIf="lifeEventsService.databaseService.auth.currentUser" 
     (click)="lifeEventsService.delete()">
     Delete Active Scenario<mat-icon>delete_forever</mat-icon>
   </button>
-  <button mat-button *ngIf="lifeEventsService.firebaseService.auth.currentUser" 
+  <button mat-button *ngIf="lifeEventsService.databaseService.auth.currentUser" 
     (click)="lifeEventsService.load()">
     Load Plan<mat-icon>download</mat-icon>
   </button>
-  <button mat-button *ngIf="lifeEventsService.firebaseService.auth.currentUser" 
+  <button mat-button *ngIf="lifeEventsService.databaseService.auth.currentUser" 
     (click)="lifeEventsService.save()">
     Save Plan Online<mat-icon>save</mat-icon>
   </button>

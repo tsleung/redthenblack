@@ -1,0 +1,52 @@
+<p>add-stocks-life-event works!</p>
+<ng-container *ngIf="lifeEvent | async as lifeEvent">
+  <header>
+    <div class="subtitle ">Life Events</div>
+    <h1 class="title">{{lifeEvent.name}}</h1>  
+  </header>
+  <form ngForm (submit)="lifeEvent.saveLoan()">
+  <main>
+    <figure>
+      <app-maya-life-event-card [lifeEvent]="lifeEvent"></app-maya-life-event-card>
+    </figure>
+    <aside *ngIf="lifeEvent.calculators && lifeEvent.calculators.length > 0">
+      <h3>Helpful Calculators</h3>
+      <ng-container *ngFor="let calculator of lifeEvent.calculators">
+        <h4>
+          <a [routerLink]="calculator.href">{{calculator.title}}</a>
+        </h4>
+        <p>
+          {{calculator.description}}
+        </p>
+      </ng-container>
+    </aside>
+    
+      <article>
+        <mat-form-field>
+          <mat-label>Start Period</mat-label>
+          <input matInput [formControl]="controls.startPeriod" type="number" /><br/>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Value</mat-label>
+          <input matInput [formControl]="controls.value" type="number" /><br/>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Annual Multiplier</mat-label>
+          <input matInput [formControl]="controls.value" type="string" /><br/>
+        </mat-form-field>
+        
+        <ng-container *ngIf="polynomialChart | async as chartData">
+          <app-bar-chart [chartData]="chartData" [legendOptions]="{show: false}" [gridOptions]="gridOptions" ></app-bar-chart>
+        </ng-container>
+        
+        <mat-form-field>
+          <mat-label>Period</mat-label>
+          <input matInput [formControl]="controls.periods" type="number" /><br/>
+        </mat-form-field>
+    </article>
+  </main>
+  <footer>
+    <button color="primary" mat-flat-button>Save</button>
+  </footer>
+  </form>  
+</ng-container>

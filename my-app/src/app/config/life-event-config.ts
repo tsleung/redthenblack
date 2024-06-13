@@ -1,7 +1,7 @@
 
 import { AmortizedLoan, AnniversaryCelebration, AutoLoan, Bereavement, BigTrip, BirthdayCelebration, Cash, CashFlow, CashFlowComponent, ChildCare, Children, CommercialRealEstate, Component, ComponentKey, ComponentType, Contribution, CostOfLiving, DelayedStartComponent, Entrepreneurship, FancyCar, Fertility, FertilityBirth, FertilityIVF, FineDining, FixedAllocation, FixedAllocationComponent, FixedStocksAllocation, Gifts, Inheritance, Insurance, Job, KidCollegeTuition, KidsCollegeFund, LongVacation, Medical, Mortgage, NiceBigHouse, PolynomialAllocation, PolynomialAllocationComponent, PolynomialStocksAllocation, PropertyTax, RenovationAndRepairs, Rental, RentalIncome, ResidentialRealEstate, Retirement, RetirementSpend, Sabbatical, SavingsAccount, SbaLoan, School, SeniorCare, SocialSecurityIncome, Stocks, StudentLoan, Traditional401k, Traditional401kContribution, Travel, Value, VolatileAsset, Wedding } from '../utils/maya-ecs-components';
 import { Field, LifeEvent } from '../utils/life-event-utils';
-import { createLifeEventsAddTypeRoute, createLoanTypeRoute, createPolynomialTypeRoute } from '../utils/route_mapper';
+import { createLifeEventsAddTypeRoute, createLoanTypeRoute, createPolynomialTypeRoute, createStocksTypeRoute } from '../utils/route_mapper';
 
 /** This may be better to reverse, icon as key and tags as matches */
 const iconMap = {
@@ -546,6 +546,7 @@ export const availableLifeEvents:LifeEvent[] = shorthand.map(([name,IGNORE, crea
 
 function createAddEditHref(componentType: ComponentType, componentKey: ComponentKey) {
   return componentType === ComponentType.AmortizedLoan ? createLoanTypeRoute(componentKey) :
+    componentKey === ComponentKey.Stocks ? createStocksTypeRoute(componentKey) :
     componentType === ComponentType.PolynomialAllocation ? createPolynomialTypeRoute(componentKey) :
     createLifeEventsAddTypeRoute(componentKey); 
 }

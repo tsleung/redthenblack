@@ -80,7 +80,7 @@
 </article>
 <section class="sign-up">
   
-  <app-maya-callout-content *ngIf="!lifeEventsService.firebaseService.auth.currentUser"
+  <app-maya-callout-content *ngIf="!lifeEventsService.databaseService.auth.currentUser"
       caption="Create an account to save your plan!"
       content="You can return to your plan and track progress, adjust events and factors to keep on top of your plan."
       [image]="{src: imageAssetService.getAssetUrl('handshake_tight.png')}"

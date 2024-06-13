@@ -46,3 +46,4 @@ export function executeReallocation(
 export function calculateDesiredPosition(percentage: number, totalPortfolioValue: number) {
   return percentage * totalPortfolioValue;
 }
+

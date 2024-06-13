@@ -194,7 +194,10 @@ export class LoanSystem implements System{
   }
 }
 
-// IncomeSystem, ExpenseSystem, LifeMilestoneSystem, CareerSystem (similar structure)
+// TODO: Create execute transaction - which should log a transaction that's available after 
+
+
+
 
 function selectRandomFromList<T>(arr: T[]) {
   return arr[Math.floor(Math.random() * arr.length)];

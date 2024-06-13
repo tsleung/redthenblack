@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Component } from '../utils/maya-ecs-components';
-import { FirebaseService, SavedDocument } from './firebase.service';
-
+import { SavedDocument } from './firebase.service';
+import { DatabaseService } from './database.service';
 
 export interface Scenario extends SavedDocument{
   components: Component[]  
@@ -13,5 +13,5 @@ export interface Scenario extends SavedDocument{
 })
 export class ScenarioService {
 
-  constructor(readonly firebaseService: FirebaseService) { }
+  constructor(readonly firebaseService: DatabaseService) { }
 }

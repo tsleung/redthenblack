@@ -154,6 +154,9 @@ export function createLifeEventsAddTypeRoute(type: string) {
   return createLifeEventsRoute() + `/add/${type}`;
 }
 
+export function createStocksTypeRoute(type: string) {
+  return createLifeEventsAddTypeRoute(type) + `/stocks`;
+}
 export function createLoanTypeRoute(type: string) {
   return createLifeEventsAddTypeRoute(type) + `/loan`;
 }

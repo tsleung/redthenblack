@@ -5,9 +5,9 @@ import { filter, first, map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { availableLifeEvents, createHighlightNumber } from '../config/life-event-config';
 import { LifeEvent, convertComponentsToLifeEvents } from '../utils/life-event-utils';
-import { FirebaseService } from './firebase.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoutingService } from './routing.service';
+import { DatabaseService } from './database.service';
 
 const SNACKBAR_DURATION = 2000;
 
@@ -68,7 +68,7 @@ export class LifeEventsService {
   }
   constructor(
     private muxs: MayaUserExperienceService,
-    readonly firebaseService: FirebaseService,
+    readonly databaseService: DatabaseService,
     readonly snackbar: MatSnackBar,
     readonly routingService: RoutingService,
   ) {
@@ -84,7 +84,7 @@ export class LifeEventsService {
         const components = Array.from(componentMap.values()).map(component => component);
         console.log('saving components json', components);
         const json = structuredClone({components});
-        this.firebaseService.signInAndSave(json);
+        this.databaseService.signInAndSave(json);
         this.snackbar.open('Logged in and saved', undefined ,{duration: SNACKBAR_DURATION});
     });
   }
@@ -97,12 +97,12 @@ export class LifeEventsService {
         const components = Array.from(componentMap.values()).map(component => component);
         console.log('saving components json', components);
         const json = structuredClone({components});
-        this.firebaseService.setActiveScenario(json);
+        this.databaseService.setActiveScenario(json);
         this.snackbar.open('Saved', undefined ,{duration: SNACKBAR_DURATION});
     });
   }
   delete() {
-    this.firebaseService.deleteActiveScenario().then(() => {
+    this.databaseService.deleteActiveScenario().then(() => {
       this.muxs.resetComponents();
       this.snackbar.open('Deleted Active Scenario', undefined ,{duration: SNACKBAR_DURATION});
 
@@ -115,11 +115,11 @@ export class LifeEventsService {
     this.snackbar.open('Loaded from last Saved', undefined ,{duration: SNACKBAR_DURATION});
   }
   login() {
-    this.firebaseService.login();
+    this.databaseService.login();
     this.snackbar.open('Logged in', undefined ,{duration: SNACKBAR_DURATION});
   }
   logout() {
-    this.firebaseService.logout();
+    this.databaseService.logout();
     this.snackbar.open('Logged out', undefined ,{duration: SNACKBAR_DURATION});
   }
 }

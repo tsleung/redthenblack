@@ -83,7 +83,6 @@ figure {
   flex: 1 0 25%;
   flex-wrap: wrap;
   position: relative;
-  margin: 1rem -1rem;
 
   &:before {
     // content: 'Your current life events';
@@ -267,4 +266,8 @@ figure {
   border-radius: 50%; /* Make it a circle */
   border: 10px solid #f3f4f7; /* Create the hollow outline */
   background-color: transparent; /* Ensure it's hollow */
+}
+
+.mat-mdc-tab-group {
+  margin-bottom: 10rem;
 }

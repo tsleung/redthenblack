@@ -4,8 +4,9 @@ import { AmortizedLoan, Cash, Component, ComponentKey, ComponentType, Job, Savin
 import { getComponent, setComponent } from '../utils/maya-ecs-entities';
 import { BehaviorSubject, Observable, Subject, combineLatest, merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, publishReplay, refCount, scan, shareReplay, startWith, switchMap, tap, throttleTime } from 'rxjs/operators';
-import { FirebaseService, ServerMessageType } from './firebase.service';
+import { ServerMessageType } from './firebase.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DatabaseService } from './database.service';
 
 export enum ComponentActionType {
   Add,
@@ -54,7 +55,7 @@ export class MayaUserExperienceService {
     )
   ]).pipe(  
     switchMap(([components]) => {
-      console.log('building components');
+      console.log('building components', components);
       return this.buildComponents(components);
     }),
     switchMap(components => {
@@ -90,7 +91,7 @@ export class MayaUserExperienceService {
   );
   
   constructor(
-    private firebaseService: FirebaseService,
+    private firebaseService: DatabaseService,
     readonly snackbar: MatSnackBar
   ) {
     console.log('muxs.constructor')

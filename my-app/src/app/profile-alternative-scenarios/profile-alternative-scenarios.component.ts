@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FirebaseService } from '../services/firebase.service';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RoutingService } from '../services/routing.service';
@@ -7,6 +6,7 @@ import { MayaUserExperienceService } from '../services/maya-user-experience.serv
 import { createLifeEventsRoute } from '../utils/route_mapper';
 import { PrompterService } from '../services/prompter.service';
 import { SharedSheetService } from '../services/shared-sheet.service';
+import { DatabaseService } from '../services/database.service';
 
 @Component({
   selector: 'app-profile-alternative-scenarios',
@@ -28,7 +28,7 @@ export class ProfileAlternativeScenariosComponent {
   sharedSheets = this.sharedSheetService.sharedSheets;
 
   constructor(
-    readonly firebaseService: FirebaseService,
+    readonly firebaseService: DatabaseService,
     readonly routingService: RoutingService,
     readonly muxs: MayaUserExperienceService,
     readonly sharedSheetService: SharedSheetService

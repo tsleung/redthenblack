@@ -3,6 +3,7 @@ import { SharedSheetService } from '../services/shared-sheet.service';
 import { ActivatedRoute } from '@angular/router';
 import { RoutingService } from '../services/routing.service';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { data } from '../services/database.service';
 
 @Component({
   selector: 'app-shared-sheet',
@@ -24,7 +25,7 @@ export class SharedSheetComponent {
       return this.sharedSheetService.loadSharedSheet(id);
     }),
     tap(doc => {
-      this.routingService.setTitle(doc.data().title);
+      this.routingService.setTitle(data(doc).title);
     })
   );
   
