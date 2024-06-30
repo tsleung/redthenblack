@@ -28,9 +28,9 @@ export class AddLoanLifeEventComponent {
   form = new FormGroup(this.controls);
 
   calculatedLoanPayment = combineLatest([
-    this.controls.loanAmount.valueChanges,
-    this.controls.loanTerm.valueChanges.pipe(startWith(30)),
-    this.controls.interestRate.valueChanges,
+    this.controls.loanAmount.valueChanges.pipe(startWith(this.controls.loanAmount.value)),
+    this.controls.loanTerm.valueChanges.pipe(startWith(this.controls.loanTerm.value)),
+    this.controls.interestRate.valueChanges.pipe(startWith(this.controls.interestRate.value)),
   ]).pipe(
     map(([
     loanAmount, 
@@ -40,16 +40,20 @@ export class AddLoanLifeEventComponent {
     
     console.log('calculating payment')
     
-    const monthlyPayment =  Math.round(calculateAmortizationPayment(
-      interestRate / 12, 
-      loanTerm * 12, 
-      loanAmount
-    ));
+    const monthlyPayment =  this.currentLoanPayment();
 
     this.controls.payment.setValue(monthlyPayment);
 
     return monthlyPayment;
   }));
+
+  currentLoanPayment() {
+    return Math.round(calculateAmortizationPayment(
+      this.controls.interestRate.value / 12,
+      this.controls.loanTerm.value * 12,
+      this.controls.loanAmount.value,
+    ))
+  }
 
   // the difference with targeted components is they 
   // can expose component and life event attributes
@@ -71,6 +75,8 @@ export class AddLoanLifeEventComponent {
           .find(suspect => suspect.key === lifeEvent.componentKey) as AmortizedLoan ?? lifeEvent.createComponent() as AmortizedLoan;
         this.controls.interestRate.setValue(component.interestRate);
         this.controls.loanAmount.setValue(component.principal);
+        this.controls.payment.setValue(component.monthlyPayment ?? this.currentLoanPayment());
+        this.controls.startPeriod.setValue(component.startPeriod);
 
         return this.createViewModel(lifeEvent, component);
       }));
@@ -81,6 +87,7 @@ export class AddLoanLifeEventComponent {
   private createViewModel(lifeEvent:LifeEvent, component: AmortizedLoan) {
     const saveLoan = () => {
       
+      component.startPeriod = this.controls.startPeriod.value;
       component.interestRate = this.controls.interestRate.value;
       component.principal = this.controls.loanAmount.value;
       component.monthlyPayment = this.controls.payment.value;
@@ -114,6 +121,7 @@ export class AddLoanLifeEventComponent {
       field.value = data.get(field.name).valueOf() as string;
     });
 
+    console.log('saving loan', lifeEvent)
     this.lifeEventsService.updateLifeEvent(lifeEvent);
     this.router.navigate([createLifeEventsRoute()]);
     return false;

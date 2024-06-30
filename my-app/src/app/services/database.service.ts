@@ -10,7 +10,7 @@ import { DocumentData, DocumentReference, DocumentSnapshot, QueryDocumentSnapsho
 export class DatabaseService {
   auth = this.firebaseService.auth;
   serverMessenger = this.firebaseService.serverMessenger;
-  online = false;
+  online = true;
   constructor(
     private firebaseService: FirebaseService,
   ) { }

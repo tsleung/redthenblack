@@ -165,7 +165,7 @@ export class MayaUserExperienceService {
 
   simulationsBalances = this.simulations.pipe(map(simulations => {
       const simulationsCashValue = simulations.map(simulation => {
-        return simulation.map(period => {
+        return simulation.map((period, currentPeriod) => {
           return period.entityManager.entities.reduce((accum, entity) => {
             
             // should this be explicit? maybe even a toggle of which to include in the 'value' summation? maybe list all components included, have an include/exclude list
@@ -175,11 +175,13 @@ export class MayaUserExperienceService {
             const volatileAssets = Array.from(entity.components.values())
               .filter(suspect => suspect.type === ComponentType.VolatileAsset)
               .map(component => component as VolatileAsset)
+              .filter(component => currentPeriod >= component.startPeriod)
               .reduce((total, asset) => asset.value + total,0)
 
             const amorizedLoans = Array.from(entity.components.values())
               .filter(suspect => suspect.type === ComponentType.AmortizedLoan)
               .map(component => component as AmortizedLoan)
+              .filter(component => currentPeriod >= component.startPeriod)
               .reduce((total, loan) => loan.principal + total,0)
 
 
