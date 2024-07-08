@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { RoutingService } from '../services/routing.service';
+import { MayaUserExperienceService } from '../services/maya-user-experience.service';
+import { ImageAssetService } from '../services/image-asset.service';
 
 @Component({
   selector: 'app-maya-calculator',
@@ -8,7 +10,9 @@ import { RoutingService } from '../services/routing.service';
 })
 export class MayaCalculatorComponent {
   constructor(
-    readonly routingService: RoutingService
+    public muxs: MayaUserExperienceService,
+    public imageAssetService: ImageAssetService,
+    public routingService: RoutingService,
   ){
 
   }

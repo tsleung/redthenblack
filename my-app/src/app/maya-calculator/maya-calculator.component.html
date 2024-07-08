@@ -1,4 +1,11 @@
 <mat-list>
+  <app-maya-callout-content
+    caption="Create an account to save your plan!"
+    content="You can return to your plan and track progress, adjust events and factors to keep on top of your plan."
+    [image]="{src: imageAssetService.getAssetUrl('handshake_tight.png')}"
+    [action]="{primary: true, href:routingService.mapper.createLifeEventsRoute(), text:'Create an account'}"
+  ></app-maya-callout-content>
+
   <h3>Calculators</h3>
   <mat-list-item lines="3">
     <span matListItemTitle><a [routerLink]="routingService.mapper.createSavingsCalculator()">Why Saving Money is
