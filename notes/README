@@ -1,0 +1,18 @@
+# Notebook
+
+## Virtual Env
+```
+python3 -m venv .venv
+```
+```
+source .venv/bin/activate
+
+```
+## Gemini
+```
+pip install google-generativeai
+```
+
+
+
+
