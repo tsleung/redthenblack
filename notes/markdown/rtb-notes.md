@@ -3,11 +3,13 @@
 I am addressing a problem I think in the space where there is a lot of scams and fraduluent behavior, encouraging people to buy cryptocurrency or pump and dump schemes. When there is a recommendation to buy an asset, the suitability is seldom considered, and the assumptions aren't transparent and are misleading. I want to build a community of people who can discuss, using transparent methods, the validity and efficacy of different approaches to life planning.
 
 
-I am building calculators to help people plan for their life. These calculators use simulation and analysis methods, combined with educational material and articles, to help people plan. How can I be more successful? Is it possible to get help? What would a good division of responsibilities for myself, and one part time person, to get help building my project "Red then Black" look like? Help me create a project plan and timeline. It is more important to build a large following, then convert them to customers whom pay for compute and storage (not education) for the simulator and analysis environment. So all features can be run in the users browser, simulation within their local device and storage (local storage I think may not work, will look at PWA and larger solutions) but I'll create a model exporter for them to save/load. To avoid having to use their local device for storage (makes it easier to just login) or compute (can use a cloud service to run massively in parallel) thats where a premium feature I think will be good - because I need to cover compute and storage costs.
+I am building calculators to help people plan for their life. These calculators use simulation and analysis methods, combined with educational material and articles, to help people plan. What would a good division of responsibilities for myself, and one part time person, to get help building my project "Red then Black" look like? Help me create a project plan and timeline. It is more important to reach more people for free vs conversion to customers whom pay for compute and storage (not education) for the simulator and analysis environment. So all features can be run in the users browser, simulation within their local device and storage (local storage I think may not work, will look at PWA and larger solutions) but I'll create a model exporter for them to save/load. To avoid having to use their local device for storage (makes it easier to just login) or compute (can use a cloud service to run massively in parallel) thats where a premium feature I think will be good - because I need to cover compute and storage costs.
 
-I created user accounts which allow people to share a simulation they've been working on. I'm unsure of the direction to go, if I should allow commenting or just allow it to be embeded / screenshotted to be shared so social media so I can avoid community management. I think there is a subtle desire to share and request feedback - life planning is a social experience amongst family, friends, or a generation (gen z is very public with their personal information). I believe this is a value differentiator and builds collective wisdom, similar to the academic community publishing papers. Community management is difficult though, with scammers/spam and technical issues that are introduced which may be overwhelming for a small team and for me to build a product without much revenue, if I'm focusing on giving away as much as possible for free.
+I created user accounts which allow people to share a simulation they've been working on. I'm unsure of the direction to go, if I should build commenting as a feature or just allow simulations to be embeded / screenshotted to be shared on other platforms with dedicated community management teams. I think of reddit/youtube/instagram and the amount of spam that is there. But I really think there is a subtle desire to share and request feedback - life planning is a social experience amongst family, friends, or a generation (gen z is very public with their personal information). I believe this is a value differentiator and builds collective wisdom, similar to the academic community publishing papers. Community management is difficult though, with scammers/spam and technical issues that are introduced which may be overwhelming for a small team and for me to build a product without much revenue, if I'm focusing on giving away as much as possible for free.
 
 I created a lightweight simulator following an entity component system, so it can be composed with different systems like mortgages, debts, sending kids to college, job switches, etc.
+
+I've attached the following set of written material I've created given advice and startup guides I've read about how to grow the startup. I'm not familiar with silicon valley ettiquette so I'm going to do my best to make sure this product is successful so people use it and get help.
 
 Here is the one page pitch: ```Red then Black
 Personalized Algorithmic Financial Strategy
@@ -271,7 +273,7 @@ Vision: Financial planner / Economist / Statistician
 Execution: Data visualization engineer / Software engineer / Financial engineer
 
 Time expectations
-60 hours a week, 12 hours 4 days a week, 8 hours, 2 hours on weekend
+30 hours a week, 6 hours 4 days a week, 4 hours, 1 hours on weekend
 2 weeks off christmas - new years
 2 weeks off memorial day
 
@@ -308,13 +310,13 @@ Number of kids https://www.businessinsider.com/student-loan-debt-meet-single-fat
 
 
 Caveats about the author:
-
+```
 My name is Terran, topical exploration of decision making in games has been at most my side hobby. I have neither (1) professional experience in finance or (2) academic degrees in mathematics or computer science. It is my opinion finance planning varies suitably for each individual. This article reflects my personal approach towards financial planning and retirement.
 
 Future markets are a mirror of past markets. Smartest insights are beyond the scope of this article, of which the objective of trillions of dollars chasing it around the world. There are smarter people than me to talk about the subject and I suggest finding a true financial professional.
 
 All numbers here have been deliberately expressed with coarseness. Specification in values less than thousands is not in the spirit of this exercise. If my retirement plan depends on pennies, I’m likely not ready for retirement. 
-
+```
 
 A stacked deck.
 
