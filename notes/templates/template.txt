@@ -1,4 +1,0 @@
-Hello, my name is ${name}!
-
-Here's some extra information from the file:
-${file_content}
